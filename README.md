@@ -100,7 +100,7 @@ list.then( function() {
 });
 ```
 
-# Data-remoting with Sockect.io
+# Data-remoting with Socket.io
 
 To be documented later.
 
