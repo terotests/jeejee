@@ -66,9 +66,12 @@ The simplest case is that you have a simple model like this:
 var model = _data({ name : "John doe" });
 ```
 
-The model is a promise, so you must use `.then()` before using it. 
+The model is a promise and may be resolved later, so you must use `.then()` before using it. 
 ``` javascript
-var myDiv.h1().bind( model, "name" );
+model.then(function() {
+   myDiv.h1().bind( model, "name" );
+});
+
 ```
 After that the model values are updated to the view.
 ```
