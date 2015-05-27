@@ -2,6 +2,8 @@
 
 NOTICE: The project and documentation is still under construction. And most likely always will be.
 
+[TODO-MVC Demo] (http://jsfiddle.net/2ranr6xf/)
+
 Sometimes you just want to create HTML items dynamically, with the easy way.
 
 ```
