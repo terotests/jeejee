@@ -4,7 +4,42 @@ NOTICE: The project and documentation is still under construction. And most like
 
 [TODO-MVC Demo] (http://jsfiddle.net/2ranr6xf/)
 
-Sometimes you just want to create HTML items dynamically, with the easy way.
+Sometimes you just want to create HTML items dynamically, with the easy way. In _e framework
+the basic element is DIV which is created like:
+```
+  _e(); // creates a DIV
+```
+Any other element can be created using
+```
+  _e("span"); // creates a SPAN
+```
+And nested elements can be created calling the parent...
+```
+  var parent = _e(); // creates a DIV
+  var child = parent.div(); // new nested div
+```
+... or adding the elements 
+```
+  child.add( myDiv ) ;
+```
+Setting attributes and classes can be done using  `attr` or `addClass` 
+
+```
+  var myInput = _e("input").attr( {
+        "type" : "color"
+  }).addClass("basicInput");
+```
+
+or with arguments
+
+```
+  myDiv.input("bacicInput", {
+        "type" : "color"
+  });
+```
+
+
+#Taking Bacon Stream out
 
 ```
 // create input and the results as Bacon.js tream.
@@ -15,8 +50,7 @@ myDiv.input().bacon("keydown")
   });
 ```
 
-
-The _e is supporting also many events common to jQuery users and much more. It can be used together with any JS module.
+The _e is supporting also many standard "on" events like
 
 ``` javascript
 var inp = myDiv.div().input().val("the value");
