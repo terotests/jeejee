@@ -175,7 +175,7 @@ myDiv.fancyButton().text("This is a fancy button");
 
 
 
-# Routing and Event binding
+# Events
 
 You can either create traditional event handler on each element like:
 
@@ -282,23 +282,6 @@ var path = svg.path({ d : "M26,27.5H6c-0.829,0-1.5-0.672-1.5-1.5V6c0-0.829,0.671
 
 ```
 
-## Setting classname at construction
-
-``` javascript
-var myDiv = main.div("myClassName");
-```
-
-## Setting attributes at construction
-
-``` javascript
-var myDiv = main.div({ "data-id" : 3});
-```
-
-## Setting class and attributes at construction
-
-``` javascript
-var myDiv = main.div("myClassName", { "data-id" : 3});
-```
 
 
 # SVG support
