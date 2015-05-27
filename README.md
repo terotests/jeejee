@@ -66,9 +66,13 @@ list.then( function() {
 });
 ```
 
+# Data-remoting with Sockect.io
+
+To be documented later.
+
 # Templates
 
-You can use templates, syntax resembles a bit Angular JS but is a bit cleaner IMHO.
+You can use templates, data-switches and events to create templates
 
 ```html
  <ol data-model="items" data-class-switch="type">
