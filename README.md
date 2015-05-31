@@ -114,10 +114,10 @@ The inputs can be transformed to streams usin `toBacon()` like this
 ```
 The stream can be consumed by elements ( with certain restrictions at the moment), currently available are
  - attributes
-Later is coming at least
  - text values
  - HTML content
- - possibly CSS attributes
+ - class -names
+ - string values with template function `str` 
 
 For example, SVG rect element could consume the fill value like this:
 
@@ -149,6 +149,20 @@ myDiv.button().text("Click me").on("click", function() {
    alert(inp.val());
 });
 ```
+
+## Template function "str"
+
+You can combine strings from streaming values using `str` -function
+
+``` javascript
+var myInput = _e("input");
+var myStream = myInput.toBagon();
+
+// combine the input and stream into single sting value
+var myDiv.text( _e().str( "The value is ", myStream ) );
+```
+
+
 
 # Drag and Drop
 
