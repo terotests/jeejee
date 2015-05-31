@@ -1100,8 +1100,15 @@ var _e_prototype = function() {
           return me;
         }
 
+        //
         if (me.isFunction(e)) {
-          e = e();
+          var newItem = _e();
+          var res = e.apply(newItem, []);
+          if (res) {
+            e = res;
+          } else {
+            e = newItem;
+          }
         }
 
         if (me.isStream(e)) {
