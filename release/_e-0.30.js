@@ -3175,6 +3175,12 @@ var _e_prototype = function() {
     _myTrait_.text = function(t) {
       if (typeof(t) == "undefined") return this._html;
 
+      var args = Array.prototype.slice.call(arguments);
+
+      if (args.length > 1) {
+        t = this.str(args);
+      }
+
       if (this.isObject(t)) {
         if (t.onValue) {
           var me = this;
