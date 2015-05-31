@@ -7,7 +7,8 @@ UI views in functional style so that each view is creates from a function receiv
 
 Views can also be nested in infinite amount.
 
-[View push/pop Demo] (http://jsfiddle.net/55yxzuy4/)
+- [View push/pop Demo] (http://jsfiddle.net/55yxzuy4/)
+- [Twitter Bootstrap Demo] (http://jsfiddle.net/kx9sdj3g/)
 
 
 # Basics
