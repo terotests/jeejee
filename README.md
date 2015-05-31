@@ -1,30 +1,40 @@
-# JeeJee, a simple but massive JS framework
+# _e simplified UI library
 
-NOTICE: The project and documentation is still under construction. And most likely always will be.
+NOTE: This is just early release of this version, bugs may appear.
 
-[TODO-MVC Demo] (http://jsfiddle.net/2ranr6xf/)
+This a simplified, data-agnostic version of the _e -UI library. It promotes creating
+UI views in functional style so that each view is creates from a function receiving the data it should be using as a paramters.
 
-Sometimes you just want to create HTML items dynamically, with the easy way. In _e framework
-the basic element is DIV which is created like:
+Views can also be nested in infinite amount.
+
+[View push/pop Demo] (http://jsfiddle.net/x9wygwdj/)
+
+
+# Basics
+
+Views are creates from nested objects using composing operations like `add` 
+``` javascript
+  var myDiv = _e(); // creates a DIV
+  var childDiv = myDiv.div(); // creates a child div under the parent
 ```
-  _e(); // creates a DIV
-```
-Any other element can be created using
-```
+
+Any element can be created using constructor
+``` javascript
   _e("span"); // creates a SPAN
 ```
+
 And nested elements can be created calling the parent...
-```
+``` javascript
   var parent = _e(); // creates a DIV
   var child = parent.div(); // new nested div
 ```
 ... or adding the elements 
-```
+``` javascript
   child.add( myDiv ) ;
 ```
 Setting attributes and classes can be done using  `attr` or `addClass` 
 
-```
+``` javascript
   var myInput = _e("input").attr( {
         "type" : "color"
   }).addClass("basicInput");
@@ -32,17 +42,98 @@ Setting attributes and classes can be done using  `attr` or `addClass`
 
 or with arguments
 
-```
+``` javascript
   myDiv.input("bacicInput", {
         "type" : "color"
   });
 ```
 
+# Functional view creation
 
-#Taking Bacon Stream out
+The purpose of the libray is to make possible creating UI views in functional style
 
+``` javascript
+  var someViewFunction( data ) {
+    var view = _e();
+    // Create the view here...
+    return view;
+  }
 ```
-// create input and the results as Bacon.js tream.
+
+This makes possible easily nesting views using `pushView` and `popView`. The nice thing about functional views is that they can be composed. Any element can serve as parent to another view created using view function.
+
+
+# Creating views
+
+Elements can create subviews using
+
+``` javascript
+ elem.pushView( someOtherView );  
+ 
+```
+
+And restore the view using
+
+``` javascript
+ elem.popView( );  
+ 
+```
+
+The animation attribute for the view is `viewIn` and out `viewOut` the animation is assumed to take 0.4 seconds where 0.2 seconds is reserved for fading out / in.
+
+The default animations are created like this and you can change them
+
+``` javascript
+var outPosition = {
+    "transform" : "translate(-2000px,0px)"
+};
+
+var inPosition = {
+    "transform" : "translate(0,0)",
+};
+
+css().animation("viewOut", {
+    duration : "0.4s",
+    "iteration-count" : 1,
+},  inPosition,  0.5, outPosition, outPosition); 
+
+css().animation("viewIn", {
+    duration : "0.4s",
+    "iteration-count" : 1,
+},  outPosition, 0.5, inPosition, inPosition); 
+ 
+```
+
+# Using with Bacon.js
+
+The inputs can be transformed to streams usin `toBacon()` like this
+
+``` javascript
+ // create a stream of color values
+ var colorStream = m.div().input({type:"color", value :"#ff4433"}).toBacon();
+```
+The stream can be consumed by elements ( with certain restrictions at the moment), currently available are
+ - attributes
+Later is coming at least
+ - text values
+ - HTML content
+ - possibly CSS attributes
+
+For example, SVG rect element could consume the fill value like this:
+
+``` javascript
+myDiv.svg({ width : 150, height:150}).g().rect({
+    x : 10, y : 10, width:100, height : 100,
+    fill : colorStream // consumes values from the colorStream
+});
+```
+
+[SVG Editor example is here] (http://jsfiddle.net/90u23ryx/)
+
+If you want to handle events manually, you can use `bacon()` -function ( this may be changed to baconEvent) 
+
+``` javascript
+// create input and the results as Bacon.js stream.
 var myDiv = _e("#res");
 myDiv.input().bacon("keydown")
    .onValue( function(event) {
@@ -59,104 +150,47 @@ myDiv.button().text("Click me").on("click", function() {
 });
 ```
 
-# _data() and updating models + views
+# Drag and Drop
 
-The simplest case is that you have a simple model like this:
-``` javascript
-var model = _data({ name : "John doe" });
-```
+You can get information about drag -events on the elements, however it is up to you to actually move the items on the screen, the way you see best fit.
 
-The model is a promise and may be resolved later, so you must use `.then()` before using it. 
-``` javascript
-model.then(function() {
-   myDiv.h1().bind( model, "name" );
-});
-
-```
-After that the model values are updated to the view.
-```
-model.set("name", "Mike");
-// or
-model.name("Mike");
-```
-
-
-## Creating views from lists or MVC -collections
-
-Displaying a collection of items in many template -based frameworks is usually not very fast, because templates need to be refreshed. Since _e is binding values directly to the objects, the performance can be quite optimal in many cases.
-
-To display a list of items, you must create an array and give it to mvc()
+The basic callback has format
 
 ``` javascript
-var list = _data( [
-  { txt : "Cras justo odio"},
-  { txt : "Dapibus ac facilisis in"},
-  { txt : "Morbi leo risus"}
-]);
-
-list.then( function() {
-    myDiv.ul("list-group").mvc( list, function(item) {
-        var li = _e("li").addClass("list-group-item");
-        li.a().text(item.txt);
-        return li;
-    });
+elem.drag(function(dragInfo) {
+   // do something here with dragInfo
 });
 ```
 
-# Data-remoting with Socket.io
-
-To be documented later.
-
-# Templates
-
-You can use templates, data-switches and events to create templates
-
-```html
- <ol data-model="items" data-class-switch="type">
-      <li data-class="path"> 
- 
-      </li>
-      <li data-class="image"> 
- 
-      </li>
-  </ol>
-```  
-
-To render the template at the client you need to give it as a string param to renderTemplate() -function.
+The object "dragInfo" has following format:
 
 ``` javascript
-  resDiv.renderTemplate( myModel, templateStr);
-```  
+{"sx":0,        // start coordinates of the dragged element
+ "sy":0,
+ "dx":100,      // dx,dy number of pixels drag has moved
+ "dy":129,
+ "x":100,       // elements calculated x,y
+ "y":129,       
+ "start":false, // drag has just started
+ "end":true,     // drag has ended
+ "item" : obj    // item which is dragged
+}
+```
 
-The template can be rendered from a dynamic variable or static HTML string. Dynamic templates
-update automatically if the variable changes locall or at remote server.
+## Drag as Bacon.js Stream
 
-## Input variables in templates
+If you want more control over the drag events you can subscript to the drag as Bacon.js
+stream (requires the library)
 
-To modify current model items place variable name in the brackets {{}}
-
-```html
-<ul data-model="items">
-  <li><input size=3 value={{width}}></li>
-</ul>
-``` 
 ``` javascript
-  var myList = _data([ { width: 30}, { width:50}] );
-  resDiv.renderTemplate( myList, templateStr);
-``` 
+elem.baconDrag().onValue(function(dragInfo) {
 
-## Iterating submodels
+});
+```
 
-To iterate submodel just place a new data-model -directive in existing template
+[Bacon.js drag demo] (http://jsfiddle.net/acyc3yho/)
 
-```html
-<ul data-model="groups">
-  <li>group {{name}} has following members:
-  <ul data-model="people">
-     <li><input value={{firstName}}> <input value={{lastName}}></li>
-  </ul>
-</ul>
-``` 
+
 
 # Creating plugins / extending
 
@@ -175,6 +209,46 @@ myDiv.extendAll( {
 
 myDiv.fancyButton().text("This is a fancy button");
 ```
+
+# CSS namespacing
+
+CSS can be built without Stylesheets using JavaScript objects as style mixins. 
+It is possible to create code which uses no stylesheets or calculates the styles on-line.
+
+Each element can have a namespaced CSS style object, which can be created like
+
+``` javascript
+o.css().bind("<CSSClassName>",  {
+    "color"   : "black",
+    "padding" : "1em"
+});
+```
+
+The child elements of this node can then make use of this by adding the CSS class.
+
+``` javascript
+elem.addClass("<CSSClassName>");
+```
+
+
+# CSS gradients
+
+[Demo with gradients] (http://jsfiddle.net/ymjxkgan/)
+
+Gradient markings are now expanded to browser -specific instructions:
+
+``` javascript
+    css().bind("button:hover", {
+        "background" : "linear-gradient(#666, #333)"
+    });
+```
+
+## YUV functions
+
+For those familiar with YUV colors perhaps this demo explains it best
+
+[Demo with gradients] (http://jsfiddle.net/acyc3yho/)
+
 
 
 
@@ -202,7 +276,7 @@ childDiv.setRoute( { msg : "Hello" });
 
 Routing is more efficient, since it requires only one event -handler function.
 
-## Using .on( ... )
+# Using .on( ... )
 
 You can place tradional event-handler with .on( ) 
 
@@ -215,38 +289,19 @@ myDiv.on("click", function(elem, data) {
 myDiv.trigger("click", someData);
 ```
 
-## Routing
-
-The most effient way to manage events is routing. With routing the parent element will get event from the child element with the routing 
-information. Any object having a routing information can generate event. 
-
-``` javascript
-var childDiv1 = parentDiv.div().text("Google "),
-    childDiv2 = parentDiv.div().text("Amazon "),
-    childDiv3 = parentDiv.div().text("eBay");
-    
-// set a route information to it
-childDiv1.setRoute( { url : "http://www.google.com", clickCnt : 0 } ); 
-childDiv2.setRoute( { url : "http://www.amazon.com", clickCnt : 0 } ); 
-childDiv3.setRoute( { url : "http://www.ebay.com", clickCnt : 0 } ); 
-
-// Then listen to the events...
-parentDiv.router( "click", function(item) {
-    // item has now the data assigned to the clicked item
-    alert(item.url + " with cnt " + item.clickCnt);
-    item.clickCnt++;
-});
-```
-
-The route -information can be any variable and any event which bubbles up in DOM can be used.
-
-## Binding to real DOM
+# Starting by connecting to document
 
 Finding a HTML element and creating elments under it:
 
 ``` javascript
-var main = _e("#maindiv");
+var main = _e("#maindiv"); // search by ID
 main.div().text("Hello world");
+```
+
+or you can just insert a new element under BODY
+
+``` javascript
+var content = _e(document.body).div("content");
 ```
 
 ## Shortcuts for elements
@@ -295,28 +350,39 @@ To create a simple SVG icon -example with color picker:
 
 ```
 
-var m = _e("#res"); // res = id of the DOM element
-var colorPicker = m.div().input({ type : "color" });
-var myData = _data({
-    fill : "#ff8833",
-    path :  "M24.875,15.334v-4.876c0-4.894-3.981-8.875-8.875-8.875s-8.875,3.981-8.875,8.875v4.876H5.042v15.083h21.916V15.334H24.875zM10.625,10.458c0-2.964,2.411-5.375,5.375-5.375s5.375,2.411,5.375,5.375v4.876h-10.75V10.458zM18.272,26.956h-4.545l1.222-3.667c-0.782-0.389-1.324-1.188-1.324-2.119c0-1.312,1.063-2.375,2.375-2.375s2.375,1.062,2.375,2.375c0,0.932-0.542,1.73-1.324,2.119L18.272,26.956z"
-});  
+var svg = _e("svg");
+svg.attr({
+    width : 200,
+    height :300
+});
 
-myData.then(function() {
-   colorPicker.bind(myData, "fill");
-   var svg = m.svg({ width: 100, height:100});
-   var pathElement = svg.g().path( { d : [myData, "path"], fill :  [myData, "fill"] });
+svg.g().path({
+    d : "<some path>"
+    fill : "<some color"
 });
 
 ```
 
-# Anything else?
+# ToDo
 
-A lot, but don't have time to document.
+A lot of small fixes coming
+
+- clear up the code from global namespace pollution
+- clean the event handler code
+- add support for color gradients in CSS
+- document more CSS examples
+- document using Data libraries
+- document MVC model
+- document updating extensions
+- document DND functionality
+- SVG examples
+- document onFrame handlers etc.
+- SVG path add-ons
+
 
 # License
 
-Not yet specified, under construction.
+MIT. Currently use at own risk.
 
 
 
