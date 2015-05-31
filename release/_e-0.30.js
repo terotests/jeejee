@@ -3732,6 +3732,54 @@ var _e_prototype = function() {
 
       return false;
     }
+    _myTrait_.str = function(params) {
+
+      var args = [];
+      if (this.isArray(params)) {
+        args = params;
+      } else {
+        args.push(params);
+      }
+
+      // Supports Bacon.js streams at the moment...
+      var bHadStream = false,
+        me = this;
+      var indexes = [],
+        streams = [],
+        all = [];
+      args.forEach(function(item, i) {
+        if (me.isStream(item)) {
+          bHadStram = true;
+          all.push("");
+        } else {
+          all.push(item);
+        }
+      });
+      if (!bHadStream) return args.join("");
+
+      return Bacon.fromBinder(function(sink) {
+
+        args.forEach(function(item, i) {
+          if (me.isStream(item)) {
+            item.onValue(function(v) {
+              all[i] = v;
+              sink(all.join(""));
+            })
+          }
+        });
+
+        later().add(function() {
+          sink(all.join(""));
+        });
+
+        return function() {
+
+        };
+      });
+
+
+
+    }
   }(this));;
   (function(_myTrait_) {
     var colors;
