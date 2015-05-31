@@ -1100,6 +1100,11 @@ var _e_prototype = function() {
           return me;
         }
 
+        if (me.isObject(e) && e.onValue) {
+          me.html(e);
+          return me;
+        }
+
         if (typeof(e) == "undefined") return;
 
         if (typeof(e._dom) != "undefined") {
