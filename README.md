@@ -62,6 +62,15 @@ The purpose of the libray is to make possible creating UI views in functional st
 
 This makes possible easily nesting views using `pushView` and `popView`. The nice thing about functional views is that they can be composed. Any element can serve as parent to another view created using view function.
 
+The functions can be also be given as a parameter to the `add` or similar functions like this
+
+``` javascript
+  myDiv.add( function() {
+      // function that returns a view
+      return _e(); // just a div here...
+  });
+```
+
 
 # Creating views
 
