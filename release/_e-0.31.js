@@ -3065,6 +3065,7 @@ var _e_prototype = function() {
     }
     _myTrait_.html = function(h) {
 
+      // test if the value is a stream
       if (this.isObject(h)) {
         if (h.onValue) {
           var me = this;
