@@ -3069,7 +3069,7 @@ var _e_prototype = function() {
         if (h.onValue) {
           var me = this;
           // TODO: check if we are re-binding two streams on the same element, possible error
-          t.onValue(function(t) {
+          h.onValue(function(t) {
             me._dom.innerHTML = t;
             me._html = t;
           });
