@@ -3749,7 +3749,7 @@ var _e_prototype = function() {
         all = [];
       args.forEach(function(item, i) {
         if (me.isStream(item)) {
-          bHadStram = true;
+          bHadStream = true;
           all.push("");
         } else {
           all.push(item);
