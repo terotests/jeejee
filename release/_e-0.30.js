@@ -3807,11 +3807,11 @@ var _e_prototype = function() {
     }
     _myTrait_.str = function(params) {
 
-      var args = [];
+      var args;
       if (this.isArray(params)) {
         args = params;
       } else {
-        args.push(params);
+        args = Array.prototype.slice.call(arguments);
       }
 
       // Supports Bacon.js streams at the moment...
