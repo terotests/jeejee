@@ -1100,6 +1100,10 @@ var _e_prototype = function() {
           return me;
         }
 
+        if (me.isFunction(e)) {
+          e = e();
+        }
+
         if (me.isStream(e)) {
           me.html(e);
           return me;
@@ -3433,6 +3437,10 @@ var _e_prototype = function() {
       var cont = this;
       if (cont._children && cont._children[0] == newView) {
         return;
+      }
+
+      if (this.isFunction(newView)) {
+        newView = newView();
       }
 
       var ms = (new Date()).getTime();
