@@ -1110,7 +1110,9 @@ var _e_prototype = function() {
         }
 
         if (typeof(e) == "string") {
-          me._dom.innerHTML = e;
+          var nd = _e("span");
+          nd._dom.innerHTML = e;
+          me.add(nd);
           return me;
         }
 
