@@ -1097,6 +1097,7 @@ var _e_prototype = function() {
 
         //
         if (me.isFunction(e)) {
+          var creator = e;
           var newItem = _e();
           var res = e.apply(newItem, [me]);
           if (res) {
@@ -1104,6 +1105,8 @@ var _e_prototype = function() {
           } else {
             e = newItem;
           }
+          // optionally could be used later, 
+          // e._creatorFn = creator;
         }
 
         if (typeof(e) == "string") {
@@ -3140,16 +3143,17 @@ var _e_prototype = function() {
     _myTrait_.html = function(h) {
 
       // test if the value is a stream
-      if (this.isObject(h)) {
-        if (h.onValue) {
-          var me = this;
-          // TODO: check if we are re-binding two streams on the same element, possible error
-          h.onValue(function(t) {
-            me._dom.innerHTML = t;
-            me._html = t;
-          });
-          return this;
-        }
+      if (this.isStream(h)) {
+        var me = this;
+        // TODO: check if we are re-binding two streams on the same element, possible error
+        h.onValue(function(t) {
+          // 
+          me.clear();
+          me.add(t);
+          //me._dom.innerHTML = t;
+          //me._html = t;
+        });
+        return this;
       }
 
       if (this.isFunction(h)) {
