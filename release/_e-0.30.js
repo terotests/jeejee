@@ -1095,11 +1095,6 @@ var _e_prototype = function() {
       var me = this;
       items.forEach(function(e) {
 
-        if (typeof(e) == "string") {
-          me._dom.innerHTML = e;
-          return me;
-        }
-
         //
         if (me.isFunction(e)) {
           var newItem = _e();
@@ -1109,6 +1104,11 @@ var _e_prototype = function() {
           } else {
             e = newItem;
           }
+        }
+
+        if (typeof(e) == "string") {
+          me._dom.innerHTML = e;
+          return me;
         }
 
         if (me.isStream(e)) {
