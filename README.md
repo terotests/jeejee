@@ -7,7 +7,7 @@ UI views in functional style so that each view is creates from a function receiv
 
 Views can also be nested in infinite amount.
 
-[View push/pop Demo] (http://jsfiddle.net/x9wygwdj/)
+[View push/pop Demo] (http://jsfiddle.net/55yxzuy4/)
 
 
 # Basics
@@ -127,8 +127,8 @@ myDiv.svg({ width : 150, height:150}).g().rect({
     fill : colorStream // consumes values from the colorStream
 });
 ```
-
-[SVG Editor example is here] (http://jsfiddle.net/90u23ryx/)
+[Gradient Editor example] (http://jsfiddle.net/feho44zb/1/)
+[SVG Editor example is here] (http://jsfiddle.net/90u23ryx/1/)
 
 If you want to handle events manually, you can use `bacon()` -function ( this may be changed to baconEvent) 
 
@@ -188,7 +188,7 @@ elem.baconDrag().onValue(function(dragInfo) {
 });
 ```
 
-[Bacon.js drag demo] (http://jsfiddle.net/acyc3yho/)
+[Bacon.js drag demo] (http://jsfiddle.net/kmo77e5y/)
 
 
 
@@ -233,7 +233,7 @@ elem.addClass("<CSSClassName>");
 
 # CSS gradients
 
-[Demo with gradients] (http://jsfiddle.net/ymjxkgan/)
+[Demo with gradients] (http://jsfiddle.net/d9w9ky3f/)
 
 Gradient markings are now expanded to browser -specific instructions:
 
@@ -247,7 +247,7 @@ Gradient markings are now expanded to browser -specific instructions:
 
 For those familiar with YUV colors perhaps this demo explains it best
 
-[Demo with gradients] (http://jsfiddle.net/acyc3yho/)
+[Demo with gradients] (http://jsfiddle.net/9hu4w4tf/)
 
 
 
