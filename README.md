@@ -1,4 +1,4 @@
-# JeeJee - small but strong UI library
+# jeejee - small but strong UI library
 
 NOTE: This is just early release of this version, bugs may appear.
 
