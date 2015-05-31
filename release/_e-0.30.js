@@ -2182,6 +2182,21 @@ var _e_prototype = function() {
         this._classes = [];
       }
 
+      if (this.isStream(c)) {
+
+        var me = this,
+          oldClass = "";
+        c.onValue(function(c) {
+          if (oldClass && (c != oldClass)) {
+            me.removeClass(oldClass);
+          }
+          me.addClass(c);
+          oldClass = c;
+        });
+
+        return this;
+      }
+
       var pf = this.findPostFix();
 
       if (pf) {
