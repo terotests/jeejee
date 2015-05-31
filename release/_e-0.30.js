@@ -3182,6 +3182,18 @@ var _e_prototype = function() {
       var args = Array.prototype.slice.call(arguments);
 
       if (args.length > 1) {
+
+        var bHadNonS = false,
+          me = this;
+        args.forEach(function(o) {
+          if (me.isObject(o) && !o.isStream(o)) bHadNonS = true;
+        });
+
+        if (bHadNonS) {
+          this.clear();
+          this.add(args);
+          return this;
+        }
         t = this.str(args);
       }
 
