@@ -1115,7 +1115,9 @@ var _e_prototype = function() {
         }
 
         if (me.isStream(e)) {
-          me.html(e);
+          e.onValue(function(t) {
+            me.add(t);
+          });
           return me;
         }
 
