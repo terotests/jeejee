@@ -1103,7 +1103,7 @@ var _e_prototype = function() {
         //
         if (me.isFunction(e)) {
           var newItem = _e();
-          var res = e.apply(newItem, []);
+          var res = e.apply(newItem, [me]);
           if (res) {
             e = res;
           } else {
