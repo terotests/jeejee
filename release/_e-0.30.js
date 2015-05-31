@@ -3739,7 +3739,9 @@ var _e_prototype = function() {
     }
     _myTrait_.isStream = function(obj) {
 
-      if (obj.onValue && obj.bufferWithTime) return true;
+      if (this.isObject(obj)) {
+        if (obj.onValue && obj.bufferWithTime) return true;
+      }
       /*
            if(typeof(RxJS) !="undefined") {
                if(obj instanceof RxJS) return true;
