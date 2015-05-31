@@ -3016,10 +3016,14 @@ var _e_prototype = function() {
       var el = _e(name);
       this.add(el);
 
-      if (this.isObject(className) && !this.isFunction(className)) {
-        attrs = className;
+      if (this.isStream(className)) {
+        el.addClass(className);
       } else {
-        if (className) el.addClass(className || "");
+        if (this.isObject(className) && !this.isFunction(className)) {
+          attrs = className;
+        } else {
+          if (className) el.addClass(className || "");
+        }
       }
       if (attrs) {
         for (var n in attrs) {
