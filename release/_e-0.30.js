@@ -3186,7 +3186,7 @@ var _e_prototype = function() {
         var bHadNonS = false,
           me = this;
         args.forEach(function(o) {
-          if (me.isObject(o) && !o.isStream(o)) bHadNonS = true;
+          if (me.isObject(o) && !me.isStream(o)) bHadNonS = true;
         });
 
         if (bHadNonS) {
