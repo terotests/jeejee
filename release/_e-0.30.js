@@ -1100,7 +1100,7 @@ var _e_prototype = function() {
           return me;
         }
 
-        if (me.isObject(e) && e.onValue) {
+        if (me.isStream(e)) {
           me.html(e);
           return me;
         }
@@ -3717,6 +3717,17 @@ var _e_prototype = function() {
     }
     _myTrait_.isObject = function(obj) {
       return obj === Object(obj);
+    }
+    _myTrait_.isStream = function(obj) {
+
+      if (typeof(RxJS) != "undefined") {
+        if (obj instanceof RxJS) return true;
+      }
+      if (typeof(Bacon) != "undefined") {
+        if (obj instanceof Bacon) return true;
+      }
+
+      return false;
     }
   }(this));;
   (function(_myTrait_) {
