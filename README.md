@@ -71,6 +71,10 @@ The functions can be also be given as a parameter to the `add` or similar functi
   });
 ```
 
+Different ways of using functions are described here:
+
+http://jsfiddle.net/vbyssjmq/
+
 
 # Creating views
 
