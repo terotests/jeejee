@@ -1745,6 +1745,14 @@ var _e_prototype = function() {
     _myTrait_.height = function(v) {
       if (typeof(v) == "undefined") return this._h;
 
+      if (this.isStream(v)) {
+        var me = this;
+        v.onValue(function(v) {
+          me.height(v);
+        });
+        return this;
+      }
+
       if (this.isFunction(v)) {
         var oo = v(false, true),
           me = this;
@@ -1879,6 +1887,14 @@ var _e_prototype = function() {
     _myTrait_.width = function(v) {
       if (typeof(v) == "undefined") return this._w;
 
+      if (this.isStream(v)) {
+        var me = this;
+        v.onValue(function(v) {
+          me.width(v);
+        });
+        return this;
+      }
+
 
       //console.log("Width = > ", v);
       if (this.isFunction(v)) {
@@ -1919,6 +1935,16 @@ var _e_prototype = function() {
       return this;
     }
     _myTrait_.x = function(v) {
+
+      if (this.isStream(v)) {
+        var me = this;
+        v.onValue(function(v) {
+          me.x(v);
+        });
+        return this;
+      }
+
+
       if (typeof(v) != "undefined") {
         if (this._svgElem) {
           var t = this.getTransform();
@@ -1943,6 +1969,15 @@ var _e_prototype = function() {
       return this._x;
     }
     _myTrait_.y = function(v) {
+
+      if (this.isStream(v)) {
+        var me = this;
+        v.onValue(function(v) {
+          me.y(v);
+        });
+        return this;
+      }
+
       if (typeof(v) != "undefined") {
         if (this._svgElem) {
           var t = this.getTransform();
@@ -1967,6 +2002,15 @@ var _e_prototype = function() {
       return this._y;
     }
     _myTrait_.z = function(v) {
+
+      if (this.isStream(v)) {
+        var me = this;
+        v.onValue(function(v) {
+          me.z(v);
+        });
+        return this;
+      }
+
       var base = this._baseZ || 0;
       if (typeof(v) != "undefined") {
         this.q.css("zIndex", v + base);
