@@ -3107,7 +3107,7 @@ var _e_prototype = function() {
       });
 
       classes.forEach(function(c) {
-        me.addClass(c)
+        el.addClass(c)
       });
       attrs.forEach(function(attrs) {
         for (var n in attrs) {
