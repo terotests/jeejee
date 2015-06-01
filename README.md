@@ -13,7 +13,7 @@ Views can also be nested in infinite amount.
 
 # Why?
 
-Simple things should be simple. Can the framework do one-liner?
+Simple things should be simple. Can a framework do one-liner?
 
 ``` javascript
   _e(document.body).h1().text("Hello world");
