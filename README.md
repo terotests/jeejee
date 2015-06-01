@@ -34,7 +34,7 @@ Can it create new view in a purely functional manner without side effects?
   });
 ```
 
-Does this mean there are no templates? Not necessarily, you can of course use any template engine of your choise here, but you can live without them.
+Does this mean there are no templates? Not necessarily, you can of course use any template engine, but you can also live without them.
 
 Can you extend you vocabilarily easily?
 
