@@ -334,7 +334,7 @@ myDiv.effectIn( "fade", function() {
 
 ```
 
-http://jsfiddle.net/688xhrhm/
+http://jsfiddle.net/r77qk7pg/
 
 # Events
 
