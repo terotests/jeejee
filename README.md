@@ -19,10 +19,16 @@ Simple things should be simple. Can a framework do one-liner?
   _e(document.body).h1().text("Hello world");
 ```
 
-Does it support streaming and reactive properties?
+Does it support creating streams out of the framework?
 
 ``` javascript
   var myStream = _e(document.body).input().toBacon(); // Bacon.js stream
+```
+
+Or can it consume streams to values or properties?
+
+``` javascript
+  _e(document.body).div().text("Hello ", myStream );
 ```
 
 Can it create new view in a purely functional manner without side effects?
