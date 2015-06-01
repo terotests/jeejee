@@ -4,7 +4,14 @@ var _e_prototype = function() {
     (function(_myTrait_) {
       _myTrait_.attr = function(n, v) {
 
-        if (!isNaN(n)) return;
+
+        if (!isNaN(n)) {
+          if (typeof(console) != "undefined" && typeof(console.trace) != "undefined") {
+            console.log("Attr set to ", n);
+            console.trace();
+          }
+          return;
+        }
 
         if (this._host._svgElem) {
 
