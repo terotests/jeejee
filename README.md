@@ -9,6 +9,7 @@ Views can also be nested in infinite amount.
 
 - [View push/pop Demo] (http://jsfiddle.net/55yxzuy4/)
 - [Twitter Bootstrap Demo] (http://jsfiddle.net/kx9sdj3g/)
+- [Functional views Demo] (http://jsfiddle.net/vbyssjmq/)
 
 
 # Basics
