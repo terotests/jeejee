@@ -2070,7 +2070,8 @@ var _e_prototype = function() {
       }, outPosition, 0.5, inPosition, inPosition);
 
       _effects[name] = options;
-      this._effectState = this._effectState || {};
+
+      if (!this._effectState) this._effectState = {};
 
       this._effectState[name] = 1;
 
