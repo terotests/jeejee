@@ -2041,6 +2041,56 @@ var _e_prototype = function() {
     }
   }(this));;
   (function(_myTrait_) {
+    var _effects;
+    _myTrait_.applyEffect = function(t) {
+      /*
+               hadChildren = true;
+               // fadeout, fadein, not used here...
+               later().after(0.3, function() {
+           
+                   newView.removeClass("viewOut");
+                   newView.removeClass("viewIn");
+                   
+                   newView.addClass("viewIn");    
+                   cont.add(newView);
+                    
+                   newView.show();
+                   showP = false;
+                   
+                   later().after(0.2, function() {
+                       
+                       _transitionOn = 0;
+                       newView.scrollTo();
+                   });
+               });
+               ch.removeClass("viewIn");
+               ch.removeClass("viewOut");
+               ch.addClass("viewOut");
+               later().after(0.2, function() {
+                   oldChildren.add(ch);
+               });
+           });
+           this._views.push(viewData);
+           if(!hadChildren) {
+           
+               later().after(0.3, function() {
+                   newView.removeClass("viewIn");
+                   newView.removeClass("viewOut");
+                   newView.addClass("viewIn");
+                   cont.add(newView);
+                   
+                   newView.show();
+                   
+           
+                   later().after(0.2, function() {
+                       _transitionOn = 0;
+                       newView.scrollTo();
+                   });        
+                   
+                   
+               });
+           */
+    }
     _myTrait_.applyTransforms = function(tx) {
       var d = this._dom;
       d.style["transform"] = tx;
@@ -2049,6 +2099,27 @@ var _e_prototype = function() {
       d.style["-ms-transform"] = tx;
       this.trigger("transform");
       return this;
+    }
+    _myTrait_.createEffect = function(name, inPosition, outPosition, options) {
+
+      css().bind(name + "OutPosition", outPosition);
+      css().bind(name + "InPosition", inPosition);
+
+      options = options || {};
+      options.duration = options.duration || 0.2;
+
+      css().animation(name + "Out", {
+        duration: (options.duration.toFixed(2) * 2) + "s",
+        "iteration-count": 1,
+      }, inPosition, 0.5, outPosition, outPosition);
+
+      css().animation(name + "In", {
+        duration: (options.duration.toFixed(2) * 2) + "s",
+        "iteration-count": 1,
+      }, outPosition, 0.5, inPosition, inPosition);
+
+      _effects[name] = options;
+
     }
     _myTrait_.css = function(options) {
 
@@ -2061,12 +2132,123 @@ var _e_prototype = function() {
 
 
     }
+    _myTrait_.effectIn = function(name) {
+
+      if (!this._effectOn) this._effectOn = {};
+
+      if (this._effectOn[name]) {
+        return;
+      }
+
+      this._effectOn[name] = (new Date()).getTime();
+
+      var options = _effects[name];
+
+      var eOut = name + "Out",
+        eIn = name + "In",
+        eInPos = name + "InPosition",
+        eOutPos = name + "OutPosition";
+
+      this.removeClass(eOut);
+      this.removeClass(eIn);
+      this.addClass(eIn);
+      var me = this;
+      later().after(options.duration, function() {
+        me.removeClass(eOutPos);
+        me.addClass(eInPos);
+        me.removeClass(eIn);
+        me._effectOn[name] = 0;
+      });
+
+      /*
+               hadChildren = true;
+               // fadeout, fadein, not used here...
+               later().after(0.3, function() {
+           
+                   newView.removeClass("viewOut");
+                   newView.removeClass("viewIn");
+                   
+                   newView.addClass("viewIn");    
+                   cont.add(newView);
+                    
+                   newView.show();
+                   showP = false;
+                   
+                   later().after(0.2, function() {
+                       
+                       _transitionOn = 0;
+                       newView.scrollTo();
+                   });
+               });
+               ch.removeClass("viewIn");
+               ch.removeClass("viewOut");
+               ch.addClass("viewOut");
+               later().after(0.2, function() {
+                   oldChildren.add(ch);
+               });
+           });
+           this._views.push(viewData);
+           if(!hadChildren) {
+           
+               later().after(0.3, function() {
+                   newView.removeClass("viewIn");
+                   newView.removeClass("viewOut");
+                   newView.addClass("viewIn");
+                   cont.add(newView);
+                   
+                   newView.show();
+                   
+           
+                   later().after(0.2, function() {
+                       _transitionOn = 0;
+                       newView.scrollTo();
+                   });        
+                   
+                   
+               });
+           */
+    }
+    _myTrait_.effectOut = function(name) {
+      if (!this._effectOn) this._effectOn = {};
+
+      if (this._effectOn[name]) {
+        return;
+      }
+
+      this._effectOn[name] = (new Date()).getTime();
+
+      var options = _effects[name];
+
+      var eOut = name + "Out",
+        eIn = name + "In",
+        eInPos = name + "InPosition",
+        eOutPos = name + "OutPosition";
+
+      this.removeClass(eOut);
+      this.removeClass(eIn);
+      this.addClass(eOut);
+      var me = this;
+      later().after(options.duration, function() {
+        me.removeClass(eInPos);
+        me.addClass(eOutPos);
+        me.removeClass(eOut);
+        me._effectOn[name] = 0;
+      });
+    }
     _myTrait_.hide = function(t) {
       this._dom.style.display = "none";
       this.trigger("hide");
 
 
     }
+    if (_myTrait_.__traitInit && !_myTrait_.hasOwnProperty("__traitInit"))
+      _myTrait_.__traitInit = _myTrait_.__traitInit.slice();
+    if (!_myTrait_.__traitInit) _myTrait_.__traitInit = []
+    _myTrait_.__traitInit.push(function(t) {
+      if (!_effects) {
+        _effects = {};
+      }
+    });
     _myTrait_.show = function(t) {
       this._dom.style.display = "";
       this.trigger("show");
