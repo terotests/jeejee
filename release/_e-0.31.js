@@ -4,6 +4,8 @@ var _e_prototype = function() {
     (function(_myTrait_) {
       _myTrait_.attr = function(n, v) {
 
+        if (!isNaN(n)) return;
+
         if (this._host._svgElem) {
 
           if (this._host.isObject(v)) {
@@ -140,11 +142,11 @@ var _e_prototype = function() {
               domi.setAttribute(n, newV);
           });
           oo.me.on(oo.name, list);
-          if (typeof(val) != "undefined")
+          if (typeof(val) != "undefined" && isNaN(n))
             this._dom.setAttribute(n, val);
           return this;
         }
-        if (typeof(v) != "undefined")
+        if (typeof(v) != "undefined" && isNaN(n))
           this._dom.setAttribute(n, v);
         return this;
       }
