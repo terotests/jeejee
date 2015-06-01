@@ -3078,13 +3078,19 @@ var _e_prototype = function() {
       var el = _e(name);
       this.add(el);
 
-      if (this.isStream(className)) {
-        el.addClass(className);
+      var _constr = null;
+
+      if (this.isFunction(className)) {
+        _constr = className;
       } else {
-        if (this.isObject(className) && !this.isFunction(className)) {
-          attrs = className;
+        if (this.isStream(className)) {
+          el.addClass(className);
         } else {
-          if (className) el.addClass(className || "");
+          if (this.isObject(className) && !this.isFunction(className)) {
+            attrs = className;
+          } else {
+            if (className) el.addClass(className || "");
+          }
         }
       }
       if (attrs) {
@@ -3093,6 +3099,10 @@ var _e_prototype = function() {
             el.q.attr(n, attrs[n]);
           }
         }
+      }
+
+      if (_constr) {
+        _constr.apply(el, [el]);
       }
 
       return el;
