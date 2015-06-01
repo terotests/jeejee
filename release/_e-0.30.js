@@ -2042,55 +2042,6 @@ var _e_prototype = function() {
   }(this));;
   (function(_myTrait_) {
     var _effects;
-    _myTrait_.applyEffect = function(t) {
-      /*
-               hadChildren = true;
-               // fadeout, fadein, not used here...
-               later().after(0.3, function() {
-           
-                   newView.removeClass("viewOut");
-                   newView.removeClass("viewIn");
-                   
-                   newView.addClass("viewIn");    
-                   cont.add(newView);
-                    
-                   newView.show();
-                   showP = false;
-                   
-                   later().after(0.2, function() {
-                       
-                       _transitionOn = 0;
-                       newView.scrollTo();
-                   });
-               });
-               ch.removeClass("viewIn");
-               ch.removeClass("viewOut");
-               ch.addClass("viewOut");
-               later().after(0.2, function() {
-                   oldChildren.add(ch);
-               });
-           });
-           this._views.push(viewData);
-           if(!hadChildren) {
-           
-               later().after(0.3, function() {
-                   newView.removeClass("viewIn");
-                   newView.removeClass("viewOut");
-                   newView.addClass("viewIn");
-                   cont.add(newView);
-                   
-                   newView.show();
-                   
-           
-                   later().after(0.2, function() {
-                       _transitionOn = 0;
-                       newView.scrollTo();
-                   });        
-                   
-                   
-               });
-           */
-    }
     _myTrait_.applyTransforms = function(tx) {
       var d = this._dom;
       d.style["transform"] = tx;
@@ -2102,8 +2053,8 @@ var _e_prototype = function() {
     }
     _myTrait_.createEffect = function(name, inPosition, outPosition, options) {
 
-      css().bind(name + "OutPosition", outPosition);
-      css().bind(name + "InPosition", inPosition);
+      css().bind("." + name + "OutPosition", outPosition);
+      css().bind("." + name + "InPosition", inPosition);
 
       options = options || {};
       options.duration = options.duration || 0.2;
