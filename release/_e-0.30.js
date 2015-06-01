@@ -4,7 +4,14 @@ var _e_prototype = function() {
     (function(_myTrait_) {
       _myTrait_.attr = function(n, v) {
 
-        if (!isNaN(n)) return;
+
+        if (!isNaN(n)) {
+          if (typeof(console) != "undefined" && typeof(console.trace) != "undefined") {
+            console.log("Attr set to ", n);
+            console.trace();
+          }
+          return;
+        }
 
         if (this._host._svgElem) {
 
@@ -3145,7 +3152,7 @@ var _e_prototype = function() {
 
       var constr = [],
         classes = [],
-        attrs = [];
+        attrList = [];
 
       var args = Array.prototype.slice.call(arguments);
       args.shift();
@@ -3160,8 +3167,8 @@ var _e_prototype = function() {
           classes.push(a);
           return;
         }
-        if (attrs.length == 0 && me.isObject(a) && !me.isFunction(a)) {
-          attrs.push(a);
+        if (attrs.length == 0 && me.isObject(a) && (!me.isFunction(a))) {
+          attrList.push(a);
           return;
         }
         if (constr.length == 0 && me.isFunction(a)) {
@@ -3173,10 +3180,10 @@ var _e_prototype = function() {
       classes.forEach(function(c) {
         el.addClass(c)
       });
-      attrs.forEach(function(attrs) {
-        for (var n in attrs) {
-          if (attrs.hasOwnProperty(n)) {
-            el.q.attr(n, attrs[n]);
+      attrList.forEach(function(myAttrs) {
+        for (var n in myAttrs) {
+          if (myAttrs.hasOwnProperty(n)) {
+            el.q.attr(n, myAttrs[n]);
           }
         }
       });
