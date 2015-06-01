@@ -3420,6 +3420,9 @@ var _e_prototype = function() {
         this.eventBinder(window, "hashchange", function() {
           if (("#" + _eventState.lastSetValue) == document.location.hash) return;
           if (_eventState.pushing) return;
+          if (lastView) {
+            lastView.popView();
+          }
         });
         _eventState = {
           inited: true
