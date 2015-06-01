@@ -2071,9 +2071,6 @@ var _e_prototype = function() {
 
       _effects[name] = options;
 
-      if (!this._effectState) this._effectState = {};
-
-      this._effectState[name] = 1;
 
     }
     _myTrait_.css = function(options) {
@@ -2094,6 +2091,13 @@ var _e_prototype = function() {
       if (this._effectOn[name]) {
         return;
       }
+
+      if (!this._effectState) {
+        this._effectState = {};
+        this._effectState[name] = 1;
+        return;
+      }
+
       if (this._effectState[name] == 1) return;
 
       this._effectOn[name] = (new Date()).getTime();
@@ -2124,6 +2128,10 @@ var _e_prototype = function() {
 
       if (this._effectOn[name]) {
         return;
+      }
+      if (!this._effectState) {
+        this._effectState = {};
+        this._effectState[name] = 1;
       }
       if (this._effectState[name] == 2) return;
 
