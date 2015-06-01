@@ -174,8 +174,8 @@ myDiv.svg({ width : 150, height:150}).g().rect({
     fill : colorStream // consumes values from the colorStream
 });
 ```
-[Gradient Editor example] (http://jsfiddle.net/feho44zb/1/)
-[SVG Editor example is here] (http://jsfiddle.net/90u23ryx/1/)
+- [Gradient Editor example] (http://jsfiddle.net/feho44zb/1/)
+- [SVG Editor example is here] (http://jsfiddle.net/90u23ryx/1/)
 
 If you want to handle events manually, you can use `bacon()` -function ( this may be changed to baconEvent) 
 
