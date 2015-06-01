@@ -1,4 +1,4 @@
-# jeejs - the little UI library that could
+# jeejs - a little UI library that could
 
 NOTE: This is just early release of this version, bugs may appear.
 
