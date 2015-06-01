@@ -4,6 +4,8 @@ var _e_prototype = function() {
     (function(_myTrait_) {
       _myTrait_.attr = function(n, v) {
 
+        if (!isNaN(n)) return;
+
         if (this._host._svgElem) {
 
           if (this._host.isObject(v)) {
@@ -140,11 +142,11 @@ var _e_prototype = function() {
               domi.setAttribute(n, newV);
           });
           oo.me.on(oo.name, list);
-          if (typeof(val) != "undefined")
+          if (typeof(val) != "undefined" && isNaN(n))
             this._dom.setAttribute(n, val);
           return this;
         }
-        if (typeof(v) != "undefined")
+        if (typeof(v) != "undefined" && isNaN(n))
           this._dom.setAttribute(n, v);
         return this;
       }
@@ -1667,69 +1669,13 @@ var _e_prototype = function() {
         //                     event.preventDefault();
       }
 
-      // NOTE: Removed the windows lines below when looking at touch events
-      /*
-           if (window.navigator.msPointerEnabled) {
-             elem.addEventListener("MSPointerDown", msHandler, false);
-             elem.addEventListener("MSPointerMove", msHandler, false);
-             elem.addEventListener("MSPointerUp", msHandler, false);
-           } 
-           */
 
       elem.addEventListener("touchstart", touchStart, false);
-
       elem.addEventListener("touchmove", touchMove, false);
-
       elem.addEventListener("touchend", touchEnd, false);
-      /*
-           elem.addEventListener("touchcancel", function(e) {
-                                 o.trigger("touchcancel");
-                                 e.preventDefault();
-                                 },                
-           */
-
-      return;
-
-      var currentOrientation = 0;
-      var lastOrient = currentOrientation;
-      o.orientation = function() {
-        return currentOrientation;
-      }
-
-      var resizeEvent = 'onorientationchange' in window ? 'orientationchange' : 'resize';
-      document.body.addEventListener(resizeEvent, function() {
-
-        currentOrientation = window.orientation;
 
 
 
-        switch (currentOrientation) {
-          case 0:
-            o.trigger("portrait");
-            break;
-
-          case -90:
-            o.trigger("landscape");
-            // displayStr += "Landscape (right, screen turned clockwise)";
-            break;
-
-          case 90:
-            o.trigger("landscape");
-            // displayStr += "Landscape (left, screen turned counterclockwise)";
-            break;
-
-          case 180:
-            o.trigger("portrait");
-            break;
-
-        }
-
-        lastOrient = window.orientation;
-
-
-      });
-
-      return;
     }
   }(this));;
   (function(_myTrait_) {
