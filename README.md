@@ -16,24 +16,36 @@ Views can also be nested in infinite amount.
 
 Views are creates from nested objects using composing operations like `add` 
 ``` javascript
-  var myDiv = _e(); // creates a DIV
+  var myDiv = _e(document.body).div();
   var childDiv = myDiv.div(); // creates a child div under the parent
 ```
 
-Any element can be created using constructor
+When you have the object, you can add subvies to it with functional approach like this
+
 ``` javascript
-  _e("span"); // creates a SPAN
+    myDiv.ol(function(e) {
+        e.li().text("One");
+        e.li().text("Two");
+        e.li().text("Three"); // e can be "this" for the same
+    }); 
 ```
 
-And nested elements can be created calling the parent...
+You can also create elements which are not binded to any DOM element like this:
+``` javascript
+  var mySpan = _e("span").text("Hello"); // creates a SPAN with no parent
+```
+
+The element can be added later to the main DOM tree
+``` javascript
+  myDiv.add( mySpan );
+```
+
+It is possible to just create a nested element and store it to variable for later use
 ``` javascript
   var parent = _e(); // creates a DIV
   var child = parent.div(); // new nested div
 ```
-... or adding the elements 
-``` javascript
-  child.add( myDiv ) ;
-```
+
 Setting attributes and classes can be done using  `attr` or `addClass` 
 
 ``` javascript
@@ -52,30 +64,50 @@ or with arguments
 
 # Functional view creation
 
-The purpose of the libray is to make possible creating UI views in functional style
-
+The most simple way of creating a view is just to have a function which returns the view object like this
 ``` javascript
-  var someViewFunction( data ) {
+  var someViewFunction( name ) {
     var view = _e();
-    // Create the view here...
+    // Create the view here with any elements it is using
+    view.h1().text("Hello "+name);
     return view;
   }
 ```
 
-This makes possible easily nesting views using `pushView` and `popView`. The nice thing about functional views is that they can be composed. Any element can serve as parent to another view created using view function.
-
-The functions can be also be given as a parameter to the `add` or similar functions like this
+After that you can just `add()` the item to the main DOM.
 
 ``` javascript
-  myDiv.add( function() {
-      // function that returns a view
-      return _e(); // just a div here...
+  myDiv.add( someViewFunction("World") ); // gets the object
+```
+
+You can also create a new view using constructor functions like this
+
+``` javascript
+  myDiv.div( function(newDiv) {
+       // manipulate the "newDiv" here
   });
 ```
 
-Different ways of using functions are described here:
+Different ways of creating views are collected here
 
 http://jsfiddle.net/vbyssjmq/
+
+# Avoiding local scope pollution
+
+Better and more readable structure can be achieved using functions as constructor parameters. The
+constructor gets the newly created element set to it´s `this` parameter and as the first parameter to the constructor function.
+
+``` javascript
+myDiv.ol(function(e) {
+    e.li().text("One");
+    e.li().text("Two");
+    e.li().text("Three"); // e can be "this" for the same
+}); 
+```
+
+SVG example comparing the approaches can be found here http://jsfiddle.net/fwsx6mv0/
+
+
 
 
 # Creating views
