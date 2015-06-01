@@ -2083,7 +2083,7 @@ var _e_prototype = function() {
 
 
     }
-    _myTrait_.effectIn = function(name) {
+    _myTrait_.effectIn = function(name, fn) {
 
       if (!this._effectOn) this._effectOn = {};
 
@@ -2109,57 +2109,11 @@ var _e_prototype = function() {
         me.addClass(eInPos);
         me.removeClass(eIn);
         me._effectOn[name] = 0;
+        if (fn) fn();
       });
 
-      /*
-               hadChildren = true;
-               // fadeout, fadein, not used here...
-               later().after(0.3, function() {
-           
-                   newView.removeClass("viewOut");
-                   newView.removeClass("viewIn");
-                   
-                   newView.addClass("viewIn");    
-                   cont.add(newView);
-                    
-                   newView.show();
-                   showP = false;
-                   
-                   later().after(0.2, function() {
-                       
-                       _transitionOn = 0;
-                       newView.scrollTo();
-                   });
-               });
-               ch.removeClass("viewIn");
-               ch.removeClass("viewOut");
-               ch.addClass("viewOut");
-               later().after(0.2, function() {
-                   oldChildren.add(ch);
-               });
-           });
-           this._views.push(viewData);
-           if(!hadChildren) {
-           
-               later().after(0.3, function() {
-                   newView.removeClass("viewIn");
-                   newView.removeClass("viewOut");
-                   newView.addClass("viewIn");
-                   cont.add(newView);
-                   
-                   newView.show();
-                   
-           
-                   later().after(0.2, function() {
-                       _transitionOn = 0;
-                       newView.scrollTo();
-                   });        
-                   
-                   
-               });
-           */
     }
-    _myTrait_.effectOut = function(name) {
+    _myTrait_.effectOut = function(name, fn) {
       if (!this._effectOn) this._effectOn = {};
 
       if (this._effectOn[name]) {
@@ -2184,6 +2138,7 @@ var _e_prototype = function() {
         me.addClass(eOutPos);
         me.removeClass(eOut);
         me._effectOn[name] = 0;
+        if (fn) fn();
       });
     }
     _myTrait_.hide = function(t) {
