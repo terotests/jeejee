@@ -33,9 +33,6 @@ Can it create new view in a purely functional manner without side effects?
       e.text("Hello world from private scope!!!");
   });
 ```
-
-Does this mean there are no templates? Not necessarily, you can of course use any template engine, but you can also live without them.
-
 Can you extend you vocabilarily easily?
 
 ``` javascript
@@ -48,9 +45,15 @@ Can you extend you vocabilarily easily?
   });
 ```
 
+Can make component of any size act as a view and have a navigation support too?
+
+``` javascript
+  _e(document.body).pushView( _e().h1().text("New view")  );
+```
+
 Or does it support animations, modifying CSS, templating strings in functional way? Can you take Streams as input for attributes, classes or content?
 
-Those are some of the reasons why this ui-framework exists.
+This is to say, you should create tools and libraries, not frameworks.
 
 # Basics
 
