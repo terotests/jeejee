@@ -311,7 +311,30 @@ For those familiar with YUV colors perhaps this demo explains it best
 [Demo with gradients] (http://jsfiddle.net/9hu4w4tf/)
 
 
+# CSS Effects
 
+``` javascript
+// The Effect is done here...
+myDiv.createEffect("fade", 
+                  { opacity : 1 }, 
+                  { opacity : 0 }, 
+                  {    
+                         duration : 0.2
+                  }); 
+                 
+// To enter the effect
+myDiv.effectOut( "fade", function() [
+   // callback after the effect has ended
+});
+
+// To restore back
+myDiv.effectIn( "fade", function() {
+   // callback after the effect has ended
+});
+
+```
+
+http://jsfiddle.net/688xhrhm/
 
 # Events
 
