@@ -11,6 +11,46 @@ Views can also be nested in infinite amount.
 - [Twitter Bootstrap Demo] (http://jsfiddle.net/kx9sdj3g/)
 - [Functional views Demo] (http://jsfiddle.net/vbyssjmq/)
 
+# Why?
+
+Simple things should be simple. Can the framework do one-liner?
+
+``` javascript
+  _e(document.body).h1().text("Hello world");
+```
+
+Does it support streaming and reactive properties?
+
+``` javascript
+  var myStream = _e(document.body).input().toBacon(); // Bacon.js stream
+```
+
+Can it create new view in a purely functional manner without side effects?
+
+``` javascript
+  _e(document.body).div( function(e) {
+      // Here is the private scope of the tag do whatever you want!
+      e.text("Hello world from private scope!!!");
+  });
+```
+
+Does this mean there are no templates? Not necessarily, you can of course use any template engine of your choise here, but you can live without them.
+
+Can you extend you vocabilarily easily?
+
+``` javascript
+  _e().extendAll({
+       complexView : function() {
+           var view = _e();
+           // create a complex view here
+           return view;
+       }
+  });
+```
+
+Or does it support animations, modifying CSS, templating strings in functional way? Can you take Streams as input for attributes, classes or content?
+
+Those are some of the reasons why this ui-framework exists.
 
 # Basics
 
