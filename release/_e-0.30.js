@@ -2070,6 +2070,9 @@ var _e_prototype = function() {
       }, outPosition, 0.5, inPosition, inPosition);
 
       _effects[name] = options;
+      this._effectState = this._effectState || {};
+
+      this._effectState[name] = 1;
 
     }
     _myTrait_.css = function(options) {
@@ -2090,6 +2093,7 @@ var _e_prototype = function() {
       if (this._effectOn[name]) {
         return;
       }
+      if (this._effectState[name] == 1) return;
 
       this._effectOn[name] = (new Date()).getTime();
 
@@ -2109,6 +2113,7 @@ var _e_prototype = function() {
         me.addClass(eInPos);
         me.removeClass(eIn);
         me._effectOn[name] = 0;
+        me._effectState[name] = 1;
         if (fn) fn();
       });
 
@@ -2119,6 +2124,7 @@ var _e_prototype = function() {
       if (this._effectOn[name]) {
         return;
       }
+      if (this._effectState[name] == 2) return;
 
       this._effectOn[name] = (new Date()).getTime();
 
@@ -2138,6 +2144,7 @@ var _e_prototype = function() {
         me.addClass(eOutPos);
         me.removeClass(eOut);
         me._effectOn[name] = 0;
+        me._effectState[name] = 2;
         if (fn) fn();
       });
     }
