@@ -392,6 +392,10 @@ svg.g().path({
 
 ```
 
+# Implementation comparisions
+
+- [_e() vs. React, click counter](http://jsfiddle.net/zjo9etwa/)
+
 # ToDo
 
 A lot of small fixes coming
