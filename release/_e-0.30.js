@@ -1453,6 +1453,21 @@ var _e_prototype = function() {
     _myTrait_.drag = function(callBack) {
       var me = this,
         state = {};
+
+      if (this.isObject(callBack) && !this.isFunction(callBack)) {
+
+        var objToDrag = callBack;
+        var sx, sy;
+        callBack = function(dv) {
+          if (dv.start) {
+            var offs = objToDrag.offset(),
+              sx = objToDrag.x(),
+              sy = objToDrag.y();
+          }
+          objToDrag.x(sx + dv.dx).y(sy + dv.dy);
+        }
+      }
+
       this.draggable(function(o, dv) {
         state.item = me;
         state.sx = dv.x;
