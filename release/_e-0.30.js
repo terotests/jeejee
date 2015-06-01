@@ -1460,9 +1460,8 @@ var _e_prototype = function() {
         var sx, sy;
         callBack = function(dv) {
           if (dv.start) {
-            var offs = objToDrag.offset(),
-              sx = objToDrag.x(),
-              sy = objToDrag.y();
+            sx = objToDrag.x(),
+            sy = objToDrag.y();
           }
           objToDrag.x(sx + dv.dx).y(sy + dv.dy);
         }
