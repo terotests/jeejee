@@ -3167,7 +3167,7 @@ var _e_prototype = function() {
           classes.push(a);
           return;
         }
-        if (attrs.length == 0 && me.isObject(a) && (!me.isFunction(a))) {
+        if (attrList.length == 0 && me.isObject(a) && (!me.isFunction(a))) {
           attrList.push(a);
           return;
         }
