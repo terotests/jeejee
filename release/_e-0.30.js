@@ -3078,32 +3078,73 @@ var _e_prototype = function() {
       var el = _e(name);
       this.add(el);
 
-      var _constr = null;
 
-      if (this.isFunction(className)) {
-        _constr = className;
-      } else {
-        if (this.isStream(className)) {
-          el.addClass(className);
-        } else {
-          if (this.isObject(className) && !this.isFunction(className)) {
-            attrs = className;
-          } else {
-            if (className) el.addClass(className || "");
-          }
+      var constr = [],
+        classes = [],
+        attrs = [];
+
+      var args = Array.prototype.slice.call(arguments);
+      args.shift();
+      var me = this;
+
+      args.forEach(function(a, i) {
+        if (classes.length == 0 && (typeof a == "string")) {
+          classes.push(a);
+          return;
         }
-      }
-      if (attrs) {
+        if (classes.length == 0 && me.isStream(a)) {
+          classes.push(a);
+          return;
+        }
+        if (attrs.length == 0 && me.isObject(a) && !me.isFunction(a)) {
+          attrs.push(a);
+          return;
+        }
+        if (constr.length == 0 && me.isFunction(a)) {
+          constr.push(a);
+          return;
+        }
+      });
+
+      classes.forEach(function(c) {
+        me.addClass(c)
+      });
+      attrs.forEach(function(attrs) {
         for (var n in attrs) {
           if (attrs.hasOwnProperty(n)) {
             el.q.attr(n, attrs[n]);
           }
         }
-      }
-
-      if (_constr) {
-        _constr.apply(el, [el]);
-      }
+      });
+      constr.forEach(function(c) {
+        c.apply(el, [el]);
+      });
+      /*
+           if(this.isFunction(className)) {
+               _constr = className;
+           } else {
+               if(this.isStream(className)) {
+                   el.addClass(className);
+               } else {
+                   if(this.isObject(className) && !this.isFunction(className)) {
+                       attrs = className;
+                   } else {
+                       if(className) el.addClass(className || "");
+                   }
+               }
+           }
+           if(attrs) {
+               for(var n in attrs) {
+                   if(attrs.hasOwnProperty(n)) {
+                       el.q.attr(n, attrs[n]);
+                   }
+               }
+           }
+           
+           if(_constr) {
+               _constr.apply(el, [el]);
+           }
+           */
 
       return el;
     }
