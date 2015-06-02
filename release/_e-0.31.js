@@ -3412,32 +3412,36 @@ var _e_prototype = function() {
     var _mediaListeners;
     var mql;
     var _transitionOn;
+    _myTrait_.getRouteObj = function(t) {
+      var parts = document.location.hash.split("/");
+
+      var toParamsObj = function(a) {
+        var o = {};
+        for (var i = 0; i < a.length; i += 2) o[a[i]] = a[i + 1];
+        return o;
+      }
+      return {
+        hash: document.location.hash,
+        parts: parts.slice(),
+        controller: parts.shift(),
+        action: parts.shift(),
+        params: toParamsObj(parts),
+        rest: parts
+      };
+    }
     if (_myTrait_.__traitInit && !_myTrait_.hasOwnProperty("__traitInit"))
       _myTrait_.__traitInit = _myTrait_.__traitInit.slice();
     if (!_myTrait_.__traitInit) _myTrait_.__traitInit = []
     _myTrait_.__traitInit.push(function(t) {
 
       if (!_eventState) {
+        var me = this;
         this.eventBinder(window, "hashchange", function() {
           if (("#" + _eventState.lastSetValue) == document.location.hash) return;
           if (_eventState.pushing) return;
 
-          var parts = document.location.hash.split("/");
-
-          var toParamsObj = function(a) {
-            var o = {};
-            for (var i = 0; i < a.length; i += 2) o[a[i]] = a[i + 1];
-            return o;
-          }
           _eventState.routers.forEach(function(fn) {
-            fn({
-              hash: document.location.hash,
-              parts: parts.slice(),
-              controller: parts.shift(),
-              action: parts.shift(),
-              params: toParamsObj(parts),
-              rest: parts
-            });
+            fn(me.getRouteObj());
           });
         });
         _eventState = {
