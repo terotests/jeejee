@@ -842,7 +842,7 @@ var _e_prototype = function() {
         return this;
 
       }
-      _myTrait_.buildCss = function(mediaRule) {
+      _myTrait_.buildCss = function(mediaRule, fn) {
 
         if (this._data) {
           var o = {};
@@ -920,6 +920,9 @@ var _e_prototype = function() {
           str += n + " : " + v + ";\n";
         }
         return str;
+      }
+      _myTrait_.getCSSString = function(t) {
+        return this._composedData;
       }
       if (_myTrait_.__traitInit && !_myTrait_.hasOwnProperty("__traitInit"))
         _myTrait_.__traitInit = _myTrait_.__traitInit.slice();
