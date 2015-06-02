@@ -3414,6 +3414,7 @@ var _e_prototype = function() {
     var _transitionOn;
     var _pageViews;
     var _pageControllers;
+    var _ctrlObjs;
     _myTrait_.getRouteObj = function(t) {
       var parts = document.location.hash.split("/");
 
@@ -3451,10 +3452,12 @@ var _e_prototype = function() {
           routers: []
         }
         _pageViews = {};
+        _ctrlObjs = [];
         _pageControllers = [];
         this.onRoute(function(r) {
           console.log("on route with ", r);
-          _pageControllers.forEach(function(pc) {
+          _ctrlObjs.forEach(function(obj) {
+            var pc = pc._pageController;
             var rFn = pc[r.controller] || pc["default"];
             if (rFn) {
               console.log("pageController ", rFn);
@@ -3593,15 +3596,16 @@ var _e_prototype = function() {
     }
     _myTrait_.pageController = function(page, controllerObj) {
 
-      if (!_pageControllers) _pageControllers = [];
+      if (!this._pageController) this._pageController = {};
 
-      var pc = {};
-      pc[page] = {
+      this._pageController[page] = {
         ctrl: controllerObj,
         canvas: this
       };
 
-      _pageControllers.push(pc);
+      if (_ctrlObjs.indexOf(this) < 0) {
+        _ctrlObjs.push(this);
+      };
     }
     _myTrait_.popView = function(toView) {
 
