@@ -3579,8 +3579,12 @@ var _e_prototype = function() {
     _myTrait_.onRoute = function(fn) {
 
       _eventState.routers.push(fn);
+      var me = this;
+      later().add(
+        function() {
+          fn(me.getRouteObj());
+        });
 
-      fn(this.getRouteObj());
     }
     _myTrait_.pageController = function(page, controllerObj) {
 
