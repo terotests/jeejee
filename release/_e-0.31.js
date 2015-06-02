@@ -714,7 +714,7 @@ var _e_prototype = function() {
 
         return t === Object(t);
       }
-      _myTrait_.isStream = function(t) {
+      _myTrait_.isStream = function(obj) {
 
         if (this.isObject(obj)) {
           if (obj.onValue && obj.bufferWithTime) return true;
