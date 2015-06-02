@@ -3457,7 +3457,7 @@ var _e_prototype = function() {
         this.onRoute(function(r) {
           console.log("on route with ", r);
           _ctrlObjs.forEach(function(obj) {
-            var pc = pc._pageController;
+            var pc = obj._pageController;
             var rFn = pc[r.controller] || pc["default"];
             if (rFn) {
               console.log("pageController ", rFn);
