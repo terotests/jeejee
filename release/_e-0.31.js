@@ -3412,6 +3412,7 @@ var _e_prototype = function() {
     var _mediaListeners;
     var mql;
     var _transitionOn;
+    var _pageViews;
     _myTrait_.getRouteObj = function(t) {
       var parts = document.location.hash.split("/");
 
@@ -3448,6 +3449,29 @@ var _e_prototype = function() {
           inited: true,
           routers: []
         }
+        _pageViews = {};
+        this.onRoute(function(r) {
+          var rFn = _pageViews[r.controller] || _pageViews["default"];
+          if (rFn) {
+            var action = rFn[r.action] || rFn["default"];
+            if (action) {
+              action.fn(action.canvas, r.params);
+            }
+          }
+        });
+        /*
+{
+  "hash": "#frontpage/",
+  "parts": [
+    "#frontpage",
+    ""
+  ],
+  "controller": "frontpage",
+  "action": "",
+  "params": {},
+  "rest": []
+}    
+    */
       }
     });
     _myTrait_.initScreenEvents = function(t) {
@@ -3554,6 +3578,13 @@ var _e_prototype = function() {
       _eventState.routers.push(fn);
 
       fn(this.getRouteObj());
+    }
+    _myTrait_.pageController = function(page, controllerObj) {
+
+      _pageViews[page] = {
+        fn: controllerObj,
+        canvas: this
+      };
     }
     _myTrait_.popView = function(toView) {
 
