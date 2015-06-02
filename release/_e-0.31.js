@@ -3451,11 +3451,13 @@ var _e_prototype = function() {
         }
         _pageViews = {};
         this.onRoute(function(r) {
+          console.log("on route with ", r);
           var rFn = _pageViews[r.controller] || _pageViews["default"];
           if (rFn) {
-            var action = rFn[r.action] || rFn["default"];
+            var action = rFn.ctrl[r.action] || rFn.ctrl["default"];
+            console.log("action ", action);
             if (action) {
-              action.fn.apply(action.canvas, [r.params, action.canvas]);
+              action.fn.apply(rFn.canvas, [r.params, action.canvas]);
             }
           }
         });
@@ -3582,7 +3584,7 @@ var _e_prototype = function() {
     _myTrait_.pageController = function(page, controllerObj) {
 
       _pageViews[page] = {
-        fn: controllerObj,
+        ctrl: controllerObj,
         canvas: this
       };
     }
