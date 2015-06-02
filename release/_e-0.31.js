@@ -3452,14 +3452,16 @@ var _e_prototype = function() {
         _pageViews = {};
         this.onRoute(function(r) {
           console.log("on route with ", r);
-          var rFn = _pageViews[r.controller] || _pageViews["default"];
-          if (rFn) {
-            console.log("pageController ", rFn);
-            var action = rFn.ctrl[r.action] || rFn.ctrl["default"];
-            console.log("action ", action);
-            if (action) {
-              action.apply(rFn.canvas, [r.params, rFn.canvas]);
-            }
+          var cList = _pageViews[r.controller] || _pageViews["default"];
+          if (cList) {
+            cList.forEach(function(rFn) {
+              console.log("pageController ", rFn);
+              var action = rFn.ctrl[r.action] || rFn.ctrl["default"];
+              console.log("action ", action);
+              if (action) {
+                action.apply(rFn.canvas, [r.params, rFn.canvas]);
+              }
+            });
           }
         });
         /*
@@ -3587,11 +3589,12 @@ var _e_prototype = function() {
 
     }
     _myTrait_.pageController = function(page, controllerObj) {
+      if (!_pageViews[page]) _pageViews[page] = [];
 
-      _pageViews[page] = {
+      _pageViews[page].push({
         ctrl: controllerObj,
         canvas: this
-      };
+      });
     }
     _myTrait_.popView = function(toView) {
 
