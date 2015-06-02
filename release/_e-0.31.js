@@ -3455,7 +3455,7 @@ var _e_prototype = function() {
           if (rFn) {
             var action = rFn[r.action] || rFn["default"];
             if (action) {
-              action.fn(action.canvas, r.params);
+              action.fn.apply(action.canvas, [r.params, action.canvas]);
             }
           }
         });
