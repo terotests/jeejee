@@ -3459,7 +3459,7 @@ var _e_prototype = function() {
               var action = rFn.ctrl[r.action] || rFn.ctrl["default"];
               console.log("action ", action);
               if (action) {
-                action.apply(rFn.canvas, [r.params, rFn.canvas]);
+                action.apply(rFn.canvas, [r.params, rFn.canvas, r]);
               }
             });
           }
