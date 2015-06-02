@@ -3423,7 +3423,7 @@ var _e_prototype = function() {
       return {
         hash: document.location.hash,
         parts: parts.slice(),
-        controller: parts.shift(),
+        controller: parts.shift().substring(1),
         action: parts.shift(),
         params: toParamsObj(parts),
         rest: parts
