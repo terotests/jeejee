@@ -3413,6 +3413,7 @@ var _e_prototype = function() {
     var mql;
     var _transitionOn;
     var _pageViews;
+    var _pageControllers;
     _myTrait_.getRouteObj = function(t) {
       var parts = document.location.hash.split("/");
 
@@ -3450,19 +3451,22 @@ var _e_prototype = function() {
           routers: []
         }
         _pageViews = {};
+        _pageControllers = [];
         this.onRoute(function(r) {
           console.log("on route with ", r);
-          var cList = _pageViews[r.controller] || _pageViews["default"];
-          if (cList) {
-            cList.forEach(function(rFn) {
-              console.log("pageController ", rFn);
-              var action = rFn.ctrl[r.action] || rFn.ctrl["default"];
-              console.log("action ", action);
-              if (action) {
-                action.apply(rFn.canvas, [r.params, rFn.canvas, r]);
-              }
-            });
-          }
+          _pageControllers.forEach(function(pc) {
+            var cList = pc[r.controller] || pc["default"];
+            if (cList) {
+              cList.forEach(function(rFn) {
+                console.log("pageController ", rFn);
+                var action = rFn.ctrl[r.action] || rFn.ctrl["default"];
+                console.log("action ", action);
+                if (action) {
+                  action.apply(rFn.canvas, [r.params, rFn.canvas, r]);
+                }
+              });
+            }
+          });
         });
         /*
 {
@@ -3589,12 +3593,16 @@ var _e_prototype = function() {
 
     }
     _myTrait_.pageController = function(page, controllerObj) {
-      if (!_pageViews[page]) _pageViews[page] = [];
 
-      _pageViews[page].push({
+      if (!_pageControllers) _pageControllers = [];
+
+      var pc = {};
+      pc[page] = {
         ctrl: controllerObj,
         canvas: this
-      });
+      };
+
+      _pageControllers.push(pc);
     }
     _myTrait_.popView = function(toView) {
 
