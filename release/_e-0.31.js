@@ -3552,6 +3552,8 @@ var _e_prototype = function() {
     _myTrait_.onRoute = function(fn) {
 
       _eventState.routers.push(fn);
+
+      fn(this.getRouteObj());
     }
     _myTrait_.popView = function(toView) {
 
