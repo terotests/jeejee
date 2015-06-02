@@ -3416,16 +3416,27 @@ var _e_prototype = function() {
       _myTrait_.__traitInit = _myTrait_.__traitInit.slice();
     if (!_myTrait_.__traitInit) _myTrait_.__traitInit = []
     _myTrait_.__traitInit.push(function(t) {
+
       if (!_eventState) {
         this.eventBinder(window, "hashchange", function() {
           if (("#" + _eventState.lastSetValue) == document.location.hash) return;
           if (_eventState.pushing) return;
-          if (lastView) {
-            lastView.popView();
-          }
+
+          var parts = document.location.hash.split("/");
+
+          _eventState.routers.forEach(function(fn) {
+            fn({
+              hash: document.location.hash,
+              parts: parts.slice(),
+              controller: parts.shift(),
+              action: parts.shift(),
+              params: parts
+            });
+          });
         });
         _eventState = {
-          inited: true
+          inited: true,
+          routers: []
         }
       }
     });
@@ -3527,6 +3538,10 @@ var _e_prototype = function() {
     _myTrait_.onMediaChange = function(fn) {
 
       _mediaListeners.push(fn);
+    }
+    _myTrait_.onRoute = function(fn) {
+
+      _eventState.routers.push(fn);
     }
     _myTrait_.popView = function(toView) {
 
