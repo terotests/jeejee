@@ -3455,17 +3455,16 @@ var _e_prototype = function() {
         this.onRoute(function(r) {
           console.log("on route with ", r);
           _pageControllers.forEach(function(pc) {
-            var cList = pc[r.controller] || pc["default"];
-            if (cList) {
-              cList.forEach(function(rFn) {
-                console.log("pageController ", rFn);
-                var action = rFn.ctrl[r.action] || rFn.ctrl["default"];
-                console.log("action ", action);
-                if (action) {
-                  action.apply(rFn.canvas, [r.params, rFn.canvas, r]);
-                }
-              });
+            var rFn = pc[r.controller] || pc["default"];
+            if (rFn) {
+              console.log("pageController ", rFn);
+              var action = rFn.ctrl[r.action] || rFn.ctrl["default"];
+              console.log("action ", action);
+              if (action) {
+                action.apply(rFn.canvas, [r.params, rFn.canvas, r]);
+              }
             }
+
           });
         });
         /*
