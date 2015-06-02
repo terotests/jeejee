@@ -3615,8 +3615,6 @@ var _e_prototype = function() {
       var showP = true;
       var me = this;
 
-
-
       cont.forChildren(function(ch) {
 
         ch.removeClass("viewOut");
@@ -3699,9 +3697,9 @@ var _e_prototype = function() {
       lastView = this;
 
       // primitive and simple
-      _eventState.lastSetValue = (new Date()).getTime();
-      _eventState.pushing = true;
-      document.location.hash = _eventState.lastSetValue;
+      //_eventState.lastSetValue = (new Date()).getTime();
+      //_eventState.pushing = true;
+      //document.location.hash = _eventState.lastSetValue;
 
       // console.log("PUSH, view child count ", cont._children.length);
       cont.forChildren(function(ch) {
