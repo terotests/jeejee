@@ -3455,14 +3455,14 @@ var _e_prototype = function() {
         _ctrlObjs = [];
         _pageControllers = [];
         this.onRoute(function(r) {
-          console.log("on route with ", r);
+          // console.log("on route with ", r);
           _ctrlObjs.forEach(function(obj) {
             var pc = obj._pageController;
             var rFn = pc[r.controller] || pc["default"];
             if (rFn) {
-              console.log("pageController ", rFn);
+              // console.log("pageController ", rFn);
               var action = rFn.ctrl[r.action] || rFn.ctrl["default"];
-              console.log("action ", action);
+              // console.log("action ", action);
               if (action) {
                 action.apply(rFn.canvas, [r.params, rFn.canvas, r]);
               }
