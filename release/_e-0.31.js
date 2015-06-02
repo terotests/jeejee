@@ -3426,7 +3426,7 @@ var _e_prototype = function() {
 
           var toParamsObj = function(a) {
             var o = {};
-            for (var i = 0; i < a.length; i += 2) o[(i / 2) >> 0] = a[i + 1];
+            for (var i = 0; i < a.length; i += 2) o[a[i]] = a[i + 1];
             return o;
           }
           _eventState.routers.forEach(function(fn) {
