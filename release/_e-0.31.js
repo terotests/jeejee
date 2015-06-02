@@ -921,8 +921,8 @@ var _e_prototype = function() {
         }
         return str;
       }
-      _myTrait_.getCSSString = function(t) {
-        return this._composedData;
+      _myTrait_.getCSSString = function(mediaRule) {
+        return this.makeCss(this._composedData, mediaRule);
       }
       if (_myTrait_.__traitInit && !_myTrait_.hasOwnProperty("__traitInit"))
         _myTrait_.__traitInit = _myTrait_.__traitInit.slice();
