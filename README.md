@@ -107,7 +107,11 @@ myDiv.ol(function(e) {
 
 SVG example comparing the approaches can be found here http://jsfiddle.net/fwsx6mv0/
 
+# Controllers and Routers
 
+Example is here
+
+http://jsfiddle.net/rhextnhs/
 
 
 # Creating views
