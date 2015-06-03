@@ -714,13 +714,6 @@ var _e_prototype = function() {
 
         return t === Object(t);
       }
-      _myTrait_.isStream = function(obj) {
-
-        if (this.isObject(obj)) {
-          if (obj.onValue && obj.bufferWithTime) return true;
-        }
-        return false;
-      }
     }(this));;
     (function(_myTrait_) {
       var head;
@@ -804,21 +797,10 @@ var _e_prototype = function() {
         } else {
           args = Array.prototype.slice.call(arguments);
         }
-        var me = this;
         args.forEach(function(rules) {
           for (var n in rules) {
             if (rules.hasOwnProperty(n)) {
-              if (me.isStream(rules[n])) {
-                (function(stream, n) {
-                  stream.onValue(function(v) {
-                    rules[n] = v;
-                    _instances[me._id]._dirty = true;
-                  });
-                }(rules[n], n));
-                delete rules[n];
-              } else {
-                o[n] = rules[n];
-              }
+              o[n] = rules[n];
             }
           }
         });
@@ -829,12 +811,6 @@ var _e_prototype = function() {
         // my rulesets...
         var args = Array.prototype.slice.call(arguments),
           rule = args.shift();
-        /*
-           "body" : {
-           
-           }
-           */
-
 
         this._data[rule] = args;
         this._dirty = true;
@@ -842,7 +818,7 @@ var _e_prototype = function() {
         return this;
 
       }
-      _myTrait_.buildCss = function(mediaRule, fn) {
+      _myTrait_.buildCss = function(mediaRule) {
 
         if (this._data) {
           var o = {};
@@ -921,9 +897,6 @@ var _e_prototype = function() {
         }
         return str;
       }
-      _myTrait_.getCSSString = function(mediaRule) {
-        return this.makeCss(this._composedData, mediaRule);
-      }
       if (_myTrait_.__traitInit && !_myTrait_.hasOwnProperty("__traitInit"))
         _myTrait_.__traitInit = _myTrait_.__traitInit.slice();
       if (!_myTrait_.__traitInit) _myTrait_.__traitInit = []
@@ -957,7 +930,6 @@ var _e_prototype = function() {
           _insInit[id] = true;
           this.initConversions();
         }
-        this._id = id;
 
 
       });
@@ -1191,6 +1163,10 @@ var _e_prototype = function() {
       return this.add.apply(this, list);
     }
     _myTrait_.clear = function(t) {
+
+      this._children.forEach(function(c) {
+        c.remove();
+      });
       this._children = [];
       while (this._dom.firstChild) {
         this._dom.removeChild(this._dom.firstChild);
@@ -1431,6 +1407,7 @@ var _e_prototype = function() {
         var p = this._dom.parentElement;
         if (p) p.removeChild(this._dom);
       }
+
       this._children = [];
       this.removeAllHandlers();
     }
@@ -1451,6 +1428,7 @@ var _e_prototype = function() {
       this.forChildren(function(ch) {
         ch.removeAllHandlers();
         ch.removeChildEvents();
+        ch.removeControllersFor(ch);
       });
     }
     _myTrait_.removeIndexedChild = function(o) {
@@ -3793,6 +3771,13 @@ var _e_prototype = function() {
       _eventState.pushing = false;
 
       return this;
+    }
+    _myTrait_.removeControllersFor = function(o) {
+      var i = _ctrlObjs.indexOf(o);
+
+      if (i >= 0) {
+        _ctrlObjs.splice(i, 1);
+      }
     }
     _myTrait_.scrollTo = function(noThing) {
       if (window) {
