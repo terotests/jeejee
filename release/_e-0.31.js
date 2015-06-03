@@ -3689,6 +3689,9 @@ var _e_prototype = function() {
         this._views = [];
       }
 
+      if (newView == this) return;
+      if (newView == lastView) return;
+
       var cont = this;
       if (cont._children && cont._children[0] == newView) {
         return;
