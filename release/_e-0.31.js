@@ -3653,6 +3653,8 @@ var _e_prototype = function() {
       var showP = true;
       var me = this;
 
+      if (!this._poppedViews) this._poppedViews = _e();
+
       cont.forChildren(function(ch) {
 
         ch.removeClass("viewOut");
@@ -3682,7 +3684,8 @@ var _e_prototype = function() {
           });
         }
         later().after(0.2, function() {
-          ch.remove();
+          // ch.remove();
+          me._poppedViews.add(ch);
         });
 
       });
