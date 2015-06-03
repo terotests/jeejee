@@ -2030,7 +2030,7 @@ var _e_prototype = function() {
     }
     _myTrait_.compStyle = function(t) {
       var elem = this._dom;
-      cs = window.getComputedStyle(elem, null);
+      var cs = window.getComputedStyle(elem, null);
       return {
         get: function(prop) {
           return cs.getPropertyValue(prop);
