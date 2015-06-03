@@ -3629,8 +3629,15 @@ var _e_prototype = function() {
     }
     _myTrait_.popView = function(toView) {
 
+      console.log("popView");
+
       if (!this._views || this._views.length == 0) {
-        if (this._parent) this._parent.popView();
+        console.log("pop View, no views to pop here");
+        if (this._parent) {
+          console.log("calling parents popView");
+          this._parent.popView();
+          return this;
+        }
         this._views = [];
         return this;
       }
@@ -3689,11 +3696,15 @@ var _e_prototype = function() {
         this._views = [];
       }
 
+      console.log("... trying pushing .... ", newView);
       if (newView == this) return;
       if (newView == lastView) return;
 
+      console.log("... pushing view .... ", newView);
+
       var cont = this;
       if (cont._children && cont._children[0] == newView) {
+        console.log("... pushing view failed because this view had already the child view???.... ", newView);
         return;
       }
 
