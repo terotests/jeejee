@@ -1164,6 +1164,10 @@ var _e_prototype = function() {
     }
     _myTrait_.clear = function(t) {
 
+      this.removeAllHandlers();
+      this.removeChildEvents();
+      this.removeControllersFor(this);
+
       this._children.forEach(function(c) {
         c.remove();
       });
