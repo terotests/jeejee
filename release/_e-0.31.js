@@ -714,12 +714,6 @@ var _e_prototype = function() {
 
         return t === Object(t);
       }
-      _myTrait_.isStream = function(obj) {
-
-        if (this.isObject(obj)) {
-          if (obj.onValue && obj.bufferWithTime) return true;
-        }
-      }
     }(this));;
     (function(_myTrait_) {
       var head;
@@ -803,29 +797,14 @@ var _e_prototype = function() {
         } else {
           args = Array.prototype.slice.call(arguments);
         }
-        var me = this;
         args.forEach(function(rules) {
           for (var n in rules) {
             if (rules.hasOwnProperty(n)) {
-
-              if (me.isStream(rules[n])) {
-                (function(stream, n) {
-                  stream.onValue(function(v) {
-                    rules[n] = v;
-                    _instances[me._id]._dirty = true;
-                  });
-                }(rules[n], n));
-                delete rules[n];
-              } else {
-                o[n] = rules[n];
-              }
+              o[n] = rules[n];
             }
           }
         });
-
         return o;
-
-
 
       }
       _myTrait_.bind = function(t) {
@@ -951,7 +930,6 @@ var _e_prototype = function() {
           _insInit[id] = true;
           this.initConversions();
         }
-        this._id = id;
 
 
       });
@@ -2049,6 +2027,16 @@ var _e_prototype = function() {
       d.style["-ms-transform"] = tx;
       this.trigger("transform");
       return this;
+    }
+    _myTrait_.compStyle = function(t) {
+      var elem = this._dom;
+      cs = window.getComputedStyle(elem, null);
+      return {
+        get: function(prop) {
+          return cs.getPropertyValue(prop);
+        }
+      };
+
     }
     _myTrait_.createEffect = function(name, inPosition, outPosition, options) {
 
