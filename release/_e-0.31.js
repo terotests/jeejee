@@ -3038,27 +3038,8 @@ var _e_prototype = function() {
         return this._value;
       }
 
-      /*
-           if(this.isFunction(v)) {
-               
-               var myVal = v();
-               this._dom.value = myVal;
-               
-               // re-bind the event listener to another if already is listening to a change...
-               
-               
-               return this;
-           }
-           */
-
-
-      if (typeof(this._dom.value) != "undefined" || this._type == "option") {
-        this._dom.value = v;
-      } else {
-        this._dom.innerHTML = v;
-      }
       this._value = v;
-      this.trigger("value");
+      this.trigger("value", v);
       return this;
     }
   }(this));;
