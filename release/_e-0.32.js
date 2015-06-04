@@ -3470,6 +3470,9 @@ var _e_prototype = function() {
         console.log("could not find ", name, " from layout");
       }
     }
+    _myTrait_.getLayouts = function(t) {
+      return _viewStructures;
+    }
     _myTrait_.getRouteObj = function(t) {
       var parts = document.location.hash.split("/");
 
