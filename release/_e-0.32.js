@@ -2855,9 +2855,9 @@ var _e_prototype = function() {
         if (o._type == "checkbox") {
           o.checked(val);
         } else {
-          if (o._type == "select" || o._type == "input" || o._type == "textarea") {
-            o.val(val);
-          }
+          //if(o._type=="select" || o._type=="input" || o._type=="textarea") {
+          o.val(val);
+          //}
         }
 
         // and exit...
