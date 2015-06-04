@@ -2815,7 +2815,7 @@ var _e_prototype = function() {
           if (o._type == "checkbox") {
             o.checked(newVal);
           } else {
-            o.val(newVal);
+            o.bindVal(newVal);
           }
           val = newVal;
         });
@@ -2856,7 +2856,7 @@ var _e_prototype = function() {
           o.checked(val);
         } else {
           //if(o._type=="select" || o._type=="input" || o._type=="textarea") {
-          o.val(val);
+          o.bindVal(val);
           //}
         }
 
@@ -2921,19 +2921,14 @@ var _e_prototype = function() {
       return o;
     }
     _myTrait_.bindVal = function(v) {
-      if (typeof(v) == "undefined") {
-        if (this._type == "select" || this._type == "input" || this._type == "textarea") {
-          this._value = this._dom.value;
-        }
-        return this._value;
-      }
+
 
       if (typeof(this._dom.value) != "undefined" || this._type == "option") {
         this._dom.value = v;
+      } else {
+        this._dom.innerHTML = v;
       }
-
       this._value = v;
-      this.trigger("value", v);
       return this;
     }
     _myTrait_.blur = function(t) {
@@ -3061,7 +3056,7 @@ var _e_prototype = function() {
       if (typeof(this._dom.value) != "undefined" || this._type == "option") {
         this._dom.value = v;
       } else {
-        this._dom.innerHTML = v;
+        // this._dom.innerHTML = v;
       }
 
       this._value = v;
@@ -3442,6 +3437,34 @@ var _e_prototype = function() {
     var _pageViews;
     var _pageControllers;
     var _ctrlObjs;
+    var _viewStructures;
+    var _viewStructures;
+    _myTrait_.createLayout = function(name, fn) {
+      if (!_viewStructures) _viewStructures = {}
+
+      _viewStructures[name] = {
+        view: fn()
+      }
+    }
+    _myTrait_.findViewByName = function(name, layout) {
+
+      if (layout.hasClass(name)) {
+        return layout;
+      } else {
+        var o = null,
+          i = 0,
+          ch;
+
+        while (ch = layout.child(i)) {
+          if (ch.hasClass(name)) return ch;
+        }
+        i = 0;
+        while (ch = layout.child(i)) {
+          var res = ch.findViewByName(name, ch);
+          if (res) return res;
+        }
+      }
+    }
     _myTrait_.getRouteObj = function(t) {
       var parts = document.location.hash.split("/");
 
@@ -3700,6 +3723,17 @@ var _e_prototype = function() {
 
 
     }
+    _myTrait_.pushTo = function(name, obj) {
+
+      if (!this._activeLayout) {
+        var p = this.parent();
+        p.pushTo(name, obj);
+        return this;
+      } else {
+        var view = this.findViewByName(name, this._activeLayout);
+      }
+
+    }
     _myTrait_.pushView = function(newView, params) {
 
       if (!this._views) {
@@ -3830,6 +3864,18 @@ var _e_prototype = function() {
           toY = toY - window.innerHeight * 0.2
         }
         window.scrollTo(currLeft || 0, parseInt(toY));
+      }
+    }
+    _myTrait_.setLayout = function(name) {
+
+      // ok, need to think about how to create this thing
+      if (_viewStructures && _viewStructures[name]) {
+
+        var layout = _viewStructures[name];
+        this.clear();
+        this.add(layout.view)
+        this._activeLayout = layout;
+
       }
     }
   }(this));;
