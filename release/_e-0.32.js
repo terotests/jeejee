@@ -3446,6 +3446,7 @@ var _e_prototype = function() {
     var _contentRouters;
     _myTrait_.contentRouter = function(name, fn) {
 
+      if (!_contentRouters) _contentRouters = {};
       if (this.isFunction(name)) {
         _contentRouters["default"] = fn;
       } else {
