@@ -3762,7 +3762,7 @@ var _e_prototype = function() {
         if (!_viewCache) _viewCache = {};
 
         var obj;
-
+        if (!paramName) paramName = "";
         if (this.isObject(factoryName)) {
           obj = factoryName;
         } else {
