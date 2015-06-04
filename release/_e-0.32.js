@@ -3750,7 +3750,11 @@ var _e_prototype = function() {
 
       if (!this._activeLayout) {
         var p = this.parent();
-        if (p) p.pushTo(name, factoryName, paramName);
+        if (p) {
+          console.log("no active layout Looking parent .... ");
+          console.log(p);
+          p.pushTo(name, factoryName, paramName);
+        }
         return this;
       } else {
         var view = this.findViewByName(name, this._activeLayout.view);
