@@ -3922,8 +3922,10 @@ var _e_prototype = function() {
         this._activeLayout = layout;
 
         for (var n in layout.parts) {
-          if (layout.parts.hasOwnProperty(n))
+          if (layout.parts.hasOwnProperty(n)) {
             this.pushTo(n, layout.parts[n]);
+            console.log("pushTo", _viewStructures["basic"].view.childCount());
+          }
         }
 
       }
