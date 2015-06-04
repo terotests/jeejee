@@ -3900,7 +3900,7 @@ var _e_prototype = function() {
 
         for (var n in layout.parts) {
           if (layout.parts.hasOwnProperty(n))
-            this.pushTo(n, layout.parts[n]);
+            layout.view.pushTo(n, layout.parts[n]);
         }
 
       }
