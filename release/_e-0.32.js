@@ -3972,7 +3972,7 @@ var _e_prototype = function() {
 
       if (!_viewFactory) _viewFactory = {};
 
-      _viewFactory[name] = fan;
+      _viewFactory[name] = fn;
     }
   }(this));;
   (function(_myTrait_) {
