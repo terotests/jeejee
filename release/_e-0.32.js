@@ -3903,33 +3903,41 @@ var _e_prototype = function() {
       if (_viewStructures && _viewStructures[name]) {
 
         var layout = _viewStructures[name];
-
-        var viewHolder = null;
-        // how the layout goes...
-        if (this._activeLayout) {
-          layout.parts = this._activeLayout.parts;
-          viewHolder = this._activeLayout.viewHolder;
-        }
-
-        if (layout.viewHolder.child(0)) {
-          layout.view = layout.viewHolder.child(0);
-        }
-        console.log("1", _viewStructures["basic"].view.childCount());
-        var layout = _viewStructures[name];
-        // this.clear();
-        console.log("2", _viewStructures["basic"].view.childCount());
-        this.pushView(layout.view, null, viewHolder);
-        console.log("3", _viewStructures["basic"].view.childCount());
         this._activeLayout = layout;
+        this._children.length = 0;
+        this._children[0] = layout.view;
+        this._dom.removeChild(this._dom.firstChild);
+        this._dom.appendChild(layout.view._dom);
 
-        later().after(0.5, function() {
-          for (var n in layout.parts) {
-            if (layout.parts.hasOwnProperty(n)) {
-              me.pushTo(n, layout.parts[n]);
-              console.log("pushTo", _viewStructures["basic"].view.childCount());
-            }
-          }
-        });
+        /*
+               var viewHolder = null;
+               // how the layout goes...
+               if(this._activeLayout) {
+                   layout.parts = this._activeLayout.parts;
+                   viewHolder = this._activeLayout.viewHolder;
+               }
+               
+               if(layout.viewHolder.child(0)) {
+                   layout.view = layout.viewHolder.child(0);
+               }
+               console.log("1", _viewStructures["basic"].view.childCount());
+               var layout = _viewStructures[name];
+               // this.clear();
+               console.log("2", _viewStructures["basic"].view.childCount());
+               this.pushView( layout.view, null, viewHolder );
+               console.log("3", _viewStructures["basic"].view.childCount());
+               this._activeLayout = layout;
+               */
+        /*
+               later().after(0.5, function() {
+                   for(var n in layout.parts) {
+                       if(layout.parts.hasOwnProperty(n)) {
+                           me.pushTo(n, layout.parts[n]);   
+                           console.log("pushTo", _viewStructures["basic"].view.childCount());
+                       }
+                   }    
+               });
+               */
 
       }
     }
