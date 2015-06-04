@@ -2820,6 +2820,8 @@ var _e_prototype = function() {
           val = newVal;
         });
         var valueOutListener = this.uniqueListener("bind:valueOut", function(obj) {
+          console.log("Got value out for ", obj, "which value was ", val);
+          console.trace();
           bSendingEvent = true;
           if (o._type == "checkbox") {
             fn(o.checked());
@@ -2853,7 +2855,9 @@ var _e_prototype = function() {
         if (o._type == "checkbox") {
           o.checked(val);
         } else {
+          //if(o._type=="select" || o._type=="input" || o._type=="textarea") {
           o.val(val);
+          //}
         }
 
         // and exit...
@@ -3036,6 +3040,12 @@ var _e_prototype = function() {
           this._value = this._dom.value;
         }
         return this._value;
+      }
+
+      if (typeof(this._dom.value) != "undefined" || this._type == "option") {
+        this._dom.value = v;
+      } else {
+        this._dom.innerHTML = v;
       }
 
       this._value = v;
