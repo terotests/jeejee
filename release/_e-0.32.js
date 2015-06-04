@@ -3840,13 +3840,14 @@ var _e_prototype = function() {
             me._transitionOn = 0;
             newView.scrollTo();
           });
+          console.log("after 0.3 ", _viewStructures["basic"].view.childCount());
         });
         ch.removeClass("viewIn");
         ch.removeClass("viewOut");
         ch.addClass("viewOut");
         later().after(0.2, function() {
           oldChildren.add(ch);
-          console.log("pushView 1", _viewStructures["basic"].view.childCount());
+          console.log("pushView after adding to oldChilden ", _viewStructures["basic"].view.childCount());
         });
       });
       this._views.push(viewData);
@@ -3866,7 +3867,7 @@ var _e_prototype = function() {
             newView.scrollTo();
           });
 
-
+          console.log("pushView 2", _viewStructures["basic"].view.childCount());
         });
       }
 
