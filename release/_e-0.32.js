@@ -3757,6 +3757,8 @@ var _e_prototype = function() {
         }
         return this;
       } else {
+
+        console.log("founc active layout .... ");
         var view = this.findViewByName(name, this._activeLayout.view);
 
         if (!view) {
