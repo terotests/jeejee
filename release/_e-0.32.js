@@ -3750,7 +3750,7 @@ var _e_prototype = function() {
 
       if (!this._activeLayout) {
         var p = this.parent();
-        if (p) p.pushTo(name, obj);
+        if (p) p.pushTo(name, factoryName, paramName);
         return this;
       } else {
         var view = this.findViewByName(name, this._activeLayout.view);
