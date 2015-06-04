@@ -3728,7 +3728,7 @@ var _e_prototype = function() {
 
       if (!this._activeLayout) {
         var p = this.parent();
-        p.pushTo(name, obj);
+        if (p) p.pushTo(name, obj);
         return this;
       } else {
         var view = this.findViewByName(name, this._activeLayout.view);
@@ -3900,7 +3900,7 @@ var _e_prototype = function() {
 
         for (var n in layout.parts) {
           if (layout.parts.hasOwnProperty(n))
-            layout.view.pushTo(n, layout.parts[n]);
+            this.pushTo(n, layout.parts[n]);
         }
 
       }
