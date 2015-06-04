@@ -62,7 +62,7 @@ or with arguments
   });
 ```
 
-## building views with pseudo -HTML style
+## Building views with pseudo -HTML style
 
 You can also build views using this kind of view marking:
 
