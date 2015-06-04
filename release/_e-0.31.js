@@ -2815,7 +2815,7 @@ var _e_prototype = function() {
           if (o._type == "checkbox") {
             o.checked(newVal);
           } else {
-            o.val(newVal);
+            o.bindVal(newVal);
           }
           val = newVal;
         });
@@ -2856,7 +2856,7 @@ var _e_prototype = function() {
           o.checked(val);
         } else {
           //if(o._type=="select" || o._type=="input" || o._type=="textarea") {
-          o.val(val);
+          o.bindVal(val);
           //}
         }
 
@@ -2919,6 +2919,17 @@ var _e_prototype = function() {
         }
       }
       return o;
+    }
+    _myTrait_.bindVal = function(v) {
+
+
+      if (typeof(this._dom.value) != "undefined" || this._type == "option") {
+        this._dom.value = v;
+      } else {
+        this._dom.innerHTML = v;
+      }
+      this._value = v;
+      return this;
     }
     _myTrait_.blur = function(t) {
       if (this._dom.blur) this._dom.blur();
@@ -3045,7 +3056,7 @@ var _e_prototype = function() {
       if (typeof(this._dom.value) != "undefined" || this._type == "option") {
         this._dom.value = v;
       } else {
-        this._dom.innerHTML = v;
+        // this._dom.innerHTML = v;
       }
 
       this._value = v;
