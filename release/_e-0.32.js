@@ -3732,7 +3732,12 @@ var _e_prototype = function() {
         return this;
       } else {
         var view = this.findViewByName(name, this._activeLayout.view);
-        console.log("Found ", view);
+
+        if (!this._activeLayout.parts) this._activeLayout.parts = {};
+
+        this._activeLayout.parts[name] = view;
+
+        // console.log("Found ", view);
         view.pushView(obj);
       }
 
@@ -3875,9 +3880,20 @@ var _e_prototype = function() {
       if (_viewStructures && _viewStructures[name]) {
 
         var layout = _viewStructures[name];
+
+        // how the layout goes...
+        if (this._activeLayout) {
+          layout.parts = this._activeLayout.parts;
+        }
+
+        var layout = _viewStructures[name];
         this.clear();
         this.add(layout.view)
         this._activeLayout = layout;
+
+        for (var n in layout.parts) {
+          this.pushTo(n, layout.parts[n]);
+        }
 
       }
     }
