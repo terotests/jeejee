@@ -3898,7 +3898,7 @@ var _e_prototype = function() {
       }
     }
     _myTrait_.setLayout = function(name) {
-
+      var me = this;
       // ok, need to think about how to create this thing
       if (_viewStructures && _viewStructures[name]) {
 
@@ -3925,7 +3925,7 @@ var _e_prototype = function() {
         later().after(0.5, function() {
           for (var n in layout.parts) {
             if (layout.parts.hasOwnProperty(n)) {
-              this.pushTo(n, layout.parts[n]);
+              me.pushTo(n, layout.parts[n]);
               console.log("pushTo", _viewStructures["basic"].view.childCount());
             }
           }
