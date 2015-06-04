@@ -3442,8 +3442,9 @@ var _e_prototype = function() {
     var _pageControllers;
     var _ctrlObjs;
     var _viewStructures;
-    var _viewStructures;
     var _contentRouters;
+    var _viewFactory;
+    var _viewCache;
     _myTrait_.contentRouter = function(name, fn) {
 
       if (!_contentRouters) _contentRouters = {};
@@ -3745,7 +3746,7 @@ var _e_prototype = function() {
 
 
     }
-    _myTrait_.pushTo = function(name, obj) {
+    _myTrait_.pushTo = function(name, factoryName, paramName) {
 
       if (!this._activeLayout) {
         var p = this.parent();
@@ -3758,12 +3759,31 @@ var _e_prototype = function() {
           return;
         }
 
-        if (!this.isObject(obj)) {
-          obj = _contentRouters["default"].apply(this, Array.prototype.slice.call(arguments, 1));
+        if (!_viewCache) _viewCache = {};
+
+        var obj;
+
+        if (this.isObject(factoryName)) {
+          obj = factoryName;
+        } else {
+          if (_viewCache[factoryName + "." + paramName]) {
+            obj = _viewCache[factoryName + "." + paramName];
+          } else {
+            var f = _viewFactory[factoryName];
+            if (f) {
+              obj = f(paramName);
+              if (obj) {
+                _viewCache[factoryName + "." + paramName] = obj;
+              }
+            }
+          }
         }
-        if (!this._activeLayout.parts) this._activeLayout.parts = {};
-        this._activeLayout.parts[name] = view;
-        view.pushView(obj);
+
+        if (obj) {
+          if (!this._activeLayout.parts) this._activeLayout.parts = {};
+          this._activeLayout.parts[name] = view;
+          view.pushView(obj);
+        }
       }
 
     }
@@ -3947,6 +3967,12 @@ var _e_prototype = function() {
                */
 
       }
+    }
+    _myTrait_.viewFactory = function(name, fn) {
+
+      if (!_viewFactory) _viewFactory = {};
+
+      _viewFactory[name] = fan;
     }
   }(this));;
   (function(_myTrait_) {
