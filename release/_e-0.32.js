@@ -2254,6 +2254,10 @@ var _e_prototype = function() {
         return this._children[i];
       }
     }
+    _myTrait_.childCount = function(t) {
+      if (!this._children) return 0;
+      return this._children.length
+    }
     _myTrait_.domAttrIterator = function(elem, fn) {
 
       if (!elem) return;
@@ -3467,7 +3471,7 @@ var _e_prototype = function() {
           var res = ch.findViewByName(name, ch);
           if (res) return res;
         }
-        console.log("could not find ", name, " from layout");
+        // console.log("could not find ", name, " from layout");
       }
     }
     _myTrait_.getLayouts = function(t) {
@@ -3905,10 +3909,12 @@ var _e_prototype = function() {
         if (layout.viewHolder.child(0)) {
           layout.view = layout.viewHolder.child(0);
         }
-
+        console.log("1", _viewStructures["basic"].view.childCount());
         var layout = _viewStructures[name];
         // this.clear();
+        console.log("2", _viewStructures["basic"].view.childCount());
         this.pushView(layout.view, null, viewHolder);
+        console.log("2", _viewStructures["basic"].view.childCount());
         this._activeLayout = layout;
 
         for (var n in layout.parts) {
