@@ -3797,6 +3797,9 @@ var _e_prototype = function() {
           if (!this._activeLayout.parts) this._activeLayout.parts = {};
           this._activeLayout.parts[name] = view;
           view.pushView(obj);
+          if (obj.componentDidMount) {
+            obj.componentDidMount();
+          }
         }
       }
 
