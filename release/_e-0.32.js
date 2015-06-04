@@ -3448,7 +3448,7 @@ var _e_prototype = function() {
 
       if (!_contentRouters) _contentRouters = {};
       if (this.isFunction(name)) {
-        _contentRouters["default"] = fn;
+        _contentRouters["default"] = name;
       } else {
         _contentRouters[name] = fn;
       }
