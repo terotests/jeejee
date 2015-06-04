@@ -3455,11 +3455,11 @@ var _e_prototype = function() {
           i = 0,
           ch;
 
-        while (ch = layout.child(i)) {
+        while (ch = layout.child(i++)) {
           if (ch.hasClass(name)) return ch;
         }
         i = 0;
-        while (ch = layout.child(i)) {
+        while (ch = layout.child(i++)) {
           var res = ch.findViewByName(name, ch);
           if (res) return res;
         }
@@ -3731,6 +3731,7 @@ var _e_prototype = function() {
         return this;
       } else {
         var view = this.findViewByName(name, this._activeLayout.view);
+        view.pushView(obj);
       }
 
     }
