@@ -3760,8 +3760,8 @@ var _e_prototype = function() {
       }
 
       var ms = (new Date()).getTime();
-      if (_transitionOn && (ms - _transitionOn < 1000)) return;
-      _transitionOn = ms;
+      if (this._transitionOn && (ms - this._transitionOn < 1000)) return;
+      this._transitionOn = ms;
 
       if (!params) params = null;
 
@@ -3811,7 +3811,7 @@ var _e_prototype = function() {
 
           later().after(0.2, function() {
 
-            _transitionOn = 0;
+            me._transitionOn = 0;
             newView.scrollTo();
           });
         });
@@ -3835,7 +3835,7 @@ var _e_prototype = function() {
 
 
           later().after(0.2, function() {
-            _transitionOn = 0;
+            me._transitionOn = 0;
             newView.scrollTo();
           });
 
