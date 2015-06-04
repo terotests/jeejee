@@ -62,6 +62,32 @@ or with arguments
   });
 ```
 
+## building views with pseudo -HTML style
+
+You can also build views using this kind of view marking:
+
+``` javascript
+main = _e(document.body).div();
+main.h1()
+        .span().text("Hello")
+        .spanEnd()
+    .h1End()
+    .ol()
+        .li()
+            .text("moro")
+        .liEnd()
+        .li()
+            .span()
+                .text("Hello")
+            .spanEnd()
+        .liEnd()
+    .olEnd();
+
+```
+
+http://jsfiddle.net/w981roh0/
+
+
 # Functional view creation
 
 The most simple way of creating a view is just to have a function which returns the view object like this
