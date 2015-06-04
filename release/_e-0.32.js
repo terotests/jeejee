@@ -3442,8 +3442,12 @@ var _e_prototype = function() {
     _myTrait_.createLayout = function(name, fn) {
       if (!_viewStructures) _viewStructures = {}
 
+      var holder = _e();
+      var view = fn();
+
       _viewStructures[name] = {
-        view: fn()
+        view: view,
+        viewHolder: holder
       }
     }
     _myTrait_.findViewByName = function(name, layout) {
@@ -3749,7 +3753,7 @@ var _e_prototype = function() {
       }
 
     }
-    _myTrait_.pushView = function(newView, params) {
+    _myTrait_.pushView = function(newView, params, oldViewHolder) {
 
       if (!this._views) {
         this._views = [];
@@ -3777,7 +3781,7 @@ var _e_prototype = function() {
 
       if (!params) params = null;
 
-      var oldChildren = _e();
+      var oldChildren = oldViewHolder || _e();
 
       var viewData = {
         parentView: null,
@@ -3888,14 +3892,20 @@ var _e_prototype = function() {
 
         var layout = _viewStructures[name];
 
+        var viewHolder = null;
         // how the layout goes...
         if (this._activeLayout) {
           layout.parts = this._activeLayout.parts;
+          viewHolder = this._activeLayout.viewHolder;
+        }
+
+        if (layout.viewHolder.child(0)) {
+          layout.view = layout.viewHolder.child(0);
         }
 
         var layout = _viewStructures[name];
         // this.clear();
-        this.pushView(layout.view)
+        this.pushView(layout.view, null, viewHolder);
         this._activeLayout = layout;
 
         for (var n in layout.parts) {
