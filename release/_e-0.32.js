@@ -3919,15 +3919,17 @@ var _e_prototype = function() {
         // this.clear();
         console.log("2", _viewStructures["basic"].view.childCount());
         this.pushView(layout.view, null, viewHolder);
-        console.log("2", _viewStructures["basic"].view.childCount());
+        console.log("3", _viewStructures["basic"].view.childCount());
         this._activeLayout = layout;
 
-        for (var n in layout.parts) {
-          if (layout.parts.hasOwnProperty(n)) {
-            this.pushTo(n, layout.parts[n]);
-            console.log("pushTo", _viewStructures["basic"].view.childCount());
+        later().after(0.5, function() {
+          for (var n in layout.parts) {
+            if (layout.parts.hasOwnProperty(n)) {
+              this.pushTo(n, layout.parts[n]);
+              console.log("pushTo", _viewStructures["basic"].view.childCount());
+            }
           }
-        }
+        });
 
       }
     }
