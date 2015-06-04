@@ -3892,7 +3892,8 @@ var _e_prototype = function() {
         this._activeLayout = layout;
 
         for (var n in layout.parts) {
-          this.pushTo(n, layout.parts[n]);
+          if (layout.parts.hasOwnProperty(n))
+            this.pushTo(n, layout.parts[n]);
         }
 
       }
