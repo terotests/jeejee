@@ -3732,6 +3732,7 @@ var _e_prototype = function() {
         return this;
       } else {
         var view = this.findViewByName(name, this._activeLayout.view);
+        console.log("Found ", view);
         view.pushView(obj);
       }
 
