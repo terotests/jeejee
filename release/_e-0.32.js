@@ -3463,6 +3463,7 @@ var _e_prototype = function() {
           var res = ch.findViewByName(name, ch);
           if (res) return res;
         }
+        console.log("could not find ", name, " from layout");
       }
     }
     _myTrait_.getRouteObj = function(t) {
