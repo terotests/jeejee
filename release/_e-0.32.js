@@ -3042,6 +3042,10 @@ var _e_prototype = function() {
         return this._value;
       }
 
+      if (typeof(this._dom.value) != "undefined" || this._type == "option") {
+        this._dom.value = v;
+      }
+
       this._value = v;
       this.trigger("value", v);
       return this;
