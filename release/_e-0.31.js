@@ -1118,7 +1118,7 @@ var _e_prototype = function() {
           // e._creatorFn = creator;
         }
 
-        if (typeof(e) == "string") {
+        if (typeof(e) == "string" || !isNaN(e)) {
           var nd = _e("span");
           nd._dom.innerHTML = e;
           me.add(nd);
