@@ -3906,7 +3906,7 @@ var _e_prototype = function() {
         this._activeLayout = layout;
         this._children.length = 0;
         this._children[0] = layout.view;
-        this._dom.removeChild(this._dom.firstChild);
+        if (this._dom.firstChild) this._dom.removeChild(this._dom.firstChild);
         this._dom.appendChild(layout.view._dom);
 
         /*
