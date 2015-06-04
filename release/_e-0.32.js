@@ -3807,7 +3807,7 @@ var _e_prototype = function() {
 
       var cont = this;
       if (cont._children && cont._children[0] == newView) {
-        console.error("... pushing view failed because this view had already the child view???.... ", newView);
+        // console.error("... pushing view failed because this view had already the child view???.... ", newView);
         return;
       }
 
