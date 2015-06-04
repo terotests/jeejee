@@ -3443,6 +3443,15 @@ var _e_prototype = function() {
     var _ctrlObjs;
     var _viewStructures;
     var _viewStructures;
+    var _contentRouters;
+    _myTrait_.contentRouter = function(name, fn) {
+
+      if (this.isFunction(name)) {
+        _contentRouters["default"] = fn;
+      } else {
+        _contentRouters[name] = fn;
+      }
+    }
     _myTrait_.createLayout = function(name, fn) {
       if (!_viewStructures) _viewStructures = {}
 
@@ -3745,17 +3754,14 @@ var _e_prototype = function() {
         var view = this.findViewByName(name, this._activeLayout.view);
 
         if (!view) {
-          console.log("*** error could not find ", name);
-          console.log("From");
-          console.log(this);
           return;
         }
 
+        if (!this.isObject(obj)) {
+          obj = _contentRouters["default"].apply(this, Array.prototype.slice.call(arguments, 1));
+        }
         if (!this._activeLayout.parts) this._activeLayout.parts = {};
-
         this._activeLayout.parts[name] = view;
-
-        // console.log("Found ", view);
         view.pushView(obj);
       }
 
