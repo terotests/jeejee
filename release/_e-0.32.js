@@ -3766,18 +3766,19 @@ var _e_prototype = function() {
         this._views = [];
       }
 
-      console.log("... trying pushing .... ", newView);
+      console.log("pushView 1", _viewStructures["basic"].view.childCount());
+      // console.log("... trying pushing .... ", newView );
       if (newView == this) return;
       if (newView == lastView) return;
 
-      console.log("... pushing view .... ", newView);
+      // console.log("... pushing view .... ", newView );
 
       var cont = this;
       if (cont._children && cont._children[0] == newView) {
         console.log("... pushing view failed because this view had already the child view???.... ", newView);
         return;
       }
-
+      console.log("pushView 1", _viewStructures["basic"].view.childCount());
       if (this.isFunction(newView)) {
         newView = newView();
       }
@@ -3811,6 +3812,8 @@ var _e_prototype = function() {
 
       lastView = this;
 
+      console.log("pushView 1", _viewStructures["basic"].view.childCount());
+
       // primitive and simple
       //_eventState.lastSetValue = (new Date()).getTime();
       //_eventState.pushing = true;
@@ -3843,6 +3846,7 @@ var _e_prototype = function() {
         ch.addClass("viewOut");
         later().after(0.2, function() {
           oldChildren.add(ch);
+          console.log("pushView 1", _viewStructures["basic"].view.childCount());
         });
       });
       this._views.push(viewData);
