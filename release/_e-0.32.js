@@ -3069,6 +3069,7 @@ var _e_prototype = function() {
     }
   }(this));;
   (function(_myTrait_) {
+    var _shInit;
     _myTrait_.a = function(className, attrs) {
       var el = this.shortcutFor("a", className, attrs);
       return el;
@@ -3136,6 +3137,24 @@ var _e_prototype = function() {
       var el = this.shortcutFor("img", className, attrs);
       return el;
     }
+    if (_myTrait_.__traitInit && !_myTrait_.hasOwnProperty("__traitInit"))
+      _myTrait_.__traitInit = _myTrait_.__traitInit.slice();
+    if (!_myTrait_.__traitInit) _myTrait_.__traitInit = []
+    _myTrait_.__traitInit.push(function(t) {
+
+      if (!_shInit) {
+        var eList = this.getElemNames();
+        var me = this;
+        eList.forEach(function(en) {
+          var o = {};
+          o[en + "End"] = function() {
+            return this.parent();
+          }
+          me.extendAll(o);
+        });
+      }
+
+    });
     _myTrait_.input = function(className, attrs) {
       var el = this.shortcutFor("input", className, attrs);
       return el;
