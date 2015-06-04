@@ -3793,7 +3793,6 @@ var _e_prototype = function() {
         this._views = [];
       }
 
-      console.log("pushView 1", _viewStructures["basic"].view.childCount());
       // console.log("... trying pushing .... ", newView );
       if (newView == this) return;
       if (newView == lastView) return;
@@ -3802,10 +3801,10 @@ var _e_prototype = function() {
 
       var cont = this;
       if (cont._children && cont._children[0] == newView) {
-        console.log("... pushing view failed because this view had already the child view???.... ", newView);
+        console.error("... pushing view failed because this view had already the child view???.... ", newView);
         return;
       }
-      console.log("pushView 1", _viewStructures["basic"].view.childCount());
+
       if (this.isFunction(newView)) {
         newView = newView();
       }
@@ -3839,12 +3838,6 @@ var _e_prototype = function() {
 
       lastView = this;
 
-      console.log("pushView 1", _viewStructures["basic"].view.childCount());
-
-      // primitive and simple
-      //_eventState.lastSetValue = (new Date()).getTime();
-      //_eventState.pushing = true;
-      //document.location.hash = _eventState.lastSetValue;
 
       // console.log("PUSH, view child count ", cont._children.length);
       cont.forChildren(function(ch) {
@@ -3867,14 +3860,12 @@ var _e_prototype = function() {
             me._transitionOn = 0;
             newView.scrollTo();
           });
-          console.log("after 0.3 ", _viewStructures["basic"].view.childCount());
         });
         ch.removeClass("viewIn");
         ch.removeClass("viewOut");
         ch.addClass("viewOut");
         later().after(0.2, function() {
           oldChildren.add(ch);
-          console.log("pushView after adding to oldChilden ", _viewStructures["basic"].view.childCount());
         });
       });
       this._views.push(viewData);
@@ -3888,13 +3879,10 @@ var _e_prototype = function() {
 
           newView.show();
 
-
           later().after(0.2, function() {
             me._transitionOn = 0;
             newView.scrollTo();
           });
-
-          console.log("pushView 2", _viewStructures["basic"].view.childCount());
         });
       }
 
