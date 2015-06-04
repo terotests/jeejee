@@ -3730,7 +3730,7 @@ var _e_prototype = function() {
         p.pushTo(name, obj);
         return this;
       } else {
-        var view = this.findViewByName(name, this._activeLayout);
+        var view = this.findViewByName(name, this._activeLayout.view);
       }
 
     }
