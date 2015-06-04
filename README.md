@@ -192,14 +192,14 @@ myDiv.input().bacon("keydown")
   });
 ```
 
-The _e is supporting also many standard "on" events like
+## Converting any view to stream
 
-``` javascript
-var inp = myDiv.div().input().val("the value");
-myDiv.button().text("Click me").on("click", function() {
-   alert(inp.val());
-});
-```
+Any ui view can be converted to Bacon.js stream using `toBacon()` function. 
+
+The component can then send any values to the resulting stream using `val( newValue )` function.
+Example can be found here.
+
+http://jsfiddle.net/w0g9193a/
 
 ## Template function "str"
 
