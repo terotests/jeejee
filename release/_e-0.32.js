@@ -3142,17 +3142,6 @@ var _e_prototype = function() {
     if (!_myTrait_.__traitInit) _myTrait_.__traitInit = []
     _myTrait_.__traitInit.push(function(t) {
 
-      if (!_shInit) {
-        var eList = this.getElemNames();
-        var me = this;
-        eList.forEach(function(en) {
-          var o = {};
-          o[en + "End"] = function() {
-            return this.parent();
-          }
-          me.extendAll(o);
-        });
-      }
 
     });
     _myTrait_.input = function(className, attrs) {
@@ -5182,6 +5171,17 @@ var _e_prototype = function() {
       _elemNamesList.forEach(function(n) {
         _elemNames[n] = true;
       })
+
+      var me = this;
+      _elemNamesList.forEach(function(en) {
+        var o = {};
+        o[en + "End"] = function() {
+          return this.parent();
+        }
+        me.extendAll(o);
+      });
+
+
 
     }
     _myTrait_.registerComponent = function(name, classDef) {
