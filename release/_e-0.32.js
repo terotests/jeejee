@@ -3733,6 +3733,13 @@ var _e_prototype = function() {
       } else {
         var view = this.findViewByName(name, this._activeLayout.view);
 
+        if (!view) {
+          console.log("*** error could not find ", name);
+          console.log("From");
+          console.log(this);
+          return;
+        }
+
         if (!this._activeLayout.parts) this._activeLayout.parts = {};
 
         this._activeLayout.parts[name] = view;
