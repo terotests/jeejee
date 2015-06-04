@@ -3887,8 +3887,8 @@ var _e_prototype = function() {
         }
 
         var layout = _viewStructures[name];
-        this.clear();
-        this.add(layout.view)
+        // this.clear();
+        this.pushView(layout.view)
         this._activeLayout = layout;
 
         for (var n in layout.parts) {
