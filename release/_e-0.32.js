@@ -3918,6 +3918,9 @@ var _e_prototype = function() {
       if (_viewStructures && _viewStructures[name]) {
 
         var layout = _viewStructures[name];
+
+        if (this._activeLayout == layout) return this;
+
         this._activeLayout = layout;
         this._children.length = 0;
         this._children[0] = layout.view;
