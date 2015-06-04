@@ -2920,6 +2920,22 @@ var _e_prototype = function() {
       }
       return o;
     }
+    _myTrait_.bindVal = function(v) {
+      if (typeof(v) == "undefined") {
+        if (this._type == "select" || this._type == "input" || this._type == "textarea") {
+          this._value = this._dom.value;
+        }
+        return this._value;
+      }
+
+      if (typeof(this._dom.value) != "undefined" || this._type == "option") {
+        this._dom.value = v;
+      }
+
+      this._value = v;
+      this.trigger("value", v);
+      return this;
+    }
     _myTrait_.blur = function(t) {
       if (this._dom.blur) this._dom.blur();
     }
@@ -3044,6 +3060,8 @@ var _e_prototype = function() {
 
       if (typeof(this._dom.value) != "undefined" || this._type == "option") {
         this._dom.value = v;
+      } else {
+        this._dom.innerHTML = v;
       }
 
       this._value = v;
