@@ -118,6 +118,12 @@ Different ways of creating views are collected here
 
 http://jsfiddle.net/vbyssjmq/
 
+# View factories
+
+A new undocumented feature, tests are here:
+
+http://jsfiddle.net/yu3wjjwa/
+
 # Avoiding local scope pollution
 
 Better and more readable structure can be achieved using functions as constructor parameters. The
