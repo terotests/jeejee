@@ -3478,9 +3478,11 @@ var _e_prototype = function() {
       var el = this.shortcutFor("textarea", className, attrs);
       return el;
     }
-    _myTrait_.toDataURL = function(format) {
+    _myTrait_.toDataURL = function(format, quality) {
 
-      return this._dom.toDataURL(format || "image/png");
+      if (!quality) quality = 1;
+
+      return this._dom.toDataURL(format || "image/png", quality);
     }
     _myTrait_.ul = function(className, attrs) {
       var el = this.shortcutFor("ul", className, attrs);
