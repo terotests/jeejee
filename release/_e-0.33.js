@@ -3385,8 +3385,10 @@ var _e_prototype = function() {
            var width = img.clientWidth;
            var height = img.clientHeight;
            */
-          m.q.attr("width", im.width);
-          m.q.attr("height", im.height);
+          me.q.attr("width", im.width);
+          me.q.attr("height", im.height);
+          me.width(im.width);
+          me.height(im.height);
           var im = img._dom;
           var ctx = me._dom.getContext("2d");
           ctx.drawImage(im, 0, 0, im.width, im.height);
