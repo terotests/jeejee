@@ -3374,8 +3374,9 @@ var _e_prototype = function() {
           this._hasLoadL = true;
         }
       }
+      alert("Src");
       if (this._tag == "canvas") {
-
+        alert("canvas ", src);
         var img = _e("img"),
           me = this;
         img.src(src);
