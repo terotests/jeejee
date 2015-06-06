@@ -3313,14 +3313,25 @@ var _e_prototype = function() {
       var index = 0;
       for (var y = 0; y < this._canHeight; y++) {
         for (var x = 0; x < this._canWidth; x++) {
-          fn({
+          var r = data[index],
+            g = data[index + 1],
+            b = data[index + 2],
+            a = data[index + 3];
+
+          var p = {
             x: x,
             y: y,
-            r: data[index],
-            g: data[index + 1],
-            b: data[index + 2],
-            a: data[index + 3]
-          });
+            r: r,
+            g: g,
+            b: b,
+            a: a
+          };
+          fn(p);
+          if (p.r != r) data[index] = p.r;
+          if (p.g != g) data[index + 1] = p.g;
+          if (p.b != b) data[index + 2] = p.b;
+          if (p.a != a) data[index + 3] = p.a;
+
           index += 4;
         }
       }
