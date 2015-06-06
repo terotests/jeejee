@@ -3387,7 +3387,7 @@ var _e_prototype = function() {
            */
           var im = img._dom;
           var ctx = me._dom.getContext("2d");
-          ctx.drawImage(im, 0, 0, 200, 200);
+          ctx.drawImage(im, 0, 0, im.width, im.height);
           me.trigger("load");
         });
         return this;
