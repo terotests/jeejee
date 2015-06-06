@@ -2648,6 +2648,13 @@ var _e_prototype = function() {
         me.removeListener(en, ef);
       }
 
+
+      if (en == "load") {
+        if (this._imgLoaded) {
+          this.trigger("load");
+        }
+      }
+
       // To stop the prop...
       if (en == "click") this.bindSysEvent("click", function() {
         me.trigger("click");
@@ -3440,8 +3447,10 @@ var _e_prototype = function() {
       if (this._tag == "img") {
         if (!this._hasLoadL) {
           var me = this;
+          me._imgLoaded = false;
           this.__singleton().addEventListener(this._dom, "load", function() {
             me.trigger("load");
+            me._imgLoaded = true;
           });
           this._hasLoadL = true;
         }
@@ -3450,6 +3459,7 @@ var _e_prototype = function() {
       if (this._tag == "canvas") {
         var img = _e("img"),
           me = this;
+        me._imgLoaded = false;
         img.src(src);
         img.on("load", function() {
 
@@ -3465,6 +3475,7 @@ var _e_prototype = function() {
           var ctx = me._dom.getContext("2d");
           ctx.drawImage(im, 0, 0, im.width, im.height);
           me.trigger("load");
+          me._imgLoaded = true;
         });
         return this;
       }
