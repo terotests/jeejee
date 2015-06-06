@@ -3380,16 +3380,13 @@ var _e_prototype = function() {
           me = this;
         img.src(src);
         img.on("load", function() {
-          console.log("IMG loaded--------");
-          /*
-           var width = img.clientWidth;
-           var height = img.clientHeight;
-           */
+
+          var im = img._dom;
           me.q.attr("width", im.width);
           me.q.attr("height", im.height);
           me.width(im.width);
           me.height(im.height);
-          var im = img._dom;
+
           var ctx = me._dom.getContext("2d");
           ctx.drawImage(im, 0, 0, im.width, im.height);
           me.trigger("load");
