@@ -3185,7 +3185,7 @@ var _e_prototype = function() {
       if (this.isObject(v)) {
         for (var n in v) {
           if (v.hasOwnProperty(n)) {
-            this.q.attr(n, v[n]);
+            this.attr(n, v[n]);
           }
         }
 
@@ -3390,7 +3390,7 @@ var _e_prototype = function() {
       attrList.forEach(function(myAttrs) {
         for (var n in myAttrs) {
           if (myAttrs.hasOwnProperty(n)) {
-            el.q.attr(n, myAttrs[n]);
+            el.attr(n, myAttrs[n]);
           }
         }
       });
