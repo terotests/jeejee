@@ -3374,13 +3374,13 @@ var _e_prototype = function() {
           this._hasLoadL = true;
         }
       }
-      alert("Src");
+
       if (this._tag == "canvas") {
-        alert("canvas ", src);
         var img = _e("img"),
           me = this;
         img.src(src);
         img.on("load", function() {
+          console.log("IMG loaded--------");
           /*
            var width = img.clientWidth;
            var height = img.clientHeight;
