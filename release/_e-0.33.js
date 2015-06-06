@@ -3450,8 +3450,8 @@ var _e_prototype = function() {
           var im = img._dom;
           me.q.attr("width", im.width);
           me.q.attr("height", im.height);
-          me.width(im.width);
-          me.height(im.height);
+          //me.width(im.width);
+          //me.height(im.height);
 
           me._canWidth = im.width;
           me._canHeight = im.height;
