@@ -3243,10 +3243,10 @@ var _e_prototype = function() {
         return {
           x: x,
           y: y,
-          r: mData.data[index + 0],
-          g: mData.data[index + 1],
-          b: mData.data[index + 2],
-          a: mData.data[index + 3]
+          r: data[index + 0],
+          g: data[index + 1],
+          b: data[index + 2],
+          a: data[index + 3]
         };
       };
 
