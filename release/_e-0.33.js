@@ -3190,6 +3190,10 @@ var _e_prototype = function() {
         }
 
       } else {
+        if (this._canvas) {
+          if (v == "width") this._canWidth = parseInt(v2);
+          if (v == "height") this._canHeight = parseInt(v2);
+        }
         this.q.attr(v, v2);
       }
       return this;
