@@ -3224,6 +3224,33 @@ var _e_prototype = function() {
       var el = this.shortcutFor("form", className, attrs);
       return el;
     }
+    _myTrait_.getPixelFn = function(pixelData) {
+
+      var ctx = this.ctx();
+
+      if (pixelData && pixelData._dom) {
+        ctx = pixelData.ctx();
+        pixelData = ctx.getImageData(0, 0, pixelData._canWidth, pixelData._canWidth);
+      } else {
+        // Get the context...
+        if (!pixelData) pixelData = ctx.getImageData(0, 0, this._canWidth, this._canWidth);
+      }
+
+      var data = pixelData.data;
+
+      return function(x, y) {
+        var index = (x + y * pixelData.width) * 4;
+        return {
+          x: x,
+          y: y,
+          r: mData.data[index + 0],
+          g: mData.data[index + 1],
+          b: mData.data[index + 2],
+          a: mData.data[index + 3]
+        };
+      };
+
+    }
     _myTrait_.h1 = function(className, attrs) {
       var el = this.shortcutFor("h1", className, attrs);
       return el;
@@ -3274,6 +3301,33 @@ var _e_prototype = function() {
     _myTrait_.pre = function(className, attrs) {
       var el = this.shortcutFor("pre", className, attrs);
       return el;
+    }
+    _myTrait_.processPixels = function(fn, pixelData, doNotUpdate) {
+
+      var ctx = this.ctx();
+
+      // Get the context...
+      if (!pixelData) pixelData = ctx.getImageData(0, 0, this._canWidth, this._canWidth);
+
+      var data = pixelData.data;
+      var index = 0;
+      for (var y = 0; y < this._canHeight; y++) {
+        for (var x = 0; x < this._canWidth; x++) {
+          fn({
+            x: x,
+            y: y,
+            r: data[index],
+            g: data[index + 1],
+            b: data[index + 2],
+            a: data[index + 3]
+          });
+          index += 4;
+        }
+      }
+      if (!doNotUpdate) {
+        ctx.putImageData(pixelData, 0, 0, 0, 0, this._canWidth, this._canHeight);
+      }
+      return pixelData;
     }
     _myTrait_.row = function(params) {
       var args = Array.prototype.slice.call(arguments);
@@ -3386,6 +3440,9 @@ var _e_prototype = function() {
           me.q.attr("height", im.height);
           me.width(im.width);
           me.height(im.height);
+
+          me._canWidth = im.width;
+          me._canHeight = im.height;
 
           var ctx = me._dom.getContext("2d");
           ctx.drawImage(im, 0, 0, im.width, im.height);
