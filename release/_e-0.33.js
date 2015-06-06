@@ -3307,7 +3307,7 @@ var _e_prototype = function() {
       var ctx = this.ctx();
 
       // Get the context...
-      if (!pixelData) pixelData = ctx.getImageData(0, 0, this._canWidth, this._canWidth);
+      if (!pixelData) pixelData = ctx.getImageData(0, 0, this._canWidth, this._canHeight);
 
       var data = pixelData.data;
       var index = 0;
@@ -3336,6 +3336,7 @@ var _e_prototype = function() {
         }
       }
       if (!doNotUpdate) {
+        console.log(this._canWidth, this._canHeight);
         ctx.putImageData(pixelData, 0, 0, 0, 0, this._canWidth, this._canHeight);
       }
       return pixelData;
