@@ -2436,7 +2436,9 @@ var _e_prototype = function() {
   (function(_myTrait_) {
     _myTrait_.addClass = function(c) {
       // safari problem
+
       if (this._svg) return this;
+      if (this._dom instanceof SVGElement) return;
 
       if (!this._classes) {
         this._classes = [];
