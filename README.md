@@ -347,6 +347,13 @@ For those familiar with YUV colors perhaps this demo explains it best
 [Demo with gradients] (http://jsfiddle.net/9hu4w4tf/)
 
 
+## Color mixing
+
+Colors can be mixed with `.mix(color1, color2, amount)` or with `.dim(color, amount)` 
+
+http://jsfiddle.net/ag4Lmxvv/
+
+
 # CSS Effects
 
 ``` javascript
