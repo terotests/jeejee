@@ -4512,6 +4512,22 @@ var _e_prototype = function() {
 
 
     }
+    _myTrait_.whenLoaded = function(imgList, fn) {
+
+      var cnt = imgList.length;
+
+      imgList.forEach(function(im) {
+        im.on("load", function() {
+          cnt--;
+          if (cnt == 0) {
+            fn(imgList);
+          }
+        })
+      });
+
+      if (imgList.length == 0) fn([]);
+
+    }
   }(this));;
   (function(_myTrait_) {
     var colors;
