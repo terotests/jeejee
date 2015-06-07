@@ -2436,9 +2436,7 @@ var _e_prototype = function() {
   (function(_myTrait_) {
     _myTrait_.addClass = function(c) {
       // safari problem
-
       if (this._svg) return this;
-      if (this._dom instanceof SVGElement) return;
 
       if (!this._classes) {
         this._classes = [];
@@ -2467,7 +2465,7 @@ var _e_prototype = function() {
       }
 
       this._classes.push(c);
-      if (!this._svg) this._dom.className = this._classes.join(" ");
+      this._dom.className = this._classes.join(" ");
 
       return this;
     }
@@ -4508,6 +4506,22 @@ var _e_prototype = function() {
       });
 
 
+
+    }
+    _myTrait_.whenLoaded = function(imgList, fn) {
+
+      var cnt = imgList.length;
+
+      imgList.forEach(function(im) {
+        im.on("load", function() {
+          cnt--;
+          if (cnt == 0) {
+            fn(imgList);
+          }
+        })
+      });
+
+      if (imgList.length == 0) fn([]);
 
     }
   }(this));;
