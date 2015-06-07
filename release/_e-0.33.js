@@ -2465,7 +2465,7 @@ var _e_prototype = function() {
       }
 
       this._classes.push(c);
-      this._dom.className = this._classes.join(" ");
+      if (!this._svg) this._dom.className = this._classes.join(" ");
 
       return this;
     }
