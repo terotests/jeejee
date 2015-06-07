@@ -4830,6 +4830,16 @@ var _e_prototype = function() {
         };
       }
     });
+    _myTrait_.mix = function(c1, c2, amount) {
+
+      return this.yuvConversion2(c1, c2, function(y1, y2) {
+        return {
+          y: (1 - amount) * y1.y + amount * y2.y,
+          u: (1 - amount) * y1.u + amount * y2.u,
+          v: (1 - amount) * y1.v + amount * y2.v
+        }
+      })
+    }
     _myTrait_.rgbToHex = function(p) {
       var me = this;
       return "#" + me.componentToHex(p.r) + me.componentToHex(p.g) + me.componentToHex(p.b);
