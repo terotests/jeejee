@@ -1,4 +1,4 @@
-# _e or "jee" - pure JavaScript ui library
+# _e or "jee" - pure JavaScript UI library
 
 NOTE: This is just early release of this version, bugs may appear.
 
