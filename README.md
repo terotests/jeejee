@@ -1,4 +1,4 @@
-# jeejs - a little UI library that could
+# _e or "jee" - pure JavaScript ui library
 
 NOTE: This is just early release of this version, bugs may appear.
 
