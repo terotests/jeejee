@@ -4832,6 +4832,8 @@ var _e_prototype = function() {
     });
     _myTrait_.mix = function(c1, c2, amount) {
 
+      if (typeof(amount) == "undefined") amount = 0.5;
+
       return this.yuvConversion2(c1, c2, function(y1, y2) {
         return {
           y: (1 - amount) * y1.y + amount * y2.y,
