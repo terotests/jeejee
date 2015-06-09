@@ -3226,6 +3226,14 @@ var _e_prototype = function() {
       var el = this.shortcutFor("checkbox", className, attrs);
       return el;
     }
+    _myTrait_.clearCanvas = function(t) {
+      var ctx = this.ctx(),
+        canvas = this._dom;
+
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      return this;
+    }
     _myTrait_.ctx = function(t) {
       if (this._dom.getContext) {
         return this._dom.getContext("2d")
