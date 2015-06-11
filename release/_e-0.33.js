@@ -221,7 +221,7 @@ var _e_prototype = function() {
         if (this._dom.focus) this._dom.focus();
       }
       _myTrait_.get = function(index) {
-        return this._dom.childNodes[index];
+        return this._dom;
       }
       if (_myTrait_.__traitInit && !_myTrait_.hasOwnProperty("__traitInit"))
         _myTrait_.__traitInit = _myTrait_.__traitInit.slice();
