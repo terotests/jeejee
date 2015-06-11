@@ -4252,6 +4252,13 @@ var _e_prototype = function() {
       }
       return newView;
     }
+    _myTrait_.data = function(v) {
+      if (typeof(v) != "undefined") {
+        this.__mdata = v;
+        return this;
+      }
+      return this.__mdata;
+    }
     _myTrait_.fromStream = function(stream, viewFn) {
 
       var me = this;
