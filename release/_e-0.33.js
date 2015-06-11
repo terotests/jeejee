@@ -5250,6 +5250,34 @@ var _e_prototype = function() {
         });
 
 
+        var _imSending = false;
+        o.send = function(d, vname, event, from) {
+
+          if (_imSending) return; // no circular 
+
+          if (!d.__id) {
+            return;
+          }
+
+          _imSending = true;
+          var id = d.__id();
+          var vb = _dataBinds[id];
+
+          if (vb) {
+            var b = vb[vname];
+            if (b) {
+              // console.log(b);
+              b.forEach(function(oo) {
+                if (oo == from) return;
+                oo.trigger(event);
+              });
+            }
+
+          }
+          _imSending = false;
+
+        }
+
         o.bind = function(d, vname, obj) {
 
           if (!d.__id) o.data(d);
