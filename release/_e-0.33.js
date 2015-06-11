@@ -5250,7 +5250,42 @@ var _e_prototype = function() {
         });
 
 
+        o.bind = function(d, vname, obj) {
 
+          if (!d.__id) o.data(d);
+          var id = d.__id();
+          var vb = _dataBinds[id];
+          if (!vb) {
+            _dataBinds[id] = {};
+            vb = _dataBinds[id];
+          }
+
+          var b = vb[vname];
+          if (!b) {
+            vb[vname] = [];
+            b = vb[vname];
+          }
+          var was = false;
+          var dbL = b.length;
+          for (var i = 0; i < dbL; i++) {
+            if (b[i] == obj) return o;
+          }
+          b.push(obj);
+          return o;
+        }
+
+        o.data = function(d) {
+          if (!d.__fn) {
+            _dataId++;
+            var t = function(_dataId) {
+              d.__id = function() {
+                return "gd" + _dataId;
+              }
+            }(_dataId);
+            _dataReg[d.__id()] = d;
+          }
+          return d;
+        }
 
 
 
