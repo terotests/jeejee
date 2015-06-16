@@ -3162,6 +3162,7 @@ var _e_prototype = function() {
       })
 
       // toClipboard
+      return this;
     }
     _myTrait_.toBacon = function(transformFn) {
 
