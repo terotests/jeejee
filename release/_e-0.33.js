@@ -3751,11 +3751,11 @@ var _e_prototype = function() {
           var res;
           if (res = ls.getItem(myId)) {
             later().removeFrameFn(waitFor);
-            options.onReady(res);
+            options.onReady(JSON.parse(res));
           }
         }
         later().onFrame(waitFor);
-        html += decodeURIComponent("%3Cscript%3E") + "function " + options.callBackName + "(v){window['localStorage'].setItem('" + myId + "', JSON.stingify(v));}";
+        html += decodeURIComponent("%3Cscript%3E") + "function " + options.callBackName + "(v){window['localStorage'].setItem('" + myId + "', JSON.stringify(v));}";
         html += decodeURIComponent("%3C%2Fscript%3E");
       }
 
