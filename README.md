@@ -320,7 +320,11 @@ myDiv.fiddle({
     },
 });
 ```
+Simple Example:
 http://jsfiddle.net/qfpj5su7/
+
+Example using Bacon.js throttling the input streams with debounce()
+http://jsfiddle.net/rxhczfry/
 
 # Creating plugins / extending
 
