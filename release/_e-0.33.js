@@ -3086,6 +3086,24 @@ var _e_prototype = function() {
     _myTrait_.getClipboard = function(name) {
       return clipBoard(name);
     }
+    _myTrait_.localStore = function(withName) {
+
+
+      var cb = clipBoard(withName);
+
+      var val = cb.fromClipboard();
+      if (val) {
+        this.val(val);
+      }
+
+      var me = this;
+      this.on("value", function() {
+        cb.toClipboard(me.val());
+      })
+
+      // toClipboard
+      return this;
+    }
     _myTrait_.options = function(list) {
       // creates the input options for html5 usage...
 
@@ -3144,24 +3162,6 @@ var _e_prototype = function() {
            </label>
                */
       }
-      return this;
-    }
-    _myTrait_.persist = function(withName) {
-
-
-      var cb = clipBoard(withName);
-
-      var val = cb.fromClipboard();
-      if (val) {
-        this.val(val);
-      }
-
-      var me = this;
-      this.on("value", function() {
-        cb.toClipboard(me.val());
-      })
-
-      // toClipboard
       return this;
     }
     _myTrait_.toBacon = function(transformFn) {
