@@ -323,8 +323,8 @@ myDiv.fiddle({
 Simple Example:
 http://jsfiddle.net/qfpj5su7/
 
-Example using Bacon.js throttling the input streams with debounce()
-http://jsfiddle.net/rxhczfry/
+Example using Bacon.js throttling the input streams with debounce() and localStore() to save the data between the edits. 
+http://jsfiddle.net/drah36qf/
 
 # Creating plugins / extending
 
