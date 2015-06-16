@@ -3729,8 +3729,6 @@ var _e_prototype = function() {
       }
     }
     _myTrait_.fiddle = function(options) {
-      var prom = _promise();
-
       var iframe = _e("iframe");
       var myId = this.guid();
       dataBlock.testId = myId;
