@@ -287,7 +287,16 @@ elem.baconDrag().onValue(function(dragInfo) {
 
 [Bacon.js drag demo] (http://jsfiddle.net/kmo77e5y/)
 
+# Local Storage support
 
+If you want some input to persist between updates, you can make them store things locally using
+
+``` javascript
+var inp = _e("input").localStore("myTestId");
+```
+The input will store it's value to the `myTestId` after the page reloads.
+
+http://jsfiddle.net/kt58vqc7/
 
 # Creating plugins / extending
 
