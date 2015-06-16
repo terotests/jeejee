@@ -298,6 +298,30 @@ The input will store it's value to the `myTestId` after the page reloads.
 
 http://jsfiddle.net/kt58vqc7/
 
+
+# Creating "Fiddles"
+
+```javascript
+var myDiv = _e(document.body).div();
+myDiv.fiddle({
+    stylesheets : [
+        "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css",
+        "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css"
+    ],
+    scripts : [
+        "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js",
+        "https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.js"
+    ],
+    html : "<div class='alert alert-info'>Bootstrap loaded</div>",
+    jsCode : "setInterval( function() { fiddleDone('1000ms passed') }, 1000);",
+    width : 300, height : 300,
+    onReady : function(v) {
+        alert(v);
+    },
+});
+```
+http://jsfiddle.net/qfpj5su7/
+
 # Creating plugins / extending
 
 You can add new functions all elements with extendAll.
