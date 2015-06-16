@@ -3728,6 +3728,52 @@ var _e_prototype = function() {
         viewHolder: holder
       }
     }
+    _myTrait_.fiddle = function(options) {
+      var prom = _promise();
+
+      var iframe = _e("iframe");
+      var myId = this.guid();
+      dataBlock.testId = myId;
+      var html = decodeURIComponent("%3C!DOCTYPE%20html%3E%3Chead%3E");
+
+      if (options.scripts) options.scripts.forEach(function(s) {
+        html += decodeURIComponent("%3Cscript%20src%3D'") + ss + decodeURIComponent("'%3E%3C%2Fscript%3E");
+      });
+      if (options.stylesheets) options.stylesheets.forEach(function(s) {
+        html += '<link rel="stylesheet" href="' + s + '"></link>';
+      });
+      if (options.head) html += options.head;
+      html += "</head><body>";
+
+      if (!options.callBackName) options.callBackName = "fiddleDone";
+
+      if (options.whenDone && options.callBackName) {
+        var ls = window['localStorage'];
+        var waitFor = function() {
+          var res;
+          if (res = ls.getItem(myId)) {
+            later().removeFrameFn(waitFor);
+            options.whenDone(res);
+          }
+        }
+        later().onFrame(waitFor);
+        html += decodeURIComponent("%3Cscript%3E") + "function " + options.callBackName + "(v){window['localStorage'].setItem('" + myId + "', JSON.stingify(v));}";
+        html += decodeURIComponent("%3C%2Fscript%3E");
+      }
+
+      if (options.html) html += options.html;
+      if (options.jsCode) html += decodeURIComponent("%3Cscript%3E") + options.jsCode + decodeURIComponent("%3C%2Fscript%3E");
+      html += "</body></html>";
+      this.addItem(iframe);
+
+      iframe._dom.contentWindow.document.open();
+      iframe._dom.contentWindow.document.write(html);
+      iframe._dom.contentWindow.document.close();
+
+      iframe.width(options.width || 800).height(options.height || 600);
+
+      return this;
+    }
     _myTrait_.findViewByName = function(name, layout) {
 
       if (layout.hasClass(name)) {
