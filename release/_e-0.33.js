@@ -3745,13 +3745,13 @@ var _e_prototype = function() {
 
       if (!options.callBackName) options.callBackName = "fiddleDone";
 
-      if (options.whenDone && options.callBackName) {
+      if (options.onReady && options.callBackName) {
         var ls = window['localStorage'];
         var waitFor = function() {
           var res;
           if (res = ls.getItem(myId)) {
             later().removeFrameFn(waitFor);
-            options.whenDone(res);
+            options.onReady(res);
           }
         }
         later().onFrame(waitFor);
