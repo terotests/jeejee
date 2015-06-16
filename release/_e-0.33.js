@@ -3735,7 +3735,7 @@ var _e_prototype = function() {
       var html = decodeURIComponent("%3C!DOCTYPE%20html%3E%3Chead%3E");
 
       if (options.scripts) options.scripts.forEach(function(s) {
-        html += decodeURIComponent("%3Cscript%20src%3D'") + ss + decodeURIComponent("'%3E%3C%2Fscript%3E");
+        html += decodeURIComponent("%3Cscript%20src%3D'") + s + decodeURIComponent("'%3E%3C%2Fscript%3E");
       });
       if (options.stylesheets) options.stylesheets.forEach(function(s) {
         html += '<link rel="stylesheet" href="' + s + '"></link>';
