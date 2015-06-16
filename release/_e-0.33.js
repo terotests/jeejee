@@ -1119,6 +1119,7 @@ var _e_prototype = function() {
         return o;
       }
       _myTrait_.get = function(name) {
+
         if (this.localStoreSupport()) {
           return localStorage.getItem(name);
         } else {
@@ -3144,6 +3145,23 @@ var _e_prototype = function() {
                */
       }
       return this;
+    }
+    _myTrait_.persist = function(withName) {
+
+
+      var cb = clipBoard(withName);
+
+      var val = cb.fromClipboard();
+      if (val) {
+        this.val(val);
+      }
+
+      var me = this;
+      this.on("value", function() {
+        cb.toClipboard(me.val());
+      })
+
+      // toClipboard
     }
     _myTrait_.toBacon = function(transformFn) {
 
