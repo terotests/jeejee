@@ -3731,7 +3731,7 @@ var _e_prototype = function() {
     _myTrait_.fiddle = function(options) {
       var iframe = _e("iframe");
       var myId = this.guid();
-      dataBlock.testId = myId;
+
       var html = decodeURIComponent("%3C!DOCTYPE%20html%3E%3Chead%3E");
 
       if (options.scripts) options.scripts.forEach(function(s) {
