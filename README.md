@@ -654,7 +654,7 @@ return _elemNamesList;
 ```
 
         
-### constructor( elemName, into )
+### _e::constructor( elemName, into )
 
 ```javascript
 this.initAsTag(elemName, into);
@@ -1349,7 +1349,7 @@ if(endFn) this.on("enddrag", endFn);
 
 ```
 
-### constructor( t )
+### ::constructor( t )
 
 ```javascript
 this._touchItems = [];
@@ -1703,7 +1703,7 @@ return o;
 
 ```
 
-### constructor( t )
+### ::constructor( t )
 
 ```javascript
 
@@ -2079,7 +2079,7 @@ this.trigger("hide");
 
 ```
 
-### constructor( t )
+### ::constructor( t )
 
 ```javascript
 if(!_effects) {
@@ -3421,7 +3421,7 @@ var el = this.shortcutFor("img", className, attrs);
 return el;
 ```
 
-### constructor( t )
+### domShortcuts::constructor( t )
 
 ```javascript
 
@@ -4039,7 +4039,7 @@ return {
      };
 ```
 
-### constructor( t )
+### viewsNavis::constructor( t )
 
 ```javascript
 
@@ -4656,7 +4656,7 @@ for(var n in this._view) {
 }
 ```
 
-### constructor( t )
+### mvc_trait::constructor( t )
 
 ```javascript
 
@@ -5198,7 +5198,7 @@ switch(i) {
 return { r: Math.round(r * 255), g: Math.round(g * 255), b: Math.round(b * 255)};
 ```
 
-### constructor( t )
+### ::constructor( t )
 
 ```javascript
 
@@ -5658,7 +5658,7 @@ if(this._dom.focus) this._dom.focus();
 return this._dom;
 ```
 
-### constructor( myDom, host )
+### _qc::constructor( myDom, host )
 
 ```javascript
 this._dom = myDom;
@@ -5798,7 +5798,7 @@ _everies[name] = {
 };
 ```
 
-### constructor( interval, fn )
+### later::constructor( interval, fn )
 
 ```javascript
 if(!_initDone) {
@@ -6166,7 +6166,7 @@ if(_conversions[n]) {
 return str;
 ```
 
-### constructor( cssPostFix )
+### css::constructor( cssPostFix )
 
 ```javascript
 // my rulesets...
@@ -6480,7 +6480,7 @@ _everies[name] = {
 };
 ```
 
-### constructor( interval, fn )
+### later::constructor( interval, fn )
 
 ```javascript
 if(!_initDone) {
@@ -6687,7 +6687,7 @@ else {
 }
 ```
 
-### constructor( name )
+### clipBoard::constructor( name )
 
 ```javascript
 
