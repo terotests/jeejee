@@ -570,11 +570,523 @@ MIT. Currently use at own risk.
 
 
 
+
+
+
+
+
+
+
    
+
+ 
 
 
    
 ## Class _e
+
+
+- [__singleton](README.md#_e___singleton)
+- [_classFactory](README.md#_e__classFactory)
+- [extendAll](README.md#_e_extendAll)
+- [getComponentRegistry](README.md#_e_getComponentRegistry)
+- [getElemNames](README.md#_e_getElemNames)
+
+- [initAsTag](README.md#_e_initAsTag)
+- [initElemNames](README.md#_e_initElemNames)
+- [registerComponent](README.md#_e_registerComponent)
+
+
+
+   
+    
+##### trait Node ordering
+
+- [add](README.md#_add)
+- [addItem](README.md#_addItem)
+- [clear](README.md#_clear)
+- [collectFromDOM](README.md#_collectFromDOM)
+- [insertAfter](README.md#_insertAfter)
+- [insertAt](README.md#_insertAt)
+- [insertBefore](README.md#_insertBefore)
+- [moveDown](README.md#_moveDown)
+- [moveUp](README.md#_moveUp)
+- [parent](README.md#_parent)
+- [prepend](README.md#_prepend)
+- [reIndex](README.md#_reIndex)
+- [remove](README.md#_remove)
+- [removeChild](README.md#_removeChild)
+- [removeChildEvents](README.md#_removeChildEvents)
+- [removeIndexedChild](README.md#_removeIndexedChild)
+- [replaceWith](README.md#_replaceWith)
+
+
+    
+    
+    
+##### trait TouchEvents
+
+- [baconDrag](README.md#_baconDrag)
+- [drag](README.md#_drag)
+- [draggable](README.md#_draggable)
+- [mousePos](README.md#_mousePos)
+- [pauseEvents](README.md#_pauseEvents)
+- [touch](README.md#_touch)
+- [touchclick](README.md#_touchclick)
+- [touchevents](README.md#_touchevents)
+
+
+    
+    
+    
+##### trait Dimensions
+
+- [absolute](README.md#_absolute)
+- [baseZ](README.md#_baseZ)
+- [box](README.md#_box)
+- [height](README.md#_height)
+- [hoverLayer](README.md#_hoverLayer)
+- [offset](README.md#_offset)
+- [pxParam](README.md#_pxParam)
+- [relative](README.md#_relative)
+- [width](README.md#_width)
+- [x](README.md#_x)
+- [y](README.md#_y)
+- [z](README.md#_z)
+
+
+    
+    
+    
+##### trait CSSTransform
+
+- [applyTransforms](README.md#_applyTransforms)
+- [compStyle](README.md#_compStyle)
+- [createEffect](README.md#_createEffect)
+- [css](README.md#_css)
+- [effectIn](README.md#_effectIn)
+- [effectOut](README.md#_effectOut)
+- [hide](README.md#_hide)
+- [show](README.md#_show)
+- [style](README.md#_style)
+- [styleString](README.md#_styleString)
+- [transform](README.md#_transform)
+- [transformOrigin](README.md#_transformOrigin)
+- [transformString](README.md#_transformString)
+
+
+    
+    
+    
+##### trait Table
+
+- [addRow](README.md#_addRow)
+
+
+    
+    
+    
+##### trait Iteration
+
+- [child](README.md#_child)
+- [childCount](README.md#_childCount)
+- [domAttrIterator](README.md#_domAttrIterator)
+- [domIterator](README.md#_domIterator)
+- [forChildren](README.md#_forChildren)
+- [forEach](README.md#_forEach)
+- [searchTree](README.md#_searchTree)
+
+
+    
+    
+    
+##### trait DomClass
+
+- [addClass](README.md#_addClass)
+- [findPostFix](README.md#_findPostFix)
+- [hasClass](README.md#_hasClass)
+- [removeClass](README.md#_removeClass)
+
+
+    
+    
+    
+##### trait events
+
+- [bacon](README.md#_bacon)
+- [bindSysEvent](README.md#_bindSysEvent)
+- [delegate](README.md#_delegate)
+- [emitValue](README.md#_emitValue)
+- [eventBinder](README.md#_eventBinder)
+- [isHovering](README.md#_isHovering)
+- [namedListener](README.md#_namedListener)
+- [on](README.md#_on)
+- [onValue](README.md#_onValue)
+- [removeAllHandlers](README.md#_removeAllHandlers)
+- [removeListener](README.md#_removeListener)
+- [router](README.md#_router)
+- [setRoute](README.md#_setRoute)
+- [trigger](README.md#_trigger)
+- [uniqueListener](README.md#_uniqueListener)
+
+
+    
+    
+    
+##### trait Table
+
+- [bind](README.md#InputHandling_bind)
+- [bindVal](README.md#InputHandling_bindVal)
+- [blur](README.md#InputHandling_blur)
+- [checked](README.md#InputHandling_checked)
+- [clearOptions](README.md#InputHandling_clearOptions)
+- [focus](README.md#InputHandling_focus)
+- [getClipboard](README.md#InputHandling_getClipboard)
+- [localStore](README.md#InputHandling_localStore)
+- [options](README.md#InputHandling_options)
+- [toBacon](README.md#InputHandling_toBacon)
+- [val](README.md#InputHandling_val)
+
+
+    
+    
+    
+    
+    
+##### trait domShortcuts
+
+- [a](README.md#domShortcuts_a)
+- [attr](README.md#domShortcuts_attr)
+- [b](README.md#domShortcuts_b)
+- [button](README.md#domShortcuts_button)
+- [canvas](README.md#domShortcuts_canvas)
+- [checkbox](README.md#domShortcuts_checkbox)
+- [clearCanvas](README.md#domShortcuts_clearCanvas)
+- [ctx](README.md#domShortcuts_ctx)
+- [div](README.md#domShortcuts_div)
+- [form](README.md#domShortcuts_form)
+- [getPixelFn](README.md#domShortcuts_getPixelFn)
+- [h1](README.md#domShortcuts_h1)
+- [h2](README.md#domShortcuts_h2)
+- [h3](README.md#domShortcuts_h3)
+- [h4](README.md#domShortcuts_h4)
+- [img](README.md#domShortcuts_img)
+- [input](README.md#domShortcuts_input)
+- [label](README.md#domShortcuts_label)
+- [li](README.md#domShortcuts_li)
+- [ol](README.md#domShortcuts_ol)
+- [p](README.md#domShortcuts_p)
+- [pre](README.md#domShortcuts_pre)
+- [processPixels](README.md#domShortcuts_processPixels)
+- [row](README.md#domShortcuts_row)
+- [shortcutFor](README.md#domShortcuts_shortcutFor)
+- [span](README.md#domShortcuts_span)
+- [src](README.md#domShortcuts_src)
+- [strong](README.md#domShortcuts_strong)
+- [table](README.md#domShortcuts_table)
+- [textarea](README.md#domShortcuts_textarea)
+- [toDataURL](README.md#domShortcuts_toDataURL)
+- [ul](README.md#domShortcuts_ul)
+
+
+    
+    
+    
+##### trait domContent
+
+- [_setDomText](README.md#domContent__setDomText)
+- [html](README.md#domContent_html)
+- [text](README.md#domContent_text)
+
+
+    
+    
+    
+##### trait viewsNavis
+
+- [contentRouter](README.md#viewsNavis_contentRouter)
+- [createLayout](README.md#viewsNavis_createLayout)
+- [fiddle](README.md#viewsNavis_fiddle)
+- [findViewByName](README.md#viewsNavis_findViewByName)
+- [getLayouts](README.md#viewsNavis_getLayouts)
+- [getRouteObj](README.md#viewsNavis_getRouteObj)
+- [initScreenEvents](README.md#viewsNavis_initScreenEvents)
+- [onMediaChange](README.md#viewsNavis_onMediaChange)
+- [onRoute](README.md#viewsNavis_onRoute)
+- [pageController](README.md#viewsNavis_pageController)
+- [popView](README.md#viewsNavis_popView)
+- [pushTo](README.md#viewsNavis_pushTo)
+- [pushView](README.md#viewsNavis_pushView)
+- [removeControllersFor](README.md#viewsNavis_removeControllersFor)
+- [scrollTo](README.md#viewsNavis_scrollTo)
+- [setLayout](README.md#viewsNavis_setLayout)
+- [viewFactory](README.md#viewsNavis_viewFactory)
+
+
+    
+    
+    
+##### trait mvc_trait
+
+- [createItemView](README.md#mvc_trait_createItemView)
+- [data](README.md#mvc_trait_data)
+- [fromStream](README.md#mvc_trait_fromStream)
+- [getViewFunction](README.md#mvc_trait_getViewFunction)
+- [mvc](README.md#mvc_trait_mvc)
+
+
+    
+    
+    
+##### trait svgShortcuts
+
+- [circle](README.md#svgShortcuts_circle)
+- [defs](README.md#svgShortcuts_defs)
+- [feGaussianBlur](README.md#svgShortcuts_feGaussianBlur)
+- [feMerge](README.md#svgShortcuts_feMerge)
+- [feMergeNode](README.md#svgShortcuts_feMergeNode)
+- [feOffset](README.md#svgShortcuts_feOffset)
+- [filter](README.md#svgShortcuts_filter)
+- [g](README.md#svgShortcuts_g)
+- [image](README.md#svgShortcuts_image)
+- [line](README.md#svgShortcuts_line)
+- [path](README.md#svgShortcuts_path)
+- [rect](README.md#svgShortcuts_rect)
+- [svg](README.md#svgShortcuts_svg)
+- [svg_text](README.md#svgShortcuts_svg_text)
+- [tspan](README.md#svgShortcuts_tspan)
+
+
+    
+    
+    
+##### trait util_fns
+
+- [guid](README.md#util_fns_guid)
+- [isArray](README.md#util_fns_isArray)
+- [isFunction](README.md#util_fns_isFunction)
+- [isObject](README.md#util_fns_isObject)
+- [isStream](README.md#util_fns_isStream)
+- [str](README.md#util_fns_str)
+- [whenLoaded](README.md#util_fns_whenLoaded)
+
+
+    
+    
+    
+    
+    
+    
+    
+##### trait colors_trait
+
+- [colorMix](README.md#_colorMix)
+- [colorToHex](README.md#_colorToHex)
+- [colourNameToHex](README.md#_colourNameToHex)
+- [componentToHex](README.md#_componentToHex)
+- [dim](README.md#_dim)
+- [hexToRgb](README.md#_hexToRgb)
+- [hexToYuv](README.md#_hexToYuv)
+- [hsvToRgb](README.md#_hsvToRgb)
+- [mix](README.md#_mix)
+- [rgbToHex](README.md#_rgbToHex)
+- [rgbToHsv](README.md#_rgbToHsv)
+- [rgbToYuv](README.md#_rgbToYuv)
+- [toRGB](README.md#_toRGB)
+- [toRSpace](README.md#_toRSpace)
+- [yuvConversion](README.md#_yuvConversion)
+- [yuvConversion2](README.md#_yuvConversion2)
+- [yuvPixelConversion](README.md#_yuvPixelConversion)
+- [yuvToRgb](README.md#_yuvToRgb)
+
+
+    
+    
+    
+    
+
+
+   
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+            
+## Class _qc
+
+
+- [attr](README.md#_qc_attr)
+- [bindSysEvent](README.md#_qc_bindSysEvent)
+- [blur](README.md#_qc_blur)
+- [css](README.md#_qc_css)
+- [focus](README.md#_qc_focus)
+- [get](README.md#_qc_get)
+- [pxParam](README.md#_qc_pxParam)
+
+
+
+   
+
+
+   
+
+
+
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+            
+## Class later
+
+
+- [add](README.md#later_add)
+- [after](README.md#later_after)
+- [asap](README.md#later_asap)
+- [every](README.md#later_every)
+- [once](README.md#later_once)
+- [onFrame](README.md#later_onFrame)
+- [polyfill](README.md#later_polyfill)
+- [removeFrameFn](README.md#later_removeFrameFn)
+
+
+
+   
+
+
+   
+
+
+
+      
+    
+      
+            
+## Class css
+
+
+- [_classFactory](README.md#css__classFactory)
+- [animation](README.md#css_animation)
+- [animSettings](README.md#css_animSettings)
+- [assign](README.md#css_assign)
+- [bind](README.md#css_bind)
+- [buildCss](README.md#css_buildCss)
+- [collectAnimationCss](README.md#css_collectAnimationCss)
+- [convert](README.md#css_convert)
+- [initConversions](README.md#css_initConversions)
+- [makeCss](README.md#css_makeCss)
+- [ruleToCss](README.md#css_ruleToCss)
+- [updateStyleTag](README.md#css_updateStyleTag)
+
+
+
+   
+    
+##### trait _dataTrait
+
+- [guid](README.md#_dataTrait_guid)
+- [isArray](README.md#_dataTrait_isArray)
+- [isFunction](README.md#_dataTrait_isFunction)
+- [isObject](README.md#_dataTrait_isObject)
+
+
+    
+    
+    
+    
+
+
+   
+      
+    
+      
+            
+## Class later
+
+
+- [add](README.md#later_add)
+- [after](README.md#later_after)
+- [asap](README.md#later_asap)
+- [every](README.md#later_every)
+- [once](README.md#later_once)
+- [onFrame](README.md#later_onFrame)
+- [polyfill](README.md#later_polyfill)
+- [removeFrameFn](README.md#later_removeFrameFn)
+
+
+
+   
+
+
+   
+
+
+
+      
+    
+
+
+
+      
+    
+      
+    
+      
+            
+## Class clipBoard
+
+
+- [del](README.md#clipBoard_del)
+- [fromClipboard](README.md#clipBoard_fromClipboard)
+- [get](README.md#clipBoard_get)
+- [localStoreSupport](README.md#clipBoard_localStoreSupport)
+- [set](README.md#clipBoard_set)
+- [toClipboard](README.md#clipBoard_toClipboard)
+
+
+
+   
+
+
+   
+
+
+
+      
+    
+
+
+
+
+
+   
+#### Class _e
 
 
 The class has following internal singleton variables:
@@ -598,14 +1110,14 @@ The class has following internal singleton variables:
 * _elemNamesList
         
         
-### _e::__singleton(t)
+### <a name="_e___singleton"></a>_e::__singleton(t)
 
 
 ```javascript
 return _eg;
 ```
 
-### _e::_classFactory(elemName, into)
+### <a name="_e__classFactory"></a>_e::_classFactory(elemName, into)
 
 
 ```javascript
@@ -619,7 +1131,7 @@ if(elemName) {
 
 ```
 
-### _e::extendAll(name, fn)
+### <a name="_e_extendAll"></a>_e::extendAll(name, fn)
 
 
 ```javascript
@@ -639,14 +1151,14 @@ if(!_myTrait_[name]) {
 return this;
 ```
 
-### _e::getComponentRegistry(t)
+### <a name="_e_getComponentRegistry"></a>_e::getComponentRegistry(t)
 
 
 ```javascript
 return _registry;
 ```
 
-### _e::getElemNames(t)
+### <a name="_e_getElemNames"></a>_e::getElemNames(t)
 
 
 ```javascript
@@ -661,7 +1173,7 @@ this.initAsTag(elemName, into);
 
 ```
         
-### _e::initAsTag(elemName, into, force)
+### <a name="_e_initAsTag"></a>_e::initAsTag(elemName, into, force)
 
 
 ```javascript
@@ -782,7 +1294,7 @@ if(!this._component && into) {
 }
 ```
 
-### _e::initElemNames(t)
+### <a name="_e_initElemNames"></a>_e::initElemNames(t)
 
 
 ```javascript
@@ -816,7 +1328,7 @@ _elemNamesList.forEach(function(en) {
 
 ```
 
-### _e::registerComponent(name, classDef)
+### <a name="_e_registerComponent"></a>_e::registerComponent(name, classDef)
 
 
 ```javascript
@@ -830,12 +1342,12 @@ if(!_registry[name]) {
 
    
     
-# trait Node ordering
+## trait Node ordering
 
 The class has following internal singleton variables:
         
         
-### ::add(items)
+### <a name="_add"></a>::add(items)
 
 
 ```javascript
@@ -899,7 +1411,7 @@ items.forEach(  function(e) {
 return this;
 ```
 
-### ::addItem(items)
+### <a name="_addItem"></a>::addItem(items)
 
 
 ```javascript
@@ -908,7 +1420,7 @@ var list = Array.prototype.slice.call(arguments, 0);
 return this.add.apply(this, list);
 ```
 
-### ::clear(t)
+### <a name="_clear"></a>::clear(t)
 
 Removes all the subnodes
 ```javascript
@@ -927,7 +1439,7 @@ while (this._dom.firstChild) {
 return this;
 ```
 
-### ::collectFromDOM(elem)
+### <a name="_collectFromDOM"></a>::collectFromDOM(elem)
 
 
 ```javascript
@@ -969,7 +1481,7 @@ return e;
 
 ```
 
-### ::insertAfter(newItem)
+### <a name="_insertAfter"></a>::insertAfter(newItem)
 
 
 ```javascript
@@ -1013,7 +1525,7 @@ var mDOM = this._dom;
        mDOM.parentNode.insertBefore(pDOM, mDOM.nextSibling);  
 ```
 
-### ::insertAt(i, obj)
+### <a name="_insertAt"></a>::insertAt(i, obj)
 
 
 ```javascript
@@ -1027,7 +1539,7 @@ if(i < this._children.length) {
 
 ```
 
-### ::insertBefore(newItem)
+### <a name="_insertBefore"></a>::insertBefore(newItem)
 `newItem` Item to be inserted
  
 
@@ -1072,7 +1584,7 @@ return this;
 
 ```
 
-### ::moveDown(t)
+### <a name="_moveDown"></a>::moveDown(t)
 
 Moves the node down in the DOM tree
 ```javascript
@@ -1102,7 +1614,7 @@ if(typeof(this._index)!="undefined" && this._parent) {
 }
 ```
 
-### ::moveUp(t)
+### <a name="_moveUp"></a>::moveUp(t)
 
 Moves the node up in the DOM tree
 ```javascript
@@ -1129,14 +1641,14 @@ if(this._index && this._parent) {
 }
 ```
 
-### ::parent(t)
+### <a name="_parent"></a>::parent(t)
 
 
 ```javascript
 return this._parent;
 ```
 
-### ::prepend(items)
+### <a name="_prepend"></a>::prepend(items)
 
 Adds items as the first child of the current node
 ```javascript
@@ -1178,7 +1690,7 @@ items.forEach(  function(e) {
 return this;
 ```
 
-### ::reIndex(t)
+### <a name="_reIndex"></a>::reIndex(t)
 
 
 ```javascript
@@ -1189,7 +1701,7 @@ chList.forEach(function(ch) {
 });
 ```
 
-### ::remove(t)
+### <a name="_remove"></a>::remove(t)
 
 Removes the item from the DOM -tree
 ```javascript
@@ -1207,7 +1719,7 @@ this._children = [];
 this.removeAllHandlers();
 ```
 
-### ::removeChild(o)
+### <a name="_removeChild"></a>::removeChild(o)
 
 Removes a child of the node
 ```javascript
@@ -1224,7 +1736,7 @@ if(this._children) {
 }
 ```
 
-### ::removeChildEvents(t)
+### <a name="_removeChildEvents"></a>::removeChildEvents(t)
 
 
 ```javascript
@@ -1235,7 +1747,7 @@ this.forChildren( function(ch) {
 });
 ```
 
-### ::removeIndexedChild(o)
+### <a name="_removeIndexedChild"></a>::removeIndexedChild(o)
 
 Removes the node from the index, but not from the DOM tree
 ```javascript
@@ -1247,7 +1759,7 @@ if(this._children) {
 }
 ```
 
-### ::replaceWith(elem)
+### <a name="_replaceWith"></a>::replaceWith(elem)
 
 
 ```javascript
@@ -1270,14 +1782,14 @@ if(p) {
     
     
     
-# trait TouchEvents
+## trait TouchEvents
 
 The class has following internal singleton variables:
         
 * _mousePoint
         
         
-### ::baconDrag(opts)
+### <a name="_baconDrag"></a>::baconDrag(opts)
 
 
 ```javascript
@@ -1289,7 +1801,7 @@ return Bacon.fromBinder( function(sink) {
 }); 
 ```
 
-### ::drag(callBack)
+### <a name="_drag"></a>::drag(callBack)
 
 
 ```javascript
@@ -1336,7 +1848,7 @@ this.draggable( function(o,dv) {
 return this;
 ```
 
-### ::draggable(startFn, middleFn, endFn)
+### <a name="_draggable"></a>::draggable(startFn, middleFn, endFn)
 
 Three functions, fired when drag starts, proceeds and ends
 ```javascript
@@ -1355,7 +1867,7 @@ if(endFn) this.on("enddrag", endFn);
 this._touchItems = [];
 ```
         
-### ::mousePos(t)
+### <a name="_mousePos"></a>::mousePos(t)
 
 
 ```javascript
@@ -1374,7 +1886,7 @@ _mousePoint.y = m.y - off.top;
 return _mousePoint;
 ```
 
-### ::pauseEvents(e)
+### <a name="_pauseEvents"></a>::pauseEvents(e)
 
 
 ```javascript
@@ -1388,7 +1900,7 @@ e.returnValue=false;
 return false;
 ```
 
-### ::touch(i)
+### <a name="_touch"></a>::touch(i)
 
 Get touch number i
 ```javascript
@@ -1396,7 +1908,7 @@ return this._touchItems[i];
 
 ```
 
-### ::touchclick(t)
+### <a name="_touchclick"></a>::touchclick(t)
 
 Enables click emulation on touch devices
 ```javascript
@@ -1407,7 +1919,7 @@ this.on("touchstart", function(o,dv) {
 });
 ```
 
-### ::touchevents(t)
+### <a name="_touchevents"></a>::touchevents(t)
 
 Initializes the touch events
 ```javascript
@@ -1540,12 +2052,12 @@ elem.addEventListener("touchend", touchEnd, false);
     
     
     
-# trait Dimensions
+## trait Dimensions
 
 The class has following internal singleton variables:
         
         
-### ::absolute(t)
+### <a name="_absolute"></a>::absolute(t)
 
 Makes the DOM element absolute positioned
 ```javascript
@@ -1557,7 +2069,7 @@ return this;
 
 ```
 
-### ::baseZ(v)
+### <a name="_baseZ"></a>::baseZ(v)
 
 
 ```javascript
@@ -1569,7 +2081,7 @@ if(typeof(this._baseZ)=="undefined") this._baseZ = 0;
 return this._baseZ;
 ```
 
-### ::box(t)
+### <a name="_box"></a>::box(t)
 
 
 ```javascript
@@ -1588,7 +2100,7 @@ try {
 return box;
 ```
 
-### ::height(v)
+### <a name="_height"></a>::height(v)
 
 
 ```javascript
@@ -1635,7 +2147,7 @@ if(typeof(p)!="undefined") {
 return this;
 ```
 
-### ::hoverLayer(preventAll, zIndex)
+### <a name="_hoverLayer"></a>::hoverLayer(preventAll, zIndex)
 
 
 ```javascript
@@ -1709,7 +2221,7 @@ return o;
 
 ```
         
-### ::offset(t)
+### <a name="_offset"></a>::offset(t)
 
 
 ```javascript
@@ -1726,7 +2238,7 @@ return {
 };  
 ```
 
-### ::pxParam(v)
+### <a name="_pxParam"></a>::pxParam(v)
 
 Transform the param into CSS pixel value, like &quot;12px&quot;
 ```javascript
@@ -1740,7 +2252,7 @@ if(typeof(v)=="string") {
 }
 ```
 
-### ::relative(t)
+### <a name="_relative"></a>::relative(t)
 
 Makes the DOM item relatively positioned
 ```javascript
@@ -1750,7 +2262,7 @@ return this;
 
 ```
 
-### ::width(v)
+### <a name="_width"></a>::width(v)
 
 
 ```javascript
@@ -1804,7 +2316,7 @@ if(typeof(p)!="undefined") {
 return this;
 ```
 
-### ::x(v)
+### <a name="_x"></a>::x(v)
 `v` if set, the value of the x
  
 
@@ -1844,7 +2356,7 @@ if(typeof(this._x)=="undefined") this._x = 0;
 return this._x;
 ```
 
-### ::y(v)
+### <a name="_y"></a>::y(v)
 `v` if set, the value of y
  
 
@@ -1883,7 +2395,7 @@ if(typeof(this._y)=="undefined") this._y = 0;
 return this._y;
 ```
 
-### ::z(v)
+### <a name="_z"></a>::z(v)
 `v` if set, the value of z-index
  
 
@@ -1913,14 +2425,14 @@ return this._z;
     
     
     
-# trait CSSTransform
+## trait CSSTransform
 
 The class has following internal singleton variables:
         
 * _effects
         
         
-### ::applyTransforms(tx)
+### <a name="_applyTransforms"></a>::applyTransforms(tx)
 
 
 ```javascript
@@ -1933,7 +2445,7 @@ this.trigger("transform");
 return this;
 ```
 
-### ::compStyle(t)
+### <a name="_compStyle"></a>::compStyle(t)
 
 
 ```javascript
@@ -1947,7 +2459,7 @@ return {
 
 ```
 
-### ::createEffect(name, inPosition, outPosition, options)
+### <a name="_createEffect"></a>::createEffect(name, inPosition, outPosition, options)
 
 
 ```javascript
@@ -1973,7 +2485,7 @@ _effects[name] = options;
 
 ```
 
-### ::css(options)
+### <a name="_css"></a>::css(options)
 
 
 ```javascript
@@ -1988,7 +2500,7 @@ return this._css;
 
 ```
 
-### ::effectIn(name, fn)
+### <a name="_effectIn"></a>::effectIn(name, fn)
 
 
 ```javascript
@@ -2031,7 +2543,7 @@ later().after(options.duration, function() {
 
 ```
 
-### ::effectOut(name, fn)
+### <a name="_effectOut"></a>::effectOut(name, fn)
 
 
 ```javascript
@@ -2069,7 +2581,7 @@ later().after(options.duration, function() {
 }); 
 ```
 
-### ::hide(t)
+### <a name="_hide"></a>::hide(t)
 
 Hides the node from DOM tree
 ```javascript
@@ -2087,7 +2599,7 @@ if(!_effects) {
 }
 ```
         
-### ::show(t)
+### <a name="_show"></a>::show(t)
 
 Shows the node in the DOM tree if not visible
 ```javascript
@@ -2096,7 +2608,7 @@ this.trigger("show");
 
 ```
 
-### ::style(v)
+### <a name="_style"></a>::style(v)
 
 Creates a local CSS style using the css() object
 ```javascript
@@ -2112,7 +2624,7 @@ if(!this._localStyle) {
 return this._localStyle;
 ```
 
-### ::styleString(value)
+### <a name="_styleString"></a>::styleString(value)
 
 
 ```javascript
@@ -2121,7 +2633,7 @@ this._dom.style.cssText = value;
 return this;
 ```
 
-### ::transform(name, value)
+### <a name="_transform"></a>::transform(name, value)
 
 
 ```javascript
@@ -2150,7 +2662,7 @@ this.applyTransforms(tx);
 return this;
 ```
 
-### ::transformOrigin(tx)
+### <a name="_transformOrigin"></a>::transformOrigin(tx)
 
 
 ```javascript
@@ -2163,7 +2675,7 @@ this.trigger("transform-origin");
 return this;
 ```
 
-### ::transformString(t)
+### <a name="_transformString"></a>::transformString(t)
 
 
 ```javascript
@@ -2175,12 +2687,12 @@ return this._transforms.join("");
     
     
     
-# trait Table
+## trait Table
 
 The class has following internal singleton variables:
         
         
-### ::addRow(items)
+### <a name="_addRow"></a>::addRow(items)
 
 adds rows of items into the table, for example tbl.addRow(a,b,c)
 ```javascript
@@ -2214,12 +2726,12 @@ return this;
     
     
     
-# trait Iteration
+## trait Iteration
 
 The class has following internal singleton variables:
         
         
-### ::child(i)
+### <a name="_child"></a>::child(i)
 
 
 ```javascript
@@ -2228,7 +2740,7 @@ if(this._children[i]) {
 }
 ```
 
-### ::childCount(t)
+### <a name="_childCount"></a>::childCount(t)
 
 
 ```javascript
@@ -2236,7 +2748,7 @@ if(!this._children) return 0;
 return this._children.length
 ```
 
-### ::domAttrIterator(elem, fn)
+### <a name="_domAttrIterator"></a>::domAttrIterator(elem, fn)
 
 
 ```javascript
@@ -2252,7 +2764,7 @@ for (var i = 0; i < elem.attributes.length; i++) {
 }
 ```
 
-### ::domIterator(elem, fn, nameSpace)
+### <a name="_domIterator"></a>::domIterator(elem, fn, nameSpace)
 
 
 ```javascript
@@ -2289,7 +2801,7 @@ if(childNodes) {
 
 ```
 
-### ::forChildren(fn)
+### <a name="_forChildren"></a>::forChildren(fn)
 
 Calls function for all the direct children of this node
 ```javascript
@@ -2301,7 +2813,7 @@ if(this._children) {
 }
 ```
 
-### ::forEach(fn)
+### <a name="_forEach"></a>::forEach(fn)
 
 Calls function for all the direct children of this node
 ```javascript
@@ -2312,7 +2824,7 @@ if(this._children)
     });
 ```
 
-### ::searchTree(fn, list)
+### <a name="_searchTree"></a>::searchTree(fn, list)
 
 Returns all the children which return true when given as parameter to function fn.
 ```javascript
@@ -2331,12 +2843,12 @@ return list;
     
     
     
-# trait DomClass
+## trait DomClass
 
 The class has following internal singleton variables:
         
         
-### ::addClass(c)
+### <a name="_addClass"></a>::addClass(c)
 
 
 ```javascript
@@ -2377,7 +2889,7 @@ if(!this._svg) this._dom.className = this._classes.join(" ");
 return this;
 ```
 
-### ::findPostFix(str)
+### <a name="_findPostFix"></a>::findPostFix(str)
 
 
 ```javascript
@@ -2391,7 +2903,7 @@ if(this._myClass) {
 return "";
 ```
 
-### ::hasClass(c)
+### <a name="_hasClass"></a>::hasClass(c)
 
 
 ```javascript
@@ -2400,7 +2912,7 @@ if(this._classes.indexOf(c)>=0) return true;
 return false;
 ```
 
-### ::removeClass(c)
+### <a name="_removeClass"></a>::removeClass(c)
 
 
 ```javascript
@@ -2431,14 +2943,14 @@ return this;
     
     
     
-# trait events
+## trait events
 
 The class has following internal singleton variables:
         
 * _routes
         
         
-### ::bacon(eventName, eventTransformer)
+### <a name="_bacon"></a>::bacon(eventName, eventTransformer)
 
 
 ```javascript
@@ -2447,7 +2959,7 @@ return Bacon.fromEvent(this._dom, eventName, eventTransformer); // (this._dom, e
 
 ```
 
-### ::bindSysEvent(en, fn, stop)
+### <a name="_bindSysEvent"></a>::bindSysEvent(en, fn, stop)
 
 
 ```javascript
@@ -2496,7 +3008,7 @@ if(this._dom.attachEvent) {
 return true;
 ```
 
-### ::delegate(myDelecate)
+### <a name="_delegate"></a>::delegate(myDelecate)
 
 Delegates the events to this object
 ```javascript
@@ -2506,7 +3018,7 @@ this._delegates.push(myDelecate);
 
 ```
 
-### ::emitValue(scope, data)
+### <a name="_emitValue"></a>::emitValue(scope, data)
 
 
 ```javascript
@@ -2524,7 +3036,7 @@ if(this._valueFn && this._valueFn[scope]) {
 }
 ```
 
-### ::eventBinder(dom, eventName, fn, stop)
+### <a name="_eventBinder"></a>::eventBinder(dom, eventName, fn, stop)
 
 
 ```javascript
@@ -2556,7 +3068,7 @@ if(dom.attachEvent) {
 }  
 ```
 
-### ::isHovering(t)
+### <a name="_isHovering"></a>::isHovering(t)
 
 
 ```javascript
@@ -2576,7 +3088,7 @@ if(!this._hoverable) {
 return this._hovering;
 ```
 
-### ::namedListener(name, fn)
+### <a name="_namedListener"></a>::namedListener(name, fn)
 
 
 ```javascript
@@ -2593,7 +3105,7 @@ if(!this._namedListeners) return;
 return this._namedListeners[name];
 ```
 
-### ::on(en, ef)
+### <a name="_on"></a>::on(en, ef)
 `en` Event name
  
 
@@ -2761,7 +3273,7 @@ if(en=="mouseenter") {
 return this;
 ```
 
-### ::onValue(scope, fn)
+### <a name="_onValue"></a>::onValue(scope, fn)
 
 
 ```javascript
@@ -2771,7 +3283,7 @@ if(!this._valueFn) {
 this._valueFn[scope] = fn;
 ```
 
-### ::removeAllHandlers(t)
+### <a name="_removeAllHandlers"></a>::removeAllHandlers(t)
 
 
 ```javascript
@@ -2810,7 +3322,7 @@ if(this._ev) {
 }
 ```
 
-### ::removeListener(eventName, fn)
+### <a name="_removeListener"></a>::removeListener(eventName, fn)
 
 
 ```javascript
@@ -2824,7 +3336,7 @@ if(this._ev && this._ev[eventName]) {
 }
 ```
 
-### ::router(eventName, fn)
+### <a name="_router"></a>::router(eventName, fn)
 
 
 ```javascript
@@ -2841,7 +3353,7 @@ this._dom.addEventListener(eventName, function(event) {
 });
 ```
 
-### ::setRoute(obj, recursive)
+### <a name="_setRoute"></a>::setRoute(obj, recursive)
 
 
 ```javascript
@@ -2857,7 +3369,7 @@ if(recursive) {
 _routes[routeId] = obj;
 ```
 
-### ::trigger(en, data, fn)
+### <a name="_trigger"></a>::trigger(en, data, fn)
 
 triggers event with data and optional function
 ```javascript
@@ -2874,7 +3386,7 @@ this._ev[en].forEach( function(cb) { cb(me, data, fn) } );
 return this;
 ```
 
-### ::uniqueListener(listenerName, fn)
+### <a name="_uniqueListener"></a>::uniqueListener(listenerName, fn)
 
 
 ```javascript
@@ -2891,12 +3403,12 @@ return fn;
     
     
     
-# trait Table
+## trait Table
 
 The class has following internal singleton variables:
         
         
-### InputHandling::bind(obj, varName)
+### <a name="InputHandling_bind"></a>InputHandling::bind(obj, varName)
 
 Binds input value to an object with data
 ```javascript
@@ -3031,7 +3543,7 @@ if(obj) {
 return o;
 ```
 
-### InputHandling::bindVal(v)
+### <a name="InputHandling_bindVal"></a>InputHandling::bindVal(v)
 
 
 ```javascript
@@ -3046,14 +3558,14 @@ this._value = v;
 return this;
 ```
 
-### InputHandling::blur(t)
+### <a name="InputHandling_blur"></a>InputHandling::blur(t)
 
 
 ```javascript
 if(this._dom.blur) this._dom.blur();
 ```
 
-### InputHandling::checked(v)
+### <a name="InputHandling_checked"></a>InputHandling::checked(v)
 
 
 ```javascript
@@ -3075,7 +3587,7 @@ if( (nowOn && !v) || (!nowOn && v) ){
 return this;
 ```
 
-### InputHandling::clearOptions(t)
+### <a name="InputHandling_clearOptions"></a>InputHandling::clearOptions(t)
 
 
 ```javascript
@@ -3087,21 +3599,21 @@ return this;
 }    
 ```
 
-### InputHandling::focus(t)
+### <a name="InputHandling_focus"></a>InputHandling::focus(t)
 
 Focus into this element
 ```javascript
 if(this._dom.focus) this._dom.focus();
 ```
 
-### InputHandling::getClipboard(name)
+### <a name="InputHandling_getClipboard"></a>InputHandling::getClipboard(name)
 
 
 ```javascript
 return clipBoard( name );
 ```
 
-### InputHandling::localStore(withName)
+### <a name="InputHandling_localStore"></a>InputHandling::localStore(withName)
 
 
 ```javascript
@@ -3123,7 +3635,7 @@ this.on("value", function() {
 return this;
 ```
 
-### InputHandling::options(list)
+### <a name="InputHandling_options"></a>InputHandling::options(list)
 
 
 ```javascript
@@ -3187,7 +3699,7 @@ If other, please specify:
 return this;
 ```
 
-### InputHandling::toBacon(transformFn)
+### <a name="InputHandling_toBacon"></a>InputHandling::toBacon(transformFn)
 
 
 ```javascript
@@ -3213,7 +3725,7 @@ return Bacon.fromBinder( function(sink) {
 });
 ```
 
-### InputHandling::val(v)
+### <a name="InputHandling_val"></a>InputHandling::val(v)
 
 Sets or gets the input value
 ```javascript
@@ -3241,14 +3753,14 @@ return this;
     
     
     
-# trait domShortcuts
+## trait domShortcuts
 
 The class has following internal singleton variables:
         
 * _shInit
         
         
-### domShortcuts::a(className, attrs)
+### <a name="domShortcuts_a"></a>domShortcuts::a(className, attrs)
 
 
 ```javascript
@@ -3256,7 +3768,7 @@ var el = this.shortcutFor("a", className, attrs);
 return el;
 ```
 
-### domShortcuts::attr(v, v2)
+### <a name="domShortcuts_attr"></a>domShortcuts::attr(v, v2)
 
 
 ```javascript
@@ -3280,7 +3792,7 @@ if(this.isObject(v)) {
 return this;
 ```
 
-### domShortcuts::b(className, attrs)
+### <a name="domShortcuts_b"></a>domShortcuts::b(className, attrs)
 
 
 ```javascript
@@ -3288,7 +3800,7 @@ var el = this.shortcutFor("b", className, attrs);
 return el;
 ```
 
-### domShortcuts::button(className, attrs)
+### <a name="domShortcuts_button"></a>domShortcuts::button(className, attrs)
 
 
 ```javascript
@@ -3296,7 +3808,7 @@ var el = this.shortcutFor("button", className, attrs);
 return el;
 ```
 
-### domShortcuts::canvas(className, attrs)
+### <a name="domShortcuts_canvas"></a>domShortcuts::canvas(className, attrs)
 
 
 ```javascript
@@ -3305,7 +3817,7 @@ el._canvas = true;
 return el;
 ```
 
-### domShortcuts::checkbox(className, attrs)
+### <a name="domShortcuts_checkbox"></a>domShortcuts::checkbox(className, attrs)
 
 
 ```javascript
@@ -3313,7 +3825,7 @@ var el = this.shortcutFor("checkbox", className, attrs);
 return el;
 ```
 
-### domShortcuts::clearCanvas(t)
+### <a name="domShortcuts_clearCanvas"></a>domShortcuts::clearCanvas(t)
 
 
 ```javascript
@@ -3325,7 +3837,7 @@ ctx.clearRect(0, 0, canvas.width, canvas.height);
 return this;
 ```
 
-### domShortcuts::ctx(t)
+### <a name="domShortcuts_ctx"></a>domShortcuts::ctx(t)
 
 
 ```javascript
@@ -3334,7 +3846,7 @@ if(this._dom.getContext) {
 }
 ```
 
-### domShortcuts::div(className, attrs)
+### <a name="domShortcuts_div"></a>domShortcuts::div(className, attrs)
 
 
 ```javascript
@@ -3342,7 +3854,7 @@ var el = this.shortcutFor("div", className, attrs);
 return el;
 ```
 
-### domShortcuts::form(className, attrs)
+### <a name="domShortcuts_form"></a>domShortcuts::form(className, attrs)
 
 
 ```javascript
@@ -3350,7 +3862,7 @@ var el = this.shortcutFor("form", className, attrs);
 return el;
 ```
 
-### domShortcuts::getPixelFn(pixelData)
+### <a name="domShortcuts_getPixelFn"></a>domShortcuts::getPixelFn(pixelData)
 
 
 ```javascript
@@ -3381,7 +3893,7 @@ return function(x,y) {
 
 ```
 
-### domShortcuts::h1(className, attrs)
+### <a name="domShortcuts_h1"></a>domShortcuts::h1(className, attrs)
 
 
 ```javascript
@@ -3389,7 +3901,7 @@ var el = this.shortcutFor("h1", className, attrs);
 return el;
 ```
 
-### domShortcuts::h2(className, attrs)
+### <a name="domShortcuts_h2"></a>domShortcuts::h2(className, attrs)
 
 
 ```javascript
@@ -3397,7 +3909,7 @@ var el = this.shortcutFor("h2", className, attrs);
 return el;
 ```
 
-### domShortcuts::h3(className, attrs)
+### <a name="domShortcuts_h3"></a>domShortcuts::h3(className, attrs)
 
 
 ```javascript
@@ -3405,7 +3917,7 @@ var el = this.shortcutFor("h3", className, attrs);
 return el;
 ```
 
-### domShortcuts::h4(className, attrs)
+### <a name="domShortcuts_h4"></a>domShortcuts::h4(className, attrs)
 
 
 ```javascript
@@ -3413,7 +3925,7 @@ var el = this.shortcutFor("h4", className, attrs);
 return el;
 ```
 
-### domShortcuts::img(className, attrs)
+### <a name="domShortcuts_img"></a>domShortcuts::img(className, attrs)
 
 
 ```javascript
@@ -3428,7 +3940,7 @@ return el;
 
 ```
         
-### domShortcuts::input(className, attrs)
+### <a name="domShortcuts_input"></a>domShortcuts::input(className, attrs)
 
 
 ```javascript
@@ -3436,7 +3948,7 @@ var el = this.shortcutFor("input", className, attrs);
 return el;
 ```
 
-### domShortcuts::label(className, attrs)
+### <a name="domShortcuts_label"></a>domShortcuts::label(className, attrs)
 
 
 ```javascript
@@ -3444,7 +3956,7 @@ var el = this.shortcutFor("label", className, attrs);
 return el;
 ```
 
-### domShortcuts::li(className, attrs)
+### <a name="domShortcuts_li"></a>domShortcuts::li(className, attrs)
 
 
 ```javascript
@@ -3452,7 +3964,7 @@ var el = this.shortcutFor("li", className, attrs);
 return el;
 ```
 
-### domShortcuts::ol(className, attrs)
+### <a name="domShortcuts_ol"></a>domShortcuts::ol(className, attrs)
 
 
 ```javascript
@@ -3460,7 +3972,7 @@ var el = this.shortcutFor("ol", className, attrs);
 return el;
 ```
 
-### domShortcuts::p(className, attrs)
+### <a name="domShortcuts_p"></a>domShortcuts::p(className, attrs)
 
 
 ```javascript
@@ -3468,7 +3980,7 @@ var el = this.shortcutFor("p", className, attrs);
 return el;
 ```
 
-### domShortcuts::pre(className, attrs)
+### <a name="domShortcuts_pre"></a>domShortcuts::pre(className, attrs)
 
 
 ```javascript
@@ -3476,7 +3988,7 @@ var el = this.shortcutFor("pre", className, attrs);
 return el;
 ```
 
-### domShortcuts::processPixels(fn, pixelData, doNotUpdate)
+### <a name="domShortcuts_processPixels"></a>domShortcuts::processPixels(fn, pixelData, doNotUpdate)
 
 
 ```javascript
@@ -3518,7 +4030,7 @@ if(!doNotUpdate) {
 return pixelData;
 ```
 
-### domShortcuts::row(params)
+### <a name="domShortcuts_row"></a>domShortcuts::row(params)
 
 
 ```javascript
@@ -3533,7 +4045,7 @@ tbl.addRow(args);
 return tbl;
 ```
 
-### domShortcuts::shortcutFor(name, className, attrs)
+### <a name="domShortcuts_shortcutFor"></a>domShortcuts::shortcutFor(name, className, attrs)
 
 
 ```javascript
@@ -3608,7 +4120,7 @@ if(_constr) {
 return el;
 ```
 
-### domShortcuts::span(className, attrs)
+### <a name="domShortcuts_span"></a>domShortcuts::span(className, attrs)
 
 
 ```javascript
@@ -3616,7 +4128,7 @@ var el = this.shortcutFor("span", className, attrs);
 return el;
 ```
 
-### domShortcuts::src(src)
+### <a name="domShortcuts_src"></a>domShortcuts::src(src)
 
 
 ```javascript
@@ -3665,7 +4177,7 @@ this.q.attr("src",src);
 return this;
 ```
 
-### domShortcuts::strong(className, attrs)
+### <a name="domShortcuts_strong"></a>domShortcuts::strong(className, attrs)
 
 
 ```javascript
@@ -3673,7 +4185,7 @@ var el = this.shortcutFor("strong", className, attrs);
 return el;
 ```
 
-### domShortcuts::table(className, attrs)
+### <a name="domShortcuts_table"></a>domShortcuts::table(className, attrs)
 
 
 ```javascript
@@ -3681,7 +4193,7 @@ var el = this.shortcutFor("table", className, attrs);
 return el;
 ```
 
-### domShortcuts::textarea(className, attrs)
+### <a name="domShortcuts_textarea"></a>domShortcuts::textarea(className, attrs)
 
 
 ```javascript
@@ -3689,7 +4201,7 @@ var el = this.shortcutFor("textarea", className, attrs);
 return el;
 ```
 
-### domShortcuts::toDataURL(format, quality)
+### <a name="domShortcuts_toDataURL"></a>domShortcuts::toDataURL(format, quality)
 
 
 ```javascript
@@ -3699,7 +4211,7 @@ if(!quality) quality = 1;
 return this._dom.toDataURL(format || "image/png", quality);
 ```
 
-### domShortcuts::ul(className, attrs)
+### <a name="domShortcuts_ul"></a>domShortcuts::ul(className, attrs)
 
 
 ```javascript
@@ -3711,12 +4223,12 @@ return el;
     
     
     
-# trait domContent
+## trait domContent
 
 The class has following internal singleton variables:
         
         
-### domContent::_setDomText(elem, text)
+### <a name="domContent__setDomText"></a>domContent::_setDomText(elem, text)
 
 
 ```javascript
@@ -3731,7 +4243,7 @@ if( typeof(elem.textContent)!="undefined") {
 }
 ```
 
-### domContent::html(h)
+### <a name="domContent_html"></a>domContent::html(h)
 
 
 ```javascript
@@ -3767,7 +4279,7 @@ this._dom.innerHTML = h;
 return this;
 ```
 
-### domContent::text(t)
+### <a name="domContent_text"></a>domContent::text(t)
 
 
 ```javascript
@@ -3878,7 +4390,7 @@ return this;
     
     
     
-# trait viewsNavis
+## trait viewsNavis
 
 The class has following internal singleton variables:
         
@@ -3913,7 +4425,7 @@ The class has following internal singleton variables:
 * _viewCache
         
         
-### viewsNavis::contentRouter(name, fn)
+### <a name="viewsNavis_contentRouter"></a>viewsNavis::contentRouter(name, fn)
 
 
 ```javascript
@@ -3926,7 +4438,7 @@ if(this.isFunction(name)) {
 }
 ```
 
-### viewsNavis::createLayout(name, fn)
+### <a name="viewsNavis_createLayout"></a>viewsNavis::createLayout(name, fn)
 
 
 ```javascript
@@ -3941,7 +4453,7 @@ _viewStructures[name] = {
 }
 ```
 
-### viewsNavis::fiddle(options)
+### <a name="viewsNavis_fiddle"></a>viewsNavis::fiddle(options)
 
 
 ```javascript
@@ -3989,7 +4501,7 @@ iframe.width(options.width || 800).height(options.height || 600);
 return this;
 ```
 
-### viewsNavis::findViewByName(name, layout)
+### <a name="viewsNavis_findViewByName"></a>viewsNavis::findViewByName(name, layout)
 
 
 ```javascript
@@ -4011,14 +4523,14 @@ if(layout.hasClass(name)) {
 }
 ```
 
-### viewsNavis::getLayouts(t)
+### <a name="viewsNavis_getLayouts"></a>viewsNavis::getLayouts(t)
 
 
 ```javascript
 return _viewStructures;
 ```
 
-### viewsNavis::getRouteObj(t)
+### <a name="viewsNavis_getRouteObj"></a>viewsNavis::getRouteObj(t)
 
 
 ```javascript
@@ -4092,7 +4604,7 @@ if(!_eventState) {
 }
 ```
         
-### viewsNavis::initScreenEvents(t)
+### <a name="viewsNavis_initScreenEvents"></a>viewsNavis::initScreenEvents(t)
 
 
 ```javascript
@@ -4189,7 +4701,7 @@ if(window.matchMedia) {
 }
 ```
 
-### viewsNavis::onMediaChange(fn)
+### <a name="viewsNavis_onMediaChange"></a>viewsNavis::onMediaChange(fn)
 
 
 ```javascript
@@ -4197,7 +4709,7 @@ if(window.matchMedia) {
 _mediaListeners.push(fn);
 ```
 
-### viewsNavis::onRoute(fn)
+### <a name="viewsNavis_onRoute"></a>viewsNavis::onRoute(fn)
 
 
 ```javascript
@@ -4211,7 +4723,7 @@ later().add(
 
 ```
 
-### viewsNavis::pageController(page, controllerObj)
+### <a name="viewsNavis_pageController"></a>viewsNavis::pageController(page, controllerObj)
 
 
 ```javascript
@@ -4228,7 +4740,7 @@ if(_ctrlObjs.indexOf( this ) < 0) {
 };
 ```
 
-### viewsNavis::popView(toView)
+### <a name="viewsNavis_popView"></a>viewsNavis::popView(toView)
 
 
 ```javascript
@@ -4298,7 +4810,7 @@ cont.forChildren(function(ch) {
 
 ```
 
-### viewsNavis::pushTo(name, factoryName, paramName)
+### <a name="viewsNavis_pushTo"></a>viewsNavis::pushTo(name, factoryName, paramName)
 
 
 ```javascript
@@ -4351,7 +4863,7 @@ if(!this._activeLayout) {
 
 ```
 
-### viewsNavis::pushView(newView, params, oldViewHolder)
+### <a name="viewsNavis_pushView"></a>viewsNavis::pushView(newView, params, oldViewHolder)
 
 
 ```javascript
@@ -4458,7 +4970,7 @@ _eventState.pushing = false;
 return this;
 ```
 
-### viewsNavis::removeControllersFor(o)
+### <a name="viewsNavis_removeControllersFor"></a>viewsNavis::removeControllersFor(o)
 
 
 ```javascript
@@ -4469,7 +4981,7 @@ if(i>=0) {
 }
 ```
 
-### viewsNavis::scrollTo(noThing)
+### <a name="viewsNavis_scrollTo"></a>viewsNavis::scrollTo(noThing)
 `noThing` Not a param
  
 
@@ -4490,7 +5002,7 @@ if(window) {
 }
 ```
 
-### viewsNavis::setLayout(name)
+### <a name="viewsNavis_setLayout"></a>viewsNavis::setLayout(name)
 
 
 ```javascript
@@ -4542,7 +5054,7 @@ if(_viewStructures && _viewStructures[name]) {
 }
 ```
 
-### viewsNavis::viewFactory(name, fn)
+### <a name="viewsNavis_viewFactory"></a>viewsNavis::viewFactory(name, fn)
 
 
 ```javascript
@@ -4556,7 +5068,7 @@ _viewFactory[name] = fn;
     
     
     
-# trait mvc_trait
+## trait mvc_trait
 
 The class has following internal singleton variables:
         
@@ -4575,7 +5087,7 @@ The class has following internal singleton variables:
 * _customDirectives
         
         
-### mvc_trait::createItemView(item)
+### <a name="mvc_trait_createItemView"></a>mvc_trait::createItemView(item)
 
 
 ```javascript
@@ -4606,7 +5118,7 @@ if(vf) {
 return newView;
 ```
 
-### mvc_trait::data(v)
+### <a name="mvc_trait_data"></a>mvc_trait::data(v)
 
 
 ```javascript
@@ -4617,7 +5129,7 @@ if(typeof(v) != "undefined") {
 return this.__mdata;
 ```
 
-### mvc_trait::fromStream(stream, viewFn)
+### <a name="mvc_trait_fromStream"></a>mvc_trait::fromStream(stream, viewFn)
 
 
 ```javascript
@@ -4633,7 +5145,7 @@ stream.onValue( function(data) {
 });
 ```
 
-### mvc_trait::getViewFunction(item)
+### <a name="mvc_trait_getViewFunction"></a>mvc_trait::getViewFunction(item)
 
 
 ```javascript
@@ -4662,7 +5174,7 @@ for(var n in this._view) {
 
 ```
         
-### mvc_trait::mvc(model, view, controller)
+### <a name="mvc_trait_mvc"></a>mvc_trait::mvc(model, view, controller)
 
 
 ```javascript
@@ -4763,12 +5275,12 @@ return this;
     
     
     
-# trait svgShortcuts
+## trait svgShortcuts
 
 The class has following internal singleton variables:
         
         
-### svgShortcuts::circle(className, attrs)
+### <a name="svgShortcuts_circle"></a>svgShortcuts::circle(className, attrs)
 
 
 ```javascript
@@ -4776,7 +5288,7 @@ var el = this.shortcutFor("circle", className, attrs);
 return el;
 ```
 
-### svgShortcuts::defs(className, attrs)
+### <a name="svgShortcuts_defs"></a>svgShortcuts::defs(className, attrs)
 
 
 ```javascript
@@ -4784,7 +5296,7 @@ var el = this.shortcutFor("defs", className, attrs);
 return el;
 ```
 
-### svgShortcuts::feGaussianBlur(className, attrs)
+### <a name="svgShortcuts_feGaussianBlur"></a>svgShortcuts::feGaussianBlur(className, attrs)
 
 
 ```javascript
@@ -4792,7 +5304,7 @@ var el = this.shortcutFor("feGaussianBlur", className, attrs);
 return el;
 ```
 
-### svgShortcuts::feMerge(className, attrs)
+### <a name="svgShortcuts_feMerge"></a>svgShortcuts::feMerge(className, attrs)
 
 
 ```javascript
@@ -4800,7 +5312,7 @@ var el = this.shortcutFor("feMerge", className, attrs);
 return el;
 ```
 
-### svgShortcuts::feMergeNode(className, attrs)
+### <a name="svgShortcuts_feMergeNode"></a>svgShortcuts::feMergeNode(className, attrs)
 
 
 ```javascript
@@ -4808,7 +5320,7 @@ var el = this.shortcutFor("feMergeNode", className, attrs);
 return el;
 ```
 
-### svgShortcuts::feOffset(className, attrs)
+### <a name="svgShortcuts_feOffset"></a>svgShortcuts::feOffset(className, attrs)
 
 
 ```javascript
@@ -4816,7 +5328,7 @@ var el = this.shortcutFor("feOffset", className, attrs);
 return el;
 ```
 
-### svgShortcuts::filter(className, attrs)
+### <a name="svgShortcuts_filter"></a>svgShortcuts::filter(className, attrs)
 
 
 ```javascript
@@ -4824,7 +5336,7 @@ var el = this.shortcutFor("filter", className, attrs);
 return el;
 ```
 
-### svgShortcuts::g(className, attrs)
+### <a name="svgShortcuts_g"></a>svgShortcuts::g(className, attrs)
 
 
 ```javascript
@@ -4832,7 +5344,7 @@ var el = this.shortcutFor("g", className, attrs);
 return el;
 ```
 
-### svgShortcuts::image(className, attrs)
+### <a name="svgShortcuts_image"></a>svgShortcuts::image(className, attrs)
 
 
 ```javascript
@@ -4840,7 +5352,7 @@ var el = this.shortcutFor("image", className, attrs);
 return el;
 ```
 
-### svgShortcuts::line(className, attrs)
+### <a name="svgShortcuts_line"></a>svgShortcuts::line(className, attrs)
 
 
 ```javascript
@@ -4848,7 +5360,7 @@ var el = this.shortcutFor("line", className, attrs);
 return el;
 ```
 
-### svgShortcuts::path(className, attrs)
+### <a name="svgShortcuts_path"></a>svgShortcuts::path(className, attrs)
 
 
 ```javascript
@@ -4856,7 +5368,7 @@ var el = this.shortcutFor("path", className, attrs);
 return el;
 ```
 
-### svgShortcuts::rect(className, attrs)
+### <a name="svgShortcuts_rect"></a>svgShortcuts::rect(className, attrs)
 
 
 ```javascript
@@ -4864,7 +5376,7 @@ var el = this.shortcutFor("rect", className, attrs);
 return el;
 ```
 
-### svgShortcuts::svg(className, attrs, none)
+### <a name="svgShortcuts_svg"></a>svgShortcuts::svg(className, attrs, none)
 
 
 ```javascript
@@ -4872,7 +5384,7 @@ var el = this.shortcutFor("svg", className, attrs);
 return el;
 ```
 
-### svgShortcuts::svg_text(className, attrs)
+### <a name="svgShortcuts_svg_text"></a>svgShortcuts::svg_text(className, attrs)
 
 
 ```javascript
@@ -4880,7 +5392,7 @@ var el = this.shortcutFor("text", className, attrs);
 return el;
 ```
 
-### svgShortcuts::tspan(className, attrs)
+### <a name="svgShortcuts_tspan"></a>svgShortcuts::tspan(className, attrs)
 
 
 ```javascript
@@ -4892,12 +5404,12 @@ return el;
     
     
     
-# trait util_fns
+## trait util_fns
 
 The class has following internal singleton variables:
         
         
-### util_fns::guid(t)
+### <a name="util_fns_guid"></a>util_fns::guid(t)
 
 
 ```javascript
@@ -4905,28 +5417,28 @@ return Math.random().toString(36).substring(2, 15) +
         Math.random().toString(36).substring(2, 15);
 ```
 
-### util_fns::isArray(someVar)
+### <a name="util_fns_isArray"></a>util_fns::isArray(someVar)
 
 
 ```javascript
 return Object.prototype.toString.call( someVar ) === '[object Array]';
 ```
 
-### util_fns::isFunction(fn)
+### <a name="util_fns_isFunction"></a>util_fns::isFunction(fn)
 
 
 ```javascript
 return Object.prototype.toString.call(fn) == '[object Function]';
 ```
 
-### util_fns::isObject(obj)
+### <a name="util_fns_isObject"></a>util_fns::isObject(obj)
 
 
 ```javascript
 return obj === Object(obj);
 ```
 
-### util_fns::isStream(obj)
+### <a name="util_fns_isStream"></a>util_fns::isStream(obj)
 
 
 ```javascript
@@ -4946,7 +5458,7 @@ if(typeof(Bacon) !="undefined") {
 return false;
 ```
 
-### util_fns::str(params)
+### <a name="util_fns_str"></a>util_fns::str(params)
 
 
 ```javascript
@@ -4995,7 +5507,7 @@ return Bacon.fromBinder(function(sink) {
 
 ```
 
-### util_fns::whenLoaded(imgList, fn)
+### <a name="util_fns_whenLoaded"></a>util_fns::whenLoaded(imgList, fn)
 
 
 ```javascript
@@ -5023,14 +5535,14 @@ if(imgList.length==0) fn([]);
     
     
     
-# trait colors_trait
+## trait colors_trait
 
 The class has following internal singleton variables:
         
 * colors
         
         
-### ::colorMix(c1, c2, t)
+### <a name="_colorMix"></a>::colorMix(c1, c2, t)
 
 
 ```javascript
@@ -5049,7 +5561,7 @@ var res = this.yuvConversion2(from,to, function(y1,y2) {
 return res;
 ```
 
-### ::colorToHex(color)
+### <a name="_colorToHex"></a>::colorToHex(color)
 
 
 ```javascript
@@ -5066,7 +5578,7 @@ var rgb = blue | (green << 8) | (red << 16);
 return digits[1] + '#' + rgb.toString(16);
 ```
 
-### ::colourNameToHex(colour)
+### <a name="_colourNameToHex"></a>::colourNameToHex(colour)
 
 
 ```javascript
@@ -5077,7 +5589,7 @@ if (typeof colors[colour.toLowerCase()] != 'undefined')
 return false;
 ```
 
-### ::componentToHex(c)
+### <a name="_componentToHex"></a>::componentToHex(c)
 
 
 ```javascript
@@ -5086,7 +5598,7 @@ var hex = c.toString(16);
 return hex.length == 1 ? "0" + hex : hex;
 ```
 
-### ::dim(colorName, brightness)
+### <a name="_dim"></a>::dim(colorName, brightness)
 
 
 ```javascript
@@ -5096,7 +5608,7 @@ return this.yuvConversion( colorName, function(yuv) {
     });
 ```
 
-### ::hexToRgb(hex)
+### <a name="_hexToRgb"></a>::hexToRgb(hex)
 
 
 ```javascript
@@ -5117,7 +5629,7 @@ return {
 }
 ```
 
-### ::hexToYuv(hexVal)
+### <a name="_hexToYuv"></a>::hexToYuv(hexVal)
 
 
 ```javascript
@@ -5125,7 +5637,7 @@ var me = this;
 return me.rgbToYuv( me.toRGB(hexVal) );
 ```
 
-### ::hsvToRgb(c)
+### <a name="_hsvToRgb"></a>::hsvToRgb(c)
 
 
 ```javascript
@@ -5230,7 +5742,7 @@ if(!colors) {
     }
 ```
         
-### ::mix(c1, c2, amount)
+### <a name="_mix"></a>::mix(c1, c2, amount)
 
 
 ```javascript
@@ -5246,7 +5758,7 @@ return this.yuvConversion2( c1,c2, function(y1,y2) {
 })
 ```
 
-### ::rgbToHex(p)
+### <a name="_rgbToHex"></a>::rgbToHex(p)
 
 
 ```javascript
@@ -5254,7 +5766,7 @@ var me = this;
 return "#" + me.componentToHex(p.r) + me.componentToHex(p.g) + me.componentToHex(p.b);
 ```
 
-### ::rgbToHsv(c)
+### <a name="_rgbToHsv"></a>::rgbToHsv(c)
 
 
 ```javascript
@@ -5297,7 +5809,7 @@ return {
 };
 ```
 
-### ::rgbToYuv(c)
+### <a name="_rgbToYuv"></a>::rgbToYuv(c)
 
 
 ```javascript
@@ -5309,7 +5821,7 @@ return { y : 0.299 * R + 0.587 * G + 0.114 * B,
          v:  0.615 * R - 0.51499*G - 0.10001*B  }
 ```
 
-### ::toRGB(c)
+### <a name="_toRGB"></a>::toRGB(c)
 
 
 ```javascript
@@ -5323,14 +5835,14 @@ if(!hex) {
 return me.hexToRgb(hex);
 ```
 
-### ::toRSpace(v)
+### <a name="_toRSpace"></a>::toRSpace(v)
 
 
 ```javascript
 return Math.max(0, Math.min(255, Math.round(v)));
 ```
 
-### ::yuvConversion(c, fn)
+### <a name="_yuvConversion"></a>::yuvConversion(c, fn)
 
 
 ```javascript
@@ -5341,7 +5853,7 @@ var rgb = me.yuvToRgb( yuv );
 return me.rgbToHex( rgb );
 ```
 
-### ::yuvConversion2(c1, c2, fn)
+### <a name="_yuvConversion2"></a>::yuvConversion2(c1, c2, fn)
 
 
 ```javascript
@@ -5353,7 +5865,7 @@ var rgb = me.yuvToRgb( yuv );
 return me.rgbToHex( rgb );
 ```
 
-### ::yuvPixelConversion(c, fn)
+### <a name="_yuvPixelConversion"></a>::yuvPixelConversion(c, fn)
 
 
 ```javascript
@@ -5366,7 +5878,7 @@ c.b = rgb.b;
 return c;
 ```
 
-### ::yuvToRgb(c)
+### <a name="_yuvToRgb"></a>::yuvToRgb(c)
 
 
 ```javascript
@@ -5407,13 +5919,13 @@ return {    r : this.toRSpace(255*(Y+ 0 * U + 1.13983 * V)),
     
       
             
-## Class _qc
+#### Class _qc
 
 
 The class has following internal singleton variables:
         
         
-### _qc::attr(n, v)
+### <a name="_qc_attr"></a>_qc::attr(n, v)
 
 
 ```javascript
@@ -5572,7 +6084,7 @@ if(typeof(v)!="undefined" && isNaN(n) )
 return this;
 ```
 
-### _qc::bindSysEvent(en, fn, stop)
+### <a name="_qc_bindSysEvent"></a>_qc::bindSysEvent(en, fn, stop)
 
 
 ```javascript
@@ -5612,14 +6124,14 @@ if(this._dom.attachEvent) {
 return true;
 ```
 
-### _qc::blur(t)
+### <a name="_qc_blur"></a>_qc::blur(t)
 
 
 ```javascript
 if(this._dom.blur) this._dom.blur();
 ```
 
-### _qc::css(n, v)
+### <a name="_qc_css"></a>_qc::css(n, v)
 
 
 ```javascript
@@ -5644,14 +6156,14 @@ this._dom.style[n] = v;
 return this;
 ```
 
-### _qc::focus(t)
+### <a name="_qc_focus"></a>_qc::focus(t)
 
 
 ```javascript
 if(this._dom.focus) this._dom.focus();
 ```
 
-### _qc::get(index)
+### <a name="_qc_get"></a>_qc::get(index)
 
 
 ```javascript
@@ -5665,7 +6177,7 @@ this._dom = myDom;
 this._host = host;
 ```
         
-### _qc::pxParam(v)
+### <a name="_qc_pxParam"></a>_qc::pxParam(v)
 
 
 ```javascript
@@ -5723,7 +6235,7 @@ if(typeof(v)=="string") {
     
       
             
-## Class later
+#### Class later
 
 
 The class has following internal singleton variables:
@@ -5739,7 +6251,7 @@ The class has following internal singleton variables:
 * _framers
         
         
-### later::add(fn, thisObj, args)
+### <a name="later_add"></a>later::add(fn, thisObj, args)
 
 
 ```javascript
@@ -5757,7 +6269,7 @@ if(thisObj || args) {
 }
 ```
 
-### later::after(seconds, fn, name)
+### <a name="later_after"></a>later::after(seconds, fn, name)
 
 
 ```javascript
@@ -5774,7 +6286,7 @@ _everies[name] = {
 };
 ```
 
-### later::asap(fn)
+### <a name="later_asap"></a>later::asap(fn)
 
 
 ```javascript
@@ -5782,7 +6294,7 @@ this.add(fn);
 
 ```
 
-### later::every(seconds, fn, name)
+### <a name="later_every"></a>later::every(seconds, fn, name)
 
 
 ```javascript
@@ -5891,7 +6403,7 @@ if(!_initDone) {
 }
 ```
         
-### later::once(key, fn, value)
+### <a name="later_once"></a>later::once(key, fn, value)
 
 
 ```javascript
@@ -5900,7 +6412,7 @@ if(!_initDone) {
 _oneTimers[key] = [fn,value];
 ```
 
-### later::onFrame(fn)
+### <a name="later_onFrame"></a>later::onFrame(fn)
 
 
 ```javascript
@@ -5908,14 +6420,14 @@ _oneTimers[key] = [fn,value];
 _framers.push(fn);
 ```
 
-### later::polyfill(t)
+### <a name="later_polyfill"></a>later::polyfill(t)
 
 
 ```javascript
 // --- let's not ---
 ```
 
-### later::removeFrameFn(fn)
+### <a name="later_removeFrameFn"></a>later::removeFrameFn(fn)
 
 
 ```javascript
@@ -5945,7 +6457,7 @@ if(i>=0) {
     
       
             
-## Class css
+#### Class css
 
 
 The class has following internal singleton variables:
@@ -5965,7 +6477,7 @@ The class has following internal singleton variables:
 * _insInit
         
         
-### css::_classFactory(id)
+### <a name="css__classFactory"></a>css::_classFactory(id)
 
 
 ```javascript
@@ -5981,7 +6493,7 @@ if(!_instances) {
 }
 ```
 
-### css::animation(animName, settings)
+### <a name="css_animation"></a>css::animation(animName, settings)
 
 
 ```javascript
@@ -6022,7 +6534,7 @@ if(this.isObject(settings)) {
 
 ```
 
-### css::animSettings(obj)
+### <a name="css_animSettings"></a>css::animSettings(obj)
 
 
 ```javascript
@@ -6040,7 +6552,7 @@ if(this.isObject(obj)) {
 }
 ```
 
-### css::assign(objectList)
+### <a name="css_assign"></a>css::assign(objectList)
 
 
 ```javascript
@@ -6061,7 +6573,7 @@ return o;
 
 ```
 
-### css::bind(t)
+### <a name="css_bind"></a>css::bind(t)
 
 
 ```javascript
@@ -6076,7 +6588,7 @@ return this;
 
 ```
 
-### css::buildCss(mediaRule)
+### <a name="css_buildCss"></a>css::buildCss(mediaRule)
 
 
 ```javascript
@@ -6098,7 +6610,7 @@ if(this._data) {
 
 ```
 
-### css::collectAnimationCss(t)
+### <a name="css_collectAnimationCss"></a>css::collectAnimationCss(t)
 
 
 ```javascript
@@ -6112,7 +6624,7 @@ for(var n in anims) {
 return str;
 ```
 
-### css::convert(n, v)
+### <a name="css_convert"></a>css::convert(n, v)
 
 
 ```javascript
@@ -6202,7 +6714,7 @@ if(!_insInit[id]) {
 
 ```
         
-### css::initConversions(t)
+### <a name="css_initConversions"></a>css::initConversions(t)
 
 
 ```javascript
@@ -6294,7 +6806,7 @@ bexp2 = function(p, v) {
 
 ```
 
-### css::makeCss(o, mediaRule)
+### <a name="css_makeCss"></a>css::makeCss(o, mediaRule)
 
 
 ```javascript
@@ -6314,7 +6826,7 @@ str += mediaRule ? "}\n" : "";
 return str;
 ```
 
-### css::ruleToCss(cssRulesObj)
+### <a name="css_ruleToCss"></a>css::ruleToCss(cssRulesObj)
 
 
 ```javascript
@@ -6326,7 +6838,7 @@ str += "}\n";
 return str;
 ```
 
-### css::updateStyleTag(cssText)
+### <a name="css_updateStyleTag"></a>css::updateStyleTag(cssText)
 
 
 ```javascript
@@ -6351,12 +6863,12 @@ if (styleTag.styleSheet) {   // IE
 
    
     
-# trait _dataTrait
+## trait _dataTrait
 
 The class has following internal singleton variables:
         
         
-### _dataTrait::guid(t)
+### <a name="_dataTrait_guid"></a>_dataTrait::guid(t)
 
 
 ```javascript
@@ -6366,7 +6878,7 @@ return Math.random().toString(36).substring(2, 15) +
 
 ```
 
-### _dataTrait::isArray(t)
+### <a name="_dataTrait_isArray"></a>_dataTrait::isArray(t)
 
 
 ```javascript
@@ -6376,14 +6888,14 @@ if(typeof(t)=="undefined") return this.__isA;
 return Object.prototype.toString.call( t ) === '[object Array]';
 ```
 
-### _dataTrait::isFunction(fn)
+### <a name="_dataTrait_isFunction"></a>_dataTrait::isFunction(fn)
 
 
 ```javascript
 return Object.prototype.toString.call(fn) == '[object Function]';
 ```
 
-### _dataTrait::isObject(t)
+### <a name="_dataTrait_isObject"></a>_dataTrait::isObject(t)
 
 
 ```javascript
@@ -6405,7 +6917,7 @@ return t === Object(t);
     
       
             
-## Class later
+#### Class later
 
 
 The class has following internal singleton variables:
@@ -6421,7 +6933,7 @@ The class has following internal singleton variables:
 * _framers
         
         
-### later::add(fn, thisObj, args)
+### <a name="later_add"></a>later::add(fn, thisObj, args)
 
 
 ```javascript
@@ -6439,7 +6951,7 @@ if(thisObj || args) {
 }
 ```
 
-### later::after(seconds, fn, name)
+### <a name="later_after"></a>later::after(seconds, fn, name)
 
 
 ```javascript
@@ -6456,7 +6968,7 @@ _everies[name] = {
 };
 ```
 
-### later::asap(fn)
+### <a name="later_asap"></a>later::asap(fn)
 
 
 ```javascript
@@ -6464,7 +6976,7 @@ this.add(fn);
 
 ```
 
-### later::every(seconds, fn, name)
+### <a name="later_every"></a>later::every(seconds, fn, name)
 
 
 ```javascript
@@ -6573,7 +7085,7 @@ if(!_initDone) {
 }
 ```
         
-### later::once(key, fn, value)
+### <a name="later_once"></a>later::once(key, fn, value)
 
 
 ```javascript
@@ -6582,7 +7094,7 @@ if(!_initDone) {
 _oneTimers[key] = [fn,value];
 ```
 
-### later::onFrame(fn)
+### <a name="later_onFrame"></a>later::onFrame(fn)
 
 
 ```javascript
@@ -6590,14 +7102,14 @@ _oneTimers[key] = [fn,value];
 _framers.push(fn);
 ```
 
-### later::polyfill(t)
+### <a name="later_polyfill"></a>later::polyfill(t)
 
 
 ```javascript
 // --- let's not ---
 ```
 
-### later::removeFrameFn(fn)
+### <a name="later_removeFrameFn"></a>later::removeFrameFn(fn)
 
 
 ```javascript
@@ -6634,7 +7146,7 @@ if(i>=0) {
     
       
             
-## Class clipBoard
+#### Class clipBoard
 
 
 The class has following internal singleton variables:
@@ -6642,7 +7154,7 @@ The class has following internal singleton variables:
 * _hasSupport
         
         
-### clipBoard::del(name)
+### <a name="clipBoard_del"></a>clipBoard::del(name)
 
 
 ```javascript
@@ -6656,7 +7168,7 @@ else {
 
 ```
 
-### clipBoard::fromClipboard(opts)
+### <a name="clipBoard_fromClipboard"></a>clipBoard::fromClipboard(opts)
 
 
 ```javascript
@@ -6667,7 +7179,7 @@ var o = JSON.parse( str );
 return o;
 ```
 
-### clipBoard::get(name)
+### <a name="clipBoard_get"></a>clipBoard::get(name)
 
 
 ```javascript
@@ -6694,7 +7206,7 @@ else {
 this._name = name;
 ```
         
-### clipBoard::localStoreSupport(t)
+### <a name="clipBoard_localStoreSupport"></a>clipBoard::localStoreSupport(t)
 
 
 ```javascript
@@ -6708,7 +7220,7 @@ try {
 }
 ```
 
-### clipBoard::set(name, value, days)
+### <a name="clipBoard_set"></a>clipBoard::set(name, value, days)
 
 
 ```javascript
@@ -6729,7 +7241,7 @@ else {
 }
 ```
 
-### clipBoard::toClipboard(items)
+### <a name="clipBoard_toClipboard"></a>clipBoard::toClipboard(items)
 
 
 ```javascript
