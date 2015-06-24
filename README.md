@@ -583,7 +583,7 @@ MIT. Currently use at own risk.
 
 
    
-## Class _e
+#### Class _e
 
 
 - [__singleton](README.md#_e___singleton)
@@ -927,7 +927,7 @@ MIT. Currently use at own risk.
     
       
             
-## Class _qc
+#### Class _qc
 
 
 - [attr](README.md#_qc_attr)
@@ -963,7 +963,7 @@ MIT. Currently use at own risk.
     
       
             
-## Class later
+#### Class later
 
 
 - [add](README.md#later_add)
@@ -988,7 +988,7 @@ MIT. Currently use at own risk.
     
       
             
-## Class css
+#### Class css
 
 
 - [_classFactory](README.md#css__classFactory)
@@ -1027,7 +1027,7 @@ MIT. Currently use at own risk.
     
       
             
-## Class later
+#### Class later
 
 
 - [add](README.md#later_add)
@@ -1059,7 +1059,7 @@ MIT. Currently use at own risk.
     
       
             
-## Class clipBoard
+#### Class clipBoard
 
 
 - [del](README.md#clipBoard_del)
@@ -1086,7 +1086,7 @@ MIT. Currently use at own risk.
 
 
    
-#### Class _e
+# Class _e
 
 
 The class has following internal singleton variables:
@@ -5919,7 +5919,7 @@ return {    r : this.toRSpace(255*(Y+ 0 * U + 1.13983 * V)),
     
       
             
-#### Class _qc
+# Class _qc
 
 
 The class has following internal singleton variables:
@@ -6235,7 +6235,7 @@ if(typeof(v)=="string") {
     
       
             
-#### Class later
+# Class later
 
 
 The class has following internal singleton variables:
@@ -6457,7 +6457,7 @@ if(i>=0) {
     
       
             
-#### Class css
+# Class css
 
 
 The class has following internal singleton variables:
@@ -6917,7 +6917,7 @@ return t === Object(t);
     
       
             
-#### Class later
+# Class later
 
 
 The class has following internal singleton variables:
@@ -7146,7 +7146,7 @@ if(i>=0) {
     
       
             
-#### Class clipBoard
+# Class clipBoard
 
 
 The class has following internal singleton variables:
