@@ -598,14 +598,14 @@ The class has following internal singleton variables:
 * _elemNamesList
         
         
-### __singleton(t)
+### _e.__singleton(t)
 
 
 ```javascript
 return _eg;
 ```
 
-### _classFactory(elemName, into)
+### _e._classFactory(elemName, into)
 
 
 ```javascript
@@ -619,7 +619,7 @@ if(elemName) {
 
 ```
 
-### extendAll(name, fn)
+### _e.extendAll(name, fn)
 
 
 ```javascript
@@ -639,14 +639,14 @@ if(!_myTrait_[name]) {
 return this;
 ```
 
-### getComponentRegistry(t)
+### _e.getComponentRegistry(t)
 
 
 ```javascript
 return _registry;
 ```
 
-### getElemNames(t)
+### _e.getElemNames(t)
 
 
 ```javascript
@@ -661,7 +661,7 @@ this.initAsTag(elemName, into);
 
 ```
         
-### initAsTag(elemName, into, force)
+### _e.initAsTag(elemName, into, force)
 
 
 ```javascript
@@ -782,7 +782,7 @@ if(!this._component && into) {
 }
 ```
 
-### initElemNames(t)
+### _e.initElemNames(t)
 
 
 ```javascript
@@ -816,7 +816,7 @@ _elemNamesList.forEach(function(en) {
 
 ```
 
-### registerComponent(name, classDef)
+### _e.registerComponent(name, classDef)
 
 
 ```javascript
@@ -835,7 +835,7 @@ if(!_registry[name]) {
 The class has following internal singleton variables:
         
         
-### add(items)
+### .add(items)
 
 
 ```javascript
@@ -899,7 +899,7 @@ items.forEach(  function(e) {
 return this;
 ```
 
-### addItem(items)
+### .addItem(items)
 
 
 ```javascript
@@ -908,7 +908,7 @@ var list = Array.prototype.slice.call(arguments, 0);
 return this.add.apply(this, list);
 ```
 
-### clear(t)
+### .clear(t)
 
 Removes all the subnodes
 ```javascript
@@ -927,7 +927,7 @@ while (this._dom.firstChild) {
 return this;
 ```
 
-### collectFromDOM(elem)
+### .collectFromDOM(elem)
 
 
 ```javascript
@@ -969,7 +969,7 @@ return e;
 
 ```
 
-### insertAfter(newItem)
+### .insertAfter(newItem)
 
 
 ```javascript
@@ -1013,7 +1013,7 @@ var mDOM = this._dom;
        mDOM.parentNode.insertBefore(pDOM, mDOM.nextSibling);  
 ```
 
-### insertAt(i, obj)
+### .insertAt(i, obj)
 
 
 ```javascript
@@ -1027,7 +1027,7 @@ if(i < this._children.length) {
 
 ```
 
-### insertBefore(newItem)
+### .insertBefore(newItem)
 `newItem` Item to be inserted
  
 
@@ -1072,7 +1072,7 @@ return this;
 
 ```
 
-### moveDown(t)
+### .moveDown(t)
 
 Moves the node down in the DOM tree
 ```javascript
@@ -1102,7 +1102,7 @@ if(typeof(this._index)!="undefined" && this._parent) {
 }
 ```
 
-### moveUp(t)
+### .moveUp(t)
 
 Moves the node up in the DOM tree
 ```javascript
@@ -1129,14 +1129,14 @@ if(this._index && this._parent) {
 }
 ```
 
-### parent(t)
+### .parent(t)
 
 
 ```javascript
 return this._parent;
 ```
 
-### prepend(items)
+### .prepend(items)
 
 Adds items as the first child of the current node
 ```javascript
@@ -1178,7 +1178,7 @@ items.forEach(  function(e) {
 return this;
 ```
 
-### reIndex(t)
+### .reIndex(t)
 
 
 ```javascript
@@ -1189,7 +1189,7 @@ chList.forEach(function(ch) {
 });
 ```
 
-### remove(t)
+### .remove(t)
 
 Removes the item from the DOM -tree
 ```javascript
@@ -1207,7 +1207,7 @@ this._children = [];
 this.removeAllHandlers();
 ```
 
-### removeChild(o)
+### .removeChild(o)
 
 Removes a child of the node
 ```javascript
@@ -1224,7 +1224,7 @@ if(this._children) {
 }
 ```
 
-### removeChildEvents(t)
+### .removeChildEvents(t)
 
 
 ```javascript
@@ -1235,7 +1235,7 @@ this.forChildren( function(ch) {
 });
 ```
 
-### removeIndexedChild(o)
+### .removeIndexedChild(o)
 
 Removes the node from the index, but not from the DOM tree
 ```javascript
@@ -1247,7 +1247,7 @@ if(this._children) {
 }
 ```
 
-### replaceWith(elem)
+### .replaceWith(elem)
 
 
 ```javascript
@@ -1277,7 +1277,7 @@ The class has following internal singleton variables:
 * _mousePoint
         
         
-### baconDrag(opts)
+### .baconDrag(opts)
 
 
 ```javascript
@@ -1289,7 +1289,7 @@ return Bacon.fromBinder( function(sink) {
 }); 
 ```
 
-### drag(callBack)
+### .drag(callBack)
 
 
 ```javascript
@@ -1336,7 +1336,7 @@ this.draggable( function(o,dv) {
 return this;
 ```
 
-### draggable(startFn, middleFn, endFn)
+### .draggable(startFn, middleFn, endFn)
 
 Three functions, fired when drag starts, proceeds and ends
 ```javascript
@@ -1355,7 +1355,7 @@ if(endFn) this.on("enddrag", endFn);
 this._touchItems = [];
 ```
         
-### mousePos(t)
+### .mousePos(t)
 
 
 ```javascript
@@ -1374,7 +1374,7 @@ _mousePoint.y = m.y - off.top;
 return _mousePoint;
 ```
 
-### pauseEvents(e)
+### .pauseEvents(e)
 
 
 ```javascript
@@ -1388,7 +1388,7 @@ e.returnValue=false;
 return false;
 ```
 
-### touch(i)
+### .touch(i)
 
 Get touch number i
 ```javascript
@@ -1396,7 +1396,7 @@ return this._touchItems[i];
 
 ```
 
-### touchclick(t)
+### .touchclick(t)
 
 Enables click emulation on touch devices
 ```javascript
@@ -1407,7 +1407,7 @@ this.on("touchstart", function(o,dv) {
 });
 ```
 
-### touchevents(t)
+### .touchevents(t)
 
 Initializes the touch events
 ```javascript
@@ -1545,7 +1545,7 @@ elem.addEventListener("touchend", touchEnd, false);
 The class has following internal singleton variables:
         
         
-### absolute(t)
+### .absolute(t)
 
 Makes the DOM element absolute positioned
 ```javascript
@@ -1557,7 +1557,7 @@ return this;
 
 ```
 
-### baseZ(v)
+### .baseZ(v)
 
 
 ```javascript
@@ -1569,7 +1569,7 @@ if(typeof(this._baseZ)=="undefined") this._baseZ = 0;
 return this._baseZ;
 ```
 
-### box(t)
+### .box(t)
 
 
 ```javascript
@@ -1588,7 +1588,7 @@ try {
 return box;
 ```
 
-### height(v)
+### .height(v)
 
 
 ```javascript
@@ -1635,7 +1635,7 @@ if(typeof(p)!="undefined") {
 return this;
 ```
 
-### hoverLayer(preventAll, zIndex)
+### .hoverLayer(preventAll, zIndex)
 
 
 ```javascript
@@ -1709,7 +1709,7 @@ return o;
 
 ```
         
-### offset(t)
+### .offset(t)
 
 
 ```javascript
@@ -1726,7 +1726,7 @@ return {
 };  
 ```
 
-### pxParam(v)
+### .pxParam(v)
 
 Transform the param into CSS pixel value, like &quot;12px&quot;
 ```javascript
@@ -1740,7 +1740,7 @@ if(typeof(v)=="string") {
 }
 ```
 
-### relative(t)
+### .relative(t)
 
 Makes the DOM item relatively positioned
 ```javascript
@@ -1750,7 +1750,7 @@ return this;
 
 ```
 
-### width(v)
+### .width(v)
 
 
 ```javascript
@@ -1804,7 +1804,7 @@ if(typeof(p)!="undefined") {
 return this;
 ```
 
-### x(v)
+### .x(v)
 `v` if set, the value of the x
  
 
@@ -1844,7 +1844,7 @@ if(typeof(this._x)=="undefined") this._x = 0;
 return this._x;
 ```
 
-### y(v)
+### .y(v)
 `v` if set, the value of y
  
 
@@ -1883,7 +1883,7 @@ if(typeof(this._y)=="undefined") this._y = 0;
 return this._y;
 ```
 
-### z(v)
+### .z(v)
 `v` if set, the value of z-index
  
 
@@ -1920,7 +1920,7 @@ The class has following internal singleton variables:
 * _effects
         
         
-### applyTransforms(tx)
+### .applyTransforms(tx)
 
 
 ```javascript
@@ -1933,7 +1933,7 @@ this.trigger("transform");
 return this;
 ```
 
-### compStyle(t)
+### .compStyle(t)
 
 
 ```javascript
@@ -1947,7 +1947,7 @@ return {
 
 ```
 
-### createEffect(name, inPosition, outPosition, options)
+### .createEffect(name, inPosition, outPosition, options)
 
 
 ```javascript
@@ -1973,7 +1973,7 @@ _effects[name] = options;
 
 ```
 
-### css(options)
+### .css(options)
 
 
 ```javascript
@@ -1988,7 +1988,7 @@ return this._css;
 
 ```
 
-### effectIn(name, fn)
+### .effectIn(name, fn)
 
 
 ```javascript
@@ -2031,7 +2031,7 @@ later().after(options.duration, function() {
 
 ```
 
-### effectOut(name, fn)
+### .effectOut(name, fn)
 
 
 ```javascript
@@ -2069,7 +2069,7 @@ later().after(options.duration, function() {
 }); 
 ```
 
-### hide(t)
+### .hide(t)
 
 Hides the node from DOM tree
 ```javascript
@@ -2087,7 +2087,7 @@ if(!_effects) {
 }
 ```
         
-### show(t)
+### .show(t)
 
 Shows the node in the DOM tree if not visible
 ```javascript
@@ -2096,7 +2096,7 @@ this.trigger("show");
 
 ```
 
-### style(v)
+### .style(v)
 
 Creates a local CSS style using the css() object
 ```javascript
@@ -2112,7 +2112,7 @@ if(!this._localStyle) {
 return this._localStyle;
 ```
 
-### styleString(value)
+### .styleString(value)
 
 
 ```javascript
@@ -2121,7 +2121,7 @@ this._dom.style.cssText = value;
 return this;
 ```
 
-### transform(name, value)
+### .transform(name, value)
 
 
 ```javascript
@@ -2150,7 +2150,7 @@ this.applyTransforms(tx);
 return this;
 ```
 
-### transformOrigin(tx)
+### .transformOrigin(tx)
 
 
 ```javascript
@@ -2163,7 +2163,7 @@ this.trigger("transform-origin");
 return this;
 ```
 
-### transformString(t)
+### .transformString(t)
 
 
 ```javascript
@@ -2180,7 +2180,7 @@ return this._transforms.join("");
 The class has following internal singleton variables:
         
         
-### addRow(items)
+### .addRow(items)
 
 adds rows of items into the table, for example tbl.addRow(a,b,c)
 ```javascript
@@ -2219,7 +2219,7 @@ return this;
 The class has following internal singleton variables:
         
         
-### child(i)
+### .child(i)
 
 
 ```javascript
@@ -2228,7 +2228,7 @@ if(this._children[i]) {
 }
 ```
 
-### childCount(t)
+### .childCount(t)
 
 
 ```javascript
@@ -2236,7 +2236,7 @@ if(!this._children) return 0;
 return this._children.length
 ```
 
-### domAttrIterator(elem, fn)
+### .domAttrIterator(elem, fn)
 
 
 ```javascript
@@ -2252,7 +2252,7 @@ for (var i = 0; i < elem.attributes.length; i++) {
 }
 ```
 
-### domIterator(elem, fn, nameSpace)
+### .domIterator(elem, fn, nameSpace)
 
 
 ```javascript
@@ -2289,7 +2289,7 @@ if(childNodes) {
 
 ```
 
-### forChildren(fn)
+### .forChildren(fn)
 
 Calls function for all the direct children of this node
 ```javascript
@@ -2301,7 +2301,7 @@ if(this._children) {
 }
 ```
 
-### forEach(fn)
+### .forEach(fn)
 
 Calls function for all the direct children of this node
 ```javascript
@@ -2312,7 +2312,7 @@ if(this._children)
     });
 ```
 
-### searchTree(fn, list)
+### .searchTree(fn, list)
 
 Returns all the children which return true when given as parameter to function fn.
 ```javascript
@@ -2336,7 +2336,7 @@ return list;
 The class has following internal singleton variables:
         
         
-### addClass(c)
+### .addClass(c)
 
 
 ```javascript
@@ -2377,7 +2377,7 @@ if(!this._svg) this._dom.className = this._classes.join(" ");
 return this;
 ```
 
-### findPostFix(str)
+### .findPostFix(str)
 
 
 ```javascript
@@ -2391,7 +2391,7 @@ if(this._myClass) {
 return "";
 ```
 
-### hasClass(c)
+### .hasClass(c)
 
 
 ```javascript
@@ -2400,7 +2400,7 @@ if(this._classes.indexOf(c)>=0) return true;
 return false;
 ```
 
-### removeClass(c)
+### .removeClass(c)
 
 
 ```javascript
@@ -2438,7 +2438,7 @@ The class has following internal singleton variables:
 * _routes
         
         
-### bacon(eventName, eventTransformer)
+### .bacon(eventName, eventTransformer)
 
 
 ```javascript
@@ -2447,7 +2447,7 @@ return Bacon.fromEvent(this._dom, eventName, eventTransformer); // (this._dom, e
 
 ```
 
-### bindSysEvent(en, fn, stop)
+### .bindSysEvent(en, fn, stop)
 
 
 ```javascript
@@ -2496,7 +2496,7 @@ if(this._dom.attachEvent) {
 return true;
 ```
 
-### delegate(myDelecate)
+### .delegate(myDelecate)
 
 Delegates the events to this object
 ```javascript
@@ -2506,7 +2506,7 @@ this._delegates.push(myDelecate);
 
 ```
 
-### emitValue(scope, data)
+### .emitValue(scope, data)
 
 
 ```javascript
@@ -2524,7 +2524,7 @@ if(this._valueFn && this._valueFn[scope]) {
 }
 ```
 
-### eventBinder(dom, eventName, fn, stop)
+### .eventBinder(dom, eventName, fn, stop)
 
 
 ```javascript
@@ -2556,7 +2556,7 @@ if(dom.attachEvent) {
 }  
 ```
 
-### isHovering(t)
+### .isHovering(t)
 
 
 ```javascript
@@ -2576,7 +2576,7 @@ if(!this._hoverable) {
 return this._hovering;
 ```
 
-### namedListener(name, fn)
+### .namedListener(name, fn)
 
 
 ```javascript
@@ -2593,7 +2593,7 @@ if(!this._namedListeners) return;
 return this._namedListeners[name];
 ```
 
-### on(en, ef)
+### .on(en, ef)
 `en` Event name
  
 
@@ -2761,7 +2761,7 @@ if(en=="mouseenter") {
 return this;
 ```
 
-### onValue(scope, fn)
+### .onValue(scope, fn)
 
 
 ```javascript
@@ -2771,7 +2771,7 @@ if(!this._valueFn) {
 this._valueFn[scope] = fn;
 ```
 
-### removeAllHandlers(t)
+### .removeAllHandlers(t)
 
 
 ```javascript
@@ -2810,7 +2810,7 @@ if(this._ev) {
 }
 ```
 
-### removeListener(eventName, fn)
+### .removeListener(eventName, fn)
 
 
 ```javascript
@@ -2824,7 +2824,7 @@ if(this._ev && this._ev[eventName]) {
 }
 ```
 
-### router(eventName, fn)
+### .router(eventName, fn)
 
 
 ```javascript
@@ -2841,7 +2841,7 @@ this._dom.addEventListener(eventName, function(event) {
 });
 ```
 
-### setRoute(obj, recursive)
+### .setRoute(obj, recursive)
 
 
 ```javascript
@@ -2857,7 +2857,7 @@ if(recursive) {
 _routes[routeId] = obj;
 ```
 
-### trigger(en, data, fn)
+### .trigger(en, data, fn)
 
 triggers event with data and optional function
 ```javascript
@@ -2874,7 +2874,7 @@ this._ev[en].forEach( function(cb) { cb(me, data, fn) } );
 return this;
 ```
 
-### uniqueListener(listenerName, fn)
+### .uniqueListener(listenerName, fn)
 
 
 ```javascript
@@ -2896,7 +2896,7 @@ return fn;
 The class has following internal singleton variables:
         
         
-### bind(obj, varName)
+### InputHandling.bind(obj, varName)
 
 Binds input value to an object with data
 ```javascript
@@ -3031,7 +3031,7 @@ if(obj) {
 return o;
 ```
 
-### bindVal(v)
+### InputHandling.bindVal(v)
 
 
 ```javascript
@@ -3046,14 +3046,14 @@ this._value = v;
 return this;
 ```
 
-### blur(t)
+### InputHandling.blur(t)
 
 
 ```javascript
 if(this._dom.blur) this._dom.blur();
 ```
 
-### checked(v)
+### InputHandling.checked(v)
 
 
 ```javascript
@@ -3075,7 +3075,7 @@ if( (nowOn && !v) || (!nowOn && v) ){
 return this;
 ```
 
-### clearOptions(t)
+### InputHandling.clearOptions(t)
 
 
 ```javascript
@@ -3087,21 +3087,21 @@ return this;
 }    
 ```
 
-### focus(t)
+### InputHandling.focus(t)
 
 Focus into this element
 ```javascript
 if(this._dom.focus) this._dom.focus();
 ```
 
-### getClipboard(name)
+### InputHandling.getClipboard(name)
 
 
 ```javascript
 return clipBoard( name );
 ```
 
-### localStore(withName)
+### InputHandling.localStore(withName)
 
 
 ```javascript
@@ -3123,7 +3123,7 @@ this.on("value", function() {
 return this;
 ```
 
-### options(list)
+### InputHandling.options(list)
 
 
 ```javascript
@@ -3187,7 +3187,7 @@ If other, please specify:
 return this;
 ```
 
-### toBacon(transformFn)
+### InputHandling.toBacon(transformFn)
 
 
 ```javascript
@@ -3213,7 +3213,7 @@ return Bacon.fromBinder( function(sink) {
 });
 ```
 
-### val(v)
+### InputHandling.val(v)
 
 Sets or gets the input value
 ```javascript
@@ -3248,7 +3248,7 @@ The class has following internal singleton variables:
 * _shInit
         
         
-### a(className, attrs)
+### domShortcuts.a(className, attrs)
 
 
 ```javascript
@@ -3256,7 +3256,7 @@ var el = this.shortcutFor("a", className, attrs);
 return el;
 ```
 
-### attr(v, v2)
+### domShortcuts.attr(v, v2)
 
 
 ```javascript
@@ -3280,7 +3280,7 @@ if(this.isObject(v)) {
 return this;
 ```
 
-### b(className, attrs)
+### domShortcuts.b(className, attrs)
 
 
 ```javascript
@@ -3288,7 +3288,7 @@ var el = this.shortcutFor("b", className, attrs);
 return el;
 ```
 
-### button(className, attrs)
+### domShortcuts.button(className, attrs)
 
 
 ```javascript
@@ -3296,7 +3296,7 @@ var el = this.shortcutFor("button", className, attrs);
 return el;
 ```
 
-### canvas(className, attrs)
+### domShortcuts.canvas(className, attrs)
 
 
 ```javascript
@@ -3305,7 +3305,7 @@ el._canvas = true;
 return el;
 ```
 
-### checkbox(className, attrs)
+### domShortcuts.checkbox(className, attrs)
 
 
 ```javascript
@@ -3313,7 +3313,7 @@ var el = this.shortcutFor("checkbox", className, attrs);
 return el;
 ```
 
-### clearCanvas(t)
+### domShortcuts.clearCanvas(t)
 
 
 ```javascript
@@ -3325,7 +3325,7 @@ ctx.clearRect(0, 0, canvas.width, canvas.height);
 return this;
 ```
 
-### ctx(t)
+### domShortcuts.ctx(t)
 
 
 ```javascript
@@ -3334,7 +3334,7 @@ if(this._dom.getContext) {
 }
 ```
 
-### div(className, attrs)
+### domShortcuts.div(className, attrs)
 
 
 ```javascript
@@ -3342,7 +3342,7 @@ var el = this.shortcutFor("div", className, attrs);
 return el;
 ```
 
-### form(className, attrs)
+### domShortcuts.form(className, attrs)
 
 
 ```javascript
@@ -3350,7 +3350,7 @@ var el = this.shortcutFor("form", className, attrs);
 return el;
 ```
 
-### getPixelFn(pixelData)
+### domShortcuts.getPixelFn(pixelData)
 
 
 ```javascript
@@ -3381,7 +3381,7 @@ return function(x,y) {
 
 ```
 
-### h1(className, attrs)
+### domShortcuts.h1(className, attrs)
 
 
 ```javascript
@@ -3389,7 +3389,7 @@ var el = this.shortcutFor("h1", className, attrs);
 return el;
 ```
 
-### h2(className, attrs)
+### domShortcuts.h2(className, attrs)
 
 
 ```javascript
@@ -3397,7 +3397,7 @@ var el = this.shortcutFor("h2", className, attrs);
 return el;
 ```
 
-### h3(className, attrs)
+### domShortcuts.h3(className, attrs)
 
 
 ```javascript
@@ -3405,7 +3405,7 @@ var el = this.shortcutFor("h3", className, attrs);
 return el;
 ```
 
-### h4(className, attrs)
+### domShortcuts.h4(className, attrs)
 
 
 ```javascript
@@ -3413,7 +3413,7 @@ var el = this.shortcutFor("h4", className, attrs);
 return el;
 ```
 
-### img(className, attrs)
+### domShortcuts.img(className, attrs)
 
 
 ```javascript
@@ -3428,7 +3428,7 @@ return el;
 
 ```
         
-### input(className, attrs)
+### domShortcuts.input(className, attrs)
 
 
 ```javascript
@@ -3436,7 +3436,7 @@ var el = this.shortcutFor("input", className, attrs);
 return el;
 ```
 
-### label(className, attrs)
+### domShortcuts.label(className, attrs)
 
 
 ```javascript
@@ -3444,7 +3444,7 @@ var el = this.shortcutFor("label", className, attrs);
 return el;
 ```
 
-### li(className, attrs)
+### domShortcuts.li(className, attrs)
 
 
 ```javascript
@@ -3452,7 +3452,7 @@ var el = this.shortcutFor("li", className, attrs);
 return el;
 ```
 
-### ol(className, attrs)
+### domShortcuts.ol(className, attrs)
 
 
 ```javascript
@@ -3460,7 +3460,7 @@ var el = this.shortcutFor("ol", className, attrs);
 return el;
 ```
 
-### p(className, attrs)
+### domShortcuts.p(className, attrs)
 
 
 ```javascript
@@ -3468,7 +3468,7 @@ var el = this.shortcutFor("p", className, attrs);
 return el;
 ```
 
-### pre(className, attrs)
+### domShortcuts.pre(className, attrs)
 
 
 ```javascript
@@ -3476,7 +3476,7 @@ var el = this.shortcutFor("pre", className, attrs);
 return el;
 ```
 
-### processPixels(fn, pixelData, doNotUpdate)
+### domShortcuts.processPixels(fn, pixelData, doNotUpdate)
 
 
 ```javascript
@@ -3518,7 +3518,7 @@ if(!doNotUpdate) {
 return pixelData;
 ```
 
-### row(params)
+### domShortcuts.row(params)
 
 
 ```javascript
@@ -3533,7 +3533,7 @@ tbl.addRow(args);
 return tbl;
 ```
 
-### shortcutFor(name, className, attrs)
+### domShortcuts.shortcutFor(name, className, attrs)
 
 
 ```javascript
@@ -3608,7 +3608,7 @@ if(_constr) {
 return el;
 ```
 
-### span(className, attrs)
+### domShortcuts.span(className, attrs)
 
 
 ```javascript
@@ -3616,7 +3616,7 @@ var el = this.shortcutFor("span", className, attrs);
 return el;
 ```
 
-### src(src)
+### domShortcuts.src(src)
 
 
 ```javascript
@@ -3665,7 +3665,7 @@ this.q.attr("src",src);
 return this;
 ```
 
-### strong(className, attrs)
+### domShortcuts.strong(className, attrs)
 
 
 ```javascript
@@ -3673,7 +3673,7 @@ var el = this.shortcutFor("strong", className, attrs);
 return el;
 ```
 
-### table(className, attrs)
+### domShortcuts.table(className, attrs)
 
 
 ```javascript
@@ -3681,7 +3681,7 @@ var el = this.shortcutFor("table", className, attrs);
 return el;
 ```
 
-### textarea(className, attrs)
+### domShortcuts.textarea(className, attrs)
 
 
 ```javascript
@@ -3689,7 +3689,7 @@ var el = this.shortcutFor("textarea", className, attrs);
 return el;
 ```
 
-### toDataURL(format, quality)
+### domShortcuts.toDataURL(format, quality)
 
 
 ```javascript
@@ -3699,7 +3699,7 @@ if(!quality) quality = 1;
 return this._dom.toDataURL(format || "image/png", quality);
 ```
 
-### ul(className, attrs)
+### domShortcuts.ul(className, attrs)
 
 
 ```javascript
@@ -3716,7 +3716,7 @@ return el;
 The class has following internal singleton variables:
         
         
-### _setDomText(elem, text)
+### domContent._setDomText(elem, text)
 
 
 ```javascript
@@ -3731,7 +3731,7 @@ if( typeof(elem.textContent)!="undefined") {
 }
 ```
 
-### html(h)
+### domContent.html(h)
 
 
 ```javascript
@@ -3767,7 +3767,7 @@ this._dom.innerHTML = h;
 return this;
 ```
 
-### text(t)
+### domContent.text(t)
 
 
 ```javascript
@@ -3913,7 +3913,7 @@ The class has following internal singleton variables:
 * _viewCache
         
         
-### contentRouter(name, fn)
+### viewsNavis.contentRouter(name, fn)
 
 
 ```javascript
@@ -3926,7 +3926,7 @@ if(this.isFunction(name)) {
 }
 ```
 
-### createLayout(name, fn)
+### viewsNavis.createLayout(name, fn)
 
 
 ```javascript
@@ -3941,7 +3941,7 @@ _viewStructures[name] = {
 }
 ```
 
-### fiddle(options)
+### viewsNavis.fiddle(options)
 
 
 ```javascript
@@ -3989,7 +3989,7 @@ iframe.width(options.width || 800).height(options.height || 600);
 return this;
 ```
 
-### findViewByName(name, layout)
+### viewsNavis.findViewByName(name, layout)
 
 
 ```javascript
@@ -4011,14 +4011,14 @@ if(layout.hasClass(name)) {
 }
 ```
 
-### getLayouts(t)
+### viewsNavis.getLayouts(t)
 
 
 ```javascript
 return _viewStructures;
 ```
 
-### getRouteObj(t)
+### viewsNavis.getRouteObj(t)
 
 
 ```javascript
@@ -4092,7 +4092,7 @@ if(!_eventState) {
 }
 ```
         
-### initScreenEvents(t)
+### viewsNavis.initScreenEvents(t)
 
 
 ```javascript
@@ -4189,7 +4189,7 @@ if(window.matchMedia) {
 }
 ```
 
-### onMediaChange(fn)
+### viewsNavis.onMediaChange(fn)
 
 
 ```javascript
@@ -4197,7 +4197,7 @@ if(window.matchMedia) {
 _mediaListeners.push(fn);
 ```
 
-### onRoute(fn)
+### viewsNavis.onRoute(fn)
 
 
 ```javascript
@@ -4211,7 +4211,7 @@ later().add(
 
 ```
 
-### pageController(page, controllerObj)
+### viewsNavis.pageController(page, controllerObj)
 
 
 ```javascript
@@ -4228,7 +4228,7 @@ if(_ctrlObjs.indexOf( this ) < 0) {
 };
 ```
 
-### popView(toView)
+### viewsNavis.popView(toView)
 
 
 ```javascript
@@ -4298,7 +4298,7 @@ cont.forChildren(function(ch) {
 
 ```
 
-### pushTo(name, factoryName, paramName)
+### viewsNavis.pushTo(name, factoryName, paramName)
 
 
 ```javascript
@@ -4351,7 +4351,7 @@ if(!this._activeLayout) {
 
 ```
 
-### pushView(newView, params, oldViewHolder)
+### viewsNavis.pushView(newView, params, oldViewHolder)
 
 
 ```javascript
@@ -4458,7 +4458,7 @@ _eventState.pushing = false;
 return this;
 ```
 
-### removeControllersFor(o)
+### viewsNavis.removeControllersFor(o)
 
 
 ```javascript
@@ -4469,7 +4469,7 @@ if(i>=0) {
 }
 ```
 
-### scrollTo(noThing)
+### viewsNavis.scrollTo(noThing)
 `noThing` Not a param
  
 
@@ -4490,7 +4490,7 @@ if(window) {
 }
 ```
 
-### setLayout(name)
+### viewsNavis.setLayout(name)
 
 
 ```javascript
@@ -4542,7 +4542,7 @@ if(_viewStructures && _viewStructures[name]) {
 }
 ```
 
-### viewFactory(name, fn)
+### viewsNavis.viewFactory(name, fn)
 
 
 ```javascript
@@ -4575,7 +4575,7 @@ The class has following internal singleton variables:
 * _customDirectives
         
         
-### createItemView(item)
+### mvc_trait.createItemView(item)
 
 
 ```javascript
@@ -4606,7 +4606,7 @@ if(vf) {
 return newView;
 ```
 
-### data(v)
+### mvc_trait.data(v)
 
 
 ```javascript
@@ -4617,7 +4617,7 @@ if(typeof(v) != "undefined") {
 return this.__mdata;
 ```
 
-### fromStream(stream, viewFn)
+### mvc_trait.fromStream(stream, viewFn)
 
 
 ```javascript
@@ -4633,7 +4633,7 @@ stream.onValue( function(data) {
 });
 ```
 
-### getViewFunction(item)
+### mvc_trait.getViewFunction(item)
 
 
 ```javascript
@@ -4662,7 +4662,7 @@ for(var n in this._view) {
 
 ```
         
-### mvc(model, view, controller)
+### mvc_trait.mvc(model, view, controller)
 
 
 ```javascript
@@ -4768,7 +4768,7 @@ return this;
 The class has following internal singleton variables:
         
         
-### circle(className, attrs)
+### svgShortcuts.circle(className, attrs)
 
 
 ```javascript
@@ -4776,7 +4776,7 @@ var el = this.shortcutFor("circle", className, attrs);
 return el;
 ```
 
-### defs(className, attrs)
+### svgShortcuts.defs(className, attrs)
 
 
 ```javascript
@@ -4784,7 +4784,7 @@ var el = this.shortcutFor("defs", className, attrs);
 return el;
 ```
 
-### feGaussianBlur(className, attrs)
+### svgShortcuts.feGaussianBlur(className, attrs)
 
 
 ```javascript
@@ -4792,7 +4792,7 @@ var el = this.shortcutFor("feGaussianBlur", className, attrs);
 return el;
 ```
 
-### feMerge(className, attrs)
+### svgShortcuts.feMerge(className, attrs)
 
 
 ```javascript
@@ -4800,7 +4800,7 @@ var el = this.shortcutFor("feMerge", className, attrs);
 return el;
 ```
 
-### feMergeNode(className, attrs)
+### svgShortcuts.feMergeNode(className, attrs)
 
 
 ```javascript
@@ -4808,7 +4808,7 @@ var el = this.shortcutFor("feMergeNode", className, attrs);
 return el;
 ```
 
-### feOffset(className, attrs)
+### svgShortcuts.feOffset(className, attrs)
 
 
 ```javascript
@@ -4816,7 +4816,7 @@ var el = this.shortcutFor("feOffset", className, attrs);
 return el;
 ```
 
-### filter(className, attrs)
+### svgShortcuts.filter(className, attrs)
 
 
 ```javascript
@@ -4824,7 +4824,7 @@ var el = this.shortcutFor("filter", className, attrs);
 return el;
 ```
 
-### g(className, attrs)
+### svgShortcuts.g(className, attrs)
 
 
 ```javascript
@@ -4832,7 +4832,7 @@ var el = this.shortcutFor("g", className, attrs);
 return el;
 ```
 
-### image(className, attrs)
+### svgShortcuts.image(className, attrs)
 
 
 ```javascript
@@ -4840,7 +4840,7 @@ var el = this.shortcutFor("image", className, attrs);
 return el;
 ```
 
-### line(className, attrs)
+### svgShortcuts.line(className, attrs)
 
 
 ```javascript
@@ -4848,7 +4848,7 @@ var el = this.shortcutFor("line", className, attrs);
 return el;
 ```
 
-### path(className, attrs)
+### svgShortcuts.path(className, attrs)
 
 
 ```javascript
@@ -4856,7 +4856,7 @@ var el = this.shortcutFor("path", className, attrs);
 return el;
 ```
 
-### rect(className, attrs)
+### svgShortcuts.rect(className, attrs)
 
 
 ```javascript
@@ -4864,7 +4864,7 @@ var el = this.shortcutFor("rect", className, attrs);
 return el;
 ```
 
-### svg(className, attrs, none)
+### svgShortcuts.svg(className, attrs, none)
 
 
 ```javascript
@@ -4872,7 +4872,7 @@ var el = this.shortcutFor("svg", className, attrs);
 return el;
 ```
 
-### svg_text(className, attrs)
+### svgShortcuts.svg_text(className, attrs)
 
 
 ```javascript
@@ -4880,7 +4880,7 @@ var el = this.shortcutFor("text", className, attrs);
 return el;
 ```
 
-### tspan(className, attrs)
+### svgShortcuts.tspan(className, attrs)
 
 
 ```javascript
@@ -4897,7 +4897,7 @@ return el;
 The class has following internal singleton variables:
         
         
-### guid(t)
+### util_fns.guid(t)
 
 
 ```javascript
@@ -4905,28 +4905,28 @@ return Math.random().toString(36).substring(2, 15) +
         Math.random().toString(36).substring(2, 15);
 ```
 
-### isArray(someVar)
+### util_fns.isArray(someVar)
 
 
 ```javascript
 return Object.prototype.toString.call( someVar ) === '[object Array]';
 ```
 
-### isFunction(fn)
+### util_fns.isFunction(fn)
 
 
 ```javascript
 return Object.prototype.toString.call(fn) == '[object Function]';
 ```
 
-### isObject(obj)
+### util_fns.isObject(obj)
 
 
 ```javascript
 return obj === Object(obj);
 ```
 
-### isStream(obj)
+### util_fns.isStream(obj)
 
 
 ```javascript
@@ -4946,7 +4946,7 @@ if(typeof(Bacon) !="undefined") {
 return false;
 ```
 
-### str(params)
+### util_fns.str(params)
 
 
 ```javascript
@@ -4995,7 +4995,7 @@ return Bacon.fromBinder(function(sink) {
 
 ```
 
-### whenLoaded(imgList, fn)
+### util_fns.whenLoaded(imgList, fn)
 
 
 ```javascript
@@ -5030,7 +5030,7 @@ The class has following internal singleton variables:
 * colors
         
         
-### colorMix(c1, c2, t)
+### .colorMix(c1, c2, t)
 
 
 ```javascript
@@ -5049,7 +5049,7 @@ var res = this.yuvConversion2(from,to, function(y1,y2) {
 return res;
 ```
 
-### colorToHex(color)
+### .colorToHex(color)
 
 
 ```javascript
@@ -5066,7 +5066,7 @@ var rgb = blue | (green << 8) | (red << 16);
 return digits[1] + '#' + rgb.toString(16);
 ```
 
-### colourNameToHex(colour)
+### .colourNameToHex(colour)
 
 
 ```javascript
@@ -5077,7 +5077,7 @@ if (typeof colors[colour.toLowerCase()] != 'undefined')
 return false;
 ```
 
-### componentToHex(c)
+### .componentToHex(c)
 
 
 ```javascript
@@ -5086,7 +5086,7 @@ var hex = c.toString(16);
 return hex.length == 1 ? "0" + hex : hex;
 ```
 
-### dim(colorName, brightness)
+### .dim(colorName, brightness)
 
 
 ```javascript
@@ -5096,7 +5096,7 @@ return this.yuvConversion( colorName, function(yuv) {
     });
 ```
 
-### hexToRgb(hex)
+### .hexToRgb(hex)
 
 
 ```javascript
@@ -5117,7 +5117,7 @@ return {
 }
 ```
 
-### hexToYuv(hexVal)
+### .hexToYuv(hexVal)
 
 
 ```javascript
@@ -5125,7 +5125,7 @@ var me = this;
 return me.rgbToYuv( me.toRGB(hexVal) );
 ```
 
-### hsvToRgb(c)
+### .hsvToRgb(c)
 
 
 ```javascript
@@ -5230,7 +5230,7 @@ if(!colors) {
     }
 ```
         
-### mix(c1, c2, amount)
+### .mix(c1, c2, amount)
 
 
 ```javascript
@@ -5246,7 +5246,7 @@ return this.yuvConversion2( c1,c2, function(y1,y2) {
 })
 ```
 
-### rgbToHex(p)
+### .rgbToHex(p)
 
 
 ```javascript
@@ -5254,7 +5254,7 @@ var me = this;
 return "#" + me.componentToHex(p.r) + me.componentToHex(p.g) + me.componentToHex(p.b);
 ```
 
-### rgbToHsv(c)
+### .rgbToHsv(c)
 
 
 ```javascript
@@ -5297,7 +5297,7 @@ return {
 };
 ```
 
-### rgbToYuv(c)
+### .rgbToYuv(c)
 
 
 ```javascript
@@ -5309,7 +5309,7 @@ return { y : 0.299 * R + 0.587 * G + 0.114 * B,
          v:  0.615 * R - 0.51499*G - 0.10001*B  }
 ```
 
-### toRGB(c)
+### .toRGB(c)
 
 
 ```javascript
@@ -5323,14 +5323,14 @@ if(!hex) {
 return me.hexToRgb(hex);
 ```
 
-### toRSpace(v)
+### .toRSpace(v)
 
 
 ```javascript
 return Math.max(0, Math.min(255, Math.round(v)));
 ```
 
-### yuvConversion(c, fn)
+### .yuvConversion(c, fn)
 
 
 ```javascript
@@ -5341,7 +5341,7 @@ var rgb = me.yuvToRgb( yuv );
 return me.rgbToHex( rgb );
 ```
 
-### yuvConversion2(c1, c2, fn)
+### .yuvConversion2(c1, c2, fn)
 
 
 ```javascript
@@ -5353,7 +5353,7 @@ var rgb = me.yuvToRgb( yuv );
 return me.rgbToHex( rgb );
 ```
 
-### yuvPixelConversion(c, fn)
+### .yuvPixelConversion(c, fn)
 
 
 ```javascript
@@ -5366,7 +5366,7 @@ c.b = rgb.b;
 return c;
 ```
 
-### yuvToRgb(c)
+### .yuvToRgb(c)
 
 
 ```javascript
@@ -5413,7 +5413,7 @@ return {    r : this.toRSpace(255*(Y+ 0 * U + 1.13983 * V)),
 The class has following internal singleton variables:
         
         
-### attr(n, v)
+### _qc.attr(n, v)
 
 
 ```javascript
@@ -5572,7 +5572,7 @@ if(typeof(v)!="undefined" && isNaN(n) )
 return this;
 ```
 
-### bindSysEvent(en, fn, stop)
+### _qc.bindSysEvent(en, fn, stop)
 
 
 ```javascript
@@ -5612,14 +5612,14 @@ if(this._dom.attachEvent) {
 return true;
 ```
 
-### blur(t)
+### _qc.blur(t)
 
 
 ```javascript
 if(this._dom.blur) this._dom.blur();
 ```
 
-### css(n, v)
+### _qc.css(n, v)
 
 
 ```javascript
@@ -5644,14 +5644,14 @@ this._dom.style[n] = v;
 return this;
 ```
 
-### focus(t)
+### _qc.focus(t)
 
 
 ```javascript
 if(this._dom.focus) this._dom.focus();
 ```
 
-### get(index)
+### _qc.get(index)
 
 
 ```javascript
@@ -5665,7 +5665,7 @@ this._dom = myDom;
 this._host = host;
 ```
         
-### pxParam(v)
+### _qc.pxParam(v)
 
 
 ```javascript
@@ -5739,7 +5739,7 @@ The class has following internal singleton variables:
 * _framers
         
         
-### add(fn, thisObj, args)
+### later.add(fn, thisObj, args)
 
 
 ```javascript
@@ -5757,7 +5757,7 @@ if(thisObj || args) {
 }
 ```
 
-### after(seconds, fn, name)
+### later.after(seconds, fn, name)
 
 
 ```javascript
@@ -5774,7 +5774,7 @@ _everies[name] = {
 };
 ```
 
-### asap(fn)
+### later.asap(fn)
 
 
 ```javascript
@@ -5782,7 +5782,7 @@ this.add(fn);
 
 ```
 
-### every(seconds, fn, name)
+### later.every(seconds, fn, name)
 
 
 ```javascript
@@ -5891,7 +5891,7 @@ if(!_initDone) {
 }
 ```
         
-### once(key, fn, value)
+### later.once(key, fn, value)
 
 
 ```javascript
@@ -5900,7 +5900,7 @@ if(!_initDone) {
 _oneTimers[key] = [fn,value];
 ```
 
-### onFrame(fn)
+### later.onFrame(fn)
 
 
 ```javascript
@@ -5908,14 +5908,14 @@ _oneTimers[key] = [fn,value];
 _framers.push(fn);
 ```
 
-### polyfill(t)
+### later.polyfill(t)
 
 
 ```javascript
 // --- let's not ---
 ```
 
-### removeFrameFn(fn)
+### later.removeFrameFn(fn)
 
 
 ```javascript
@@ -5965,7 +5965,7 @@ The class has following internal singleton variables:
 * _insInit
         
         
-### _classFactory(id)
+### css._classFactory(id)
 
 
 ```javascript
@@ -5981,7 +5981,7 @@ if(!_instances) {
 }
 ```
 
-### animation(animName, settings)
+### css.animation(animName, settings)
 
 
 ```javascript
@@ -6022,7 +6022,7 @@ if(this.isObject(settings)) {
 
 ```
 
-### animSettings(obj)
+### css.animSettings(obj)
 
 
 ```javascript
@@ -6040,7 +6040,7 @@ if(this.isObject(obj)) {
 }
 ```
 
-### assign(objectList)
+### css.assign(objectList)
 
 
 ```javascript
@@ -6061,7 +6061,7 @@ return o;
 
 ```
 
-### bind(t)
+### css.bind(t)
 
 
 ```javascript
@@ -6076,7 +6076,7 @@ return this;
 
 ```
 
-### buildCss(mediaRule)
+### css.buildCss(mediaRule)
 
 
 ```javascript
@@ -6098,7 +6098,7 @@ if(this._data) {
 
 ```
 
-### collectAnimationCss(t)
+### css.collectAnimationCss(t)
 
 
 ```javascript
@@ -6112,7 +6112,7 @@ for(var n in anims) {
 return str;
 ```
 
-### convert(n, v)
+### css.convert(n, v)
 
 
 ```javascript
@@ -6202,7 +6202,7 @@ if(!_insInit[id]) {
 
 ```
         
-### initConversions(t)
+### css.initConversions(t)
 
 
 ```javascript
@@ -6294,7 +6294,7 @@ bexp2 = function(p, v) {
 
 ```
 
-### makeCss(o, mediaRule)
+### css.makeCss(o, mediaRule)
 
 
 ```javascript
@@ -6314,7 +6314,7 @@ str += mediaRule ? "}\n" : "";
 return str;
 ```
 
-### ruleToCss(cssRulesObj)
+### css.ruleToCss(cssRulesObj)
 
 
 ```javascript
@@ -6326,7 +6326,7 @@ str += "}\n";
 return str;
 ```
 
-### updateStyleTag(cssText)
+### css.updateStyleTag(cssText)
 
 
 ```javascript
@@ -6356,7 +6356,7 @@ if (styleTag.styleSheet) {   // IE
 The class has following internal singleton variables:
         
         
-### guid(t)
+### _dataTrait.guid(t)
 
 
 ```javascript
@@ -6366,7 +6366,7 @@ return Math.random().toString(36).substring(2, 15) +
 
 ```
 
-### isArray(t)
+### _dataTrait.isArray(t)
 
 
 ```javascript
@@ -6376,14 +6376,14 @@ if(typeof(t)=="undefined") return this.__isA;
 return Object.prototype.toString.call( t ) === '[object Array]';
 ```
 
-### isFunction(fn)
+### _dataTrait.isFunction(fn)
 
 
 ```javascript
 return Object.prototype.toString.call(fn) == '[object Function]';
 ```
 
-### isObject(t)
+### _dataTrait.isObject(t)
 
 
 ```javascript
@@ -6421,7 +6421,7 @@ The class has following internal singleton variables:
 * _framers
         
         
-### add(fn, thisObj, args)
+### later.add(fn, thisObj, args)
 
 
 ```javascript
@@ -6439,7 +6439,7 @@ if(thisObj || args) {
 }
 ```
 
-### after(seconds, fn, name)
+### later.after(seconds, fn, name)
 
 
 ```javascript
@@ -6456,7 +6456,7 @@ _everies[name] = {
 };
 ```
 
-### asap(fn)
+### later.asap(fn)
 
 
 ```javascript
@@ -6464,7 +6464,7 @@ this.add(fn);
 
 ```
 
-### every(seconds, fn, name)
+### later.every(seconds, fn, name)
 
 
 ```javascript
@@ -6573,7 +6573,7 @@ if(!_initDone) {
 }
 ```
         
-### once(key, fn, value)
+### later.once(key, fn, value)
 
 
 ```javascript
@@ -6582,7 +6582,7 @@ if(!_initDone) {
 _oneTimers[key] = [fn,value];
 ```
 
-### onFrame(fn)
+### later.onFrame(fn)
 
 
 ```javascript
@@ -6590,14 +6590,14 @@ _oneTimers[key] = [fn,value];
 _framers.push(fn);
 ```
 
-### polyfill(t)
+### later.polyfill(t)
 
 
 ```javascript
 // --- let's not ---
 ```
 
-### removeFrameFn(fn)
+### later.removeFrameFn(fn)
 
 
 ```javascript
@@ -6642,7 +6642,7 @@ The class has following internal singleton variables:
 * _hasSupport
         
         
-### del(name)
+### clipBoard.del(name)
 
 
 ```javascript
@@ -6656,7 +6656,7 @@ else {
 
 ```
 
-### fromClipboard(opts)
+### clipBoard.fromClipboard(opts)
 
 
 ```javascript
@@ -6667,7 +6667,7 @@ var o = JSON.parse( str );
 return o;
 ```
 
-### get(name)
+### clipBoard.get(name)
 
 
 ```javascript
@@ -6694,7 +6694,7 @@ else {
 this._name = name;
 ```
         
-### localStoreSupport(t)
+### clipBoard.localStoreSupport(t)
 
 
 ```javascript
@@ -6708,7 +6708,7 @@ try {
 }
 ```
 
-### set(name, value, days)
+### clipBoard.set(name, value, days)
 
 
 ```javascript
@@ -6729,7 +6729,7 @@ else {
 }
 ```
 
-### toClipboard(items)
+### clipBoard.toClipboard(items)
 
 
 ```javascript
