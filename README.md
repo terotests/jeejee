@@ -3442,8 +3442,8 @@ if(this.isFunction(obj[varName])) {
         val = newVal;
     });
     var valueOutListener = this.uniqueListener("bind:valueOut",function(obj) {
-        console.log("Got value out for ", obj, "which value was ",val);
-        console.trace();
+        //console.log("Got value out for ", obj, "which value was ",val);
+        //console.trace();
         bSendingEvent = true;
         if(o._type=="checkbox") {
             fn(o.checked());
@@ -5933,8 +5933,8 @@ The class has following internal singleton variables:
 
 if(!isNaN(n)) {
     if(typeof(console)!="undefined" && typeof(console.trace)!="undefined") {
-        console.log("Attr set to ", n);
-        console.trace();
+        //console.log("Attr set to ", n);
+        //console.trace();
     }
     return;
 }
@@ -6250,6 +6250,8 @@ The class has following internal singleton variables:
         
 * _framers
         
+* _localCnt
+        
         
 ### <a name="later_add"></a>later::add(fn, thisObj, args)
 
@@ -6275,7 +6277,7 @@ if(thisObj || args) {
 ```javascript
 
 if(!name) {
-    name = "time"+(new Date()).getTime()+Math.random(10000000);
+    name = "aft7491_"+(_localCnt++);
 }
 
 _everies[name] = {
@@ -6300,7 +6302,7 @@ this.add(fn);
 ```javascript
 
 if(!name) {
-    name = "time"+(new Date()).getTime()+Math.random(10000000);
+    name = "t7491_"+(_localCnt++);
 }
 
 _everies[name] = {
@@ -6314,7 +6316,8 @@ _everies[name] = {
 
 ```javascript
 if(!_initDone) {
-    
+
+   _localCnt=1;
    this.polyfill();
  
    var frame, cancelFrame;
@@ -6932,6 +6935,8 @@ The class has following internal singleton variables:
         
 * _framers
         
+* _localCnt
+        
         
 ### <a name="later_add"></a>later::add(fn, thisObj, args)
 
@@ -6957,7 +6962,7 @@ if(thisObj || args) {
 ```javascript
 
 if(!name) {
-    name = "time"+(new Date()).getTime()+Math.random(10000000);
+    name = "aft7491_"+(_localCnt++);
 }
 
 _everies[name] = {
@@ -6982,7 +6987,7 @@ this.add(fn);
 ```javascript
 
 if(!name) {
-    name = "time"+(new Date()).getTime()+Math.random(10000000);
+    name = "t7491_"+(_localCnt++);
 }
 
 _everies[name] = {
@@ -6996,7 +7001,8 @@ _everies[name] = {
 
 ```javascript
 if(!_initDone) {
-    
+
+   _localCnt=1;
    this.polyfill();
  
    var frame, cancelFrame;
