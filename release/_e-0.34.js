@@ -4704,8 +4704,6 @@
 
             if (this._host.isArray(v)) {
 
-              // console.log("Taking array as ", v);
-
               var oo = v[0],
                   fName = v[1],
                   val = oo[fName](),
@@ -4779,6 +4777,34 @@
               }
             }
 
+            return this;
+          }
+
+          if (this._host.isArray(v)) {
+
+            // console.log("Taking array as ", v);
+
+            var oo = v[0],
+                fName = v[1],
+                val = oo[fName](),
+                me = this,
+                domi = me._dom,
+                host = this._host,
+                list;
+
+            list = host.uniqueListener("attr:" + n, function (o, newV) {
+              if (typeof newV != "undefined" && newV !== null) {
+                domi.setAttribute(n, newV);
+              }
+            });
+            oo.on(fName, list);
+            if (typeof val != "undefined" && val !== null) {
+              if (n == "xlink:href") {
+                this._dom.setAttributeNS("http://www.w3.org/1999/xlink", "href", val);
+              } else {
+                this._dom.setAttributeNS(null, n, val);
+              }
+            }
             return this;
           }
 
@@ -5939,17 +5965,6 @@
       name: "css"
     };
     css.prototype = new css_prototype();
-
-    (function () {
-      if (typeof define !== "undefined" && define !== null && define.amd != null) {
-        __amdDefs__["css"] = css;
-        this.css = css;
-      } else if (typeof module !== "undefined" && module !== null && module.exports != null) {
-        module.exports["css"] = css;
-      } else {
-        this.css = css;
-      }
-    }).call(new Function("return this")());
 
     // the subclass definition comes around here then
 
