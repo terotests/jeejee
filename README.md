@@ -122,6 +122,9 @@ http://jsfiddle.net/vbyssjmq/
 
 A new undocumented feature, tests are here:
 
+* http://jsfiddle.net/yu3wjjwa/
+* simple navigation http://jsfiddle.net/30jag1uq/2/
+
 ## using with _data
 
 http://jsfiddle.net/s5wzww3e/
