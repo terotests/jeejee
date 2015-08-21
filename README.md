@@ -122,7 +122,66 @@ http://jsfiddle.net/vbyssjmq/
 
 A new undocumented feature, tests are here:
 
-http://jsfiddle.net/yu3wjjwa/
+## using with _data
+
+http://jsfiddle.net/s5wzww3e/
+
+```javascript
+var main = _e(document.body);
+
+// create the basic layout for the page
+main.createLayout("standard", function() {
+    var o = _e();
+    o.div("top")
+    o.div("top2")
+    o.div("content");
+    return o;
+});
+main.setLayout("standard");
+
+// view factory to show aribatry mosh object
+main.viewFactory("showObject", function(id) {
+    var o = _e().addClass("container");
+    var data = _data(id);
+    data.then(     
+        function() {
+            o.pre().text("page ID was "+id);
+            o.h1().bind(data, "title");
+            o.p().bind(data, "content");
+        });
+    return o;
+});
+
+// navigation for the items...
+main.viewFactory("topNavi", function(id) {
+    var o = _e().addClass("topNavi");
+    var activeBtn;
+    // create the mosh data to use for creating the navigation
+    var data = _data([
+        { title : "First Page", content : "Some content for the first page" },
+        { title : "Second Page", content : "Some content for the Second page" }
+    ]);
+    data.then( 
+        function() {
+            o.div().mvc( data, function(item) {
+                var btn = _e("button");
+                btn.span().bind(item, "title");
+                btn.on("click",function() {
+                    if(activeBtn) activeBtn.removeClass("selected");
+                    o.pushTo("content", "showObject", item.getID());
+                    activeBtn = btn;
+                    btn.addClass("selected");
+                });
+                return btn;
+            });          
+        });
+
+    return o;
+});
+main.pushTo("top", "topNavi");
+```
+
+
 
 # Avoiding local scope pollution
 
