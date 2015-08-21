@@ -3444,7 +3444,11 @@ if(this._delegates) {
 if(!this._ev) return;
 if(!this._ev[en]) return;
 var me = this;
-this._ev[en].forEach( function(cb) { cb(me, data, fn) } );    
+this._ev[en].forEach( function(cb) { 
+    if(cb) {
+        cb.apply( me, [me, data, fn] );
+    }
+});    
 return this;
 ```
 

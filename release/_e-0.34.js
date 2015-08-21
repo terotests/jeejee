@@ -2029,7 +2029,9 @@
         if (!this._ev[en]) return;
         var me = this;
         this._ev[en].forEach(function (cb) {
-          cb(me, data, fn);
+          if (cb) {
+            cb.apply(me, [me, data, fn]);
+          }
         });
         return this;
       };
