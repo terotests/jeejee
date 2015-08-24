@@ -3386,12 +3386,8 @@
        */
       _myTrait_.popView = function (toView) {
 
-        console.log("popView");
-
         if (!this._views || this._views.length == 0) {
-          console.log("pop View, no views to pop here");
           if (this._parent) {
-            console.log("calling parents popView");
             this._parent.popView();
             return this;
           }
