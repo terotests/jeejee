@@ -814,6 +814,7 @@
         if (typeof p != "undefined") {
           this._dom.style.height = p;
           this.trigger("height");
+          this._h = parseInt(v);
         }
         return this;
       };
@@ -977,6 +978,7 @@
         if (typeof p != "undefined") {
           this._dom.style.width = p;
           this.trigger("width");
+          this._w = parseInt(v);
         }
         return this;
       };
