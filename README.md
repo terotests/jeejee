@@ -2205,6 +2205,7 @@ if(v.slice) {
 var p = this.pxParam(v);
 if(typeof(p)!="undefined") {
     this._dom.style.height = p;
+    this.trigger("height");
 }
 return this;
 ```
@@ -2374,6 +2375,7 @@ if(v.slice) {
 var p = this.pxParam(v);
 if(typeof(p)!="undefined") {
     this._dom.style.width = p;
+    this.trigger("width");
 }
 return this;
 ```
