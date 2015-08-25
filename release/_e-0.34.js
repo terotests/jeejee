@@ -3800,6 +3800,28 @@
       _myTrait_.__traitInit.push(function (t) {});
 
       /**
+       * @param float model
+       * @param float type
+       * @param float controller
+       */
+      _myTrait_.mv = function (model, type, controller) {
+
+        var o, fn;
+        if (this.isFunction(type)) {
+          o = _e();
+          fn = type;
+        } else {
+          o = _e(type);
+          fn = controller;
+        }
+
+        this.mvc(model, function () {
+          fn.apply(o, [model]);
+          return o;
+        });
+      };
+
+      /**
        * @param Object model
        * @param float view
        * @param float controller

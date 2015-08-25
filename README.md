@@ -894,6 +894,7 @@ MIT. Currently use at own risk.
 - [data](README.md#mvc_trait_data)
 - [fromStream](README.md#mvc_trait_fromStream)
 - [getViewFunction](README.md#mvc_trait_getViewFunction)
+- [mv](README.md#mvc_trait_mv)
 - [mvc](README.md#mvc_trait_mvc)
 
 
@@ -2205,6 +2206,7 @@ if(v.slice) {
 var p = this.pxParam(v);
 if(typeof(p)!="undefined") {
     this._dom.style.height = p;
+    this._h = parseInt(v);
     this.trigger("height");
 }
 return this;
@@ -2375,6 +2377,7 @@ if(v.slice) {
 var p = this.pxParam(v);
 if(typeof(p)!="undefined") {
     this._dom.style.width = p;
+    this._w = parseInt(v);
     this.trigger("width");
 }
 return this;
@@ -5239,6 +5242,27 @@ for(var n in this._view) {
 
 ```
         
+### <a name="mvc_trait_mv"></a>mvc_trait::mv(model, type, controller)
+
+
+```javascript
+
+var o, fn;
+if(this.isFunction(type)) {
+    o = _e();
+    fn = type;
+} else {
+    o = _e(type);
+    fn = controller;
+}
+
+this.mvc( model, function() {
+    fn.apply( o, [model] );
+    return o; 
+});
+
+```
+
 ### <a name="mvc_trait_mvc"></a>mvc_trait::mvc(model, view, controller)
 
 
