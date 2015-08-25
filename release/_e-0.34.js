@@ -813,8 +813,8 @@
         var p = this.pxParam(v);
         if (typeof p != "undefined") {
           this._dom.style.height = p;
-          this.trigger("height");
           this._h = parseInt(v);
+          this.trigger("height");
         }
         return this;
       };
@@ -977,8 +977,8 @@
         var p = this.pxParam(v);
         if (typeof p != "undefined") {
           this._dom.style.width = p;
-          this.trigger("width");
           this._w = parseInt(v);
+          this.trigger("width");
         }
         return this;
       };
