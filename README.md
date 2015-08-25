@@ -5247,16 +5247,17 @@ for(var n in this._view) {
 
 ```javascript
 
-var o, fn;
+var o, fn, elemName;
 if(this.isFunction(type)) {
-    o = _e();
+    elemName = "div";
     fn = type;
 } else {
-    o = _e(type);
+    elemName = type;
     fn = controller;
 }
 
 this.mvc( model, function() {
+    var o = _e(elemName);
     fn.apply( o, [model] );
     return o; 
 });
