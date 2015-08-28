@@ -4747,11 +4747,12 @@
 
         // upload handler here...
         var upload = function upload(uploadElement) {
+          console.log("upload called ");
           var file = uploadElement.files[0];
           if (file) {
 
             var formData = new window.FormData();
-            formData.append("myFile", file);
+            formData.append(options.fieldName || "newFile", file);
             var xhr = new XMLHttpRequest();
             xhr.onreadystatechange = function () {
               if (xhr.readyState === 4) //done
@@ -4801,6 +4802,7 @@
         }
         inp._dom, addEventListener("change", function (event) {
           console.log("Input got change event");
+          console.log(event.target.files.length);
           if (event.target.files.length == 1 && event.target.files[0].type.indexOf("image/") == 0) {
             upload(inp._dom);
           }
