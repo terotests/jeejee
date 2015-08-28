@@ -5042,7 +5042,8 @@
         */
         var videoElem = this.video({
           width: width,
-          height: height
+          height: height,
+          autoplay: true
         });
         var video = videoElem._dom;
         var videoObj = {
