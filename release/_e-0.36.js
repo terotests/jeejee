@@ -4806,6 +4806,9 @@
         if (options.getUploader) {
           options.getUploader(o.uploadFiles);
         }
+        o.on("upload", function (o, v) {
+          o.uploadFiles(v || {});
+        });
         return o;
       };
 
@@ -4907,7 +4910,11 @@
             upload(inp._dom);
           }
         });
-
+        inp.on("upload", function () {
+          if (event.target.files.length == 1) {
+            upload(inp._dom);
+          }
+        });
         return inp;
       };
 
