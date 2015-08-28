@@ -2879,6 +2879,15 @@
         var el = this.shortcutFor("ul", className, attrs);
         return el;
       };
+
+      /**
+       * @param float className
+       * @param float attrs
+       */
+      _myTrait_.video = function (className, attrs) {
+        var el = this.shortcutFor("video", className, attrs);
+        return el;
+      };
     })(this);
 
     // trait comes here...
@@ -5013,6 +5022,62 @@
       };
     })(this);
 
+    // trait comes here...
+
+    (function (_myTrait_) {
+      var x;
+
+      // Initialize static variables here...
+
+      /**
+       * @param float width
+       * @param float height
+       */
+      _myTrait_.createVideoCanvas = function (width, height) {
+        /*
+        var canv = this.canvas( {
+        width : width,
+        height : height
+        });
+        */
+        var videoElem = this.video({
+          width: width,
+          height: height
+        });
+        var video = videoElem._dom;
+        var errBack = function errBack(error) {};
+        // Put video listeners into place
+        if (navigator.getUserMedia) {
+          // Standard
+          navigator.getUserMedia(videoObj, function (stream) {
+            video.src = stream;
+            video.play();
+          }, errBack);
+        } else if (navigator.webkitGetUserMedia) {
+          // WebKit-prefixed
+          navigator.webkitGetUserMedia(videoObj, function (stream) {
+            video.src = window.webkitURL.createObjectURL(stream);
+            video.play();
+          }, errBack);
+        } else if (navigator.mozGetUserMedia) {
+          // Firefox-prefixed
+          navigator.mozGetUserMedia(videoObj, function (stream) {
+            video.src = window.URL.createObjectURL(stream);
+            video.play();
+          }, errBack);
+        }
+        return videoElem;
+        // ==> snap video out
+        /*
+        context.drawImage(video, 0, 0, 640, 480);
+        */
+      };
+
+      if (_myTrait_.__traitInit && !_myTrait_.hasOwnProperty("__traitInit")) _myTrait_.__traitInit = _myTrait_.__traitInit.slice();
+      if (!_myTrait_.__traitInit) _myTrait_.__traitInit = [];
+      _myTrait_.__traitInit.push(function (t) {});
+    })(this);
+
     // the subclass definition comes around here then
 
     // The class definition is here...
@@ -7088,6 +7153,8 @@
 // console.log("**** SHOULD NOT ITERATE CHILDREN *****");
 
 // this._dom.innerHTML = v;
+
+// error.code;
 
 //console.log("Attr set to ", n);
 //console.trace();
