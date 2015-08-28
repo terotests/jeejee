@@ -4715,7 +4715,108 @@
       /**
        * @param float options
        */
+      _myTrait_._traditionalUpload = function (options) {
+
+        var o = _e();
+        var form = o.form("", {
+          "action": options.url,
+          "enctype": "multipart/form-data",
+          "method": "POST",
+          "name": o.guid()
+        });
+
+        var maxCnt = options.maxCnt || 20;
+        var chStr = "complete" + this.guid();
+
+        var onComplete = function onComplete(v) {
+          delete window[chStr];
+          if (options.done) {
+            options.done(v);
+          }
+        };
+
+        window[chStr] = onComplete;
+        form.input("", {
+          type: "hidden",
+          value: chStr,
+          name: "onComplete"
+        });
+
+        if (options.vars) {
+          for (var n in options.vars) {
+            if (options.vars.hasOwnProperty(n)) {
+              form.input("", {
+                type: "hidden",
+                value: options.vars[n],
+                name: n
+              });
+            }
+          }
+        }
+        var uplFields = form.div("form-group");
+
+        var maxFileCnt = options.maxFileCnt || 5,
+            fileCnt = 0;
+
+        var createUploadField = function createUploadField() {
+          if (fileCnt >= maxFileCnt) return;
+          // <label for="exampleInputFile">File input</label>
+          var inp = uplFields.input("", {
+            type: "file",
+            name: options.fieldName || "newFile"
+          });
+          inp.on("value", function () {
+            if (options.autoUpload) {
+              o.uploadFiles();
+            } else {
+              if (fileCnt < maxCnt) createUploadField();
+            }
+          });
+
+          fileCnt++;
+        };
+
+        createUploadField();
+        var iFrame = _e("iframe");
+        var frame_id = o.guid();
+        iFrame.q.attr("id", frame_id);
+        iFrame.q.attr("name", frame_id);
+        iFrame.absolute().x(-4000).y(-4000);
+        o.add(iFrame);
+
+        o.uploadFiles = function (vars) {
+          if (vars) {
+            for (var n in vars) {
+              if (vars.hasOwnProperty(n)) {
+                form.input("", {
+                  type: "hidden",
+                  value: vars[n],
+                  name: n
+                });
+              }
+            }
+          }
+          form._dom.target = frame_id; //'my_iframe' is the name of the iframe
+          form._dom.submit();
+          uplFields.clear();
+          fileCnt = 0;
+          createUploadField();
+        };
+
+        if (options.getUploader) {
+          options.getUploader(o.uploadFiles);
+        }
+        return o;
+      };
+
+      /**
+       * @param float options
+       */
       _myTrait_.createUploader = function (options) {
+
+        if (options.testTraditional || typeof window.FormData == "undefined") {
+          return this._traditionalUpload(options);
+        }
 
         // The file uploader
         var inp = _e("input").addClass("uploader-field");
@@ -4747,23 +4848,37 @@
 
         // upload handler here...
         var upload = function upload(uploadElement) {
-          console.log("upload called ");
+
           var file = uploadElement.files[0];
           if (file) {
-
             var formData = new window.FormData();
+            if (options.vars) {
+              if (options.vars) {
+                for (var n in options.vars) {
+                  if (options.vars.hasOwnProperty(n)) {
+                    formData.append(n, options.vars[n]);
+                  }
+                }
+              }
+            }
+
             formData.append(options.fieldName || "newFile", file);
             var xhr = new XMLHttpRequest();
             xhr.onreadystatechange = function () {
               if (xhr.readyState === 4) //done
                 {
-                  if (options.done) {
-                    options.done(xhr.responseText);
+                  if (xhr.status === 200) {
+                    if (options.done) {
+                      options.done(xhr.responseText);
+                    }
+                  } else {
+                    if (options.error) {
+                      options.error(xhr.responseText, xhr);
+                    }
                   }
                 }
             };
             xhr.open("POST", options.url);
-
             if (options.progress && xhr.upload) {
               xhr.upload.onprogress = function (e) {
                 if (e.lengthComputable) {
@@ -4779,30 +4894,15 @@
                 }
               };
             }
-            /*
-            // Listen to the upload progress.
-            var progressBar = document.querySelector('progress');
-            xhr.upload.onprogress = function (e) {
-            if (e.lengthComputable) {
-                var done = (e.loaded / e.total) * 100;
-                progress.text(done+" prosenttia");
-                if(e.loaded==e.total) {
-                    alert("Upload done");
-                }
-            }
-            };*/
-
             xhr.send(formData);
           }
         };
 
-        // May not work... :/
-        if (!("url" in window) && "webkitURL" in window) {
-          window.URL = window.webkitURL;
-        }
         inp._dom, addEventListener("change", function (event) {
 
+          // todo: check if the file is of correct type
           // event.target.files[0].type.indexOf("image/") == 0) {
+
           if (event.target.files.length == 1) {
             upload(inp._dom);
           }
