@@ -5045,6 +5045,9 @@
           height: height
         });
         var video = videoElem._dom;
+        var videoObj = {
+          "video": true
+        };
         var errBack = function errBack(error) {};
         // Put video listeners into place
         if (navigator.getUserMedia) {
