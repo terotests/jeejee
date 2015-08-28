@@ -4799,8 +4799,7 @@
         if (!("url" in window) && "webkitURL" in window) {
           window.URL = window.webkitURL;
         }
-
-        inp.on("change", function (event) {
+        inp._dom, addEventListener("change", function (event) {
           console.log("Input got change event");
           if (event.target.files.length == 1 && event.target.files[0].type.indexOf("image/") == 0) {
             upload(inp._dom);
