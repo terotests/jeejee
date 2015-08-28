@@ -4758,7 +4758,7 @@
               if (xhr.readyState === 4) //done
                 {
                   if (options.done) {
-                    options.done();
+                    options.done(xhr.responseText);
                   }
                 }
             };
