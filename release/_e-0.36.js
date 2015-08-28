@@ -4801,9 +4801,9 @@
           window.URL = window.webkitURL;
         }
         inp._dom, addEventListener("change", function (event) {
-          console.log("Input got change event");
-          console.log(event.target.files.length);
-          if (event.target.files.length == 1 && event.target.files[0].type.indexOf("image/") == 0) {
+
+          // event.target.files[0].type.indexOf("image/") == 0) {
+          if (event.target.files.length == 1) {
             upload(inp._dom);
           }
         });
