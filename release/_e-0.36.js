@@ -6927,6 +6927,14 @@
         if (!_registry) _registry = {};
 
         if (!elemName) elemName = "div";
+
+        var addClass;
+        var pts = elemName.split("."); // => has classname?
+        if (pts[1]) {
+          elemName = pts[0];
+          addClass = pts[1];
+        }
+
         if (!_eg) {
           this.initElemNames();
           _eg = _ee_ = this.globalState();
@@ -7005,6 +7013,7 @@
         if (this._type == "checkbox") {
           this.q.attr("type", "checkbox");
         }
+        if (!this._svg && addClass) this.addClass(addClass);
 
         if (!this._component && into) {
           if (typeof into.appendChild != "undefined") into.appendChild(this._dom);
