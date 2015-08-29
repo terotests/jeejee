@@ -3934,6 +3934,7 @@
        */
       _myTrait_.tree = function (treeData, itemFn) {
         var _dragState = {};
+        var _dragOn;
 
         var showTree = function showTree(item, currLevel) {
 
