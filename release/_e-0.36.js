@@ -3940,51 +3940,20 @@
 
           var subData, subDataElem, dragHandle;
 
+          var subList = [];
+
+          var li;
+
           var myObj = {
             subTree: function subTree(dataList, elem) {
-              var subData = dataList;
-              var subDataElem = elem;
-
-              if (subData && subDataElem) {
-                var subTree = subDataElem;
-                // maybe these are not really necessary...
-                if (subData.length() > 0) {
-                  li.addClass("hasChildren");
-                }
-                subDataElem.on("insert", function () {
-                  li.addClass("hasChildren");
-                });
-                subDataElem.on("remove", function () {
-                  if (item.items.length() == 0) {
-                    li.removeClass("hasChildren");
-                  }
-                });
-                subTree.hide();
-                subDataElem.mvc(subData, function (item) {
-                  return showTree(item, currLevel + 1);
-                });
-                var sub_vis = item.get("open");
-                item.on("open", function (o, v) {
-                  if (v) {
-                    subTree.show();
-                  } else {
-                    subTree.hide();
-                  }
-                });
-                // is the "open" a good thing to have for the tree?
-                li.on("click", function () {
-                  sub_vis = !sub_vis;
-                  item.set("open", sub_vis);
-                });
-                if (sub_vis) subTree.show();
-              }
+              subList.push([dataList, elem]);
             },
             drag: function drag(elem, options) {
               dragHandle = elem;
             }
           };
 
-          var li = itemFn.apply(myObj, [item, currLevel]);
+          li = itemFn.apply(myObj, [item, currLevel]);
           li.on("click", function () {
             _dragState.lastActive = item;
           });
@@ -4037,6 +4006,45 @@
               }
             });
           }
+          subList.forEach(function (a) {
+
+            var subData = a.pop();
+            var subDataElem = a.pop();
+
+            if (subData && subDataElem) {
+              var subTree = subDataElem;
+              // maybe these are not really necessary...
+              if (subData.length() > 0) {
+                li.addClass("hasChildren");
+              }
+              subDataElem.on("insert", function () {
+                li.addClass("hasChildren");
+              });
+              subDataElem.on("remove", function () {
+                if (item.items.length() == 0) {
+                  li.removeClass("hasChildren");
+                }
+              });
+              subTree.hide();
+              subDataElem.mvc(subData, function (item) {
+                return showTree(item, currLevel + 1);
+              });
+              var sub_vis = item.get("open");
+              item.on("open", function (o, v) {
+                if (v) {
+                  subTree.show();
+                } else {
+                  subTree.hide();
+                }
+              });
+              // is the "open" a good thing to have for the tree?
+              li.on("click", function () {
+                sub_vis = !sub_vis;
+                item.set("open", sub_vis);
+              });
+              if (sub_vis) subTree.show();
+            }
+          });
 
           return li;
         };
