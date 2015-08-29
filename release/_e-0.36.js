@@ -4008,8 +4008,8 @@
           }
           subList.forEach(function (a) {
 
-            var subData = a.pop();
             var subDataElem = a.pop();
+            var subData = a.pop();
 
             if (subData && subDataElem) {
               var subTree = subDataElem;
