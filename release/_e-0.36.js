@@ -3927,6 +3927,123 @@
         }
         return this;
       };
+
+      /**
+       * @param float treeData
+       * @param float itemFn
+       */
+      _myTrait_.tree = function (treeData, itemFn) {
+        var _dragState = {};
+
+        var showTree = function showTree(item, currLevel) {
+
+          var subData, subDataElem, dragHandle;
+
+          var myObj = {
+            subTree: function subTree(dataList, elem) {
+              subData = dataList;
+              subDataElem = elem;
+            },
+            drag: function drag(elem, options) {
+              dragHandle = elem;
+            }
+          };
+
+          var li = itemFn.apply(myObj, [item], currLevel);
+          li.on("click", function () {
+            _dragState.lastActive = item;
+          });
+          li.on("mouseenter", function () {
+            if (dragHandle) {
+              if (_dragOn && !_dragState.dropTarget) {
+                li.addClass("draggedOn");
+                _dragState.dropTarget = item;
+                _dragState.dropElem = li;
+              } else {
+                li.addClass("mouseOn");
+              }
+            }
+          });
+
+          li.on("mouseleave", function () {
+            li.removeClass("mouseOn");
+            li.removeClass("draggedOn");
+            _dragState.dropTarget = null;
+          });
+
+          if (dragHandle) {
+            dragHandle.drag(function (dragInfo) {
+              if (dragHandle) {
+                // do something here with dragInfo
+                if (dragInfo.start && !_dragState.item) {
+                  _dragOn = true;
+                  _dragState.item = item;
+                  _dragState.srcElem = li;
+                }
+                if (dragInfo.end) {
+                  _dragOn = false;
+                  if (_dragState.dropTarget && _dragState.item) {
+
+                    if (_dragState.dropTarget.parent() == _dragState.item.parent()) {
+                      if (_dragState.dropTarget != _dragState.item) {
+                        var new_i = _dragState.dropTarget.indexOf();
+                        _dragState.item.moveToIndex(new_i);
+                      }
+                    } else {
+                      if (_dragState.dropTarget.items) {
+                        _dragState.item.remove();
+                        _dragState.dropTarget.items.push(_dragState.item);
+                      }
+                    }
+                  }
+                  _dragState.item = null;
+                  _dragState.dropTarget = null;
+                }
+              }
+            });
+          }
+
+          if (subData && subDataElem) {
+            var subTree = subDataElem;
+            // maybe these are not really necessary...
+            if (subData.length() > 0) {
+              li.addClass("hasChildren");
+            }
+            subDataElem.on("insert", function () {
+              li.addClass("hasChildren");
+            });
+            subDataElem.on("remove", function () {
+              if (item.items.length() == 0) {
+                li.removeClass("hasChildren");
+              }
+            });
+            subTree.hide();
+            subDataElem.mvc(subData, function (item) {
+              return showTree(item, currLevel + 1);
+            });
+            var sub_vis = item.get("open");
+            item.on("open", function (o, v) {
+              console.log("open => ", v);
+              if (v) {
+                subTree.show();
+              } else {
+                subTree.hide();
+              }
+            });
+            // is the "open" a good thing to have for the tree?
+            li.on("click", function () {
+              sub_vis = !sub_vis;
+              item.set("open", sub_vis);
+            });
+            if (sub_vis) subTree.show();
+          }
+
+          return li;
+        };
+        this.mvc(treeData, function (item) {
+          return showTree(item, 1);
+        });
+      };
     })(this);
 
     // trait comes here...

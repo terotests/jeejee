@@ -849,6 +849,7 @@ MIT. Currently use at own risk.
 - [textarea](README.md#domShortcuts_textarea)
 - [toDataURL](README.md#domShortcuts_toDataURL)
 - [ul](README.md#domShortcuts_ul)
+- [video](README.md#domShortcuts_video)
 
 
     
@@ -896,6 +897,7 @@ MIT. Currently use at own risk.
 - [getViewFunction](README.md#mvc_trait_getViewFunction)
 - [mv](README.md#mvc_trait_mv)
 - [mvc](README.md#mvc_trait_mvc)
+- [tree](README.md#mvc_trait_tree)
 
 
     
@@ -965,6 +967,20 @@ MIT. Currently use at own risk.
 
     
     
+    
+    
+    
+##### trait ajax_methods
+
+- [_initAjax](README.md#__initAjax)
+- [_traditionalUpload](README.md#__traditionalUpload)
+- [createUploader](README.md#_createUploader)
+- [get](README.md#_get)
+- [getJSON](README.md#_getJSON)
+- [post](README.md#_post)
+- [send](README.md#_send)
+
+
     
     
 
@@ -1143,6 +1159,8 @@ MIT. Currently use at own risk.
 
       
     
+      
+    
 
 
 
@@ -1268,6 +1286,14 @@ if(this.isObject(elemName)) {
 if(!_registry) _registry = {};
 
 if(!elemName) elemName = "div";
+
+var addClass;
+var pts = elemName.split("."); // => has classname?
+if(pts[1]) {
+    elemName = pts[0];
+    addClass = pts[1];
+}
+
 if(!_eg) {
     this.initElemNames();
     _eg = _ee_ = this.globalState();
@@ -1350,6 +1376,7 @@ this.q = new _qc(this._dom, this);
 if(this._type=="checkbox") {
     this.q.attr("type","checkbox");
 }
+if(!this._svg && addClass) this.addClass( addClass );
 
 if(!this._component && into) {
     if(typeof(into.appendChild)!="undefined")
@@ -4290,6 +4317,14 @@ var el = this.shortcutFor("ul", className, attrs);
 return el;
 ```
 
+### <a name="domShortcuts_video"></a>domShortcuts::video(className, attrs)
+
+
+```javascript
+var el = this.shortcutFor("video", className, attrs);
+return el;
+```
+
 
     
     
@@ -5256,9 +5291,9 @@ if(this.isFunction(type)) {
     fn = controller;
 }
 
-this.mvc( model, function() {
+this.mvc( model, function(item) {
     var o = _e(elemName);
-    fn.apply( o, [model] );
+    fn.apply( o, [item] );
     return o; 
 });
 
@@ -5359,6 +5394,127 @@ if(controller) {
     this._controller = controller;
 }
 return this;
+```
+
+### <a name="mvc_trait_tree"></a>mvc_trait::tree(treeData, itemFn)
+
+
+```javascript
+var _dragState = {};       
+
+var showTree = function(item, currLevel) {
+    
+    var subData, 
+        subDataElem,
+        dragHandle;
+        
+    var myObj = {
+        subTree : function(dataList, elem) {
+            subData = dataList;
+            subDataElem = elem;
+        },
+        drag : function(elem, options) {
+            dragHandle = elem;
+        }
+    }
+    
+    var li = itemFn.apply(myObj, [item], currLevel ); 
+    li.on("click", function() {
+        _dragState.lastActive = item;
+    });
+    li.on("mouseenter", function() {
+        if(dragHandle) {
+            if(_dragOn && !_dragState.dropTarget) {
+                li.addClass("draggedOn");
+               _dragState.dropTarget = item;
+               _dragState.dropElem = li;            
+            } else {
+                li.addClass("mouseOn");
+            }
+        }
+    });
+    
+    li.on("mouseleave", function() {
+        li.removeClass("mouseOn");
+        li.removeClass("draggedOn");
+        _dragState.dropTarget = null;
+    });
+
+    if(dragHandle) {
+        dragHandle.drag(function(dragInfo) {
+            if(dragHandle) {
+               // do something here with dragInfo
+               if(dragInfo.start && !_dragState.item) {
+                   _dragOn = true;
+                   _dragState.item = item;
+                   _dragState.srcElem = li;
+               }
+               if(dragInfo.end) {
+                   _dragOn = false;
+                   if(_dragState.dropTarget && _dragState.item) {
+                      
+                       if(_dragState.dropTarget.parent() == _dragState.item.parent()) {
+                           if(_dragState.dropTarget != _dragState.item) {
+                                var new_i = _dragState.dropTarget.indexOf();
+                                _dragState.item.moveToIndex(new_i);
+                           }
+                       } else {
+                           if(_dragState.dropTarget.items) {
+                              _dragState.item.remove();
+                              _dragState.dropTarget.items.push( _dragState.item );
+                           }
+                       }
+                      
+                   }
+                   _dragState.item = null;
+                   _dragState.dropTarget = null;
+               }
+            }
+        });
+    }
+
+    if(subData && subDataElem ) {
+        var subTree = subDataElem;
+        // maybe these are not really necessary...
+        if(subData.length()>0) {
+            li.addClass("hasChildren");
+        }
+        subDataElem.on("insert", function() {
+            li.addClass("hasChildren");
+        });
+        subDataElem.on("remove", function() {
+            if(item.items.length()==0) {
+                li.removeClass("hasChildren");
+            }       
+        })    
+        subTree.hide();
+        subDataElem.mvc( subData, function(item) {
+            return showTree(item,currLevel+1);
+        });                  
+        var sub_vis = item.get("open");
+        item.on("open", function(o,v) {
+            console.log("open => ",v);
+            if(v) {
+                subTree.show();
+            } else {
+                subTree.hide();
+            }
+        });
+        // is the "open" a good thing to have for the tree?
+        li.on("click", function() {
+            sub_vis = !sub_vis;
+            item.set("open", sub_vis);
+        });
+        if(sub_vis) subTree.show();        
+    }
+
+    return li;
+}
+this.mvc( treeData, function(item) {
+    return showTree(item,1);
+});        
+
+
 ```
 
 
@@ -5984,6 +6140,342 @@ return {    r : this.toRSpace(255*(Y+ 0 * U + 1.13983 * V)),
 
     
     
+    
+    
+    
+## trait ajax_methods
+
+The class has following internal singleton variables:
+        
+* x
+        
+        
+### <a name="__initAjax"></a>::_initAjax(t)
+
+
+```javascript
+if (typeof XMLHttpRequest !== 'undefined') {
+    return new XMLHttpRequest();  
+}
+var versions = [
+    "MSXML2.XmlHttp.6.0",
+    "MSXML2.XmlHttp.5.0",   
+    "MSXML2.XmlHttp.4.0",  
+    "MSXML2.XmlHttp.3.0",   
+    "MSXML2.XmlHttp.2.0",  
+    "Microsoft.XmlHttp"
+];
+
+var xhr;
+for(var i = 0; i < versions.length; i++) {  
+    try {  
+        xhr = new ActiveXObject(versions[i]);  
+        break;  
+    } catch (e) {
+    }  
+}
+return xhr;
+```
+
+### <a name="__traditionalUpload"></a>::_traditionalUpload(options)
+
+
+```javascript
+
+var o = _e();
+var form = o.form("",{
+    "action" :  options.url,
+    "enctype" : "multipart/form-data",
+    "method" : "POST",
+    "name" : o.guid()
+});
+
+var maxCnt = options.maxCnt || 20;
+var chStr = "complete"+this.guid();
+
+var onComplete = function(v) {
+   delete window[chStr];
+   if(options.done) {
+       options.done(v);
+   }  
+};
+
+window[chStr] = onComplete;
+form.input("", {
+    type : "hidden",
+    value : chStr,
+    name : "onComplete"
+});
+
+if(options.vars) {
+    for(var n in options.vars) {
+        if(options.vars.hasOwnProperty(n)) {
+            form.input("", {
+                type : "hidden",
+                value : options.vars[n],
+                name : n
+            });
+        }
+    }
+}
+var uplFields = form.div("form-group");
+
+var maxFileCnt = options.maxFileCnt || 5,
+    fileCnt = 0;
+
+var createUploadField = function() {
+    if(fileCnt>=maxFileCnt) return;
+    // <label for="exampleInputFile">File input</label>
+    var inp = uplFields.input("", {
+         type : "file",
+         name : options.fieldName || "newFile"
+    });
+    inp.on("value", function() {
+        if(options.autoUpload) {
+            o.uploadFiles();
+        } else {
+            if(fileCnt<maxCnt) createUploadField(); 
+        }
+    });
+    
+    fileCnt++;
+}
+
+createUploadField();
+var iFrame = _e("iframe");
+var frame_id = o.guid();
+iFrame.q.attr("id", frame_id);
+iFrame.q.attr("name", frame_id);
+iFrame.absolute().x(-4000).y(-4000);
+o.add( iFrame );
+
+o.uploadFiles = function(vars) {
+    if(vars) {
+        for(var n in vars) {
+            if(vars.hasOwnProperty(n)) {
+                form.input("", {
+                    type : "hidden",
+                    value : vars[n],
+                    name : n
+                });
+            }
+        }        
+    }
+    form._dom.target = frame_id; //'my_iframe' is the name of the iframe
+	form._dom.submit();
+	uplFields.clear();
+	fileCnt=0;
+	createUploadField();
+}
+
+if(options.getUploader) {
+    options.getUploader(o.uploadFiles);
+}
+o.on("upload", function(o, v) {
+    o.uploadFiles( v || {} );   
+});
+return o;
+
+
+```
+
+### <a name="_createUploader"></a>::createUploader(options)
+
+
+```javascript
+
+if(options.testTraditional || typeof(window.FormData) == "undefined") {
+    return this._traditionalUpload(options);
+}
+
+// The file uploader
+var inp = _e("input").addClass("uploader-field");
+inp.q.attr("type", "file");
+
+// uploader basic settings
+inp._uploadGUID = "uploadField"+this.guid();
+inp.q.attr("id", inp._uploadGUID);
+inp.q.attr("name", inp._uploadGUID);
+
+if(options.audio) {
+   inp.q.attr("capture", "microphone");
+   inp.q.attr("accept", "audio/*");    
+}
+if(options.video) {
+   inp.q.attr("capture", "camcorder");
+   inp.q.attr("accept", "video/*");    
+}
+if(options.images) {
+   inp.q.attr("capture", "camera");
+   inp.q.attr("accept", "image/*");
+}
+
+/*
+<p>Capture Image: <input type="file" accept="image/*" id="capture" capture="camera"> 
+<p>Capture Audio: <input type="file" accept="audio/*" id="capture" capture="microphone"> 
+<p>Capture Video: <input type="file" accept="video/*" id="capture" capture="camcorder"> 
+*/
+
+// upload handler here...
+var upload = function(uploadElement) {
+
+    var file = uploadElement.files[0];
+    if (file) {
+        var formData = new window.FormData();
+        if(options.vars) {
+             if(options.vars) {
+                for(var n in options.vars) {
+                    if(options.vars.hasOwnProperty(n)) {
+                        formData.append(n, options.vars[n]);
+                    }
+                }
+            }           
+        }
+        
+        formData.append(options.fieldName || "newFile", file);
+        var xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4) //done
+            {
+                if (xhr.status === 200) {
+                    if(options.done) {
+                        options.done(xhr.responseText);
+                    }
+                } else {
+                    if(options.error) {
+                        options.error(xhr.responseText, xhr );
+                    }                    
+                }
+            }
+        };
+        xhr.open('POST', options.url);
+        if(options.progress && xhr.upload) {
+            xhr.upload.onprogress = function (e) {
+                        if (e.lengthComputable) {
+                            var done = (e.loaded / e.total) * 100;
+                            var info = {
+                                loadPros : done,
+                                ready : false
+                            };
+                            if(e.loaded==e.total) {
+                                info.ready = true;
+                            }
+                            options.progress( info );
+                        }
+                    }            
+        }
+        xhr.send(formData);
+    }
+}
+
+inp._dom,addEventListener('change', function(event) {
+
+    // todo: check if the file is of correct type
+    // event.target.files[0].type.indexOf("image/") == 0) {
+    
+    if(event.target.files.length == 1 ) {
+        upload(inp._dom);
+    }
+	});
+inp.on("upload", function() {
+    if(event.target.files.length == 1 ) {
+        upload(inp._dom);
+    }    
+});
+return inp;
+
+```
+
+### <a name="_get"></a>::get(url, data, callback)
+
+
+```javascript
+var query = [];
+if(this.isFunction(data)) {
+    callback = data;
+    ajax.send(url, callback, 'GET', null);
+} else {
+    for (var key in data) {
+        query.push(encodeURIComponent(key) + '=' + encodeURIComponent(data[key]));
+    }
+    ajax.send(url + (query.length ? '?' + query.join('&') : ''), callback, 'GET', null);
+}
+
+
+```
+
+### <a name="_getJSON"></a>::getJSON(url, data, callback)
+
+
+```javascript
+var query = [];
+if(this.isFunction(data)) {
+    callback = data;
+    ajax.send(url, callback, 'GET', null);
+} else {
+    for (var key in data) {
+        query.push(encodeURIComponent(key) + '=' + encodeURIComponent(data[key]));
+    }
+    ajax.send(url + (query.length ? '?' + query.join('&') : ''), function(r) {
+        callback(JSON.parse(r));
+    }, 'GET', null);
+}
+
+
+```
+
+### <a name="_post"></a>::post(url, data, callback)
+
+
+```javascript
+var query = [];
+for (var key in data) {
+    query.push(encodeURIComponent(key) + '=' + encodeURIComponent(data[key]));
+}
+ajax.send(url, callback, 'POST', query.join('&'))
+
+```
+
+### <a name="_send"></a>::send(url, callback, method, data, errorCallback)
+
+
+```javascript
+var x = this._initAjax();
+x.open(method, url);
+x.onreadystatechange = function() {
+    if (x.readyState == 4) {
+        if (x.status==200) {
+            callback(x.responseText)
+        } else {
+            errorCallback(x);
+        }
+    }
+};
+if (method == 'POST') {
+    x.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+}
+x.send(data);
+
+return this;
+
+/*
+ajax.send = function(url, callback, method, data, sync) {
+    var x = ajax.x();
+    x.open(method, url, sync);
+    x.onreadystatechange = function() {
+        if (x.readyState == 4) {
+            callback(x.responseText)
+        }
+    };
+    if (method == 'POST') {
+        x.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+    }
+    x.send(data)
+};
+*/
+```
+
+
     
     
 
@@ -7384,6 +7876,8 @@ return this;
 
 
 
+      
+    
       
     
 
