@@ -118,6 +118,12 @@ Different ways of creating views are collected here
 
 http://jsfiddle.net/vbyssjmq/
 
+# Using with tree views
+
+Examples:
+
+* http://jsfiddle.net/d45mggv6/
+
 # View factories
 
 A new undocumented feature, tests are here:
