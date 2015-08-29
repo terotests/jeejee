@@ -5500,7 +5500,6 @@ var showTree = function(item, currLevel) {
         });                  
         var sub_vis = item.get("open");
         item.on("open", function(o,v) {
-            console.log("open => ",v);
             if(v) {
                 subTree.show();
             } else {
