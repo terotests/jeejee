@@ -5419,7 +5419,7 @@ var showTree = function(item, currLevel) {
         }
     }
     
-    var li = itemFn.apply(myObj, [item], currLevel ); 
+    var li = itemFn.apply(myObj, [item, currLevel] ); 
     li.on("click", function() {
         _dragState.lastActive = item;
     });
