@@ -5400,7 +5400,8 @@ return this;
 
 
 ```javascript
-var _dragState = {};       
+var _dragState = {};      
+var _dragOn;
 
 var showTree = function(item, currLevel) {
     
