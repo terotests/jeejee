@@ -3113,6 +3113,23 @@
       };
 
       /**
+       * This is very opinionated function to load _data from some store
+       * @param float data
+       */
+      _myTrait_.factoryLoader = function (data) {
+
+        // load the factories from the _data()
+        var me = this;
+        return data.then(function (res) {
+          data.forTree(function (t) {
+            if (t.get("type") == "function") {
+              me.viewFactory(t.get("name"), new Function(t.get("body")));
+            }
+          });
+        });
+      };
+
+      /**
        * @param float options
        */
       _myTrait_.fiddle = function (options) {
@@ -3383,8 +3400,9 @@
         return o;
         */
 
-        // maybe in the future might be, but should remain simple
-        // top {width:'200px','height:200px'} | left { width : 20% } content { width : 20% }   |
+        // --> maybe some day this might be possible, but not now...
+        // "top 100% | left 20% ( leftTools | leftTree | leftBottom ), content 80% | bottom 100% "
+
         var vParts = layoutDef.split("|");
 
         var base = _e();
