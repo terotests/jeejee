@@ -616,6 +616,11 @@ A lot of small fixes coming
 - document onFrame handlers etc.
 - SVG path add-ons
 
+# Ideas
+
+Generic view navi -idea : a remote or local data browser
+
+https://gist.github.com/terotests/c052b5abc841ca91cb19
 
 # License
 
@@ -5414,18 +5419,21 @@ var showTree = function(item, currLevel) {
     var subData, 
         subDataElem,
         dragHandle;
-        
+    
+    var subList = [];
+    
+    var li;
+    
     var myObj = {
         subTree : function(dataList, elem) {
-            subData = dataList;
-            subDataElem = elem;
+            subList.push([dataList, elem]);
         },
         drag : function(elem, options) {
             dragHandle = elem;
         }
     }
     
-    var li = itemFn.apply(myObj, [item, currLevel] ); 
+    li = itemFn.apply(myObj, [item, currLevel] ); 
     li.on("click", function() {
         _dragState.lastActive = item;
     });
@@ -5446,6 +5454,7 @@ var showTree = function(item, currLevel) {
         li.removeClass("draggedOn");
         _dragState.dropTarget = null;
     });
+    
 
     if(dragHandle) {
         dragHandle.drag(function(dragInfo) {
@@ -5479,40 +5488,48 @@ var showTree = function(item, currLevel) {
             }
         });
     }
+    subList.forEach( function(a) {
 
-    if(subData && subDataElem ) {
-        var subTree = subDataElem;
-        // maybe these are not really necessary...
-        if(subData.length()>0) {
-            li.addClass("hasChildren");
-        }
-        subDataElem.on("insert", function() {
-            li.addClass("hasChildren");
-        });
-        subDataElem.on("remove", function() {
-            if(item.items.length()==0) {
-                li.removeClass("hasChildren");
-            }       
-        })    
-        subTree.hide();
-        subDataElem.mvc( subData, function(item) {
-            return showTree(item,currLevel+1);
-        });                  
-        var sub_vis = item.get("open");
-        item.on("open", function(o,v) {
-            if(v) {
-                subTree.show();
-            } else {
+            var subDataElem = a.pop();
+            var subData     = a.pop();
+
+            if(subData && subDataElem ) {
+                var subTree = subDataElem;
+                // maybe these are not really necessary...
+                if(subData.length()>0) {
+                    li.addClass("hasChildren");
+                }
+                subDataElem.on("insert", function() {
+                    li.addClass("hasChildren");
+                });
+                subDataElem.on("remove", function() {
+                    if(item.items.length()==0) {
+                        li.removeClass("hasChildren");
+                    }       
+                })    
                 subTree.hide();
-            }
-        });
-        // is the "open" a good thing to have for the tree?
-        li.on("click", function() {
-            sub_vis = !sub_vis;
-            item.set("open", sub_vis);
-        });
-        if(sub_vis) subTree.show();        
-    }
+                subDataElem.mvc( subData, function(item) {
+                    return showTree(item,currLevel+1);
+                });                  
+                var sub_vis = item.get("open");
+                item.on("open", function(o,v) {
+                    if(v) {
+                        subTree.show();
+                    } else {
+                        subTree.hide();
+                    }
+                });
+                // is the "open" a good thing to have for the tree?
+                li.on("click", function() {
+                    sub_vis = !sub_vis;
+                    item.set("open", sub_vis);
+                });
+                if(sub_vis) subTree.show();        
+            }  
+        
+    })
+
+
 
     return li;
 }
