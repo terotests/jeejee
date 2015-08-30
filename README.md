@@ -880,11 +880,13 @@ MIT. Currently use at own risk.
 
 - [contentRouter](README.md#viewsNavis_contentRouter)
 - [createLayout](README.md#viewsNavis_createLayout)
+- [factoryLoader](README.md#viewsNavis_factoryLoader)
 - [fiddle](README.md#viewsNavis_fiddle)
 - [findViewByName](README.md#viewsNavis_findViewByName)
 - [getLayouts](README.md#viewsNavis_getLayouts)
 - [getRouteObj](README.md#viewsNavis_getRouteObj)
 - [initScreenEvents](README.md#viewsNavis_initScreenEvents)
+- [layout](README.md#viewsNavis_layout)
 - [onMediaChange](README.md#viewsNavis_onMediaChange)
 - [onRoute](README.md#viewsNavis_onRoute)
 - [pageController](README.md#viewsNavis_pageController)
@@ -4562,12 +4564,33 @@ if(this.isFunction(name)) {
 if(!_viewStructures) _viewStructures = {}
 
 var holder = _e();
-var view = fn();
+var view;
+if(this.isFunction(fn)) {
+   view = fn();
+} else {
+   view = fn;
+}
 
 _viewStructures[name] = {
     view : view,
     viewHolder : holder
 }
+```
+
+### <a name="viewsNavis_factoryLoader"></a>viewsNavis::factoryLoader(data)
+
+This is very opinionated function to load _data from some store
+```javascript
+
+// load the factories from the _data()
+var me = this;
+return data.then( function(res) {
+    data.forTree( function(t) {
+        if(t.get("type")=="function") {
+            me.viewFactory( t.get("name"), new Function(t.get("body") ));
+        }            
+    });
+});
 ```
 
 ### <a name="viewsNavis_fiddle"></a>viewsNavis::fiddle(options)
@@ -4816,6 +4839,68 @@ if(window.matchMedia) {
     });
     */
 }
+```
+
+### <a name="viewsNavis_layout"></a>viewsNavis::layout(layoutName, layoutDef)
+
+
+```javascript
+
+if(!layoutDef) {
+    layoutDef = layoutName;
+    layoutName = this.guid();
+}
+
+// -> how to define the layout
+// o.layout("top 100% | bottom 100% " );
+// top 100% | left 20%, content 80% | bottom 100%
+/*
+var o _e();
+    o.div("icon");
+    o.div("title");
+    o.div("else");
+return o;
+*/
+
+// --> maybe some day this might be possible, but not now...
+// "top 100% | left 20% ( leftTools | leftTree | leftBottom ), content 80% | bottom 100% "
+
+var vParts = layoutDef.split("|");
+
+var base = _e();
+vParts.forEach( function(pDef) {
+    
+    var row = base.div(); // <-- or the factory name...
+    pDef.split(",").forEach( function(layItem) {
+        
+        layItem = layItem.trim();
+        var parts = layItem.split(" ");
+        var partName = parts[0];
+        
+        // => the layout item using just a CSS class etc.
+        var elem = row.div(partName);
+        elem._dom.style.display = "inline-block";
+        
+        if(parts.length>1) {
+            parts.shift();
+            var prosStr = parts.join(""); // 10% => 10
+            elem.width(prosStr);
+        } else {
+            
+        }
+    });
+    
+})
+this.createLayout( layoutName, base );
+this.setLayout( layoutName );
+
+// ==> should set the layout object here...
+
+return this;
+
+// => returns the layout object to modify the layout if necessary...
+
+
 ```
 
 ### <a name="viewsNavis_onMediaChange"></a>viewsNavis::onMediaChange(fn)
