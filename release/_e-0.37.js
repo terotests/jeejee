@@ -3399,6 +3399,7 @@
 
             // => the layout item using just a CSS class etc.
             var elem = row.div(partName);
+            elem._dom.display = "inline-block";
 
             if (parts.length > 1) {
               parts.shift();
