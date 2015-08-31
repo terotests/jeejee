@@ -5386,7 +5386,7 @@ if(typeof(v) != "undefined") {
 return this.__mdata;
 ```
 
-### <a name="mvc_trait_findModelFactory"></a>mvc_trait::findModelFactory(t)
+### <a name="mvc_trait_findModelFactory"></a>mvc_trait::findModelFactory(name)
 
 
 ```javascript

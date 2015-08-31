@@ -3971,8 +3971,9 @@
             if (wf._obj) wf._obj = {};
             try {
               wf.apply(wf._obj, [params, function (resModel) {
-                // result({ model : resModel });
-                result(resModel);
+                result({
+                  model: resModel
+                });
               }, reject]);
             } catch (e) {
               reject(e);
