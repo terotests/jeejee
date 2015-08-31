@@ -3629,7 +3629,7 @@
                     obj.replaceWith(newObj);
                     obj = newObj;
 
-                    me._viewFactory[factoryName] = newF;
+                    wf._container._viewFactory[factoryName] = newF;
                     if (newF && !newF._viewCache) newF._viewCache = {};
                     newF._viewCache[factoryName + "." + paramName] = newObj;
                   }
