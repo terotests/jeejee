@@ -5313,7 +5313,7 @@ if(_viewStructures && _viewStructures[name]) {
 if(!this._viewFactory) this._viewFactory = {};
 
 this._viewFactory[name] = fn;
-ff._container = this;
+fn._container = this;
 
 
 ```
