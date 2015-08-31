@@ -5072,6 +5072,7 @@ if(!this._activeLayout) {
                     if(newObj) {
                         obj.replaceWith( newObj );
                         obj = newObj;
+                        _viewFactory[factoryName] = newF;
                     }
                 } catch(e) {
                     
