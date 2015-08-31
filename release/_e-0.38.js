@@ -3895,9 +3895,9 @@
       };
 
       /**
-       * @param float t
+       * @param float name
        */
-      _myTrait_.findModelFactory = function (t) {
+      _myTrait_.findModelFactory = function (name) {
 
         if (this._modelFactory) {
           var ff = this._modelFactory[name];
