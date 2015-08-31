@@ -5457,7 +5457,7 @@ var me = this;
 return _promise( function(result, reject) {
     
     // returns the function which creates the view
-    wf = me.findModelFactory( name );
+    var wf = me.findModelFactory( name );
     
     if(wf) {
         // could have functions etc.
