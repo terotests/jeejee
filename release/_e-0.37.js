@@ -3074,6 +3074,7 @@
       var _contentRouters;
       var _viewFactory;
       var _viewCache;
+      var _dynamicFactory;
 
       // Initialize static variables here...
 
@@ -3123,6 +3124,8 @@
         return data.then(function (res) {
           data.forTree(function (t) {
             if (t.get("type") == "function") {
+              if (!_dynamicFactory) _dynamicFactory = {};
+              _dynamicFactory[t.get("name")] = t; // allows to listen to the factory assigments...
               me.viewFactory(t.get("name"), new Function(t.get("body")));
             }
           });
@@ -3553,6 +3556,8 @@
           return this;
         } else {
 
+          // could use replaceWith to create dynamic replace
+
           var view = this.findViewByName(name, this._activeLayout.view);
 
           if (!view) {
@@ -3585,6 +3590,19 @@
             view.pushView(obj);
             if (obj.componentDidMount) {
               obj.componentDidMount();
+            }
+            var dyn;
+            if (dyn = _dynamicFactory[factoryName]) {
+              dyn.on("body", function (o, v) {
+                try {
+                  var newF = new Function(v);
+                  var newObj = newF(paramName);
+                  if (newObj) {
+                    obj.replaceWith(newObj);
+                    obj = newObj;
+                  }
+                } catch (e) {}
+              });
             }
           }
         }
