@@ -3601,6 +3601,7 @@
                     obj.replaceWith(newObj);
                     obj = newObj;
                     _viewFactory[factoryName] = newF;
+                    _viewCache[factoryName + "." + paramName] = newObj;
                   }
                 } catch (e) {}
               });
