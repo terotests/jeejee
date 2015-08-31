@@ -5280,13 +5280,14 @@
         var query = [];
         if (this.isFunction(data)) {
           callback = data;
-          ajax.send(url, callback, "GET", null);
+          this.send(url, callback, "GET", null);
         } else {
           for (var key in data) {
             query.push(encodeURIComponent(key) + "=" + encodeURIComponent(data[key]));
           }
-          ajax.send(url + (query.length ? "?" + query.join("&") : ""), callback, "GET", null);
+          this.send(url + (query.length ? "?" + query.join("&") : ""), callback, "GET", null);
         }
+        return this;
       };
 
       /**
@@ -5298,15 +5299,16 @@
         var query = [];
         if (this.isFunction(data)) {
           callback = data;
-          ajax.send(url, callback, "GET", null);
+          this.send(url, callback, "GET", null);
         } else {
           for (var key in data) {
             query.push(encodeURIComponent(key) + "=" + encodeURIComponent(data[key]));
           }
-          ajax.send(url + (query.length ? "?" + query.join("&") : ""), function (r) {
+          this.send(url + (query.length ? "?" + query.join("&") : ""), function (r) {
             callback(JSON.parse(r));
           }, "GET", null);
         }
+        return this;
       };
 
       /**
@@ -5319,7 +5321,9 @@
         for (var key in data) {
           query.push(encodeURIComponent(key) + "=" + encodeURIComponent(data[key]));
         }
-        ajax.send(url, callback, "POST", query.join("&"));
+        this.send(url, callback, "POST", query.join("&"));
+
+        return this;
       };
 
       /**
