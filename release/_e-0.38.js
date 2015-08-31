@@ -3629,6 +3629,7 @@
                     obj = newObj;
 
                     newObj._viewFactory[factoryName] = newF;
+                    if (newF && !newF._viewCache) newF._viewCache = {};
                     newF._viewCache[factoryName + "." + paramName] = newObj;
                   }
                 } catch (e) {}
