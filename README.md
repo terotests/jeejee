@@ -5061,6 +5061,8 @@ if(!this._activeLayout) {
     if(!_viewCache) _viewCache = {};
     
     var obj, wf;
+    var me = this;
+    
     if(!paramName) paramName = "";
     if(this.isObject( factoryName) ) {
         obj = factoryName;
@@ -5104,7 +5106,8 @@ if(!this._activeLayout) {
                         obj.replaceWith( newObj );
                         obj = newObj;
                         
-                        newObj._viewFactory[factoryName] = newF;
+                        me._viewFactory[factoryName] = newF;
+                        if(newF && !newF._viewCache) newF._viewCache = {};
                         newF._viewCache[factoryName+"."+paramName] = newObj;
                     }
                 } catch(e) {
@@ -5456,8 +5459,7 @@ for(var n in this._view) {
 var me = this;
 return _promise( function(result, reject) {
     
-    later().add(
-        function() {
+    var getModel = function() {
             // returns the function which creates the view
             var wf = me.findModelFactory( name );
             
@@ -5475,7 +5477,12 @@ return _promise( function(result, reject) {
             } else {
                 reject({ reason : "not found"});
             }
-        });
+        };
+    if(me.parent()) {
+        getModel();
+    } else {
+        me.on("parent", getModel);
+    }
 });
 
 ```

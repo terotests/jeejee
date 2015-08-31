@@ -3585,6 +3585,8 @@
           if (!_viewCache) _viewCache = {};
 
           var obj, wf;
+          var me = this;
+
           if (!paramName) paramName = "";
           if (this.isObject(factoryName)) {
             obj = factoryName;
@@ -3628,7 +3630,7 @@
                     obj.replaceWith(newObj);
                     obj = newObj;
 
-                    newObj._viewFactory[factoryName] = newF;
+                    me._viewFactory[factoryName] = newF;
                     if (newF && !newF._viewCache) newF._viewCache = {};
                     newF._viewCache[factoryName + "." + paramName] = newObj;
                   }
