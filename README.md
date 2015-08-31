@@ -907,8 +907,11 @@ MIT. Currently use at own risk.
 
 - [createItemView](README.md#mvc_trait_createItemView)
 - [data](README.md#mvc_trait_data)
+- [findModelFactory](README.md#mvc_trait_findModelFactory)
 - [fromStream](README.md#mvc_trait_fromStream)
 - [getViewFunction](README.md#mvc_trait_getViewFunction)
+- [model](README.md#mvc_trait_model)
+- [modelFactory](README.md#mvc_trait_modelFactory)
 - [mv](README.md#mvc_trait_mv)
 - [mvc](README.md#mvc_trait_mvc)
 - [tree](README.md#mvc_trait_tree)
@@ -5383,6 +5386,23 @@ if(typeof(v) != "undefined") {
 return this.__mdata;
 ```
 
+### <a name="mvc_trait_findModelFactory"></a>mvc_trait::findModelFactory(t)
+
+
+```javascript
+
+if(this._modelFactory) {
+    var ff = this._modelFactory[name];
+    if(ff) {
+        return ff;
+    }
+}
+var p = this.parent();
+if(p) return p.findModelFactory(name);
+
+return null;
+```
+
 ### <a name="mvc_trait_fromStream"></a>mvc_trait::fromStream(stream, viewFn)
 
 
@@ -5428,6 +5448,46 @@ for(var n in this._view) {
 
 ```
         
+### <a name="mvc_trait_model"></a>mvc_trait::model(name, params)
+
+
+```javascript
+
+var me = this;
+return _promise( function(result, reject) {
+    
+    // returns the function which creates the view
+    wf = me.findModelFactory( name );
+    
+    if(wf) {
+        // could have functions etc.
+        if(wf._obj) wf._obj = {};
+        try {
+            wf.apply(wf._obj, [params, function(resModel) {
+                result({ model : resModel });
+            }, reject]);
+        } catch(e) {
+            reject(e);
+        }
+        
+    } else {
+        reject({ reason : "not found"});
+    }
+});
+
+```
+
+### <a name="mvc_trait_modelFactory"></a>mvc_trait::modelFactory(name, fn)
+
+
+```javascript
+
+if(!this._modelFactory) this._modelFactory = {};
+
+this._modelFactory[name] = fn;
+fn._container = this;
+```
+
 ### <a name="mvc_trait_mv"></a>mvc_trait::mv(model, type, controller)
 
 
