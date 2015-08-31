@@ -3124,8 +3124,6 @@
         return data.then(function (res) {
           data.forTree(function (t) {
             if (t.get("type") == "function") {
-              if (!_dynamicFactory) _dynamicFactory = {};
-              // _dynamicFactory[t.get("name")] = t; // allows to listen to the factory assigments...
               var wf = new Function(t.get("body"));
               wf._dynamic = t;
               me.viewFactory(t.get("name"), wf);
@@ -4025,6 +4023,23 @@
         this._modelFactory[name] = fn;
         fn._container = this;
         fn._autoCache = autoCache;
+      };
+
+      /**
+       * @param float data
+       */
+      _myTrait_.modelFactoryLoader = function (data) {
+        // load the factories from the _data()
+        var me = this;
+        return data.then(function (res) {
+          data.forTree(function (t) {
+            if (t.get("type") == "function") {
+              var wf = new Function(t.get("body"));
+              wf._dynamic = t;
+              me.modelFactory(t.get("name"), wf);
+            }
+          });
+        });
       };
 
       /**

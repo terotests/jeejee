@@ -912,6 +912,7 @@ MIT. Currently use at own risk.
 - [getViewFunction](README.md#mvc_trait_getViewFunction)
 - [model](README.md#mvc_trait_model)
 - [modelFactory](README.md#mvc_trait_modelFactory)
+- [modelFactoryLoader](README.md#mvc_trait_modelFactoryLoader)
 - [mv](README.md#mvc_trait_mv)
 - [mvc](README.md#mvc_trait_mvc)
 - [tree](README.md#mvc_trait_tree)
@@ -4593,8 +4594,6 @@ var me = this;
 return data.then( function(res) {
     data.forTree( function(t) {
         if(t.get("type")=="function") {
-            if(!_dynamicFactory) _dynamicFactory = {};
-            // _dynamicFactory[t.get("name")] = t; // allows to listen to the factory assigments...
             var wf = new Function(t.get("body") );
             wf._dynamic = t;
             me.viewFactory( t.get("name"), wf );
@@ -5512,6 +5511,23 @@ if(!this._modelFactory) this._modelFactory = {};
 this._modelFactory[name] = fn;
 fn._container = this;
 fn._autoCache = autoCache;
+```
+
+### <a name="mvc_trait_modelFactoryLoader"></a>mvc_trait::modelFactoryLoader(data)
+
+
+```javascript
+// load the factories from the _data()
+var me = this;
+return data.then( function(res) {
+    data.forTree( function(t) {
+        if(t.get("type")=="function") {
+            var wf = new Function(t.get("body") );
+            wf._dynamic = t;
+            me.modelFactory( t.get("name"), wf );
+        }            
+    });
+});
 ```
 
 ### <a name="mvc_trait_mv"></a>mvc_trait::mv(model, type, controller)
