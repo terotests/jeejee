@@ -3973,8 +3973,25 @@
             if (wf) {
               // could have functions etc.
               if (!wf._obj) wf._obj = {};
+              var bAutoCache = wf._autoCache;
+              var key = params || "undefined";
               try {
+                if (bAutoCache) {
+                  if (wf._obj._autoCache) {
+                    var cachedModel = wf._obj._autoCache[key];
+                    if (cachedModel) {
+                      result({
+                        model: cachedModel
+                      });
+                      return;
+                    }
+                  }
+                }
                 wf.apply(wf._obj, [params, function (resModel) {
+                  if (bAutoCache) {
+                    if (!wf._obj._autoCache) wf._obj._autoCache = {};
+                    wf._obj._autoCache[key] = resModel;
+                  }
                   result({
                     model: resModel
                   });
@@ -3999,13 +4016,15 @@
       /**
        * @param float name
        * @param float fn
+       * @param float autoCache
        */
-      _myTrait_.modelFactory = function (name, fn) {
+      _myTrait_.modelFactory = function (name, fn, autoCache) {
 
         if (!this._modelFactory) this._modelFactory = {};
 
         this._modelFactory[name] = fn;
         fn._container = this;
+        fn._autoCache = autoCache;
       };
 
       /**
