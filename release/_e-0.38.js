@@ -3970,7 +3970,11 @@
             // could have functions etc.
             if (wf._obj) wf._obj = {};
             try {
-              wf.apply(wf._obj, [params, result, reject]);
+              wf.apply(wf._obj, [params, function (resModel) {
+                result({
+                  model: resModel
+                });
+              }, reject]);
             } catch (e) {
               reject(e);
             }
