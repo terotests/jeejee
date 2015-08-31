@@ -3895,6 +3895,23 @@
       };
 
       /**
+       * @param float t
+       */
+      _myTrait_.findModelFactory = function (t) {
+
+        if (this._modelFactory) {
+          var ff = this._modelFactory[name];
+          if (ff) {
+            return ff;
+          }
+        }
+        var p = this.parent();
+        if (p) return p.findModelFactory(name);
+
+        return null;
+      };
+
+      /**
        * @param float stream
        * @param float viewFn
        */
@@ -3936,6 +3953,46 @@
       if (_myTrait_.__traitInit && !_myTrait_.hasOwnProperty("__traitInit")) _myTrait_.__traitInit = _myTrait_.__traitInit.slice();
       if (!_myTrait_.__traitInit) _myTrait_.__traitInit = [];
       _myTrait_.__traitInit.push(function (t) {});
+
+      /**
+       * @param float name
+       * @param float params
+       */
+      _myTrait_.model = function (name, params) {
+
+        var me = this;
+        return _promise(function (result, reject) {
+
+          // returns the function which creates the view
+          wf = this.findModelFactory(name);
+
+          if (wf) {
+            // could have functions etc.
+            if (wf._obj) wf._obj = {};
+            try {
+              wf.apply(wf._obj, [params, result, reject]);
+            } catch (e) {
+              reject(e);
+            }
+          } else {
+            reject({
+              reason: "not found"
+            });
+          }
+        });
+      };
+
+      /**
+       * @param float name
+       * @param float fn
+       */
+      _myTrait_.modelFactory = function (name, fn) {
+
+        if (!this._modelFactory) this._modelFactory = {};
+
+        this._modelFactory[name] = fn;
+        fn._container = this;
+      };
 
       /**
        * @param float model
