@@ -3963,7 +3963,7 @@
         var me = this;
         return _promise(function (result, reject) {
 
-          later().add(function () {
+          var getModel = function getModel() {
             // returns the function which creates the view
             var wf = me.findModelFactory(name);
 
@@ -3984,7 +3984,12 @@
                 reason: "not found"
               });
             }
-          });
+          };
+          if (me.parent()) {
+            getModel();
+          } else {
+            me.on("parent", getModel);
+          }
         });
       };
 
