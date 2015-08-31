@@ -3972,7 +3972,7 @@
 
             if (wf) {
               // could have functions etc.
-              if (wf._obj) wf._obj = {};
+              if (!wf._obj) wf._obj = {};
               try {
                 wf.apply(wf._obj, [params, function (resModel) {
                   result({
