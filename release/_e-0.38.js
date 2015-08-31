@@ -3619,7 +3619,8 @@
               obj.componentDidMount();
             }
 
-            if (wf && wf._dynamic) {
+            if (wf && wf._dynamic && !wf._binded) {
+              wf._binded = true;
               wf._dynamic.on("body", function (o, v) {
                 try {
                   var newF = new Function(v);
