@@ -5456,23 +5456,26 @@ for(var n in this._view) {
 var me = this;
 return _promise( function(result, reject) {
     
-    // returns the function which creates the view
-    var wf = me.findModelFactory( name );
-    
-    if(wf) {
-        // could have functions etc.
-        if(wf._obj) wf._obj = {};
-        try {
-            wf.apply(wf._obj, [params, function(resModel) {
-                result({ model : resModel });
-            }, reject]);
-        } catch(e) {
-            reject(e);
-        }
-        
-    } else {
-        reject({ reason : "not found"});
-    }
+    later().add(
+        function() {
+            // returns the function which creates the view
+            var wf = me.findModelFactory( name );
+            
+            if(wf) {
+                // could have functions etc.
+                if(wf._obj) wf._obj = {};
+                try {
+                    wf.apply(wf._obj, [params, function(resModel) {
+                        result({ model : resModel });
+                    }, reject]);
+                } catch(e) {
+                    reject(e);
+                }
+                
+            } else {
+                reject({ reason : "not found"});
+            }
+        });
 });
 
 ```
