@@ -5466,8 +5466,23 @@ return _promise( function(result, reject) {
             if(wf) {
                 // could have functions etc.
                 if(!wf._obj) wf._obj = {};
+                var bAutoCache = wf._autoCache;
+                var key = params || "undefined";
                 try {
+                    if(bAutoCache) {
+                        if(wf._obj._autoCache) {
+                            var cachedModel = wf._obj._autoCache[key];
+                            if(cachedModel) {
+                                result({ model : cachedModel });
+                                return;
+                            }
+                        }
+                    }                    
                     wf.apply(wf._obj, [params, function(resModel) {
+                        if(bAutoCache) {
+                            if(!wf._obj._autoCache) wf._obj._autoCache = {};
+                            wf._obj._autoCache[key] = resModel;
+                        }
                         result({ model : resModel });
                     }, reject]);
                 } catch(e) {
@@ -5487,7 +5502,7 @@ return _promise( function(result, reject) {
 
 ```
 
-### <a name="mvc_trait_modelFactory"></a>mvc_trait::modelFactory(name, fn)
+### <a name="mvc_trait_modelFactory"></a>mvc_trait::modelFactory(name, fn, autoCache)
 
 
 ```javascript
@@ -5496,6 +5511,7 @@ if(!this._modelFactory) this._modelFactory = {};
 
 this._modelFactory[name] = fn;
 fn._container = this;
+fn._autoCache = autoCache;
 ```
 
 ### <a name="mvc_trait_mv"></a>mvc_trait::mv(model, type, controller)
@@ -6626,13 +6642,14 @@ return inp;
 var query = [];
 if(this.isFunction(data)) {
     callback = data;
-    ajax.send(url, callback, 'GET', null);
+    this.send(url, callback, 'GET', null);
 } else {
     for (var key in data) {
         query.push(encodeURIComponent(key) + '=' + encodeURIComponent(data[key]));
     }
-    ajax.send(url + (query.length ? '?' + query.join('&') : ''), callback, 'GET', null);
+    this.send(url + (query.length ? '?' + query.join('&') : ''), callback, 'GET', null);
 }
+return this;
 
 
 ```
@@ -6644,16 +6661,16 @@ if(this.isFunction(data)) {
 var query = [];
 if(this.isFunction(data)) {
     callback = data;
-    ajax.send(url, callback, 'GET', null);
+    this.send(url, callback, 'GET', null);
 } else {
     for (var key in data) {
         query.push(encodeURIComponent(key) + '=' + encodeURIComponent(data[key]));
     }
-    ajax.send(url + (query.length ? '?' + query.join('&') : ''), function(r) {
+    this.send(url + (query.length ? '?' + query.join('&') : ''), function(r) {
         callback(JSON.parse(r));
     }, 'GET', null);
 }
-
+return this;
 
 ```
 
@@ -6665,7 +6682,9 @@ var query = [];
 for (var key in data) {
     query.push(encodeURIComponent(key) + '=' + encodeURIComponent(data[key]));
 }
-ajax.send(url, callback, 'POST', query.join('&'))
+this.send(url, callback, 'POST', query.join('&'));
+
+return this;
 
 ```
 
