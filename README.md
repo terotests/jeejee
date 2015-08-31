@@ -883,6 +883,7 @@ MIT. Currently use at own risk.
 - [factoryLoader](README.md#viewsNavis_factoryLoader)
 - [fiddle](README.md#viewsNavis_fiddle)
 - [findViewByName](README.md#viewsNavis_findViewByName)
+- [findViewFactory](README.md#viewsNavis_findViewFactory)
 - [getLayouts](README.md#viewsNavis_getLayouts)
 - [getRouteObj](README.md#viewsNavis_getRouteObj)
 - [initScreenEvents](README.md#viewsNavis_initScreenEvents)
@@ -4590,8 +4591,10 @@ return data.then( function(res) {
     data.forTree( function(t) {
         if(t.get("type")=="function") {
             if(!_dynamicFactory) _dynamicFactory = {};
-            _dynamicFactory[t.get("name")] = t; // allows to listen to the factory assigments...
-            me.viewFactory( t.get("name"), new Function(t.get("body") ));
+            // _dynamicFactory[t.get("name")] = t; // allows to listen to the factory assigments...
+            var wf = new Function(t.get("body") );
+            wf._dynamic = t;
+            me.viewFactory( t.get("name"), wf );
         }            
     });
 });
@@ -4665,6 +4668,24 @@ if(layout.hasClass(name)) {
     }    
     // console.log("could not find ", name, " from layout");
 }
+```
+
+### <a name="viewsNavis_findViewFactory"></a>viewsNavis::findViewFactory(name)
+
+
+```javascript
+
+if(this._viewFactory) {
+    var ff = this._viewFactory[name];
+    if(ff) {
+        
+        return ff;
+    }
+}
+var p = this.parent();
+if(p) return p.findViewFactory(name);
+
+return null;
 ```
 
 ### <a name="viewsNavis_getLayouts"></a>viewsNavis::getLayouts(t)
@@ -5021,8 +5042,6 @@ cont.forChildren(function(ch) {
 if(!this._activeLayout) {
     var p = this.parent();
     if(p) {
-        //console.log("no active layout Looking parent .... ");
-        //console.log(p);
         p.pushTo(name, factoryName, paramName);
     }
     return this;
@@ -5038,19 +5057,28 @@ if(!this._activeLayout) {
     
     if(!_viewCache) _viewCache = {};
     
-    var obj;
+    var obj, wf;
     if(!paramName) paramName = "";
     if(this.isObject( factoryName) ) {
         obj = factoryName;
     } else {
-        if(_viewCache[factoryName+"."+paramName]) {
-            obj = _viewCache[factoryName+"."+paramName];
-        } else {
-            var f = _viewFactory[factoryName];
-            if(f) {
-                obj = f( paramName );
-                if(obj) {
-                    _viewCache[factoryName+"."+paramName] = obj;
+        
+        // returns the function which creates the view
+        wf = this.findViewFactory( factoryName );
+        
+        // factory function object has the cache
+        if(wf && !wf._viewCache) wf._viewCache = {};
+   
+        if(wf) {
+            if(wf._viewCache[factoryName+"."+paramName]) {
+                obj = wf._viewCache[factoryName+"."+paramName];
+            } else {
+                var f = wf;
+                if(f) {
+                    obj = f( paramName );
+                    if(obj) {
+                        wf._viewCache[factoryName+"."+paramName] = obj;
+                    }
                 }
             }
         }
@@ -5063,17 +5091,18 @@ if(!this._activeLayout) {
         if(obj.componentDidMount) {
             obj.componentDidMount();
         }
-        var dyn;
-        if(dyn = _dynamicFactory[factoryName]) {
-            dyn.on("body", function(o,v) {
+
+        if(wf && wf._dynamic) {
+            wf._dynamic.on("body", function(o,v) {
                 try {
                     var newF = new Function(v);
                     var newObj = newF( paramName );
                     if(newObj) {
                         obj.replaceWith( newObj );
                         obj = newObj;
-                        _viewFactory[factoryName] = newF;
-                        _viewCache[factoryName+"."+paramName] = newObj;
+                        
+                        newObj._viewFactory[factoryName] = newF;
+                        newF._viewCache[factoryName+"."+paramName] = newObj;
                     }
                 } catch(e) {
                     
@@ -5281,9 +5310,12 @@ if(_viewStructures && _viewStructures[name]) {
 
 ```javascript
 
-if(!_viewFactory) _viewFactory = {};
+if(!this._viewFactory) this._viewFactory = {};
 
-_viewFactory[name] = fn;
+this._viewFactory[name] = fn;
+ff._container = this;
+
+
 ```
 
 
