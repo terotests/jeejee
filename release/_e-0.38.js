@@ -5316,7 +5316,9 @@
         var query = [];
         if (this.isFunction(data)) {
           callback = data;
-          this.send(url, callback, "GET", null);
+          this.send(url, function (r) {
+            callback(JSON.parse(r));
+          }, "GET", null);
         } else {
           for (var key in data) {
             query.push(encodeURIComponent(key) + "=" + encodeURIComponent(data[key]));
