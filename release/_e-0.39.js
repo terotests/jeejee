@@ -5167,7 +5167,14 @@
             var ifrm = iFrame._dom;
             var doc = ifrm.contentDocument ? ifrm.contentDocument : ifrm.contentWindow.document;
             // var form = doc.getElementById('demoForm');       
-            options.done(doc.body.innerHTML);
+            if (options.progress) {
+              var info = {
+                loadPros: 100,
+                ready: false
+              };
+              options.progress(info);
+            }
+            if (options.done) options.done(doc.body.innerHTML);
           }
         });
 
