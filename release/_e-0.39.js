@@ -5135,12 +5135,16 @@
         var maxFileCnt = options.maxFileCnt || 5,
             fileCnt = 0;
 
+        // <input type="file" name="my-file" size="50" maxlength="25" /> <br />
+
+        var fieldNumber = 1;
         var createUploadField = function createUploadField() {
           if (fileCnt >= maxFileCnt) return;
           // <label for="exampleInputFile">File input</label>
           var inp = uplFields.input("", {
             type: "file",
-            name: options.fieldName || "newFile"
+            name: options.fieldName || "newFile" + fieldNumber++,
+            size: 50
           });
           inp.on("value", function () {
             if (options.autoUpload) {
