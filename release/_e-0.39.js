@@ -5100,6 +5100,13 @@
 
         var onComplete = function onComplete(v) {
           delete window[chStr];
+          if (options.progress) {
+            var info = {
+              loadPros: 100,
+              ready: false
+            };
+            options.progress(info);
+          }
           if (options.done) {
             options.done(v);
           }
