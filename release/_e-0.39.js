@@ -5103,7 +5103,7 @@
           if (options.progress) {
             var info = {
               loadPros: 100,
-              ready: false
+              ready: true
             };
             options.progress(info);
           }
@@ -5174,7 +5174,7 @@
             if (options.progress) {
               var info = {
                 loadPros: 100,
-                ready: false
+                ready: true
               };
               options.progress(info);
             }
