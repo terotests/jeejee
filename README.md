@@ -207,6 +207,32 @@ myDiv.ol(function(e) {
 
 SVG example comparing the approaches can be found here http://jsfiddle.net/fwsx6mv0/
 
+# File uploader
+
+``` javascript
+var main = _e(document.body).div(),
+    progress = main.pre();
+var uploader = main.createUploader({
+    testTraditional : false,
+    images : true,
+    url : "http://localhost:7777/upload/",
+    done: function(r) {
+        console.log(r);
+    },
+    progress : function(info) {
+        progress.text(JSON.stringify(info));
+    }, 
+    vars : {
+        hello : "world!"
+    }
+});
+
+main.add(uploader);
+main.div().button().text("Upload").on("click", function() {
+    uploader.trigger("upload");
+});
+```
+
 # Controllers and Routers
 
 Example is here
@@ -4907,6 +4933,7 @@ vParts.forEach( function(pDef) {
         // => the layout item using just a CSS class etc.
         var elem = row.div(partName);
         elem._dom.style.display = "inline-block";
+        elem._dom.style.verticalAlign = "top";
         
         if(parts.length>1) {
             parts.shift();
@@ -5096,7 +5123,8 @@ if(!this._activeLayout) {
             obj.componentDidMount();
         }
 
-        if(wf && wf._dynamic) {
+        if(wf && wf._dynamic && !wf._binded) {
+            wf._binded = true;
             wf._dynamic.on("body", function(o,v) {
                 try {
                     var newF = new Function(v);
@@ -5105,7 +5133,7 @@ if(!this._activeLayout) {
                         obj.replaceWith( newObj );
                         obj = newObj;
                         
-                        me._viewFactory[factoryName] = newF;
+                        wf._container._viewFactory[factoryName] = newF;
                         if(newF && !newF._viewCache) newF._viewCache = {};
                         newF._viewCache[factoryName+"."+paramName] = newObj;
                     }
@@ -6677,7 +6705,9 @@ return this;
 var query = [];
 if(this.isFunction(data)) {
     callback = data;
-    this.send(url, callback, 'GET', null);
+    this.send(url, function(r) {
+        callback(JSON.parse(r));
+    }, 'GET', null);
 } else {
     for (var key in data) {
         query.push(encodeURIComponent(key) + '=' + encodeURIComponent(data[key]));
