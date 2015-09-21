@@ -5155,13 +5155,13 @@
         o.add(iFrame);
 
         // iFrame._dom.onreadystatechange = MyIframeReadyStateChanged;
-
         iFrame._dom.addEventListener("load", function () {
-          console.log("--- iframe was loaded --- ");
-        });
-
-        iFrame._dom.addEventListener("readystatechange", function () {
-          console.log("--- iframe readystate was changed --- ");
+          if (options.done) {
+            var ifrm = iFrame._dom;
+            var doc = ifrm.contentDocument ? ifrm.contentDocument : ifrm.contentWindow.document;
+            // var form = doc.getElementById('demoForm');       
+            options.done(doc.body.innerHTML);
+          }
         });
 
         o.uploadFiles = function (vars) {
