@@ -5197,9 +5197,11 @@
           }
           form._dom.target = frame_id; //'my_iframe' is the name of the iframe
           form._dom.submit();
+          /*
           uplFields.clear();
-          fileCnt = 0;
+          fileCnt=0;
           createUploadField();
+          */
         };
 
         if (options.getUploader) {
