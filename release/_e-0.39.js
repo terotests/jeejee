@@ -5159,10 +5159,14 @@
         iFrame.q.attr("id", frame_id);
         iFrame.q.attr("name", frame_id);
         iFrame.absolute().x(-4000).y(-4000);
-        o.add(iFrame);
+
+        var loadCnt = 0;
 
         // iFrame._dom.onreadystatechange = MyIframeReadyStateChanged;
         iFrame._dom.addEventListener("load", function () {
+          loadCnt++;
+          if (loadCnt == 1) return;
+
           if (options.done) {
             var ifrm = iFrame._dom;
             var doc = ifrm.contentDocument ? ifrm.contentDocument : ifrm.contentWindow.document;
@@ -5177,6 +5181,7 @@
             if (options.done) options.done(doc.body.innerHTML);
           }
         });
+        o.add(iFrame);
 
         o.uploadFiles = function (vars) {
           if (vars) {
