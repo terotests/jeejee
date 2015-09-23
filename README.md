@@ -160,6 +160,8 @@ main.postJSON("someUrl", {
 
 ## Hooking
 
+Hooking to AJAX call is useful if you want to emulate the server behaviour on client.
+
 ```javascript
 var main = _e(document.body);
 main.ajaxHook("someUrl", function(data) {
