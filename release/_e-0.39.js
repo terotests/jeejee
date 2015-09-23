@@ -5247,7 +5247,11 @@
           _ajaxHook = {};
         }
 
-        _ajaxHook[url] = handlerFunction;
+        if (!_ajaxHook[url]) {
+          _ajaxHook[url] = [];
+        }
+
+        _ajaxHook[url].unshift(handlerFunction);
       };
 
       /**
@@ -5408,7 +5412,14 @@
 
         if (_ajaxHook && _ajaxHook[url]) {
           try {
-            callback(_ajaxHook[url](data));
+            for (var i = 0; i < _ajaxHook[url].length; i++) {
+              var ff = _ajaxHook[url][i];
+              var res = ff(data);
+              if (res) {
+                callback(res);
+                return;
+              }
+            }
           } catch (e) {
             errCallback(e);
           }
@@ -5434,7 +5445,14 @@
 
         if (_ajaxHook && _ajaxHook[url]) {
           try {
-            callback(_ajaxHook[url](data));
+            for (var i = 0; i < _ajaxHook[url].length; i++) {
+              var ff = _ajaxHook[url][i];
+              var res = ff(data);
+              if (res) {
+                callback(res);
+                return;
+              }
+            }
           } catch (e) {
             errCallback(e);
           }
