@@ -124,6 +124,68 @@ Examples:
 
 * http://jsfiddle.net/d45mggv6/
 
+# AJAX commands
+
+## post
+
+Sends data as POST variables and gets a string from server
+
+```javascript
+var main = _e(document.body);
+main.post("someUrl", {
+   cmd : "login"
+}, function(resultAsJson) {
+    // success
+}, function() {
+    // fail
+});
+
+```
+
+## postJSON
+
+Sends data as JSON and parses the returned JSON to Object.
+
+```javascript
+var main = _e(document.body);
+main.postJSON("someUrl", {
+   cmd : "login"
+}, function(resultAsJson) {
+    // success
+}, function() {
+    // fail
+});
+
+```
+
+## Hooking
+
+```javascript
+var main = _e(document.body);
+main.ajaxHook("someUrl", function(data) {
+    if(data.cmd=="test") {
+      return {
+         userid : 100,
+         success : true
+      }      
+    }
+   if(data.cmd=="login") {
+      return {
+         userid : 100,
+         success : true
+      }      
+    }
+});
+main.postJSON("someUrl", {
+   cmd : "login"
+}, function() {
+    // success
+}, function() {
+    // fail
+});
+
+```
+
 # View factories
 
 A new undocumented feature, tests are here:
@@ -1018,10 +1080,12 @@ MIT. Currently use at own risk.
 
 - [_initAjax](README.md#__initAjax)
 - [_traditionalUpload](README.md#__traditionalUpload)
+- [ajaxHook](README.md#_ajaxHook)
 - [createUploader](README.md#_createUploader)
 - [get](README.md#_get)
 - [getJSON](README.md#_getJSON)
 - [post](README.md#_post)
+- [postJSON](README.md#_postJSON)
 - [send](README.md#_send)
 
 
@@ -3550,11 +3614,12 @@ return fn;
 The class has following internal singleton variables:
         
         
-### <a name="InputHandling_bind"></a>InputHandling::bind(obj, varName)
+### <a name="InputHandling_bind"></a>InputHandling::bind(obj, varName, nl2br)
 
 Binds input value to an object with data
 ```javascript
 var o = this;
+o._nl2br = nl2br;
 // The special case here...
 if(this.isFunction(obj[varName])) {
 
@@ -3694,7 +3759,16 @@ return o;
 if(typeof(this._dom.value)!="undefined" || this._type=="option") {
     this._dom.value = v;
 } else {
-    this._dom.innerHTML = v;
+    if(this._nl2br) {
+        var str = v,
+            is_xhtml = false;
+    
+        var breakTag = (is_xhtml || typeof is_xhtml === 'undefined') ? '<br />' : '<br>';
+        var res = (str + '').replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, '$1' + breakTag + '$2');  
+        this._dom.innerHTML = res;
+    } else {
+        this._dom.innerHTML = v;
+    }
 }
 this._value = v;
 return this;
@@ -5068,6 +5142,14 @@ cont.forChildren(function(ch) {
 
 ```javascript
 
+if(this.isObject(paramName)) {
+    var mm = paramName;
+    if(paramName.model) {
+        mm = paramName.model
+    }
+    if(mm.getID) paramName = mm.getID();
+}
+
 if(!this._activeLayout) {
     var p = this.parent();
     if(p) {
@@ -5122,6 +5204,7 @@ if(!this._activeLayout) {
         if(obj.componentDidMount) {
             obj.componentDidMount();
         }
+        obj.trigger("mount");
 
         if(wf && wf._dynamic && !wf._binded) {
             wf._binded = true;
@@ -6442,6 +6525,8 @@ The class has following internal singleton variables:
         
 * x
         
+* _ajaxHook
+        
         
 ### <a name="__initAjax"></a>::_initAjax(t)
 
@@ -6488,6 +6573,13 @@ var chStr = "complete"+this.guid();
 
 var onComplete = function(v) {
    delete window[chStr];
+   if(options.progress) {
+        var info = {
+            loadPros : 100,
+            ready : true
+        };
+        options.progress( info );   
+   }
    if(options.done) {
        options.done(v);
    }  
@@ -6516,12 +6608,16 @@ var uplFields = form.div("form-group");
 var maxFileCnt = options.maxFileCnt || 5,
     fileCnt = 0;
 
+// <input type="file" name="my-file" size="50" maxlength="25" /> <br />
+
+var fieldNumber = 1;
 var createUploadField = function() {
     if(fileCnt>=maxFileCnt) return;
     // <label for="exampleInputFile">File input</label>
     var inp = uplFields.input("", {
          type : "file",
-         name : options.fieldName || "newFile"
+         name : options.fieldName || "newFile"+(fieldNumber++),
+         size : 50
     });
     inp.on("value", function() {
         if(options.autoUpload) {
@@ -6540,6 +6636,28 @@ var frame_id = o.guid();
 iFrame.q.attr("id", frame_id);
 iFrame.q.attr("name", frame_id);
 iFrame.absolute().x(-4000).y(-4000);
+
+var loadCnt = 0;
+
+// iFrame._dom.onreadystatechange = MyIframeReadyStateChanged;
+iFrame._dom.addEventListener("load", function() {
+    loadCnt++;
+    if(loadCnt==1) return;
+    
+    if(options.done) {
+        var ifrm = iFrame._dom;
+        var doc = ifrm.contentDocument? ifrm.contentDocument: ifrm.contentWindow.document;
+        // var form = doc.getElementById('demoForm');        
+       if(options.progress) {
+            var info = {
+                loadPros : 100,
+                ready : true
+            };
+            options.progress( info );   
+       }        
+       if(options.done) options.done(doc.body.innerHTML);
+    }
+})
 o.add( iFrame );
 
 o.uploadFiles = function(vars) {
@@ -6556,9 +6674,11 @@ o.uploadFiles = function(vars) {
     }
     form._dom.target = frame_id; //'my_iframe' is the name of the iframe
 	form._dom.submit();
+	/*
 	uplFields.clear();
 	fileCnt=0;
 	createUploadField();
+	*/
 }
 
 if(options.getUploader) {
@@ -6569,6 +6689,18 @@ o.on("upload", function(o, v) {
 });
 return o;
 
+
+```
+
+### <a name="_ajaxHook"></a>::ajaxHook(url, handlerFunction)
+
+
+```javascript
+if(!_ajaxHook) {
+    _ajaxHook = {};
+}
+
+_ajaxHook[url] = handlerFunction;
 
 ```
 
@@ -6720,15 +6852,51 @@ return this;
 
 ```
 
-### <a name="_post"></a>::post(url, data, callback)
+### <a name="_post"></a>::post(url, data, callback, errCallback)
 
 
 ```javascript
+
+if(_ajaxHook && _ajaxHook[url]) {
+    try {
+        callback( _ajaxHook[url]( data ) );
+    } catch(e) {
+        errCallback(e);
+    }
+    return this;
+}
+
 var query = [];
 for (var key in data) {
     query.push(encodeURIComponent(key) + '=' + encodeURIComponent(data[key]));
 }
-this.send(url, callback, 'POST', query.join('&'));
+this.send(url, callback, 'POST', query.join('&'), errCallback);
+
+return this;
+
+```
+
+### <a name="_postJSON"></a>::postJSON(url, data, callback, errCallback)
+
+
+```javascript
+
+if(_ajaxHook && _ajaxHook[url]) {
+    try {
+        callback( _ajaxHook[url]( data ) );
+    } catch(e) {
+        errCallback(e);
+    }
+    return this;
+}
+this.send(url, function(result) {
+    try {
+        var data = JSON.parse(result);
+        callback(data);
+    } catch(e) {
+        errCallback(e);
+    }
+}, 'POST', JSON.stringify(data), errCallback);
 
 return this;
 

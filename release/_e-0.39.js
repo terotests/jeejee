@@ -2064,9 +2064,11 @@
        * Binds input value to an object with data
        * @param object obj
        * @param float varName
+       * @param float nl2br
        */
-      _myTrait_.bind = function (obj, varName) {
+      _myTrait_.bind = function (obj, varName, nl2br) {
         var o = this;
+        o._nl2br = nl2br;
         // The special case here...
         if (this.isFunction(obj[varName])) {
 
@@ -2197,7 +2199,16 @@
         if (typeof this._dom.value != "undefined" || this._type == "option") {
           this._dom.value = v;
         } else {
-          this._dom.innerHTML = v;
+          if (this._nl2br) {
+            var str = v,
+                is_xhtml = false;
+
+            var breakTag = is_xhtml || typeof is_xhtml === "undefined" ? "<br />" : "<br>";
+            var res = (str + "").replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, "$1" + breakTag + "$2");
+            this._dom.innerHTML = res;
+          } else {
+            this._dom.innerHTML = v;
+          }
         }
         this._value = v;
         return this;
@@ -3565,6 +3576,14 @@
        */
       _myTrait_.pushTo = function (name, factoryName, paramName) {
 
+        if (this.isObject(paramName)) {
+          var mm = paramName;
+          if (paramName.model) {
+            mm = paramName.model;
+          }
+          if (mm.getID) paramName = mm.getID();
+        }
+
         if (!this._activeLayout) {
           var p = this.parent();
           if (p) {
@@ -3619,6 +3638,7 @@
             if (obj.componentDidMount) {
               obj.componentDidMount();
             }
+            obj.trigger("mount");
 
             if (wf && wf._dynamic && !wf._binded) {
               wf._binded = true;
@@ -5060,6 +5080,7 @@
 
     (function (_myTrait_) {
       var x;
+      var _ajaxHook;
 
       // Initialize static variables here...
 
@@ -5218,6 +5239,18 @@
       };
 
       /**
+       * @param String url
+       * @param function handlerFunction
+       */
+      _myTrait_.ajaxHook = function (url, handlerFunction) {
+        if (!_ajaxHook) {
+          _ajaxHook = {};
+        }
+
+        _ajaxHook[url] = handlerFunction;
+      };
+
+      /**
        * @param float options
        */
       _myTrait_.createUploader = function (options) {
@@ -5366,16 +5399,55 @@
       };
 
       /**
-       * @param float url
-       * @param float data
-       * @param float callback
+       * @param String url
+       * @param Object data
+       * @param function callback
+       * @param function errCallback
        */
-      _myTrait_.post = function (url, data, callback) {
+      _myTrait_.post = function (url, data, callback, errCallback) {
+
+        if (_ajaxHook && _ajaxHook[url]) {
+          try {
+            callback(_ajaxHook[url](data));
+          } catch (e) {
+            errCallback(e);
+          }
+          return this;
+        }
+
         var query = [];
         for (var key in data) {
           query.push(encodeURIComponent(key) + "=" + encodeURIComponent(data[key]));
         }
-        this.send(url, callback, "POST", query.join("&"));
+        this.send(url, callback, "POST", query.join("&"), errCallback);
+
+        return this;
+      };
+
+      /**
+       * @param String url
+       * @param Object data
+       * @param function callback
+       * @param function errCallback
+       */
+      _myTrait_.postJSON = function (url, data, callback, errCallback) {
+
+        if (_ajaxHook && _ajaxHook[url]) {
+          try {
+            callback(_ajaxHook[url](data));
+          } catch (e) {
+            errCallback(e);
+          }
+          return this;
+        }
+        this.send(url, function (result) {
+          try {
+            var data = JSON.parse(result);
+            callback(data);
+          } catch (e) {
+            errCallback(e);
+          }
+        }, "POST", JSON.stringify(data), errCallback);
 
         return this;
       };
