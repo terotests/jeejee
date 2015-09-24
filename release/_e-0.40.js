@@ -3353,6 +3353,10 @@
         var p = this.parent();
         if (p) return p.findViewFactory(name, role);
 
+        if (_viewFactory[role]) {
+          return _viewFactory[role][name];
+        }
+
         return null;
       };
 
@@ -4005,6 +4009,9 @@
           name = role;
           role = "default";
         }
+
+        if (!_viewFactory) _viewFactory = {};
+        if (!_viewFactory[role]) _viewFactory[role] = {};
 
         if (!this._viewFactory) this._viewFactory = {};
         if (!this._viewFactory[role]) this._viewFactory[role] = {};
