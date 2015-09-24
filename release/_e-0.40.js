@@ -3121,7 +3121,7 @@
         var me = this,
             cache_key;
         var factoryName = oldObj._refeshView.factoryName,
-            paramName = oldObj._refeshView.factoryName;
+            paramName = oldObj._refeshView.paramName;
 
         if (!paramName) paramName = "";
 
@@ -3777,7 +3777,7 @@
             // in case the view should be refreshed with some other
             obj._refeshView = {
               name: name,
-              factoryName: name,
+              factoryName: factoryName,
               paramName: paramName,
               view: view
             };
