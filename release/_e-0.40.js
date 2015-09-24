@@ -3998,8 +3998,8 @@
       _myTrait_.viewFactory = function (role, name, fn) {
 
         if (this.isFunction(name)) {
-          name = role;
           fn = name;
+          name = role;
           role = "default";
         }
 
