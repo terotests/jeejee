@@ -5457,7 +5457,7 @@
             try {
               var progress = 0;
               var sendI = setInterval(function () {
-                progress += parseInt(Math.random() * (options.uploadSpeed || 10));
+                progress += Math.random() * (options.uploadSpeed || 10);
                 if (progress > 100) progress = 100;
 
                 if (progress == 100) {
@@ -5468,7 +5468,7 @@
                   clearInterval(sendI);
                 }
                 if (options.progress) options.progress({
-                  loadPros: progress,
+                  loadPros: parseInt(progress),
                   ready: true
                 });
               }, 30);
