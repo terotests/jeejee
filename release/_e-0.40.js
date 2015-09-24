@@ -2102,7 +2102,7 @@
             val = newVal;
           });
           var valueOutListener = this.uniqueListener("bind:valueOut", function (obj) {
-            //console.log("Got value out for ", obj, "which value was ",val);
+            console.log("Got value out for ", obj, "which value was ", val);
             //console.trace();
             bSendingEvent = true;
             if (o._type == "checkbox") {
@@ -2119,9 +2119,13 @@
           var validInputListener = this.uniqueListener("bind:validIn", function (obj, newVal) {
             o.trigger("valid", newVal);
           });
-
-          obj.on(varName, valueInListener);
-          this.on("value", valueOutListener);
+          if (o._type == "checkbox") {
+            obj.on(varName, valueInListener);
+            this.on("value", valueOutListener);
+          } else {
+            obj.on(varName, valueInListener);
+            this.on("value", valueOutListener);
+          }
 
           //oo.me.on(oo.name, valueInListener );
           //this.on("value", valueOutListener);
