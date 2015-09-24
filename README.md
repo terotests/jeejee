@@ -7048,6 +7048,15 @@ inp._dom.addEventListener('change', function(event) {
             upload(inp._dom);
         }
     }
+    if(options.imagePreviewArea) {
+        options.imagePreviewArea.clear();
+        var len = uploadElement.files.length;
+        for(var fi=0; fi<len; fi++) {
+            var file = inp._dom.files[fi];   
+            if(file.type.indexOf("image"))
+                options.imagePreviewArea.fileObjectThumbnail(options.previewWidth || 100, options.previewHeight || 100, file);
+        }
+    }
 	});
 inp.on("upload", function() {
     if(inp._dom.files.length >= 1 ) {
