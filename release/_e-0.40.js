@@ -5455,14 +5455,23 @@
               }
             }
             try {
-              var res = hook(sendData);
-              if (options.progress) options.progress({
-                loadPros: 100,
-                ready: true
-              });
-              if (options.done) {
-                options.done(res);
-              }
+              var progress = 0;
+              var sendI = setInterval(function () {
+                progress += parseInt(Math.random() * 10);
+                if (progress > 100) progress = 100;
+
+                if (progress == 100) {
+                  var res = hook(sendData);
+                  if (options.done) {
+                    options.done(res);
+                  }
+                  clearInterval(sendI);
+                }
+                if (options.progress) options.progress({
+                  loadPros: progress,
+                  ready: true
+                });
+              }, 30);
             } catch (e) {
               if (options.error) {
                 options.error(e.message);
@@ -5524,6 +5533,7 @@
         };
 
         inp._dom.addEventListener("change", function (event) {
+
           if (options.autoupload) {
             if (event.target.files.length == 1) {
               upload(inp._dom);
