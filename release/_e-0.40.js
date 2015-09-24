@@ -4239,8 +4239,9 @@
         }
 
         // try to find the view factory...
-        if (typeof controller == "string") {
+        if (typeof fn == "string") {
           fn = this.findViewFactory(controller);
+          alert(fn);
         }
 
         if (fn) {
