@@ -2213,6 +2213,7 @@
             return tmp.textContent || tmp.innerText || "";
           };
           v = strip_html(v);
+          console.log("After strip_html ", v);
           if (this._nl2br) {
             var str = v,
                 is_xhtml = false;
