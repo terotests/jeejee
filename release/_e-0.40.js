@@ -5430,52 +5430,55 @@
         // upload handler here...
         var upload = function upload(uploadElement) {
 
-          var file = uploadElement.files[0];
-          if (file) {
-            var formData = new window.FormData();
-            if (options.vars) {
+          var len = uploadElement.files.length;
+          for (var fi = 0; fi < len; fi++) {
+            var file = uploadElement.files[fi];
+            if (file) {
+              var formData = new window.FormData();
               if (options.vars) {
-                for (var n in options.vars) {
-                  if (options.vars.hasOwnProperty(n)) {
-                    formData.append(n, options.vars[n]);
+                if (options.vars) {
+                  for (var n in options.vars) {
+                    if (options.vars.hasOwnProperty(n)) {
+                      formData.append(n, options.vars[n]);
+                    }
                   }
                 }
               }
-            }
 
-            formData.append(options.fieldName || "newFile", file);
-            var xhr = new XMLHttpRequest();
-            xhr.onreadystatechange = function () {
-              if (xhr.readyState === 4) //done
-                {
-                  if (xhr.status === 200) {
-                    if (options.done) {
-                      options.done(xhr.responseText);
-                    }
-                  } else {
-                    if (options.error) {
-                      options.error(xhr.responseText, xhr);
+              formData.append(options.fieldName || "newFile", file);
+              var xhr = new XMLHttpRequest();
+              xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4) //done
+                  {
+                    if (xhr.status === 200) {
+                      if (options.done) {
+                        options.done(xhr.responseText);
+                      }
+                    } else {
+                      if (options.error) {
+                        options.error(xhr.responseText, xhr);
+                      }
                     }
                   }
-                }
-            };
-            xhr.open("POST", options.url);
-            if (options.progress && xhr.upload) {
-              xhr.upload.onprogress = function (e) {
-                if (e.lengthComputable) {
-                  var done = e.loaded / e.total * 100;
-                  var info = {
-                    loadPros: done,
-                    ready: false
-                  };
-                  if (e.loaded == e.total) {
-                    info.ready = true;
-                  }
-                  options.progress(info);
-                }
               };
+              xhr.open("POST", options.url);
+              if (options.progress && xhr.upload) {
+                xhr.upload.onprogress = function (e) {
+                  if (e.lengthComputable) {
+                    var done = e.loaded / e.total * 100;
+                    var info = {
+                      loadPros: done,
+                      ready: false
+                    };
+                    if (e.loaded == e.total) {
+                      info.ready = true;
+                    }
+                    options.progress(info);
+                  }
+                };
+              }
+              xhr.send(formData);
             }
-            xhr.send(formData);
           }
         };
 
@@ -5487,7 +5490,7 @@
           }
         });
         inp.on("upload", function () {
-          if (event.target.files.length == 1) {
+          if (inp._dom.files.length >= 1) {
             upload(inp._dom);
           }
         });
