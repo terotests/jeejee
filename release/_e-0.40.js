@@ -3967,13 +3967,15 @@
       _myTrait_.setRole = function (name) {
 
         if (this._role && this._role != name) {
+          this._role = name;
           // update subviews to correspond this role view...
           this._refreshView();
           this.forChildren(function (ch) {
             ch._refreshView();
           }, true);
+        } else {
+          this._role = name;
         }
-        this._role = name;
       };
 
       /**
