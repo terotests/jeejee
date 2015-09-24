@@ -3339,7 +3339,10 @@
        */
       _myTrait_.findViewFactory = function (name, role) {
 
-        if (!role) role = "default";
+        if (!role) {
+          role = this.getRole();
+          if (!role) role = "default";
+        }
 
         if (this._viewFactory && this._viewFactory[role]) {
           var ff = this._viewFactory[role][name];
@@ -4006,7 +4009,14 @@
         if (!this._viewFactory) this._viewFactory = {};
         if (!this._viewFactory[role]) this._viewFactory[role] = {};
 
-        this._viewFactory[role][name] = fn;
+        var me = this;
+        this._viewFactory[role][name] = function (id) {
+          if (me.isObject(id)) {
+            return fn(id.getID());
+          } else {
+            return fn(id);
+          }
+        };
         fn._container = this;
       };
     })(this);
@@ -4228,11 +4238,18 @@
           fn = controller;
         }
 
-        this.mvc(model, function (item) {
-          var o = _e(elemName);
-          fn.apply(o, [item]);
-          return o;
-        });
+        // try to find the view factory...
+        if (typeof controller == "string") {
+          fn = this.findViewFactory(controller);
+        }
+
+        if (fn) {
+          this.mvc(model, function (item) {
+            var o = _e(elemName);
+            fn.apply(o, [item]);
+            return o;
+          });
+        }
       };
 
       /**
