@@ -2090,6 +2090,7 @@
 
           var valueInListener = this.uniqueListener("bind:valueIn", function (obj, newVal) {
             if (bSendingEvent) return;
+            console.log("Value in ", newVal);
             if (o._type == "checkbox") {
               o.checked(newVal);
             } else {
@@ -2108,8 +2109,6 @@
             }
             bSendingEvent = false;
           });
-
-          //
 
           var invalidInputListener = this.uniqueListener("bind:invalidIn", function (obj, msg) {
             o.trigger("invalid", msg);
