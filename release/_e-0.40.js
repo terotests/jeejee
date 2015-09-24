@@ -5346,6 +5346,59 @@
         o.add(iFrame);
 
         o.uploadFiles = function (vars) {
+
+          var hook = _uploadHook[options.url];
+          if (hook) {
+
+            var sendData = {
+              postData: {},
+              files: []
+            };
+            if (options.vars) {
+              if (options.vars) {
+                for (var n in options.vars) {
+                  if (options.vars.hasOwnProperty(n)) {
+                    sendData.postData[n] = options.vars[n];
+                  }
+                }
+              }
+            }
+            uplFields.forEach(function (input) {
+              var len = input._dom.files.length;
+              for (var fi = 0; fi < len; fi++) {
+                var file = uploadElement.files[fi];
+                if (file) {
+                  sendData.files.push(file);
+                }
+              }
+            });
+
+            try {
+              var progress = 0;
+              var sendI = setInterval(function () {
+                progress += Math.random() * (options.uploadSpeed || 10);
+                if (progress > 100) progress = 100;
+
+                if (progress == 100) {
+                  var res = hook(sendData);
+                  if (options.done) {
+                    options.done(res);
+                  }
+                  clearInterval(sendI);
+                }
+                if (options.progress) options.progress({
+                  loadPros: parseInt(progress),
+                  ready: parseInt(progress) == 100
+                });
+              }, 30);
+            } catch (e) {
+              if (options.error) {
+                options.error(e.message);
+              }
+            }
+            return;
+          }
+
           if (vars) {
             for (var n in vars) {
               if (vars.hasOwnProperty(n)) {
