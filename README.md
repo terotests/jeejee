@@ -254,8 +254,61 @@ main.viewFactory("topNavi", function(id) {
 main.pushTo("top", "topNavi");
 ```
 
+# Role based view factories
 
+The view factories can be also role-specific. To create a view for a role use syntax
+``` javascript
+    myDiv.viewFactory("rolename", "viewname", function() {
+        var o = _e();
+        // create the view here, 
+        return o;
+    });
+```
+The default role is `default`. For setting up certain role call
+``` javascript
+    myDiv.setRole("admin");
+```
 
+Example switching roles between "admin" and "user" :
+
+``` javascript
+    var main = _e(document.body).div();
+    var tools = main.div();
+    var myDiv = main.div();
+    
+    myDiv.layout("top 100% | content 100%");
+    
+    myDiv.viewFactory("admin", "testView", function() {
+        var o = _e();
+        o.div().text("Admin view");
+        return o;
+    });
+    myDiv.viewFactory("admin", "topNavi", function() {
+        var o = _e();
+        o.div().text("Admin top navigation");
+        return o;
+    })        
+    myDiv.viewFactory("user", "testView", function() {
+        var o = _e();
+        o.div().text("User view");
+        return o;            
+    });
+    myDiv.viewFactory("user", "topNavi", function() {
+        var o = _e();
+        o.div().text("User top navigation");
+        return o;
+    })          
+    myDiv.setRole("user");
+    myDiv.pushTo("top", "topNavi");
+    myDiv.pushTo("content", "testView");
+    
+    tools.button().text("admin").on("click", function() {
+        myDiv.setRole("admin"); 
+    });
+    tools.button().text("user").on("click", function() {
+        myDiv.setRole("user"); 
+    });
+```
 # Avoiding local scope pollution
 
 Better and more readable structure can be achieved using functions as constructor parameters. The
