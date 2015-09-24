@@ -2105,10 +2105,11 @@
             val = newVal;
           });
           var valueOutListener = this.uniqueListener("bind:valueOut", function (obj) {
-            console.log("Got value out for ", obj, "which value was ", val);
+
             //console.trace();
             bSendingEvent = true;
             if (o._type == "checkbox") {
+              console.log("Got value out for ", obj, "which value was ", o.checked());
               fn(o.checked());
             } else {
               fn(isNumber ? parseFloat(o.val()) : o.val());
@@ -2247,7 +2248,7 @@
         this._dom.checked = v;
 
         if (nowOn && !v || !nowOn && v) {
-          this.trigger("value");
+          this.trigger("value", nowOn);
         }
 
         return this;
