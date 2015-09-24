@@ -968,6 +968,7 @@ MIT. Currently use at own risk.
     
 ##### trait viewsNavis
 
+- [_refreshView](README.md#viewsNavis__refreshView)
 - [contentRouter](README.md#viewsNavis_contentRouter)
 - [createLayout](README.md#viewsNavis_createLayout)
 - [factoryLoader](README.md#viewsNavis_factoryLoader)
@@ -975,6 +976,7 @@ MIT. Currently use at own risk.
 - [findViewByName](README.md#viewsNavis_findViewByName)
 - [findViewFactory](README.md#viewsNavis_findViewFactory)
 - [getLayouts](README.md#viewsNavis_getLayouts)
+- [getRole](README.md#viewsNavis_getRole)
 - [getRouteObj](README.md#viewsNavis_getRouteObj)
 - [initScreenEvents](README.md#viewsNavis_initScreenEvents)
 - [layout](README.md#viewsNavis_layout)
@@ -987,6 +989,7 @@ MIT. Currently use at own risk.
 - [removeControllersFor](README.md#viewsNavis_removeControllersFor)
 - [scrollTo](README.md#viewsNavis_scrollTo)
 - [setLayout](README.md#viewsNavis_setLayout)
+- [setRole](README.md#viewsNavis_setRole)
 - [viewFactory](README.md#viewsNavis_viewFactory)
 
 
@@ -3005,14 +3008,14 @@ if(childNodes) {
 
 ```
 
-### <a name="_forChildren"></a>::forChildren(fn)
+### <a name="_forChildren"></a>::forChildren(fn, recursive)
 
 Calls function for all the direct children of this node
 ```javascript
 if(this._children) {
     this._children.forEach( function(c) {
         fn(c);
-        // c.forChildren(fn);
+        if(recursive) c.forChildren(fn, recursive);
     });
 }
 ```
@@ -4653,6 +4656,113 @@ The class has following internal singleton variables:
 * _dynamicFactory
         
         
+### <a name="viewsNavis__refreshView"></a>viewsNavis::_refreshView(oldObj)
+
+
+```javascript
+
+if(!oldObj) oldObj = this;
+
+// The object should have _refreshView property
+if(!oldObj._refeshView) return;
+
+/*
+    obj._refeshView = {
+        name : name,
+        factoryName : name,
+        paramName : paramName,
+        view : view
+    }
+*/
+var currentRole = oldObj.getRole();
+
+// the original view where the object was pushed into
+var view = oldObj._refeshView.view;
+if(!view) {
+    return;
+}
+if(!_viewCache) _viewCache = {};
+
+var obj, wf;
+var me = this, cache_key;
+var factoryName = oldObj._refeshView.factoryName,
+    paramName = oldObj._refeshView.paramName,
+    activeLayout = oldObj._refreshView.activeLayout;
+    
+if(!paramName) paramName = "";
+
+if(this.isObject( factoryName) ) {
+    obj = factoryName;
+    cache_key = currentRole+"."+factoryName+"."+paramName;
+} else {
+    
+    // find the view factory...
+    wf = this.findViewFactory( factoryName, currentRole );
+    
+    // factory function object has the cache
+    if(wf && !wf._viewCache) wf._viewCache = {};
+
+    // views with same params will be cached
+    cache_key = currentRole+"."+factoryName+"."+paramName;
+
+    if(wf) {
+        if(wf._viewCache[cache_key]) {
+            obj = wf._viewCache[cache_key];
+        } else {
+            var f = wf;
+            if(f) {
+                obj = f( paramName );
+                if(obj) {
+                    wf._viewCache[cache_key] = obj;
+                }
+            }
+        }
+    }
+}
+
+if(obj) {
+    
+    //if(!activeLayout.parts) activeLayout.parts = {};
+    //activeLayout.parts[name] = view;
+    
+    // view = the div or element the object created by the factory is pushed into
+    // for example "top" in layout top 100% | content 100%
+    // view.pushView( obj );
+    
+    // --- not using the "pushView"
+    oldObj.replaceWith( obj );
+    
+    // to emulate React.js behaviour...
+    if(obj.componentDidMount) {
+        obj.componentDidMount();
+    }
+    obj.trigger("mount");
+    
+    // in case the view should be refreshed with some other 
+    obj._refeshView = oldObj._refreshView;
+
+    if(wf && wf._dynamic && !wf._binded) {
+        wf._binded = true;
+        wf._dynamic.on("body", function(o,v) {
+            try {
+                var newF = new Function(v);
+                var newObj = newF( paramName );
+                if(newObj) {
+                    obj.replaceWith( newObj );
+                    obj = newObj;
+                    
+                    wf._container._viewFactory[factoryName] = newF;
+                    if(newF && !newF._viewCache) newF._viewCache = {};
+                    newF._viewCache[cache_key] = newObj;
+                }
+            } catch(e) {
+                
+            }
+        });
+    }
+}
+```
+
 ### <a name="viewsNavis_contentRouter"></a>viewsNavis::contentRouter(name, fn)
 
 
@@ -4774,20 +4884,21 @@ if(layout.hasClass(name)) {
 }
 ```
 
-### <a name="viewsNavis_findViewFactory"></a>viewsNavis::findViewFactory(name)
+### <a name="viewsNavis_findViewFactory"></a>viewsNavis::findViewFactory(name, role)
 
 
 ```javascript
 
-if(this._viewFactory) {
-    var ff = this._viewFactory[name];
+if(!role) role = "default";
+
+if(this._viewFactory && this._viewFactory[role]) {
+    var ff = this._viewFactory[role][name];
     if(ff) {
-        
         return ff;
     }
 }
 var p = this.parent();
-if(p) return p.findViewFactory(name);
+if(p) return p.findViewFactory(name, role);
 
 return null;
 ```
@@ -4797,6 +4908,17 @@ return null;
 
 ```javascript
 return _viewStructures;
+```
+
+### <a name="viewsNavis_getRole"></a>viewsNavis::getRole(t)
+
+
+```javascript
+if(this._role) {
+    return this._role;
+}
+var p = this.parent();
+if(p) return p.getRole();
 ```
 
 ### <a name="viewsNavis_getRouteObj"></a>viewsNavis::getRouteObj(t)
@@ -5140,6 +5262,12 @@ cont.forChildren(function(ch) {
 ```
 
 ### <a name="viewsNavis_pushTo"></a>viewsNavis::pushTo(name, factoryName, paramName)
+`name` Name of the layout element, for example &quot;top&quot;, &quot;content&quot; or &quot;bottom&quot;
+ 
+`factoryName` Name of the view factory created with viewFactory
+ 
+`paramName` Parameter name for the view
+ 
 
 
 ```javascript
@@ -5160,8 +5288,7 @@ if(!this._activeLayout) {
     return this;
 } else {
 
-    // could use replaceWith to create dynamic replace
-    
+    var currentRole = this.getRole();
     var view = this.findViewByName( name, this._activeLayout.view );
 
     if(!view) {
@@ -5171,28 +5298,32 @@ if(!this._activeLayout) {
     if(!_viewCache) _viewCache = {};
     
     var obj, wf;
-    var me = this;
+    var me = this, cache_key;
     
     if(!paramName) paramName = "";
     if(this.isObject( factoryName) ) {
         obj = factoryName;
+        cache_key = currentRole+"."+factoryName+"."+paramName;
     } else {
         
         // returns the function which creates the view
-        wf = this.findViewFactory( factoryName );
+        wf = this.findViewFactory( factoryName, currentRole );
         
         // factory function object has the cache
         if(wf && !wf._viewCache) wf._viewCache = {};
    
+        // views with same params will be cached
+        cache_key = currentRole+"."+factoryName+"."+paramName;
+   
         if(wf) {
-            if(wf._viewCache[factoryName+"."+paramName]) {
-                obj = wf._viewCache[factoryName+"."+paramName];
+            if(wf._viewCache[cache_key]) {
+                obj = wf._viewCache[cache_key];
             } else {
                 var f = wf;
                 if(f) {
                     obj = f( paramName );
                     if(obj) {
-                        wf._viewCache[factoryName+"."+paramName] = obj;
+                        wf._viewCache[cache_key] = obj;
                     }
                 }
             }
@@ -5200,13 +5331,28 @@ if(!this._activeLayout) {
     }
     
     if(obj) {
+        
         if(!this._activeLayout.parts) this._activeLayout.parts = {};
         this._activeLayout.parts[name] = view;
+        
+        // view = the div or element the object created by the factory is pushed into
+        // for example "top" in layout top 100% | content 100%
         view.pushView( obj );
+        
+        // to emulate React.js behaviour...
         if(obj.componentDidMount) {
             obj.componentDidMount();
         }
         obj.trigger("mount");
+        
+        // in case the view should be refreshed with some other 
+        obj._refeshView = {
+            name : name,
+            factoryName : factoryName,
+            paramName : paramName,
+            view : view,
+            activeLayout : this._activeLayout
+        }
 
         if(wf && wf._dynamic && !wf._binded) {
             wf._binded = true;
@@ -5220,7 +5366,7 @@ if(!this._activeLayout) {
                         
                         wf._container._viewFactory[factoryName] = newF;
                         if(newF && !newF._viewCache) newF._viewCache = {};
-                        newF._viewCache[factoryName+"."+paramName] = newObj;
+                        newF._viewCache[cache_key] = newObj;
                     }
                 } catch(e) {
                     
@@ -5241,11 +5387,9 @@ if(!this._views) {
     this._views = [];
 }
 
-// console.log("... trying pushing .... ", newView );
+
 if(newView == this) return;
 if(newView == lastView) return;
-
-// console.log("... pushing view .... ", newView );
 
 var cont = this;
 if(cont._children && cont._children[0]==newView) {
@@ -5389,50 +5533,47 @@ if(_viewStructures && _viewStructures[name]) {
     layout.view._parent = this;
     if(this._dom.firstChild ) this._dom.removeChild( this._dom.firstChild );
     this._dom.appendChild( layout.view._dom );
-    
-    /*
-    var viewHolder = null;
-    // how the layout goes...
-    if(this._activeLayout) {
-        layout.parts = this._activeLayout.parts;
-        viewHolder = this._activeLayout.viewHolder;
-    }
-    
-    if(layout.viewHolder.child(0)) {
-        layout.view = layout.viewHolder.child(0);
-    }
-    console.log("1", _viewStructures["basic"].view.childCount());
-    var layout = _viewStructures[name];
-    // this.clear();
-    console.log("2", _viewStructures["basic"].view.childCount());
-    this.pushView( layout.view, null, viewHolder );
-    console.log("3", _viewStructures["basic"].view.childCount());
-    this._activeLayout = layout;
-    */
-    /*
-    later().after(0.5, function() {
-        for(var n in layout.parts) {
-            if(layout.parts.hasOwnProperty(n)) {
-                me.pushTo(n, layout.parts[n]);   
-                console.log("pushTo", _viewStructures["basic"].view.childCount());
-            }
-        }    
-    });
-    */
-    
+
 }
 ```
 
-### <a name="viewsNavis_viewFactory"></a>viewsNavis::viewFactory(name, fn)
+### <a name="viewsNavis_setRole"></a>viewsNavis::setRole(name)
 
-
+The role the user interface is currently at
 ```javascript
 
+if(this._role && this._role != name) {
+    this._role = name;
+    // update subviews to correspond this role view...
+    this._refreshView();
+    this.forChildren( function(ch) {
+        ch._refreshView();
+    }, true);
+} else {
+    this._role = name;
+}
+
+```
+
+### <a name="viewsNavis_viewFactory"></a>viewsNavis::viewFactory(role, name, fn)
+
+one could call it like 
+o.viewFactory(&quot;children&quot;, &quot;messages&quot;, function() {
+
+});
+```javascript
+
+if(this.isFunction(name)) {
+    role = "default";
+    fn = name;
+    name = role;
+}
+
 if(!this._viewFactory) this._viewFactory = {};
+if(!this._viewFactory[role]) this._viewFactory[role] = {};
 
-this._viewFactory[name] = fn;
+this._viewFactory[role][name] = fn;
 fn._container = this;
-
 
 ```
 
