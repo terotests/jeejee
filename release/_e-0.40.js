@@ -3157,8 +3157,8 @@
 
         if (obj) {
 
-          if (!activeLayout.parts) activeLayout.parts = {};
-          activeLayout.parts[name] = view;
+          //if(!activeLayout.parts) activeLayout.parts = {};
+          //activeLayout.parts[name] = view;
 
           // view = the div or element the object created by the factory is pushed into
           // for example "top" in layout top 100% | content 100%
