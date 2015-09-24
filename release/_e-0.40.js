@@ -4257,7 +4257,8 @@
               console.log("type = ", type);
               fn = this.findViewFactory(type);
               if (fn) {
-                this.add(fn.apply(o, [item]));
+                var newItem = fn.apply(null, [item]);
+                this.add(newItem);
               }
               return this;
             }
