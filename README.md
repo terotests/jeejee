@@ -6995,13 +6995,11 @@ var upload = function(uploadElement) {
     }
 }
 
-inp._dom,addEventListener('change', function(event) {
-
-    // todo: check if the file is of correct type
-    // event.target.files[0].type.indexOf("image/") == 0) {
-    
-    if(event.target.files.length == 1 ) {
-        upload(inp._dom);
+inp._dom.addEventListener('change', function(event) {
+    if(options.autoupload) {
+        if(event.target.files.length == 1 ) {
+            upload(inp._dom);
+        }
     }
 	});
 inp.on("upload", function() {
