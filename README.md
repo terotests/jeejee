@@ -5393,6 +5393,8 @@ if(!this._activeLayout) {
 } else {
 
     var currentRole = this.getRole();
+    if(!currentRole) currentRole = "default";
+    
     var view = this.findViewByName( name, this._activeLayout.view );
 
     if(!view) {
@@ -5412,7 +5414,7 @@ if(!this._activeLayout) {
         
         // returns the function which creates the view
         wf = this.findViewFactory( factoryName, currentRole );
-        
+        if(!wf) wf = this.findViewFactory( factoryName, "default" );
         // factory function object has the cache
         if(wf && !wf._viewCache) wf._viewCache = {};
    
@@ -6109,7 +6111,7 @@ var showTree = function(item, currLevel) {
                         li.removeClass("hasChildren");
                     }       
                 })    
-                subTree.hide();
+                if(options.clickToOpen) subTree.hide();
                 subDataElem.mvc( subData, function(item) {
                     return showTree(item,currLevel+1);
                 });                  
