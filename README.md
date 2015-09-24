@@ -198,6 +198,7 @@ var main = _e(document.body);
 var uploader = main.createUploader({
     testTraditional : false,
     images : true,
+    autoupload : false,
     uploadSpeed : 10,
     url : "http://localhost:7777/upload/",
     done: function(r) {
