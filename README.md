@@ -1147,6 +1147,7 @@ MIT. Currently use at own risk.
 - [post](README.md#_post)
 - [postJSON](README.md#_postJSON)
 - [send](README.md#_send)
+- [uploadHook](README.md#_uploadHook)
 
 
     
@@ -6725,6 +6726,8 @@ The class has following internal singleton variables:
         
 * _ajaxHook
         
+* _uploadHook
+        
         
 ### <a name="__initAjax"></a>::_initAjax(t)
 
@@ -6946,52 +6949,95 @@ if(options.images) {
 // upload handler here...
 var upload = function(uploadElement) {
 
-    var file = uploadElement.files[0];
-    if (file) {
-        var formData = new window.FormData();
+    var hook = _uploadHook[options.url];
+    if(hook) {
+        
+        var sendData = {
+            postData : {},
+            files : []
+        };
         if(options.vars) {
              if(options.vars) {
                 for(var n in options.vars) {
                     if(options.vars.hasOwnProperty(n)) {
-                        formData.append(n, options.vars[n]);
+                        sendData.postData[n] = options.vars[n];
                     }
                 }
             }           
-        }
-        
-        formData.append(options.fieldName || "newFile", file);
-        var xhr = new XMLHttpRequest();
-        xhr.onreadystatechange = function () {
-            if (xhr.readyState === 4) //done
-            {
-                if (xhr.status === 200) {
-                    if(options.done) {
-                        options.done(xhr.responseText);
-                    }
-                } else {
-                    if(options.error) {
-                        options.error(xhr.responseText, xhr );
-                    }                    
-                }
+        }        
+        var len = uploadElement.files.length;
+        for(var fi=0; fi<len; fi++) {
+            var file = uploadElement.files[fi];
+            if (file) {
+                sendData.files.push(file);
             }
-        };
-        xhr.open('POST', options.url);
-        if(options.progress && xhr.upload) {
-            xhr.upload.onprogress = function (e) {
-                        if (e.lengthComputable) {
-                            var done = (e.loaded / e.total) * 100;
-                            var info = {
-                                loadPros : done,
-                                ready : false
-                            };
-                            if(e.loaded==e.total) {
-                                info.ready = true;
-                            }
-                            options.progress( info );
-                        }
-                    }            
+        } 
+        try {
+            var res = hook(sendData);
+            if(options.progress) options.progress({
+                                        loadPros : 100,
+                                        ready : true
+                                    }); 
+            if(options.done) {
+                options.done(res);
+            }            
+        } catch(e) {
+            if(options.error) {
+                options.error(e.message);
+            }              
         }
-        xhr.send(formData);
+        return;
+    }
+
+    var len = uploadElement.files.length;
+    for(var fi=0; fi<len; fi++) {
+        var file = uploadElement.files[fi];
+        if (file) {
+            var formData = new window.FormData();
+            if(options.vars) {
+                 if(options.vars) {
+                    for(var n in options.vars) {
+                        if(options.vars.hasOwnProperty(n)) {
+                            formData.append(n, options.vars[n]);
+                        }
+                    }
+                }           
+            }
+            
+            formData.append(options.fieldName || "newFile", file);
+            var xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4) //done
+                {
+                    if (xhr.status === 200) {
+                        if(options.done) {
+                            options.done(xhr.responseText);
+                        }
+                    } else {
+                        if(options.error) {
+                            options.error(xhr.responseText, xhr );
+                        }                    
+                    }
+                }
+            };
+            xhr.open('POST', options.url);
+            if(options.progress && xhr.upload) {
+                xhr.upload.onprogress = function (e) {
+                            if (e.lengthComputable) {
+                                var done = (e.loaded / e.total) * 100;
+                                var info = {
+                                    loadPros : done,
+                                    ready : false
+                                };
+                                if(e.loaded==e.total) {
+                                    info.ready = true;
+                                }
+                                options.progress( info );
+                            }
+                        }            
+            }
+            xhr.send(formData);
+        }
     }
 }
 
@@ -7003,7 +7049,7 @@ inp._dom.addEventListener('change', function(event) {
     }
 	});
 inp.on("upload", function() {
-    if(event.target.files.length == 1 ) {
+    if(inp._dom.files.length >= 1 ) {
         upload(inp._dom);
     }    
 });
@@ -7153,6 +7199,17 @@ ajax.send = function(url, callback, method, data, sync) {
     x.send(data)
 };
 */
+```
+
+### <a name="_uploadHook"></a>::uploadHook(url, handlerFunction)
+
+
+```javascript
+if(!_uploadHook) {
+    _uploadHook = {};
+}
+
+_uploadHook[url] = handlerFunction;
 ```
 
 

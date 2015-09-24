@@ -5217,6 +5217,7 @@
     (function (_myTrait_) {
       var x;
       var _ajaxHook;
+      var _uploadHook;
 
       // Initialize static variables here...
 
@@ -5429,6 +5430,46 @@
 
         // upload handler here...
         var upload = function upload(uploadElement) {
+
+          var hook = _uploadHook[options.url];
+          if (hook) {
+
+            var sendData = {
+              postData: {},
+              files: []
+            };
+            if (options.vars) {
+              if (options.vars) {
+                for (var n in options.vars) {
+                  if (options.vars.hasOwnProperty(n)) {
+                    sendData.postData[n] = options.vars[n];
+                  }
+                }
+              }
+            }
+            var len = uploadElement.files.length;
+            for (var fi = 0; fi < len; fi++) {
+              var file = uploadElement.files[fi];
+              if (file) {
+                sendData.files.push(file);
+              }
+            }
+            try {
+              var res = hook(sendData);
+              if (options.progress) options.progress({
+                loadPros: 100,
+                ready: true
+              });
+              if (options.done) {
+                options.done(res);
+              }
+            } catch (e) {
+              if (options.error) {
+                options.error(e.message);
+              }
+            }
+            return;
+          }
 
           var len = uploadElement.files.length;
           for (var fi = 0; fi < len; fi++) {
@@ -5648,6 +5689,18 @@
         x.send(data)
         };
         */
+      };
+
+      /**
+       * @param String url
+       * @param function handlerFunction
+       */
+      _myTrait_.uploadHook = function (url, handlerFunction) {
+        if (!_uploadHook) {
+          _uploadHook = {};
+        }
+
+        _uploadHook[url] = handlerFunction;
       };
     })(this);
 
