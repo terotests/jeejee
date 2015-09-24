@@ -5551,16 +5551,9 @@
         myImage.width(width);
         myImage.height(height);
 
-        var canvas = document.createElement("canvas");
-        var ctx = canvas.getContext("2d");
-
         reader.onload = function (event) {
           var img = myImage._dom;
-
           img.onload = function () {
-            //canvas.width = width;
-            //canvas.height = height;
-            //ctx.drawImage(img,0,0,img.width,img.height, 0,0,width,height);
             me.add(myImage);
           };
           img.src = event.target.result;
