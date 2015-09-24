@@ -3121,7 +3121,8 @@
         var me = this,
             cache_key;
         var factoryName = oldObj._refeshView.factoryName,
-            paramName = oldObj._refeshView.paramName;
+            paramName = oldObj._refeshView.paramName,
+            activeLayout = oldObj._refreshView.activeLayout;
 
         if (!paramName) paramName = "";
 
@@ -3156,8 +3157,8 @@
 
         if (obj) {
 
-          if (!this._activeLayout.parts) this._activeLayout.parts = {};
-          this._activeLayout.parts[name] = view;
+          if (!activeLayout.parts) activeLayout.parts = {};
+          activeLayout.parts[name] = view;
 
           // view = the div or element the object created by the factory is pushed into
           // for example "top" in layout top 100% | content 100%
@@ -3779,7 +3780,8 @@
               name: name,
               factoryName: factoryName,
               paramName: paramName,
-              view: view
+              view: view,
+              activeLayout: this._activeLayout
             };
 
             if (wf && wf._dynamic && !wf._binded) {
