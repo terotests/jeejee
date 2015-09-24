@@ -5469,7 +5469,7 @@
                 }
                 if (options.progress) options.progress({
                   loadPros: parseInt(progress),
-                  ready: true
+                  ready: parseInt(progress) == 100
                 });
               }, 30);
             } catch (e) {

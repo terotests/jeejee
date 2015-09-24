@@ -6989,7 +6989,7 @@ var upload = function(uploadElement) {
                     }
                     if(options.progress) options.progress({
                                                 loadPros : parseInt( progress ),
-                                                ready : true
+                                                ready : parseInt( progress ) == 100
                                             }); 
                                
                 },30);
