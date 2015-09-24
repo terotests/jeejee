@@ -2207,22 +2207,13 @@
         if (typeof this._dom.value != "undefined" || this._type == "option") {
           this._dom.value = v;
         } else {
-          var strip_html = function strip_html(html) {
-            var tmp = document.createElement("DIV");
-            tmp.innerHTML = html;
-            return tmp.textContent || tmp.innerText || "";
-          };
-          v = strip_html(v);
-          console.log("After strip_html ", v);
-          if (this._nl2br) {
-            var str = v,
-                is_xhtml = false;
 
-            var breakTag = is_xhtml || typeof is_xhtml === "undefined" ? "<br />" : "<br>";
-            var res = (str + "").replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, "$1" + breakTag + "$2");
-            this._dom.innerHTML = res;
+          if (this._nl2br) {
+            this._dom.style.whiteSpace = "pre";
+            this._dom.textContent = res;
           } else {
-            this._dom.innerHTML = v;
+            //
+            this._dom.textContent = v;
           }
         }
         this._value = v;
