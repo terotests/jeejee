@@ -3353,7 +3353,6 @@
         var p = this.parent();
         if (p) return p.findViewFactory(name, role);
 
-        debugger;
         if (_viewFactory[role]) {
           return _viewFactory[role][name];
         }
@@ -4257,7 +4256,12 @@
             if (typeof type == "string") {
               console.log("type = ", type);
               fn = this.findViewFactory(type);
-              console.log(fn);
+              if (fn) {
+                this.mvc(model, function (item) {
+                  return fn.apply(o, [item]);
+                });
+              }
+              return;
             }
           }
         }
