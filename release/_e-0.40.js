@@ -3723,6 +3723,8 @@
         } else {
 
           var currentRole = this.getRole();
+          if (!currentRole) currentRole = "default";
+
           var view = this.findViewByName(name, this._activeLayout.view);
 
           if (!view) {
@@ -3743,7 +3745,7 @@
 
             // returns the function which creates the view
             wf = this.findViewFactory(factoryName, currentRole);
-
+            if (!wf) wf = this.findViewFactory(factoryName, "default");
             // factory function object has the cache
             if (wf && !wf._viewCache) wf._viewCache = {};
 
