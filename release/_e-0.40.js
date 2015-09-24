@@ -2090,8 +2090,6 @@
 
           var valueInListener = this.uniqueListener("bind:valueIn", function (obj, newVal) {
 
-            console.log("Value in ", newVal);
-
             if (bSendingEvent) return;
 
             if (o._type == "checkbox") {
@@ -2105,12 +2103,10 @@
             val = newVal;
           });
           var valueOutListener = this.uniqueListener("bind:valueOut", function (obj, v) {
-            console.log("Got value out for ", obj, "which value was ", v);
-            console.log("o was ", o);
+
             //console.trace();
             bSendingEvent = true;
             if (o._type == "checkbox") {
-              console.log("Got value out for ", obj, "which value was ", o.checked());
               fn(o.checked());
             } else {
               fn(isNumber ? parseFloat(o.val()) : o.val());

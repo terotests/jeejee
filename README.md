@@ -3741,16 +3741,21 @@ if(this.isFunction(obj[varName])) {
     var oo = obj;
 
     var valueInListener = this.uniqueListener("bind:valueIn", function(obj, newVal) {
+
         if(bSendingEvent) return;
+        
         if(o._type=="checkbox") {
+            if(typeof(newVal)=="string") {
+                newVal = (newVal == "true" );
+            }
             o.checked(newVal);
         } else {
             o.bindVal(newVal);
         } 
         val = newVal;
     });
-    var valueOutListener = this.uniqueListener("bind:valueOut",function(obj) {
-        //console.log("Got value out for ", obj, "which value was ",val);
+    var valueOutListener = this.uniqueListener("bind:valueOut",function(obj,v) {
+
         //console.trace();
         bSendingEvent = true;
         if(o._type=="checkbox") {
@@ -3761,19 +3766,19 @@ if(this.isFunction(obj[varName])) {
         bSendingEvent = false;
     });    
     
-    //
-    
-    
-    
     var invalidInputListener = this.uniqueListener("bind:invalidIn",function(obj, msg) {
         o.trigger("invalid", msg);
     });
     var validInputListener = this.uniqueListener("bind:validIn",function(obj, newVal) {
         o.trigger("valid", newVal);
     });
-
-    obj.on(varName, valueInListener );
-    this.on("value", valueOutListener); 
+    if(o._type=="checkbox") {
+        obj.on(varName, valueInListener );
+        this.on("value", valueOutListener);         
+    } else {
+        obj.on(varName, valueInListener );
+        this.on("value", valueOutListener); 
+    }
     
     //oo.me.on(oo.name, valueInListener );
     //this.on("value", valueOutListener); 
@@ -3898,7 +3903,7 @@ var nowOn = this._dom.checked;
 this._dom.checked = v;
 
 if( (nowOn && !v) || (!nowOn && v) ){
-    this.trigger("value");
+    this.trigger("value", nowOn);
 } 
 
 return this;
@@ -4401,6 +4406,9 @@ classes.forEach( function(c) { el.addClass( c )});
 attrList.forEach( function(myAttrs) {     
       for(var n in myAttrs) {
         if(myAttrs.hasOwnProperty(n)) {
+            if(name=="input" && (n=="type" && myAttrs[n]=="checkbox")) {
+                el._type = "checkbox";
+            }
             el.attr(n, myAttrs[n]);
         }
     }});
