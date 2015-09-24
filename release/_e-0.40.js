@@ -5366,7 +5366,7 @@
             uplFields.forEach(function (input) {
               var len = input._dom.files.length;
               for (var fi = 0; fi < len; fi++) {
-                var file = uploadElement.files[fi];
+                var file = input._dom.files[fi];
                 if (file) {
                   sendData.files.push(file);
                 }
