@@ -2089,8 +2089,11 @@
           var oo = obj;
 
           var valueInListener = this.uniqueListener("bind:valueIn", function (obj, newVal) {
-            if (bSendingEvent) return;
+
             console.log("Value in ", newVal);
+
+            if (bSendingEvent) return;
+
             if (o._type == "checkbox") {
               o.checked(newVal);
             } else {
