@@ -4238,10 +4238,13 @@
           fn = controller;
         }
 
+        console.log("called mv ... ");
+        console.log("fn = ", fn);
+
         // try to find the view factory...
         if (typeof fn == "string") {
+          debugger;
           fn = this.findViewFactory(controller);
-          alert(fn);
         }
 
         if (fn) {
