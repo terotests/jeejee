@@ -2762,6 +2762,9 @@
         attrList.forEach(function (myAttrs) {
           for (var n in myAttrs) {
             if (myAttrs.hasOwnProperty(n)) {
+              if (name == "input" && (n == "type" && myAttrs[n] == "checkbox")) {
+                el._checkbox = true;
+              }
               el.attr(n, myAttrs[n]);
             }
           }
