@@ -256,6 +256,8 @@ main.pushTo("top", "topNavi");
 
 # Role based view factories
 
+Demo: http://jsfiddle.net/Lsczxqdf/
+
 The view factories can be also role-specific. To create a view for a role use syntax
 ``` javascript
     myDiv.viewFactory("rolename", "viewname", function() {
