@@ -5305,7 +5305,7 @@
             size: 50
           });
           inp.on("value", function () {
-            if (options.autoUpload) {
+            if (options.autoupload) {
               o.uploadFiles();
             } else {
               if (fileCnt < maxCnt) createUploadField();
