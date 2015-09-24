@@ -5351,6 +5351,7 @@
           if (hook) {
 
             var sendData = {
+              traditional: true,
               postData: {},
               files: []
             };
