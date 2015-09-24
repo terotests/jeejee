@@ -2104,8 +2104,9 @@
             }
             val = newVal;
           });
-          var valueOutListener = this.uniqueListener("bind:valueOut", function (obj) {
-
+          var valueOutListener = this.uniqueListener("bind:valueOut", function (obj, v) {
+            console.log("Got value out for ", obj, "which value was ", v);
+            console.log("o was ", o);
             //console.trace();
             bSendingEvent = true;
             if (o._type == "checkbox") {
