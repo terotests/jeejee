@@ -4025,6 +4025,13 @@
             return fn(id);
           }
         };
+        _viewFactory[role][name] = function (id) {
+          if (me.isObject(id)) {
+            return fn(id.getID());
+          } else {
+            return fn(id);
+          }
+        };
         fn._container = this;
       };
     })(this);
