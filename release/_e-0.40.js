@@ -2095,6 +2095,9 @@
             if (bSendingEvent) return;
 
             if (o._type == "checkbox") {
+              if (typeof newVal == "string") {
+                newVal = newVal == "true";
+              }
               o.checked(newVal);
             } else {
               o.bindVal(newVal);
