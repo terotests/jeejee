@@ -4240,7 +4240,9 @@
             fn = controller;
           } else {
             if (typeof type == "string") {
+              console.log("type = ", type);
               fn = this.findViewFactory(type);
+              console.log(fn);
             }
           }
         }
