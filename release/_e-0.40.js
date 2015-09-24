@@ -4430,7 +4430,7 @@
                   li.removeClass("hasChildren");
                 }
               });
-              subTree.hide();
+              if (options.clickToOpen) subTree.hide();
               subDataElem.mvc(subData, function (item) {
                 return showTree(item, currLevel + 1);
               });
