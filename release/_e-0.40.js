@@ -3998,9 +3998,9 @@
       _myTrait_.viewFactory = function (role, name, fn) {
 
         if (this.isFunction(name)) {
-          role = "default";
-          fn = name;
           name = role;
+          fn = name;
+          role = "default";
         }
 
         if (!this._viewFactory) this._viewFactory = {};

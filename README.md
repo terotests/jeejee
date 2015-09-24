@@ -5670,9 +5670,9 @@ o.viewFactory(&quot;children&quot;, &quot;messages&quot;, function() {
 ```javascript
 
 if(this.isFunction(name)) {
-    role = "default";
-    fn = name;
     name = role;
+    fn = name;
+    role = "default";
 }
 
 if(!this._viewFactory) this._viewFactory = {};
