@@ -188,6 +188,44 @@ main.postJSON("someUrl", {
 
 ```
 
+## File Upload Hook
+
+http://jsfiddle.net/s3whz24s/
+
+```javascript
+
+var main = _e(document.body);
+var uploader = main.createUploader({
+    testTraditional : false,
+    images : true,
+    uploadSpeed : 10,
+    url : "http://localhost:7777/upload/",
+    done: function(r) {
+        console.log(r);
+    },
+    progress : function(info) {
+        progress.text(JSON.stringify(info));
+    }, 
+    vars : {
+        fileInformation : "Extra playload carried"
+    },
+    onSelectFile : function(file) {
+        if(file.type.indexOf("image")>=0) {
+            tnList.clear();
+            tnList.fileObjectThumbnail( 100,100,file );
+        }
+    }
+});
+
+main.uploadHook("http://localhost:7777/upload/", function(data) {
+    console.log(data);
+    data.files.forEach( 
+        function(file) {
+            uploads.fileObjectThumbnail( 100,100,file );
+        });    
+})
+```
+
 # View factories
 
 A new undocumented feature, tests are here:
