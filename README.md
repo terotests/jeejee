@@ -6007,12 +6007,14 @@ if(controller) {
 return this;
 ```
 
-### <a name="mvc_trait_tree"></a>mvc_trait::tree(treeData, itemFn)
+### <a name="mvc_trait_tree"></a>mvc_trait::tree(treeData, itemFn, options)
 
 
 ```javascript
 var _dragState = {};      
 var _dragOn;
+
+options = options || {};
 
 var showTree = function(item, currLevel) {
     
@@ -6112,17 +6114,21 @@ var showTree = function(item, currLevel) {
                     return showTree(item,currLevel+1);
                 });                  
                 var sub_vis = item.get("open");
-                item.on("open", function(o,v) {
-                    if(v) {
-                        subTree.show();
-                    } else {
-                        subTree.hide();
-                    }
-                });
+                if(options.clickToOpen) {
+                    item.on("open", function(o,v) {
+                        if(v) {
+                            subTree.show();
+                        } else {
+                            subTree.hide();
+                        }
+                    });
+                }
                 // is the "open" a good thing to have for the tree?
                 li.on("click", function() {
-                    sub_vis = !sub_vis;
-                    item.set("open", sub_vis);
+                    if(options.clickToOpen) {
+                        sub_vis = !sub_vis;
+                        item.set("open", sub_vis);
+                    }
                 });
                 if(sub_vis) subTree.show();        
             }  

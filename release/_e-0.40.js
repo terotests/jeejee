@@ -4333,10 +4333,13 @@
       /**
        * @param float treeData
        * @param float itemFn
+       * @param float options
        */
-      _myTrait_.tree = function (treeData, itemFn) {
+      _myTrait_.tree = function (treeData, itemFn, options) {
         var _dragState = {};
         var _dragOn;
+
+        options = options || {};
 
         var showTree = function showTree(item, currLevel) {
 
@@ -4432,17 +4435,21 @@
                 return showTree(item, currLevel + 1);
               });
               var sub_vis = item.get("open");
-              item.on("open", function (o, v) {
-                if (v) {
-                  subTree.show();
-                } else {
-                  subTree.hide();
-                }
-              });
+              if (options.clickToOpen) {
+                item.on("open", function (o, v) {
+                  if (v) {
+                    subTree.show();
+                  } else {
+                    subTree.hide();
+                  }
+                });
+              }
               // is the "open" a good thing to have for the tree?
               li.on("click", function () {
-                sub_vis = !sub_vis;
-                item.set("open", sub_vis);
+                if (options.clickToOpen) {
+                  sub_vis = !sub_vis;
+                  item.set("open", sub_vis);
+                }
               });
               if (sub_vis) subTree.show();
             }
