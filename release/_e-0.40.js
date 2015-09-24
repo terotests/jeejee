@@ -5364,6 +5364,7 @@
               }
             }
             uplFields.forEach(function (input) {
+              if (!input._dom.files) return;
               var len = input._dom.files.length;
               for (var fi = 0; fi < len; fi++) {
                 var file = input._dom.files[fi];
