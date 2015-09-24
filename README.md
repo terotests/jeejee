@@ -1142,6 +1142,7 @@ MIT. Currently use at own risk.
 - [_traditionalUpload](README.md#__traditionalUpload)
 - [ajaxHook](README.md#_ajaxHook)
 - [createUploader](README.md#_createUploader)
+- [fileObjectThumbnail](README.md#_fileObjectThumbnail)
 - [get](README.md#_get)
 - [getJSON](README.md#_getJSON)
 - [post](README.md#_post)
@@ -7055,6 +7056,29 @@ inp.on("upload", function() {
 });
 return inp;
 
+```
+
+### <a name="_fileObjectThumbnail"></a>::fileObjectThumbnail(width, height, fileObject)
+
+
+```javascript
+var reader = new FileReader();
+var myImage = _e("img");
+
+var canvas = document.createElement("canvas");
+var ctx = canvas.getContext('2d');
+
+reader.onload = function(event){
+    var img = myImage._dom;
+    img.onload = function(){
+        canvas.width = width;
+        canvas.height = height;
+        ctx.drawImage(img,0,0,img.width,img.height, 0,0,width,height);
+    }
+    img.src = event.target.result;
+}
+reader.readAsDataURL(fileObject);    
+return myImage;
 ```
 
 ### <a name="_get"></a>::get(url, data, callback)

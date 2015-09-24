@@ -5553,9 +5553,9 @@
         reader.onload = function (event) {
           var img = myImage._dom;
           img.onload = function () {
-            canvas.width = img.width;
-            canvas.height = img.height;
-            ctx.drawImage(img, 0, 0);
+            canvas.width = width;
+            canvas.height = height;
+            ctx.drawImage(img, 0, 0, img.width, img.height, 0, 0, width, height);
           };
           img.src = event.target.result;
         };
