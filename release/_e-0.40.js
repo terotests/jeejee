@@ -3095,6 +3095,8 @@
        */
       _myTrait_._refreshView = function (oldObj) {
 
+        if (!oldObj) oldObj = this;
+
         // The object should have _refreshView property
         if (!oldObj._refeshView) return;
 
