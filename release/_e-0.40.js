@@ -3353,6 +3353,7 @@
         var p = this.parent();
         if (p) return p.findViewFactory(name, role);
 
+        debugger;
         if (_viewFactory[role]) {
           return _viewFactory[role][name];
         }
