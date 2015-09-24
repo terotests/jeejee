@@ -7048,16 +7048,14 @@ inp._dom.addEventListener('change', function(event) {
             upload(inp._dom);
         }
     }
-
-    if(options.imagePreviewArea) {
-        options.imagePreviewArea.clear();
+    if(options.onSelectFile) {
         var len = inp._dom.files.length;
         for(var fi=0; fi<len; fi++) {
             var file = inp._dom.files[fi];   
-            if(file.type.indexOf("image") >= 0)
-                options.imagePreviewArea.fileObjectThumbnail(options.previewWidth || 100, options.previewHeight || 100, file);
+            options.onSelectFile( file, file.type );
         }
     }
+
 	});
 inp.on("upload", function() {
     if(inp._dom.files.length >= 1 ) {
