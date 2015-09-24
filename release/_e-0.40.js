@@ -4229,22 +4229,20 @@
        */
       _myTrait_.mv = function (model, type, controller) {
 
-        var o, fn, elemName;
+        var o,
+            fn,
+            elemName = "div";
         if (this.isFunction(type)) {
-          elemName = "div";
           fn = type;
         } else {
-          elemName = type;
-          fn = controller;
-        }
-
-        console.log("called mv ... ");
-        console.log("fn = ", fn);
-
-        // try to find the view factory...
-        if (typeof fn == "string") {
-          debugger;
-          fn = this.findViewFactory(controller);
+          if (this.isFunction(controller)) {
+            elemName = type;
+            fn = controller;
+          } else {
+            if (typeof type == "string") {
+              fn = this.findViewFactory(type);
+            }
+          }
         }
 
         if (fn) {
