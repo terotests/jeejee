@@ -2209,7 +2209,7 @@
         } else {
 
           if (this._nl2br) {
-            this._dom.style.whiteSpace = "pre";
+            this._dom.style.whiteSpace = "pre-wrap";
             this._dom.textContent = v;
           } else {
             //
