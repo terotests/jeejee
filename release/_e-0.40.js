@@ -2207,6 +2207,12 @@
         if (typeof this._dom.value != "undefined" || this._type == "option") {
           this._dom.value = v;
         } else {
+          var strip_html = function strip_html(html) {
+            var tmp = document.createElement("DIV");
+            tmp.innerHTML = html;
+            return tmp.textContent || tmp.innerText || "";
+          };
+          v = strip_html(v);
           if (this._nl2br) {
             var str = v,
                 is_xhtml = false;
