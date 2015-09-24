@@ -4739,7 +4739,7 @@ if(obj) {
     obj.trigger("mount");
     
     // in case the view should be refreshed with some other 
-    obj._refeshView = oldObj._refreshView;
+    obj._refeshView = oldObj._refeshView;
 
     if(wf && wf._dynamic && !wf._binded) {
         wf._binded = true;
