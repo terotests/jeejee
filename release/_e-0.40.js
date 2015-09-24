@@ -5539,6 +5539,31 @@
       };
 
       /**
+       * @param int width
+       * @param float height
+       * @param float fileObject
+       */
+      _myTrait_.fileObjectThumbnail = function (width, height, fileObject) {
+        var reader = new FileReader();
+        var myImage = _e("img");
+
+        var canvas = document.createElement("canvas");
+        var ctx = canvas.getContext("2d");
+
+        reader.onload = function (event) {
+          var img = myImage._dom;
+          img.onload = function () {
+            canvas.width = img.width;
+            canvas.height = img.height;
+            ctx.drawImage(img, 0, 0);
+          };
+          img.src = event.target.result;
+        };
+        reader.readAsDataURL(fileObject);
+        return myImage;
+      };
+
+      /**
        * @param float url
        * @param float data
        * @param float callback
