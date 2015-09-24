@@ -6977,7 +6977,7 @@ var upload = function(uploadElement) {
             var progress = 0;
             var sendI = setInterval(
                 function() {
-                    progress+=parseInt( Math.random()*10 );
+                    progress+=parseInt( Math.random()*(options.uploadSpeed || 10) );
                     if(progress>100) progress = 100;
                     
                     if(progress == 100) {
