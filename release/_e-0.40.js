@@ -2210,7 +2210,7 @@
 
           if (this._nl2br) {
             this._dom.style.whiteSpace = "pre";
-            this._dom.textContent = res;
+            this._dom.textContent = v;
           } else {
             //
             this._dom.textContent = v;
