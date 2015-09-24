@@ -5529,11 +5529,14 @@
               upload(inp._dom);
             }
           }
+          console.log("change");
           if (options.imagePreviewArea) {
+            console.log("creating preview");
             options.imagePreviewArea.clear();
             var len = inp._dom.files.length;
             for (var fi = 0; fi < len; fi++) {
               var file = inp._dom.files[fi];
+              console.log("File type " + file.type);
               if (file.type.indexOf("image")) options.imagePreviewArea.fileObjectThumbnail(options.previewWidth || 100, options.previewHeight || 100, file);
             }
           }
