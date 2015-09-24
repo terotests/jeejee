@@ -4257,11 +4257,9 @@
               console.log("type = ", type);
               fn = this.findViewFactory(type);
               if (fn) {
-                this.mvc(model, function (item) {
-                  return fn.apply(o, [item]);
-                });
+                this.add(fn.apply(o, [item]));
               }
-              return;
+              return this;
             }
           }
         }
