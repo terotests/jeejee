@@ -3691,7 +3691,13 @@
 
         var fn = this.findViewFactory(viewName);
         if (fn) {
-          var newView = fn.apply(null, [model]);
+          var modelId;
+          if (model.getID) {
+            modelId = model.getID();
+          } else {
+            modelId = model;
+          }
+          var newView = fn.apply(null, [modelId]);
           this.pushView(newView);
         }
         return this;
