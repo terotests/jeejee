@@ -1047,6 +1047,7 @@ MIT. Currently use at own risk.
 - [clearCanvas](README.md#domShortcuts_clearCanvas)
 - [ctx](README.md#domShortcuts_ctx)
 - [div](README.md#domShortcuts_div)
+- [e](README.md#domShortcuts_e)
 - [form](README.md#domShortcuts_form)
 - [getPixelFn](README.md#domShortcuts_getPixelFn)
 - [h1](README.md#domShortcuts_h1)
@@ -4191,6 +4192,14 @@ var el = this.shortcutFor("div", className, attrs);
 return el;
 ```
 
+### <a name="domShortcuts_e"></a>domShortcuts::e(elemName, className, attrs)
+
+
+```javascript
+var el = this.shortcutFor(elemName, className, attrs);
+return el;
+```
+
 ### <a name="domShortcuts_form"></a>domShortcuts::form(className, attrs)
 
 
@@ -4430,32 +4439,6 @@ attrList.forEach( function(myAttrs) {
 constr.forEach( function(c) {     
       c.apply(el, [el]);
     });
-/*
-if(this.isFunction(className)) {
-    _constr = className;
-} else {
-    if(this.isStream(className)) {
-        el.addClass(className);
-    } else {
-        if(this.isObject(className) && !this.isFunction(className)) {
-            attrs = className;
-        } else {
-            if(className) el.addClass(className || "");
-        }
-    }
-}
-if(attrs) {
-    for(var n in attrs) {
-        if(attrs.hasOwnProperty(n)) {
-            el.q.attr(n, attrs[n]);
-        }
-    }
-}
-
-if(_constr) {
-    _constr.apply(el, [el]);
-}
-*/
 
 return el;
 ```

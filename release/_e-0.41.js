@@ -2507,11 +2507,12 @@
       };
 
       /**
-       * @param float className
+       * @param float elemName
+       * @param string className
        * @param float attrs
        */
-      _myTrait_.e = function (className, attrs) {
-        var el = this.shortcutFor("label", className, attrs);
+      _myTrait_.e = function (elemName, className, attrs) {
+        var el = this.shortcutFor(elemName, className, attrs);
         return el;
       };
 
@@ -2769,31 +2770,6 @@
         constr.forEach(function (c) {
           c.apply(el, [el]);
         });
-        /*
-        if(this.isFunction(className)) {
-        _constr = className;
-        } else {
-        if(this.isStream(className)) {
-        el.addClass(className);
-        } else {
-        if(this.isObject(className) && !this.isFunction(className)) {
-            attrs = className;
-        } else {
-            if(className) el.addClass(className || "");
-        }
-        }
-        }
-        if(attrs) {
-        for(var n in attrs) {
-        if(attrs.hasOwnProperty(n)) {
-            el.q.attr(n, attrs[n]);
-        }
-        }
-        }
-        if(_constr) {
-        _constr.apply(el, [el]);
-        }
-        */
 
         return el;
       };
