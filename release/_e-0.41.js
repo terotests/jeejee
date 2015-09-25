@@ -3689,7 +3689,7 @@
        */
       _myTrait_.push = function (model, viewName) {
 
-        var fn = this.findViewFactory(type);
+        var fn = this.findViewFactory(viewName);
         if (fn) {
           var newView = fn.apply(null, [model]);
           this.pushView(newView);
