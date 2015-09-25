@@ -3942,12 +3942,8 @@
           var box = this.offset();
           var currLeft = window.pageXOffset;
 
-          console.log("The offset value ", box);
-          console.log("The box value ", this.box());
           this.addClass("lastScrollTarget");
-
           var me = this;
-
           setTimeout(function () {
             me.removeClass("lastScrollTarget");
           }, 1000);
@@ -3962,7 +3958,6 @@
             toY = toY - window.innerHeight * 0.2;
           }
           if (parseInt(toY) < 300) toY = 0;
-          console.log("scroll to : " + toY);
           window.scrollTo(currLeft || 0, parseInt(toY));
         }
       };
