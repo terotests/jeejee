@@ -3668,11 +3668,12 @@
                 c.removeClass("viewIn");
                 c.addClass("viewIn");
               });
-              if (addThese[0]) addThese[0].scrollTo();
+
               if (view.oldTitle && me.setTitle) me.setTitle(view.oldTitle);
               showP = false;
               later().after(0.2, function () {
                 _transitionOn = 0;
+                if (addThese[0]) addThese[0].scrollTo();
               });
             });
           }
