@@ -1563,8 +1563,7 @@ if(force) {
     
 } else {
     if(!_elemNames[elemName] && !_svgElems[elemName] ) {
-        this._invalidTag = elemName;
-        return;
+        this._polymer = elemName;
     }
 }
 
