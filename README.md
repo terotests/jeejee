@@ -118,6 +118,10 @@ Different ways of creating views are collected here
 
 http://jsfiddle.net/vbyssjmq/
 
+# Rocking with polymer 
+
+http://codepen.io/teroktolonen/full/WQoebR
+
 # Using with tree views
 
 Examples:
