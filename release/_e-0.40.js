@@ -2093,7 +2093,7 @@
             if (bSendingEvent) return;
 
             if (me.isFunction(withFunction)) {
-              withFunction(newVal);
+              withFunction.apply(me, [newVal, me, obj]);
               val = newVal;
               return;
             }
