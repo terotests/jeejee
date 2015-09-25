@@ -3941,8 +3941,19 @@
           var box = this.offset();
           var currLeft = window.pageXOffset;
 
+          console.log("The box value ", box);
+          this.addClass("lastScrollTarget");
+
+          var me = this;
+
+          setTimeout(function () {
+            me.removeClass("lastScrollTarget");
+          }, 1000);
+
           var toY = box.top;
-          if (toY < window.innerHeight / 2) return;
+          if (toY < window.innerHeight / 2) {
+            return;
+          }
           if (box.top < window.innerHeight) {
             toY = toY / 2;
           } else {
