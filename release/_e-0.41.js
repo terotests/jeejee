@@ -3941,7 +3941,8 @@
           var box = this.offset();
           var currLeft = window.pageXOffset;
 
-          console.log("The box value ", box);
+          console.log("The offset value ", box);
+          console.log("The box value ", this.box());
           this.addClass("lastScrollTarget");
 
           var me = this;
