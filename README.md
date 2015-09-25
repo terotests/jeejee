@@ -118,7 +118,7 @@ Different ways of creating views are collected here
 
 http://jsfiddle.net/vbyssjmq/
 
-# Rocking with polymer 
+# Creating a view with polymer 
 
 http://codepen.io/teroktolonen/full/WQoebR
 
