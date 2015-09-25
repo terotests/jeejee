@@ -2065,12 +2065,15 @@
        * Binds input value to an object with data
        * @param object obj
        * @param float varName
-       * @param float nl2br
+       * @param function withFunction
        */
-      _myTrait_.bind = function (obj, varName, nl2br) {
-        var o = this;
-        o._nl2br = nl2br;
+      _myTrait_.bind = function (obj, varName, withFunction) {
+        var o = this,
+            me = this;
+
+        // o._nl2br = nl2br;
         // The special case here...
+
         if (this.isFunction(obj[varName])) {
 
           var val = obj[varName](),
@@ -2081,9 +2084,6 @@
               bSendingEvent = false,
               me = this;
 
-          //
-          //  var isNumber = !isNaN(val);
-
           var isNumber = false;
 
           var oo = obj;
@@ -2091,6 +2091,12 @@
           var valueInListener = this.uniqueListener("bind:valueIn", function (obj, newVal) {
 
             if (bSendingEvent) return;
+
+            if (me.isFunction(withFunction)) {
+              withFunction(newVal);
+              val = newVal;
+              return;
+            }
 
             if (o._type == "checkbox") {
               if (typeof newVal == "string") {
@@ -2208,13 +2214,8 @@
           this._dom.value = v;
         } else {
 
-          if (this._nl2br) {
-            this._dom.style.whiteSpace = "pre-wrap";
-            this._dom.textContent = v;
-          } else {
-            //
-            this._dom.textContent = v;
-          }
+          this._dom.style.whiteSpace = "pre-wrap";
+          this._dom.textContent = v;
         }
         this._value = v;
         return this;
