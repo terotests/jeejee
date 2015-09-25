@@ -2071,9 +2071,6 @@
         var o = this,
             me = this;
 
-        // o._nl2br = nl2br;
-        // The special case here...
-
         if (this.isFunction(obj[varName])) {
 
           var val = obj[varName](),
@@ -2137,9 +2134,7 @@
           if (me.isFunction(withFunction)) {
             withFunction.apply(me, [newVal, me, obj]);
             val = newVal;
-            return;
           } else {
-
             if (o._type == "checkbox") {
               o.checked(val);
             } else {
