@@ -2132,8 +2132,7 @@
           }
 
           if (me.isFunction(withFunction)) {
-            withFunction.apply(me, [newVal, me, obj]);
-            val = newVal;
+            withFunction.apply(me, [val, me, obj]);
           } else {
             if (o._type == "checkbox") {
               o.checked(val);
