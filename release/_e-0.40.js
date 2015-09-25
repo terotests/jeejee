@@ -2134,18 +2134,17 @@
             this.on("value", valueOutListener);
           }
 
-          //oo.me.on(oo.name, valueInListener );
-          //this.on("value", valueOutListener);
-          //oo.me.on("invalid-"+oo.name, invalidInputListener);   
-          //oo.me.on("valid-"+oo.name, validInputListener);      
-
-          var me = this;
-          if (o._type == "checkbox") {
-            o.checked(val);
+          if (me.isFunction(withFunction)) {
+            withFunction.apply(me, [newVal, me, obj]);
+            val = newVal;
+            return;
           } else {
-            //if(o._type=="select" || o._type=="input" || o._type=="textarea") {
-            o.bindVal(val);
-            //}
+
+            if (o._type == "checkbox") {
+              o.checked(val);
+            } else {
+              o.bindVal(val);
+            }
           }
 
           // and exit...
