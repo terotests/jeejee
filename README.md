@@ -812,6 +812,8 @@ svg.g().path({
 # Random tests
 
 - custon drop-down http://jsfiddle.net/xudgwhjs/
+- effects http://codepen.io/teroktolonen/full/pjNzMx
+
 
 
 # ToDo
