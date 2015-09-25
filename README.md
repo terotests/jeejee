@@ -226,6 +226,32 @@ main.uploadHook("http://localhost:7777/upload/", function(data) {
         });    
 })
 ```
+# Binding to Mosh models
+
+http://jsfiddle.net/LLpa17gL/
+
+Mosh is of course outside dependency, it is not mandatory to use it but it can help.
+
+```javascript
+var main = _e(document.body);
+
+var model = _data({ text : "Hello world"});
+input = main.input().bind(model, "text");
+```
+
+The default is to bind to either to textContent or value of the input.
+
+You can also override the default binding if you wish
+
+```javascript
+var main = _e(document.body);
+
+var model = _data({ text : "Hello world"});
+input = main.input().bind(model, "text", function(newValue) {
+     this.val( "Got this from outside "); 
+});
+```
+
 
 # View factories
 
@@ -3721,9 +3747,6 @@ Binds input value to an object with data
 ```javascript
 var o = this, me = this;
 
-// o._nl2br = nl2br;
-// The special case here...
-
 if(this.isFunction(obj[varName])) {
 
     
@@ -3786,11 +3809,8 @@ if(this.isFunction(obj[varName])) {
     }
 
     if(me.isFunction( withFunction) ) {
-         withFunction.apply( me, [newVal, me, obj]);
-         val = newVal;
-         return;
+         withFunction.apply( me, [val, me, obj]);
     } else {    
-    
         if(o._type=="checkbox") {
             o.checked(val);
         } else {
