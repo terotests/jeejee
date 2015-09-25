@@ -3949,7 +3949,6 @@
             toY = toY - window.innerHeight * 0.2;
           }
           if (parseInt(toY) < 300) toY = 0;
-          console.log("---- scroll to value ---- ", toY);
           window.scrollTo(currLeft || 0, parseInt(toY));
         }
       };
