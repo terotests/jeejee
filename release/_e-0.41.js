@@ -3684,6 +3684,20 @@
       };
 
       /**
+       * @param Object model
+       * @param String viewName
+       */
+      _myTrait_.push = function (model, viewName) {
+
+        var fn = this.findViewFactory(type);
+        if (fn) {
+          var newView = fn.apply(null, [model]);
+          this.pushView(newView);
+        }
+        return this;
+      };
+
+      /**
        * @param String name  - Name of the layout element, for example &quot;top&quot;, &quot;content&quot; or &quot;bottom&quot;
        * @param String factoryName  - Name of the view factory created with viewFactory
        * @param String paramName  - Parameter name for the view
