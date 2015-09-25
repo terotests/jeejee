@@ -3715,13 +3715,15 @@ return fn;
 The class has following internal singleton variables:
         
         
-### <a name="InputHandling_bind"></a>InputHandling::bind(obj, varName, nl2br)
+### <a name="InputHandling_bind"></a>InputHandling::bind(obj, varName, withFunction)
 
 Binds input value to an object with data
 ```javascript
-var o = this;
-o._nl2br = nl2br;
+var o = this, me = this;
+
+// o._nl2br = nl2br;
 // The special case here...
+
 if(this.isFunction(obj[varName])) {
 
     
@@ -3732,10 +3734,7 @@ if(this.isFunction(obj[varName])) {
         },
         bSendingEvent = false,
         me = this;
-        
-    //
-   //  var isNumber = !isNaN(val);
-   
+  
     var isNumber = false;
         
     var oo = obj;
@@ -3743,6 +3742,12 @@ if(this.isFunction(obj[varName])) {
     var valueInListener = this.uniqueListener("bind:valueIn", function(obj, newVal) {
 
         if(bSendingEvent) return;
+        
+        if(me.isFunction( withFunction) ) {
+             withFunction.apply( me, [newVal, me, obj]);
+             val = newVal;
+             return;
+        }
         
         if(o._type=="checkbox") {
             if(typeof(newVal)=="string") {
@@ -3779,21 +3784,19 @@ if(this.isFunction(obj[varName])) {
         obj.on(varName, valueInListener );
         this.on("value", valueOutListener); 
     }
+
+    if(me.isFunction( withFunction) ) {
+         withFunction.apply( me, [newVal, me, obj]);
+         val = newVal;
+         return;
+    } else {    
     
-    //oo.me.on(oo.name, valueInListener );
-    //this.on("value", valueOutListener); 
-    //oo.me.on("invalid-"+oo.name, invalidInputListener);    
-    //oo.me.on("valid-"+oo.name, validInputListener);       
-  
-    
-    var me = this;
-    if(o._type=="checkbox") {
-        o.checked(val);
-    } else {
-       //if(o._type=="select" || o._type=="input" || o._type=="textarea") {
-          o.bindVal(val);
-       //}
-    }    
+        if(o._type=="checkbox") {
+            o.checked(val);
+        } else {
+            o.bindVal(val);
+        }    
+    }
     
     // and exit...
     return this;
@@ -3865,16 +3868,9 @@ return o;
 if(typeof(this._dom.value)!="undefined" || this._type=="option") {
     this._dom.value = v;
 } else {
-    if(this._nl2br) {
-        var str = v,
-            is_xhtml = false;
-    
-        var breakTag = (is_xhtml || typeof is_xhtml === 'undefined') ? '<br />' : '<br>';
-        var res = (str + '').replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, '$1' + breakTag + '$2');  
-        this._dom.innerHTML = res;
-    } else {
-        this._dom.innerHTML = v;
-    }
+
+    this._dom.style.whiteSpace="pre-wrap";
+    this._dom.textContent = v;
 }
 this._value = v;
 return this;
@@ -4993,7 +4989,10 @@ if(layout.hasClass(name)) {
 
 ```javascript
 
-if(!role) role = "default";
+if(!role) {
+    role = this.getRole();
+    if(!role) role = "default";
+}
 
 if(this._viewFactory && this._viewFactory[role]) {
     var ff = this._viewFactory[role][name];
@@ -5003,6 +5002,10 @@ if(this._viewFactory && this._viewFactory[role]) {
 }
 var p = this.parent();
 if(p) return p.findViewFactory(name, role);
+
+if(_viewFactory[role]) {
+    return _viewFactory[role][name];
+}
 
 return null;
 ```
@@ -5670,15 +5673,32 @@ o.viewFactory(&quot;children&quot;, &quot;messages&quot;, function() {
 ```javascript
 
 if(this.isFunction(name)) {
-    name = role;
     fn = name;
+    name = role;
     role = "default";
 }
+
+if(!_viewFactory) _viewFactory = {};
+if(!_viewFactory[role]) _viewFactory[role] = {};
 
 if(!this._viewFactory) this._viewFactory = {};
 if(!this._viewFactory[role]) this._viewFactory[role] = {};
 
-this._viewFactory[role][name] = fn;
+var me = this;
+this._viewFactory[role][name] = function(id) {
+    if(me.isObject(id)) {
+        return fn( id.getID() );
+    } else {
+        return fn(id);
+    }
+}
+_viewFactory[role][name] = function(id) {
+    if(me.isObject(id)) {
+        return fn( id.getID() );
+    } else {
+        return fn(id);
+    }
+}
 fn._container = this;
 
 ```
@@ -5895,20 +5915,32 @@ return data.then( function(res) {
 
 ```javascript
 
-var o, fn, elemName;
+var o, fn, elemName = "div";
 if(this.isFunction(type)) {
-    elemName = "div";
     fn = type;
 } else {
-    elemName = type;
-    fn = controller;
+    if(this.isFunction(controller)) {
+        elemName = type;
+        fn = controller;
+    } else {
+        if(typeof(type) == "string") {
+            fn = this.findViewFactory(type);
+            if(fn) {
+                var newItem = fn.apply( null, [model] );
+                this.add( newItem );
+            }
+            return this;
+        }
+    }
 }
 
-this.mvc( model, function(item) {
-    var o = _e(elemName);
-    fn.apply( o, [item] );
-    return o; 
-});
+if(fn) {
+    this.mvc( model, function(item) {
+        var o = _e(elemName);
+        fn.apply( o, [item] );
+        return o; 
+    });
+}
 
 ```
 
