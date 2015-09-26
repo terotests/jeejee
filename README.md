@@ -700,7 +700,7 @@ http://jsfiddle.net/r77qk7pg/
 
 # Components
 
-http://jsfiddle.net/qhj458hc/2/
+http://jsfiddle.net/qhj458hc/3/
 
 ```javascript
 var main = _e(document.body);
