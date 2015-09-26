@@ -703,7 +703,7 @@ http://jsfiddle.net/r77qk7pg/
 Couple of tests
 
 - http://jsfiddle.net/qhj458hc/3/
-- Testing polymer -like styling http://jsfiddle.net/1218mqmj/
+- Testing polymer -like styling http://jsfiddle.net/1218mqmj/2/
 
 
 ```javascript
