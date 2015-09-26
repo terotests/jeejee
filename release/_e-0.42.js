@@ -6785,7 +6785,8 @@
               parts = args,
               t = 0,
               me = this,
-              animStr = "";
+              animStr = "",
+              postFix = this._cssScope || "";
 
           args.forEach(function (cssRuleObj) {
             if (me.isObject(cssRuleObj)) {
@@ -6799,7 +6800,7 @@
           var fullStr = "";
           var exp = ["", "-o-", "-moz-", "-webkit-"];
           exp.forEach(function (r) {
-            fullStr += "@" + r + "keyframes " + animKeyName + " { " + animStr + " } \n";
+            fullStr += "@" + r + "keyframes " + animKeyName + postFix + " { " + animStr + " } \n";
           });
           this._animations[animKeyName] = fullStr;
 
@@ -6810,7 +6811,7 @@
             this.bind("." + animName, so);
           } else {
             this.bind("." + animName, {
-              animation: animKeyName + " " + settings
+              animation: animKeyName + postFix + " " + settings
             });
           }
         };
