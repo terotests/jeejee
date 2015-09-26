@@ -2568,7 +2568,7 @@
               // then apply the component init routine
               customElem.init.apply(elem, [className, customElem]);
 
-              return customElem;
+              return elem;
             }
           }
         }
