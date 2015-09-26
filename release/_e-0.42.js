@@ -1174,8 +1174,7 @@
 
           cssObj = css(nsShort);
           this._cssNs[subNamespace] = cssObj;
-          this.addClass(nsShort);
-
+          cssObj._nameSpace = nsShort;
           return cssObj;
         }
 
@@ -2562,6 +2561,9 @@
               // create the element HTML tag
               var elem = _e(customElem.tagName);
               this.add(elem);
+              if (customElem.baseCss) {
+                elem.addClass(customElem.baseCss._nameSpace);
+              }
 
               // then apply the component init routine
               customElem.init.apply(elem, [className, customElem]);
