@@ -698,6 +698,41 @@ myDiv.effectIn( "fade", function() {
 
 http://jsfiddle.net/r77qk7pg/
 
+# Components
+
+http://jsfiddle.net/umqh5m53/
+
+```javascript
+var main = _e(document.body);
+var scopeOne = main.div();
+
+scopeOne.customElement("pri-button", {
+    css : function(myCss) {
+         var btnShadow = "0 3px 10px rgba(0, 0, 0, 0.34)";       
+         myCss.bind("div", {
+            "display": "inline-block",
+            "padding": "0.4em 0.8em",
+            "position": "relative",
+            "margin" : "0.3em",
+            "overflow": "hidden",
+            "cursor": "pointer",
+            "color": "#fff",
+            "background-color": "#4a89dc",
+            "box-shadow" : btnShadow
+        });
+        myCss.animation("tryMe", {
+                duration : "4s",
+                "iteration-count" : 1,
+            },{ transform : "rotate(0deg)"},{ transform : "rotate(360deg)"});
+    },
+    init : function(params, createOptions) {
+        this.text(params); // do something with the params
+    },
+    tagName : "div"
+})
+scopeOne.e("pri-button", "Hello there").addClass("tryMe");
+```
+
 # Events
 
 You can either create traditional event handler on each element like:
@@ -877,6 +912,7 @@ MIT. Currently use at own risk.
 
 - [__singleton](README.md#_e___singleton)
 - [_classFactory](README.md#_e__classFactory)
+- [_isStdElem](README.md#_e__isStdElem)
 - [extendAll](README.md#_e_extendAll)
 - [getComponentRegistry](README.md#_e_getComponentRegistry)
 - [getElemNames](README.md#_e_getElemNames)
@@ -1226,6 +1262,15 @@ MIT. Currently use at own risk.
 
     
     
+    
+##### trait web_comp
+
+- [_findCustomElem](README.md#__findCustomElem)
+- [customElement](README.md#_customElement)
+
+
+    
+    
 
 
    
@@ -1404,6 +1449,8 @@ MIT. Currently use at own risk.
     
       
     
+      
+    
 
 
 
@@ -1453,6 +1500,13 @@ if(elemName) {
     }
 }
 
+```
+
+### <a name="_e__isStdElem"></a>_e::_isStdElem(name)
+
+
+```javascript
+return _elemNames[name];
 ```
 
 ### <a name="_e_extendAll"></a>_e::extendAll(name, fn)
@@ -1571,7 +1625,8 @@ if(force) {
     
 } else {
     if(!_elemNames[elemName] && !_svgElems[elemName] ) {
-        this._polymer = elemName;
+        // custom element, this may be a polymer element or similar
+        this._customElement = elemName;
     }
 }
 
@@ -2767,6 +2822,10 @@ The class has following internal singleton variables:
         
 * _effects
         
+* _nsConversion
+        
+* _nsIndex
+        
         
 ### <a name="_applyTransforms"></a>::applyTransforms(tx)
 
@@ -2821,13 +2880,43 @@ _effects[name] = options;
 
 ```
 
-### <a name="_css"></a>::css(options)
+### <a name="_css"></a>::css(subNamespace)
 
 
 ```javascript
 
+// convert the namespaces to shorter versions
+if(!_nsConversion) {
+    _nsConversion = {};
+    _nsIndex = 1;
+}
+
 if(!this._myClass) {
     this._myClass = "css_"+this.guid();
+}
+
+// subNamespace is usually used together with custom components, which are
+// defining their own styles in some namespace
+if(subNamespace) {
+    // css namespaces of this object
+    if(!this._cssNs) this._cssNs = {};
+    
+    // if the CSS object has been constructed
+    var cssObj = this._cssNs[subNamespace];
+    if(cssObj) return cssObj;
+    
+    // if not, create a new css object in a new namespace
+    var nsFull = this._myClass+"_"+subNamespace;
+    if(!_nsConversion[nsFull]) _nsConversion[nsFull] = _nsIndex++;
+    var nsShort = this._myClass+"_"+_nsConversion[nsFull];
+    
+    cssObj = css(nsShort);
+    this._cssNs[subNamespace] = cssObj;
+    cssObj._nameSpace = nsShort;
+    return cssObj; 
+}
+
+if(!this._css) {
     this._css = css(this._myClass);
     this.addClass(this._myClass);
 }
@@ -4204,6 +4293,35 @@ return el;
 
 
 ```javascript
+
+if(!this._isStdElem(elemName)) {
+    
+    // o.e("pri-buttom", {});
+    
+    var customElem = this._findCustomElem(elemName);
+    if(customElem) {
+        // customElem.css
+        // customElem.tagName
+        // customElem.init
+        // customElem.baseCss
+        if(customElem.init) {
+            
+            // create the element HTML tag
+            var elem = _e(customElem.tagName);
+            this.add(elem);
+            if(customElem.baseCss) {
+                elem.addClass( customElem.baseCss._nameSpace);
+            }
+            
+            // then apply the component init routine
+            customElem.init.apply(elem, [className || {}, customElem]);
+            
+            return elem;
+        }
+        
+    }
+    
+}
 var el = this.shortcutFor(elemName, className, attrs);
 return el;
 ```
@@ -7443,6 +7561,72 @@ _uploadHook[url] = handlerFunction;
 
     
     
+    
+## trait web_comp
+
+The class has following internal singleton variables:
+        
+* _customElems
+        
+        
+### <a name="__findCustomElem"></a>::_findCustomElem(name)
+
+
+```javascript
+// might be also hierarchy based
+// if(this._customElems) 
+
+// ?? could you delay the execution of the initialization code to the point
+// the element is actually attached to the tree?
+
+if(this._customElems) {
+    var e = this._customElems[name];
+    if(e) return e;
+}
+var p = this.parent();
+if(p) return p._findCustomElem(name);
+
+
+```
+
+### <a name="_customElement"></a>::customElement(elemName, options)
+
+
+```javascript
+debugger;
+
+if(!this._customElems) this._customElems = {};
+
+// options.css = factory object for creating CSS styles for the element
+// options.init = factory to create the actual user interface element
+// options.tagName = tag name to use to create the element, if
+
+// do not re-create this time the element
+if(this._customElems[elemName]) return;
+
+// this would create the factory for the custom element to be used
+this._customElems[elemName] = options;
+
+// register the element creation process...
+if(document.registerElement) {
+    // custom elements can be used to create the element eventually
+    options._customElems = true;
+} else {
+    
+}
+
+// create the CSS if necessary to the namespace of the element
+if(options.css) {
+    var baseCss = this.css(elemName);
+    options.css(baseCss);
+    options.baseCss = baseCss;
+}
+
+```
+
+
+    
+    
 
 
    
@@ -8397,7 +8581,9 @@ for(var rule in o) {
     if(o.hasOwnProperty(rule)) {
         var cssRules = o[rule];
         if(this._cssScope) {
-            str += "."+this._cssScope+" "+rule+ this.ruleToCss( cssRules );
+            var cssString = this.ruleToCss( cssRules );
+            str += "."+this._cssScope+" "+rule+cssString+" ";
+            str += rule+"."+this._cssScope+" "+cssString;
         } else {
             str += rule+this.ruleToCss( cssRules );
         }
@@ -8848,6 +9034,8 @@ return this;
 
 
 
+      
+    
       
     
       
