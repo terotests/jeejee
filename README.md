@@ -1111,6 +1111,7 @@ MIT. Currently use at own risk.
 - [onRoute](README.md#viewsNavis_onRoute)
 - [pageController](README.md#viewsNavis_pageController)
 - [popView](README.md#viewsNavis_popView)
+- [push](README.md#viewsNavis_push)
 - [pushTo](README.md#viewsNavis_pushTo)
 - [pushView](README.md#viewsNavis_pushView)
 - [removeControllersFor](README.md#viewsNavis_removeControllersFor)
@@ -2826,8 +2827,9 @@ _effects[name] = options;
 ```javascript
 
 if(!this._myClass) {
-    this._myClass = this.guid();
+    this._myClass = "css_"+this.guid();
     this._css = css(this._myClass);
+    this.addClass(this._myClass);
 }
 
 return this._css;
@@ -5357,11 +5359,12 @@ cont.forChildren(function(ch) {
                 c.removeClass("viewIn");
                 c.addClass("viewIn");                
             });
-            if(addThese[0]) addThese[0].scrollTo();
+            
             if(view.oldTitle && me.setTitle) me.setTitle(view.oldTitle);                
             showP = false;
             later().after(0.2, function() {
                 _transitionOn = 0;
+                if(addThese[0]) addThese[0].scrollTo();
             });
         });
     }
@@ -5373,6 +5376,26 @@ cont.forChildren(function(ch) {
 });
 
 
+
+```
+
+### <a name="viewsNavis_push"></a>viewsNavis::push(model, viewName)
+
+
+```javascript
+
+var fn = this.findViewFactory(viewName);
+if(fn) {
+    var modelId;
+    if(model.getID) {
+        modelId = model.getID();
+    } else {
+        modelId = model;
+    }
+    var newView = fn.apply( null, [modelId] );
+    this.pushView( newView );
+}
+return this;
 
 ```
 
@@ -5407,7 +5430,7 @@ if(!this._activeLayout) {
     if(!currentRole) currentRole = "default";
     
     var view = this.findViewByName( name, this._activeLayout.view );
-
+    
     if(!view) {
         return;
     }
@@ -5503,7 +5526,6 @@ if(!this._activeLayout) {
 if(!this._views) {
     this._views = [];
 }
-
 
 if(newView == this) return;
 if(newView == lastView) return;
@@ -5620,14 +5642,23 @@ Make the window scroll to this element
 if(window) {
     var box = this.offset();
     var currLeft = window.pageXOffset;
+
+    this.addClass("lastScrollTarget");
+    var me = this;
+    setTimeout(function() {
+        me.removeClass("lastScrollTarget");
+    },1000);
     
     var toY = box.top;
-    if(toY<window.innerHeight/2) return;
+    if(toY<window.innerHeight/2) {
+        return;
+    }
     if(box.top<window.innerHeight) {
         toY = toY / 2;
     } else {
         toY = toY - window.innerHeight*0.2
     }
+    if(parseInt(toY) < 300) toY = 0;
     window.scrollTo(currLeft || 0, parseInt(toY));
 }
 ```
@@ -8052,7 +8083,8 @@ var args = Array.prototype.slice.call(arguments),
     parts = args,
     t = 0,
     me = this,
-    animStr = "";
+    animStr = "",
+    postFix = this._cssScope || "";
     
 args.forEach( function(cssRuleObj) {
     if(me.isObject(cssRuleObj)) {
@@ -8066,17 +8098,17 @@ args.forEach( function(cssRuleObj) {
 var fullStr = "";
 var exp = ["", "-o-", "-moz-", "-webkit-"];
 exp.forEach( function(r) {
-    fullStr+="@"+r+"keyframes "+animKeyName+" { "+animStr+" } \n";
+    fullStr+="@"+r+"keyframes "+animKeyName+postFix+" { "+animStr+" } \n";
 })
-this._animations[animKeyName] = fullStr;
+this._animations[animKeyName+postFix] = fullStr;
 
 var animDef = {};
 if(this.isObject(settings)) {
     var so = this.animSettings( settings );
-    so["animation-name"] = animKeyName;
+    so["animation-name"] = animKeyName+postFix;
     this.bind("."+animName, so );
 } else {
-    this.bind( "."+animName, { animation : animKeyName+" "+settings  } );
+    this.bind( "."+animName, { animation : animKeyName+postFix+" "+settings  } );
 }
 
 ```
@@ -8225,7 +8257,7 @@ if(_conversions[n]) {
 return str;
 ```
 
-### css::constructor( cssPostFix )
+### css::constructor( cssScope )
 
 ```javascript
 // my rulesets...
@@ -8233,7 +8265,9 @@ this._data = this._data  || {};
 this._animations = {};
 this._composedData = this._composedData || {};
 
-this._postFix = cssPostFix || "";
+// this used to be cssPostFix;
+this._cssScope = cssScope || "";
+// this._postFix = cssPostFix || "";
 
 if(!head) {
     var me = this;
@@ -8252,7 +8286,7 @@ if(!head) {
     });
 }
 if(!_insInit) _insInit = {};
-var id = cssPostFix || "_global_";
+var id = cssScope || "_global_";
 if(!_insInit[id]) {
     _insInit[id] = true;
     this.initConversions();
@@ -8362,7 +8396,11 @@ var str = mediaRule ?  mediaRule + "{" : "";
 for(var rule in o) {
     if(o.hasOwnProperty(rule)) {
         var cssRules = o[rule];
-        str += rule+this._postFix + this.ruleToCss( cssRules );
+        if(this._cssScope) {
+            str += "."+this._cssScope+" "+rule+ this.ruleToCss( cssRules );
+        } else {
+            str += rule+this.ruleToCss( cssRules );
+        }
     }
 }
 
