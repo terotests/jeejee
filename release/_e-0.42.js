@@ -1179,7 +1179,7 @@
           return cssObj;
         }
 
-        if (!this._myClass) {
+        if (!this._css) {
           this._css = css(this._myClass);
           this.addClass(this._myClass);
         }
