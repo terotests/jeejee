@@ -6807,7 +6807,7 @@
           var animDef = {};
           if (this.isObject(settings)) {
             var so = this.animSettings(settings);
-            so["animation-name"] = animKeyName;
+            so["animation-name"] = animKeyName + postFix;
             this.bind("." + animName, so);
           } else {
             this.bind("." + animName, {
