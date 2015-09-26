@@ -1146,7 +1146,7 @@
       _myTrait_.css = function (options) {
 
         if (!this._myClass) {
-          this._myClass = this.guid();
+          this._myClass = "css_" + this.guid();
           this._css = css(this._myClass);
           this.addClass(this._myClass);
         }
