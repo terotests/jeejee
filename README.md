@@ -3574,14 +3574,9 @@ if(en=="load") {
 }
 
 // To stop the prop...
-if(en=="click") {
-    this.bindSysEvent("click", function() {
+if(en=="click") this.bindSysEvent("click", function() {
         me.trigger("click");
     }, true);
-    
-    // if automatic touchclick emulation is on
-    if(_touchClick) this.touchclick();
-}
     
 if(en=="dblclick") this.bindSysEvent("dblclick", function() {
         me.trigger("dblclick");
@@ -8604,9 +8599,9 @@ for(var rule in o) {
     if(o.hasOwnProperty(rule)) {
         var cssRules = o[rule];
         if(this._cssScope) {
-            var cssString = this.ruleToCss(cssRules);
-            str += "." + this._cssScope + " " + rule + cssString + " ";
-            str += rule + "." + this._cssScope + " " + cssString;            
+            var cssString = this.ruleToCss( cssRules );
+            str += "."+this._cssScope+" "+rule+cssString+" ";
+            str += rule+"."+this._cssScope+" "+cssString;
         } else {
             str += rule+this.ruleToCss( cssRules );
         }
