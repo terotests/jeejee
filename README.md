@@ -7595,7 +7595,6 @@ if(p) return p._findCustomElem(name);
 
 
 ```javascript
-debugger;
 
 if(!this._customElems) this._customElems = {};
 

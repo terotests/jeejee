@@ -5944,7 +5944,6 @@
        * @param Object options
        */
       _myTrait_.customElement = function (elemName, options) {
-        debugger;
 
         if (!this._customElems) this._customElems = {};
 
