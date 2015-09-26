@@ -8604,7 +8604,9 @@ for(var rule in o) {
     if(o.hasOwnProperty(rule)) {
         var cssRules = o[rule];
         if(this._cssScope) {
-            str += "."+this._cssScope+" "+rule+ this.ruleToCss( cssRules );
+            var cssString = this.ruleToCss(cssRules);
+            str += "." + this._cssScope + " " + rule + cssString + " ";
+            str += rule + "." + this._cssScope + " " + cssString;            
         } else {
             str += rule+this.ruleToCss( cssRules );
         }
