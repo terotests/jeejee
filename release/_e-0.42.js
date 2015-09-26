@@ -7905,7 +7905,6 @@
 
         if (!_registry) {
           _registry = {};
-          this._alwaysTouchclick(true);
         }
 
         if (!elemName) elemName = "div";
