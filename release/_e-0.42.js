@@ -1809,9 +1809,14 @@
         }
 
         // To stop the prop...
-        if (en == "click") this.bindSysEvent("click", function () {
-          me.trigger("click");
-        }, true);
+        if (en == "click") {
+          this.bindSysEvent("click", function () {
+            me.trigger("click");
+          }, true);
+
+          // if automatic touchclick emulation is on
+          if (_touchClick) this.touchclick();
+        }
 
         if (en == "dblclick") this.bindSysEvent("dblclick", function () {
           me.trigger("dblclick");
@@ -7211,9 +7216,7 @@
             if (o.hasOwnProperty(rule)) {
               var cssRules = o[rule];
               if (this._cssScope) {
-                var cssString = this.ruleToCss(cssRules);
-                str += "." + this._cssScope + " " + rule + cssString + " ";
-                str += rule + "." + this._cssScope + " " + cssString;
+                str += "." + this._cssScope + " " + rule + this.ruleToCss(cssRules);
               } else {
                 str += rule + this.ruleToCss(cssRules);
               }
