@@ -1042,6 +1042,7 @@ MIT. Currently use at own risk.
     
 ##### trait events
 
+- [_alwaysTouchclick](README.md#__alwaysTouchclick)
 - [bacon](README.md#_bacon)
 - [bindSysEvent](README.md#_bindSysEvent)
 - [delegate](README.md#_delegate)
@@ -1584,7 +1585,10 @@ if(this.isObject(elemName)) {
    }
 }
 
-if(!_registry) _registry = {};
+if(!_registry) {
+    _registry = {};
+    this._alwaysTouchclick( true );
+}
 
 if(!elemName) elemName = "div";
 
@@ -3381,7 +3385,16 @@ The class has following internal singleton variables:
         
 * _routes
         
+* _touchClick
         
+        
+### <a name="__alwaysTouchclick"></a>::_alwaysTouchclick(t)
+
+
+```javascript
+_touchClick = t;
+```
+
 ### <a name="_bacon"></a>::bacon(eventName, eventTransformer)
 
 
