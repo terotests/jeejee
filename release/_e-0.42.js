@@ -6802,7 +6802,7 @@
           exp.forEach(function (r) {
             fullStr += "@" + r + "keyframes " + animKeyName + postFix + " { " + animStr + " } \n";
           });
-          this._animations[animKeyName] = fullStr;
+          this._animations[animKeyName + postFix] = fullStr;
 
           var animDef = {};
           if (this.isObject(settings)) {
