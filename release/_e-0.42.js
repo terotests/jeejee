@@ -1557,12 +1557,9 @@
           return this;
         }
 
+        // Test: removed the postfix from the class names
         var pf = this.findPostFix();
-
-        if (pf) {
-          this._classes.push(c + pf);
-          this._dom.className = this._classes.join(" ");
-        }
+        if (pf) {}
 
         this._classes.push(c);
         if (!this._svg) this._dom.className = this._classes.join(" ");
@@ -1608,14 +1605,7 @@
 
         var pf = this.findPostFix();
 
-        if (pf) {
-          while ((i = this._classes.indexOf(c + pf)) >= 0) {
-            if (i >= 0) {
-              this._classes.splice(i, 1);
-              this._dom.className = this._classes.join(" ");
-            }
-          }
-        }
+        if (pf) {}
 
         return this;
       };
@@ -8081,6 +8071,18 @@
 // should we have named styles... perhaps... TODO
 
 // console.log("**** SHOULD NOT ITERATE CHILDREN *****");
+
+//this._classes.push(c+pf);
+// this._dom.className = this._classes.join(" ");    
+
+/*
+while( (i = this._classes.indexOf(c+pf))>=0) {
+if(i>=0) {
+  this._classes.splice(i,1);
+  this._dom.className = this._classes.join(" ");
+}
+}  
+*/
 
 // this._dom.innerHTML = v;
 

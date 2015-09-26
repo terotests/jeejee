@@ -3302,11 +3302,11 @@ if(this.isStream(c)) {
     return this;
 }
 
+// Test: removed the postfix from the class names
 var pf = this.findPostFix();
-
 if(pf) {
-    this._classes.push(c+pf);
-    this._dom.className = this._classes.join(" ");     
+    //this._classes.push(c+pf);
+    // this._dom.className = this._classes.join(" ");     
 }
 
 this._classes.push(c);
@@ -3354,12 +3354,14 @@ while( (i = this._classes.indexOf(c))>=0) {
 var pf = this.findPostFix();
 
 if(pf) {
+    /*
     while( (i = this._classes.indexOf(c+pf))>=0) {
         if(i>=0) {
             this._classes.splice(i,1);
             this._dom.className = this._classes.join(" ");
         }
-    }   
+    }  
+    */
 }
 
 return this;
