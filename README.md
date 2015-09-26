@@ -700,7 +700,11 @@ http://jsfiddle.net/r77qk7pg/
 
 # Components
 
-http://jsfiddle.net/qhj458hc/3/
+Couple of tests
+
+- http://jsfiddle.net/qhj458hc/3/
+- Testing polymer -like styling http://jsfiddle.net/1218mqmj/
+
 
 ```javascript
 var main = _e(document.body);
