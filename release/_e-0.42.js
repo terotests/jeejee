@@ -1086,6 +1086,8 @@
 
     (function (_myTrait_) {
       var _effects;
+      var _nsConversion;
+      var _nsIndex;
 
       // Initialize static variables here...
 
@@ -1141,12 +1143,43 @@
       };
 
       /**
-       * @param float options
+       * @param String subNamespace
        */
-      _myTrait_.css = function (options) {
+      _myTrait_.css = function (subNamespace) {
+
+        // convert the namespaces to shorter versions
+        if (!_nsConversion) {
+          _nsConversion = {};
+          _nsIndex = 1;
+        }
 
         if (!this._myClass) {
           this._myClass = "css_" + this.guid();
+        }
+
+        // subNamespace is usually used together with custom components, which are
+        // defining their own styles in some namespace
+        if (subNamespace) {
+          // css namespaces of this object
+          if (!this._cssNs) this._cssNs = {};
+
+          // if the CSS object has been constructed
+          var cssObj = this._cssNs[subNamespace];
+          if (cssObj) return cssObj;
+
+          // if not, create a new css object in a new namespace
+          var nsFull = this._myClass + "_" + subNamespace;
+          if (!_nsConversion[nsFull]) _nsConversion[nsFull] = _nsIndex++;
+          var nsShort = this._myClass + "_" + _nsConversion[nsFull];
+
+          cssObj = css(nsShort);
+          this._cssNs[subNamespace] = cssObj;
+          this.addClass(nsShort);
+
+          return cssObj;
+        }
+
+        if (!this._myClass) {
           this._css = css(this._myClass);
           this.addClass(this._myClass);
         }
@@ -2513,6 +2546,30 @@
        * @param float attrs
        */
       _myTrait_.e = function (elemName, className, attrs) {
+
+        if (!this._isStdElem(elemName)) {
+
+          // o.e("pri-buttom", {});
+
+          var customElem = this._findCustomElem(elemName);
+          if (customElem) {
+            // customElem.css
+            // customElem.tagName
+            // customElem.init
+            // customElem.baseCss
+            if (customElem.init) {
+
+              // create the element HTML tag
+              var elem = _e(customElem.tagName);
+              this.add(elem);
+
+              // then apply the component init routine
+              customElem.init.apply(elem, [className, customElem]);
+
+              return customElem;
+            }
+          }
+        }
         var el = this.shortcutFor(elemName, className, attrs);
         return el;
       };
@@ -5865,6 +5922,64 @@
       };
     })(this);
 
+    // trait comes here...
+
+    (function (_myTrait_) {
+      var _customElems;
+
+      // Initialize static variables here...
+
+      /**
+       * @param String name
+       */
+      _myTrait_._findCustomElem = function (name) {
+        // might be also hierarchy based
+        // if(this._customElems)
+
+        // ?? could you delay the execution of the initialization code to the point
+        // the element is actually attached to the tree?
+
+        if (this._customElems) {
+          var e = this._customElems[name];
+          if (e) return e;
+        }
+        var p = this.parent();
+        if (p) return p._findCustomElem(name);
+      };
+
+      /**
+       * @param String elemName
+       * @param Object options
+       */
+      _myTrait_.customElement = function (elemName, options) {
+
+        if (!this._customElems) this._customElems = {};
+
+        // options.css = factory object for creating CSS styles for the element
+        // options.init = factory to create the actual user interface element
+        // options.tagName = tag name to use to create the element, if
+
+        // do not re-create this time the element
+        if (this._customElems[elemName]) return;
+
+        // this would create the factory for the custom element to be used
+        this._customElems[elemName] = options;
+
+        // register the element creation process...
+        if (document.registerElement) {
+          // custom elements can be used to create the element eventually
+          options._customElems = true;
+        } else {}
+
+        // create the CSS if necessary to the namespace of the element
+        if (options.css) {
+          var baseCss = this.css(elemName);
+          options.css(baseCss);
+          options.baseCss = baseCss;
+        }
+      };
+    })(this);
+
     // the subclass definition comes around here then
 
     // The class definition is here...
@@ -7357,6 +7472,13 @@
       });
 
       /**
+       * @param String name
+       */
+      _myTrait_._isStdElem = function (name) {
+        return _elemNames[name];
+      };
+
+      /**
        * @param string name
        * @param float fn
        */
@@ -7816,7 +7938,8 @@
 
         if (force) {} else {
           if (!_elemNames[elemName] && !_svgElems[elemName]) {
-            this._polymer = elemName;
+            // custom element, this may be a polymer element or similar
+            this._customElement = elemName;
           }
         }
 
