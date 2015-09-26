@@ -1615,8 +1615,16 @@
 
     (function (_myTrait_) {
       var _routes;
+      var _touchClick;
 
       // Initialize static variables here...
+
+      /**
+       * @param float t
+       */
+      _myTrait_._alwaysTouchclick = function (t) {
+        _touchClick = t;
+      };
 
       /**
        * @param float eventName
@@ -7890,7 +7898,10 @@
           }
         }
 
-        if (!_registry) _registry = {};
+        if (!_registry) {
+          _registry = {};
+          this._alwaysTouchclick(true);
+        }
 
         if (!elemName) elemName = "div";
 
