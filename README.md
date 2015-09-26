@@ -704,6 +704,7 @@ Couple of tests
 
 - http://jsfiddle.net/qhj458hc/3/
 - Testing polymer -like styling http://jsfiddle.net/1218mqmj/2/
+- Or at codepen http://codepen.io/teroktolonen/full/pjNzMx
 
 
 ```javascript
