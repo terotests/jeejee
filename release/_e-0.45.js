@@ -2585,7 +2585,7 @@
               var baseData;
               // create the element HTML tag
               var elem = _e(customElem.tagName);
-              this._initCustom(elem, customElem, this);
+              this._initCustom(elem, customElem, this, className);
               return elem;
             }
           }
@@ -6027,8 +6027,9 @@
        * @param Object elem  - _e() element to init the element to
        * @param Object customElem  - Custom element initialization data
        * @param float parentE
+       * @param float attrObj
        */
-      _myTrait_._initCustom = function (elem, customElem, parentE) {
+      _myTrait_._initCustom = function (elem, customElem, parentE, attrObj) {
 
         var baseData;
 
@@ -6036,8 +6037,8 @@
           // if there is attributes set for the object
           baseData = _data(JSON.parse(JSON.stringify(customElem.data)));
           if (baseData) elem._compBaseData = baseData;
-          if (this.isObject(className)) {
-            var oo = className;
+          if (this.isObject(attrObj)) {
+            var oo = attrObj;
             // TODO: make this batter, now only one-dimensional :/
             for (var n in oo) {
               if (oo.hasOwnProperty(n)) {
@@ -6057,7 +6058,7 @@
           customElem.init.apply(elem, [baseData, customElem]);
         } else {
           // then apply the component init routine
-          customElem.init.apply(elem, [className || {}, customElem]);
+          customElem.init.apply(elem, [attrObj || {}, customElem]);
         }
       };
 
