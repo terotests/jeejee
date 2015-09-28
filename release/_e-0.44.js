@@ -2113,12 +2113,12 @@
               o = this,
               fn = function fn(v) {
             obj.set(varName, v);
+            // obj[varName](v);
           },
               bSendingEvent = false,
               me = this;
 
           var isNumber = false;
-
           var oo = obj;
 
           var valueInListener = this.uniqueListener("bind:valueIn", function (obj, newVal) {
@@ -2480,6 +2480,10 @@
                 });
               }
               elem._compBaseData.set(v, varObj.get(varName));
+              // --> two way
+              elem._compBaseData.on(v, function () {
+                varObj.set(varName);
+              });
             } else {
               elem._compBaseData.set(v, v2);
             }
@@ -2597,7 +2601,6 @@
                   for (var n in oo) {
                     if (oo.hasOwnProperty(n)) {
                       if (n == "value") {
-
                         elem.attr(n, oo[n]);
                       } else {
                         // currently setting objects or arrays is not possible
@@ -8201,7 +8204,6 @@ if(i>=0) {
 }
 }  
 */
-// obj[varName](v);
 
 // this._dom.innerHTML = v;
 
