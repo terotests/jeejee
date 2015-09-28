@@ -4335,6 +4335,7 @@ return el;
 Souce code:
 ```javascript
 
+
 if(this.isObject(v)) {
    for(var n in v) {
        if(v.hasOwnProperty(n)) {
@@ -4343,13 +4344,17 @@ if(this.isObject(v)) {
    }
    
 } else {
-    if(this._tag=="canvas") {
-        if(v=="width") {
-            this._canWidth = parseInt(v2);
+    if(elem._compBaseData) {
+       elem._compBaseData.set(v, v2);
+    } else {    
+        if(this._tag=="canvas") {
+            if(v=="width") {
+                this._canWidth = parseInt(v2);
+            }
+            if(v=="height") this._canHeight = parseInt(v2);
         }
-        if(v=="height") this._canHeight = parseInt(v2);
+        this.q.attr(v,v2);
     }
-    this.q.attr(v,v2);
 }
 return this;
 ```
@@ -4435,14 +4440,35 @@ if(!this._isStdElem(elemName)) {
     
     var customElem = this._findCustomElem(elemName);
     if(customElem) {
+        // customElem.data
         // customElem.css
         // customElem.tagName
         // customElem.init
         // customElem.baseCss
         if(customElem.init) {
             
+            var baseData;
+            if(customElem.data) {
+                // if there is attributes set for the object
+                baseData = _data(customElem.data)
+                if(this.isObject(className)) {
+                    var oo = className;
+                    // TODO: make this batter, now only one-dimensional :/ 
+                    for( var n in oo) {
+                        if(oo.hasOwnProperty(n)) {
+                            // currently setting objects or arrays is not possible
+                            // TODO: make possible setting them
+                            if(!this.isObject(oo[n])) {
+                                baseData.set(n, oo[n]); 
+                            }
+                        }
+                    }  
+                } 
+            }
+            
             // create the element HTML tag
             var elem = _e(customElem.tagName);
+            if(baseData) elem._compBaseData = baseData;
             this.add(elem);
             if(customElem.baseCss) {
                 elem.addClass( customElem.baseCss._nameSpace);
