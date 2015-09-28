@@ -2470,9 +2470,17 @@
             if (this.isArray(v2)) {
               var varObj = v2[0];
               var varName = v2[1];
-              varObj.on(varName, function () {
-                elem._compBaseData.set(v, varObj.get(varName));
-              });
+
+              if (varName == "value") {
+                debugger;
+                varObj.on(varName, function () {
+                  elem._compBaseData.set(v, varObj.get(varName));
+                });
+              } else {
+                varObj.on(varName, function () {
+                  elem._compBaseData.set(v, varObj.get(varName));
+                });
+              }
               elem._compBaseData.set(v, varObj.get(varName));
             } else {
               elem._compBaseData.set(v, v2);
