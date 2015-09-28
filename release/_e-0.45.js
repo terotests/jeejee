@@ -6090,14 +6090,25 @@
           var p = Object.create(HTMLElement.prototype);
           var me = this;
           if (!_instances) _instances = {};
-          p.createdCallback = function () {
-            // initialize the component
+          p.createdCallback = function () {};
+          p.attachedCallback = function () {
             var obj = _e();
-            obj.initAsTag(elemName);
+            obj.initAsTag(elemName, this.parentNode);
             var id = me.guid();
             _instances[id] = obj;
             obj._dom.setAttribute("data-instance-id", id);
-            me._initCustom(obj, options, null);
+
+            // collect attributes of DOM node
+            this.attributes;
+            var cnt = this.attributes.length;
+            var attrObj = {};
+            for (var i = 0; i < cnt; i++) {
+              var nn = this.attributes[i].name;
+              var vv = this.attributes[i].value;
+              attrObj[nn] = vv;
+            }
+
+            me._initCustom(obj, options, null, attrObj);
           };
           p.attributeChangedCallback = function (name, value, oldValue) {
             var id = this.getAttribute("data-instance-id");
@@ -8245,6 +8256,8 @@ if(i>=0) {
 */
 
 // this._dom.innerHTML = v;
+
+// initialize the component
 
 //console.log("Attr set to ", n);
 //console.trace();
