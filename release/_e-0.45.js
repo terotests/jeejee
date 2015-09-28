@@ -6021,6 +6021,8 @@
         }
         var p = this.parent();
         if (p) return p._findCustomElem(name);
+
+        return _customElems[name];
       };
 
       /**
@@ -6084,43 +6086,7 @@
         _customElems[elemName] = options;
 
         // register the element creation process...
-        if (document.registerElement && elemName.indexOf("x-") == 0) {
-          // custom elements can be used to create the element eventually
-          options._customElems = true;
-          var p = Object.create(HTMLElement.prototype);
-          var me = this;
-          if (!_instances) _instances = {};
-          p.createdCallback = function () {};
-          p.attachedCallback = function () {
-            var obj = _e(elemName, this);
-            // obj.initAsTag(elemName, this.parentNode);
-            var id = me.guid();
-            _instances[id] = obj;
-            obj._dom.setAttribute("data-instance-id", id);
-
-            var cnt = this.attributes.length;
-            var attrObj = {};
-            for (var i = 0; i < cnt; i++) {
-              var nn = this.attributes[i].name;
-              var vv = this.attributes[i].value;
-              attrObj[nn] = vv;
-            }
-
-            me._initCustom(obj, options, null, attrObj);
-          };
-          p.attributeChangedCallback = function (name, value, oldValue) {
-            var id = this.getAttribute("data-instance-id");
-            if (id) {
-              var obj = _instances[id];
-              if (obj) {
-                obj.attr(name, value);
-              }
-            }
-          };
-          document.registerElement(elemName, {
-            prototype: p
-          });
-        } else {}
+        if (document.registerElement && elemName.indexOf("x-") == 0) {} else {}
 
         // create the CSS if necessary to the namespace of the element
         if (options.css) {
@@ -8254,8 +8220,6 @@ if(i>=0) {
 */
 
 // this._dom.innerHTML = v;
-
-// initialize the component
 
 //console.log("Attr set to ", n);
 //console.trace();
