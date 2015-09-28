@@ -2464,6 +2464,7 @@
             }
           }
         } else {
+          var elem = this;
           if (elem._compBaseData) {
 
             if (this.isArray(v2)) {
