@@ -2583,7 +2583,7 @@
 
               if (customElem.data) {
                 // if there is attributes set for the object
-                baseData = _data(customElem.data);
+                baseData = _data(JSON.parse(JSON.stringify(customElem.data)));
                 if (baseData) elem._compBaseData = baseData;
                 if (this.isObject(className)) {
                   var oo = className;
