@@ -2583,6 +2583,7 @@
               if (customElem.data) {
                 // if there is attributes set for the object
                 baseData = _data(customElem.data);
+                if (baseData) elem._compBaseData = baseData;
                 if (this.isObject(className)) {
                   var oo = className;
                   // TODO: make this batter, now only one-dimensional :/
@@ -2599,7 +2600,6 @@
                 }
               }
 
-              if (baseData) elem._compBaseData = baseData;
               this.add(elem);
               if (customElem.baseCss) {
                 elem.addClass(customElem.baseCss._nameSpace);
