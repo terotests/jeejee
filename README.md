@@ -4465,7 +4465,7 @@ if(!this._isStdElem(elemName)) {
             
             if(customElem.data) {
                 // if there is attributes set for the object
-                baseData = _data(customElem.data);
+                baseData = _data(JSON.parse(JSON.stringify(customElem.data)));
                 if(baseData) elem._compBaseData = baseData;
                 if(this.isObject(className)) {
                     var oo = className;
@@ -4474,14 +4474,11 @@ if(!this._isStdElem(elemName)) {
                         if(oo.hasOwnProperty(n)) {
                             // currently setting objects or arrays is not possible
                             elem.attr(n, oo[n]);
-                            
                         }
                     }  
                 } 
             }
-            
-
-            
+         
             this.add(elem);
             if(customElem.baseCss) {
                 elem.addClass( customElem.baseCss._nameSpace);
