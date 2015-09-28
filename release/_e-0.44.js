@@ -6078,6 +6078,11 @@
           var baseCss = this.css(elemName);
           options.css(baseCss);
           options.baseCss = baseCss;
+          // TODO: add _firstUpdate to
+          /*
+          baseCss._firstUpdate = function() {
+             }
+          */
         }
       };
     })(this);
@@ -7196,6 +7201,10 @@
                   if (ins._dirty) {
                     ins.buildCss();
                     ins._dirty = false;
+                    if (ins._firstUpdate) {
+                      ins._firstUpdate();
+                      delete ins._firstUpdate;
+                    }
                   }
                 }
               }
