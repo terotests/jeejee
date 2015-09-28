@@ -6029,6 +6029,9 @@
        * @param float parentE
        */
       _myTrait_._initCustom = function (elem, customElem, parentE) {
+
+        var baseData;
+
         if (customElem.data) {
           // if there is attributes set for the object
           baseData = _data(JSON.parse(JSON.stringify(customElem.data)));
