@@ -2109,10 +2109,10 @@
 
         if (this.isFunction(obj[varName])) {
 
-          var val = obj[varName](),
+          var val = obj.get(varName),
               o = this,
               fn = function fn(v) {
-            obj[varName](v);
+            obj.set(varName, v);
           },
               bSendingEvent = false,
               me = this;
@@ -2204,12 +2204,12 @@
             if (o._type == "checkbox") {
 
               if (o.checked()) {
-                obj[varName] = true;
+                obj.set(varName, true);
               } else {
-                obj[varName] = false;
+                obj.set(varName, false);
               }
             } else {
-              obj[varName] = o.val();
+              obj.set(varName, o.val());
             }
           }
           // Send the message to other listeners
@@ -8201,6 +8201,7 @@ if(i>=0) {
 }
 }  
 */
+// obj[varName](v);
 
 // this._dom.innerHTML = v;
 
