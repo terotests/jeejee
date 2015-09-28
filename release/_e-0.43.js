@@ -4455,7 +4455,7 @@
       /**
       * You can create a send handler using
       ```
-      obj.sendHandler(&quot;post-url&quot;, function(data, result, fail) { });
+      obj.sendHandler(url, function(data, result, fail) { });
       ```
       To send into this url use
       ```

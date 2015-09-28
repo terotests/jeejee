@@ -1493,6 +1493,7 @@ The class has following internal singleton variables:
 ### <a name="_e___singleton"></a>_e::__singleton(t)
 
 
+Souce code:
 ```javascript
 return _eg;
 ```
@@ -1500,6 +1501,7 @@ return _eg;
 ### <a name="_e__classFactory"></a>_e::_classFactory(elemName, into)
 
 
+Souce code:
 ```javascript
 
 if(elemName) {
@@ -1514,6 +1516,7 @@ if(elemName) {
 ### <a name="_e__isStdElem"></a>_e::_isStdElem(name)
 
 
+Souce code:
 ```javascript
 return _elemNames[name];
 ```
@@ -1521,6 +1524,7 @@ return _elemNames[name];
 ### <a name="_e_extendAll"></a>_e::extendAll(name, fn)
 
 
+Souce code:
 ```javascript
 
 if(this.isObject(name)) {
@@ -1541,6 +1545,7 @@ return this;
 ### <a name="_e_getComponentRegistry"></a>_e::getComponentRegistry(t)
 
 
+Souce code:
 ```javascript
 return _registry;
 ```
@@ -1548,6 +1553,7 @@ return _registry;
 ### <a name="_e_getElemNames"></a>_e::getElemNames(t)
 
 
+Souce code:
 ```javascript
 return _elemNamesList;
 ```
@@ -1563,6 +1569,7 @@ this.initAsTag(elemName, into);
 ### <a name="_e_initAsTag"></a>_e::initAsTag(elemName, into, force)
 
 
+Souce code:
 ```javascript
 
 if(this.isObject(elemName)) {
@@ -1695,6 +1702,7 @@ if(!this._component && into) {
 ### <a name="_e_initElemNames"></a>_e::initElemNames(t)
 
 
+Souce code:
 ```javascript
 if(_elemNames) return;
 _elemNamesList = ["a", "abbr", "acronym","address","applet","area","article","aside","audio",
@@ -1729,6 +1737,7 @@ _elemNamesList.forEach(function(en) {
 ### <a name="_e_registerComponent"></a>_e::registerComponent(name, classDef)
 
 
+Souce code:
 ```javascript
 
 if(!_registry[name]) {
@@ -1748,6 +1757,7 @@ The class has following internal singleton variables:
 ### <a name="_add"></a>::add(items)
 
 
+Souce code:
 ```javascript
 if(! (items instanceof Array) ) {
     items = Array.prototype.slice.call(arguments, 0);
@@ -1812,6 +1822,7 @@ return this;
 ### <a name="_addItem"></a>::addItem(items)
 
 
+Souce code:
 ```javascript
 
 var list = Array.prototype.slice.call(arguments, 0);
@@ -1821,6 +1832,7 @@ return this.add.apply(this, list);
 ### <a name="_clear"></a>::clear(t)
 
 Removes all the subnodes
+Souce code:
 ```javascript
 
 //this.removeAllHandlers();
@@ -1840,6 +1852,7 @@ return this;
 ### <a name="_collectFromDOM"></a>::collectFromDOM(elem)
 
 
+Souce code:
 ```javascript
 // collecting the nodes from DOM -tree...
 
@@ -1882,6 +1895,7 @@ return e;
 ### <a name="_insertAfter"></a>::insertAfter(newItem)
 
 
+Souce code:
 ```javascript
 
 // referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
@@ -1926,6 +1940,7 @@ var mDOM = this._dom;
 ### <a name="_insertAt"></a>::insertAt(i, obj)
 
 
+Souce code:
 ```javascript
 
 if(i < this._children.length) {
@@ -1942,6 +1957,7 @@ if(i < this._children.length) {
  
 
 Inserts a new node before an existing node
+Souce code:
 ```javascript
 
 if(!this._parent) return;
@@ -1985,6 +2001,7 @@ return this;
 ### <a name="_moveDown"></a>::moveDown(t)
 
 Moves the node down in the DOM tree
+Souce code:
 ```javascript
 if(typeof(this._index)!="undefined" && this._parent) {
     var myIndex = this._index,
@@ -2015,6 +2032,7 @@ if(typeof(this._index)!="undefined" && this._parent) {
 ### <a name="_moveUp"></a>::moveUp(t)
 
 Moves the node up in the DOM tree
+Souce code:
 ```javascript
 if(this._index && this._parent) {
 
@@ -2042,6 +2060,7 @@ if(this._index && this._parent) {
 ### <a name="_parent"></a>::parent(t)
 
 
+Souce code:
 ```javascript
 return this._parent;
 ```
@@ -2049,6 +2068,7 @@ return this._parent;
 ### <a name="_prepend"></a>::prepend(items)
 
 Adds items as the first child of the current node
+Souce code:
 ```javascript
 if(! (items instanceof Array) ) {
     items = Array.prototype.slice.call(arguments, 0);
@@ -2091,6 +2111,7 @@ return this;
 ### <a name="_reIndex"></a>::reIndex(t)
 
 
+Souce code:
 ```javascript
 var chList = this._children;
 var i=0;
@@ -2102,6 +2123,7 @@ chList.forEach(function(ch) {
 ### <a name="_remove"></a>::remove(t)
 
 Removes the item from the DOM -tree
+Souce code:
 ```javascript
 
 this.removeChildEvents();
@@ -2120,6 +2142,7 @@ this.removeAllHandlers();
 ### <a name="_removeChild"></a>::removeChild(o)
 
 Removes a child of the node
+Souce code:
 ```javascript
 if(this._children) {
 
@@ -2137,6 +2160,7 @@ if(this._children) {
 ### <a name="_removeChildEvents"></a>::removeChildEvents(t)
 
 
+Souce code:
 ```javascript
 this.forChildren( function(ch) {
     ch.removeAllHandlers();
@@ -2148,6 +2172,7 @@ this.forChildren( function(ch) {
 ### <a name="_removeIndexedChild"></a>::removeIndexedChild(o)
 
 Removes the node from the index, but not from the DOM tree
+Souce code:
 ```javascript
 if(this._children) {
     var i = this._children.indexOf(o);
@@ -2160,6 +2185,7 @@ if(this._children) {
 ### <a name="_replaceWith"></a>::replaceWith(elem)
 
 
+Souce code:
 ```javascript
 // var a = A.parentNode.replaceChild(document.createElement("span"), A);
 
@@ -2190,6 +2216,7 @@ The class has following internal singleton variables:
 ### <a name="_baconDrag"></a>::baconDrag(opts)
 
 
+Souce code:
 ```javascript
 var me = this;
 return Bacon.fromBinder( function(sink) {
@@ -2202,6 +2229,7 @@ return Bacon.fromBinder( function(sink) {
 ### <a name="_drag"></a>::drag(callBack)
 
 
+Souce code:
 ```javascript
 var me = this,
     state = {};
@@ -2249,6 +2277,7 @@ return this;
 ### <a name="_draggable"></a>::draggable(startFn, middleFn, endFn)
 
 Three functions, fired when drag starts, proceeds and ends
+Souce code:
 ```javascript
 var _eg = this.__singleton();
 _eg.draggable(this);
@@ -2268,6 +2297,7 @@ this._touchItems = [];
 ### <a name="_mousePos"></a>::mousePos(t)
 
 
+Souce code:
 ```javascript
 if(!_mousePoint) {
     _mousePoint = {};
@@ -2287,6 +2317,7 @@ return _mousePoint;
 ### <a name="_pauseEvents"></a>::pauseEvents(e)
 
 
+Souce code:
 ```javascript
 e = e || window.event;
 
@@ -2301,6 +2332,7 @@ return false;
 ### <a name="_touch"></a>::touch(i)
 
 Get touch number i
+Souce code:
 ```javascript
 return this._touchItems[i];
 
@@ -2309,6 +2341,7 @@ return this._touchItems[i];
 ### <a name="_touchclick"></a>::touchclick(t)
 
 Enables click emulation on touch devices
+Souce code:
 ```javascript
 this.touchevents();
 var o = this;
@@ -2320,6 +2353,7 @@ this.on("touchstart", function(o,dv) {
 ### <a name="_touchevents"></a>::touchevents(t)
 
 Initializes the touch events
+Souce code:
 ```javascript
 
 // NOTE
@@ -2458,6 +2492,7 @@ The class has following internal singleton variables:
 ### <a name="_absolute"></a>::absolute(t)
 
 Makes the DOM element absolute positioned
+Souce code:
 ```javascript
 this.q.css("position", "absolute");
 this.x(0).y(0).z(this.baseZ());
@@ -2470,6 +2505,7 @@ return this;
 ### <a name="_baseZ"></a>::baseZ(v)
 
 
+Souce code:
 ```javascript
 if(typeof(v)!="undefined") {
     this._baseZ = v;
@@ -2482,6 +2518,7 @@ return this._baseZ;
 ### <a name="_box"></a>::box(t)
 
 
+Souce code:
 ```javascript
 var box = { left : 0, top : 0, width : 800, height : 800 };
 
@@ -2501,6 +2538,7 @@ return box;
 ### <a name="_height"></a>::height(v)
 
 
+Souce code:
 ```javascript
 if(typeof(v)=="undefined") return this._h;
 
@@ -2550,6 +2588,7 @@ return this;
 ### <a name="_hoverLayer"></a>::hoverLayer(preventAll, zIndex)
 
 
+Souce code:
 ```javascript
 // creates a layer which does not let through any events...
 
@@ -2624,6 +2663,7 @@ return o;
 ### <a name="_offset"></a>::offset(t)
 
 
+Souce code:
 ```javascript
 var doc = document.documentElement;
 var scrollLeft = (window.pageXOffset || doc.scrollLeft) - (doc.clientLeft || 0);
@@ -2640,7 +2680,8 @@ return {
 
 ### <a name="_pxParam"></a>::pxParam(v)
 
-Transform the param into CSS pixel value, like &quot;12px&quot;
+Transform the param into CSS pixel value, like "12px"
+Souce code:
 ```javascript
 if(typeof(v)=="string") {
     return parseInt(v)+"px";
@@ -2655,6 +2696,7 @@ if(typeof(v)=="string") {
 ### <a name="_relative"></a>::relative(t)
 
 Makes the DOM item relatively positioned
+Souce code:
 ```javascript
 this.q.css("position", "relative");
 this.x(0).y(0).z(this.baseZ());
@@ -2665,6 +2707,7 @@ return this;
 ### <a name="_width"></a>::width(v)
 
 
+Souce code:
 ```javascript
 if(typeof(v)=="undefined") return this._w;
 
@@ -2723,6 +2766,7 @@ return this;
  
 
 
+Souce code:
 ```javascript
 
 if(this.isStream(v)) {
@@ -2763,6 +2807,7 @@ return this._x;
  
 
 
+Souce code:
 ```javascript
 
 if(this.isStream(v)) {
@@ -2802,6 +2847,7 @@ return this._y;
  
 
 
+Souce code:
 ```javascript
 
 if(this.isStream(v)) {
@@ -2841,6 +2887,7 @@ The class has following internal singleton variables:
 ### <a name="_applyTransforms"></a>::applyTransforms(tx)
 
 
+Souce code:
 ```javascript
 var d = this._dom;
 d.style["transform"] = tx;
@@ -2854,6 +2901,7 @@ return this;
 ### <a name="_compStyle"></a>::compStyle(t)
 
 
+Souce code:
 ```javascript
 var elem = this._dom;
 var cs = window.getComputedStyle(elem,null);
@@ -2868,6 +2916,7 @@ return {
 ### <a name="_createEffect"></a>::createEffect(name, inPosition, outPosition, options)
 
 
+Souce code:
 ```javascript
 
 css().bind("."+name+"OutPosition", outPosition);
@@ -2894,6 +2943,7 @@ _effects[name] = options;
 ### <a name="_css"></a>::css(subNamespace)
 
 
+Souce code:
 ```javascript
 
 // convert the namespaces to shorter versions
@@ -2940,6 +2990,7 @@ return this._css;
 ### <a name="_effectIn"></a>::effectIn(name, fn)
 
 
+Souce code:
 ```javascript
 
 if(!this._effectOn) this._effectOn = {};
@@ -2983,6 +3034,7 @@ later().after(options.duration, function() {
 ### <a name="_effectOut"></a>::effectOut(name, fn)
 
 
+Souce code:
 ```javascript
 if(!this._effectOn) this._effectOn = {};
 
@@ -3021,6 +3073,7 @@ later().after(options.duration, function() {
 ### <a name="_hide"></a>::hide(t)
 
 Hides the node from DOM tree
+Souce code:
 ```javascript
 this._dom.style.display = "none";
 this.trigger("hide");
@@ -3039,6 +3092,7 @@ if(!_effects) {
 ### <a name="_show"></a>::show(t)
 
 Shows the node in the DOM tree if not visible
+Souce code:
 ```javascript
 this._dom.style.display = "";
 this.trigger("show");
@@ -3048,6 +3102,7 @@ this.trigger("show");
 ### <a name="_style"></a>::style(v)
 
 Creates a local CSS style using the css() object
+Souce code:
 ```javascript
 if(typeof(v)!="undefined") {
     // should we have named styles... perhaps... TODO
@@ -3064,6 +3119,7 @@ return this._localStyle;
 ### <a name="_styleString"></a>::styleString(value)
 
 
+Souce code:
 ```javascript
 // TODO: binding the style string???
 this._dom.style.cssText = value;
@@ -3073,6 +3129,7 @@ return this;
 ### <a name="_transform"></a>::transform(name, value)
 
 
+Souce code:
 ```javascript
 if(!this._transforms) this._transforms = [];
 if(typeof(value)=="undefined") {
@@ -3102,6 +3159,7 @@ return this;
 ### <a name="_transformOrigin"></a>::transformOrigin(tx)
 
 
+Souce code:
 ```javascript
 var d = this._dom;
 d.style["transform-origin"] = tx;
@@ -3115,6 +3173,7 @@ return this;
 ### <a name="_transformString"></a>::transformString(t)
 
 
+Souce code:
 ```javascript
 if(!this._transforms) return "";
 return this._transforms.join("");
@@ -3132,6 +3191,7 @@ The class has following internal singleton variables:
 ### <a name="_addRow"></a>::addRow(items)
 
 adds rows of items into the table, for example tbl.addRow(a,b,c)
+Souce code:
 ```javascript
 var row = new _e("tr");
 this.addItem(row);
@@ -3171,6 +3231,7 @@ The class has following internal singleton variables:
 ### <a name="_child"></a>::child(i)
 
 
+Souce code:
 ```javascript
 if(this._children[i]) {
    return this._children[i];
@@ -3180,6 +3241,7 @@ if(this._children[i]) {
 ### <a name="_childCount"></a>::childCount(t)
 
 
+Souce code:
 ```javascript
 if(!this._children) return 0;
 return this._children.length
@@ -3188,6 +3250,7 @@ return this._children.length
 ### <a name="_domAttrIterator"></a>::domAttrIterator(elem, fn)
 
 
+Souce code:
 ```javascript
 
 if(!elem) return;
@@ -3204,6 +3267,7 @@ for (var i = 0; i < elem.attributes.length; i++) {
 ### <a name="_domIterator"></a>::domIterator(elem, fn, nameSpace)
 
 
+Souce code:
 ```javascript
 
 if(!elem) return;
@@ -3241,6 +3305,7 @@ if(childNodes) {
 ### <a name="_forChildren"></a>::forChildren(fn, recursive)
 
 Calls function for all the direct children of this node
+Souce code:
 ```javascript
 if(this._children) {
     this._children.forEach( function(c) {
@@ -3253,6 +3318,7 @@ if(this._children) {
 ### <a name="_forEach"></a>::forEach(fn)
 
 Calls function for all the direct children of this node
+Souce code:
 ```javascript
 if(this._children) 
     this._children.forEach( function(c) {
@@ -3264,6 +3330,7 @@ if(this._children)
 ### <a name="_searchTree"></a>::searchTree(fn, list)
 
 Returns all the children which return true when given as parameter to function fn.
+Souce code:
 ```javascript
 if(!list) list = [];
 var v;
@@ -3288,6 +3355,7 @@ The class has following internal singleton variables:
 ### <a name="_addClass"></a>::addClass(c)
 
 
+Souce code:
 ```javascript
 // safari problem
 
@@ -3329,6 +3397,7 @@ return this;
 ### <a name="_findPostFix"></a>::findPostFix(str)
 
 
+Souce code:
 ```javascript
 
 if(this._myClass) {
@@ -3343,6 +3412,7 @@ return "";
 ### <a name="_hasClass"></a>::hasClass(c)
 
 
+Souce code:
 ```javascript
 if(!this._classes) return false;
 if(this._classes.indexOf(c)>=0) return true;
@@ -3352,6 +3422,7 @@ return false;
 ### <a name="_removeClass"></a>::removeClass(c)
 
 
+Souce code:
 ```javascript
 if(!this._classes) return this;
 var i;
@@ -3394,6 +3465,7 @@ The class has following internal singleton variables:
 ### <a name="__alwaysTouchclick"></a>::_alwaysTouchclick(t)
 
 
+Souce code:
 ```javascript
 _touchClick = t;
 ```
@@ -3401,6 +3473,7 @@ _touchClick = t;
 ### <a name="_bacon"></a>::bacon(eventName, eventTransformer)
 
 
+Souce code:
 ```javascript
 
 return Bacon.fromEvent(this._dom, eventName, eventTransformer); // (this._dom, eventName [, eventTransformer]) 
@@ -3410,6 +3483,7 @@ return Bacon.fromEvent(this._dom, eventName, eventTransformer); // (this._dom, e
 ### <a name="_bindSysEvent"></a>::bindSysEvent(en, fn, stop)
 
 
+Souce code:
 ```javascript
 en = en.toLowerCase();
 if(!this._sys) this._sys = {};
@@ -3459,6 +3533,7 @@ return true;
 ### <a name="_delegate"></a>::delegate(myDelecate)
 
 Delegates the events to this object
+Souce code:
 ```javascript
 
 if(!this._delegates) this._delegates = [];
@@ -3469,6 +3544,7 @@ this._delegates.push(myDelecate);
 ### <a name="_emitValue"></a>::emitValue(scope, data)
 
 
+Souce code:
 ```javascript
 if(this._controller) {
     if(this._controller[scope]) {
@@ -3487,6 +3563,7 @@ if(this._valueFn && this._valueFn[scope]) {
 ### <a name="_eventBinder"></a>::eventBinder(dom, eventName, fn, stop)
 
 
+Souce code:
 ```javascript
 var me = this;
 if(dom.attachEvent) {
@@ -3519,6 +3596,7 @@ if(dom.attachEvent) {
 ### <a name="_isHovering"></a>::isHovering(t)
 
 
+Souce code:
 ```javascript
 if(!this._hoverable) {
     this._hovering = false;
@@ -3539,6 +3617,7 @@ return this._hovering;
 ### <a name="_namedListener"></a>::namedListener(name, fn)
 
 
+Souce code:
 ```javascript
 
 if(typeof(fn)!="undefined") {
@@ -3558,6 +3637,7 @@ return this._namedListeners[name];
  
 
 Binds event name to event function
+Souce code:
 ```javascript
 if(!this._ev) this._ev = {};
 if(!this._ev[en]) this._ev[en] = [];
@@ -3729,6 +3809,7 @@ return this;
 ### <a name="_onValue"></a>::onValue(scope, fn)
 
 
+Souce code:
 ```javascript
 if(!this._valueFn) {
     this._valueFn = {};
@@ -3739,6 +3820,7 @@ this._valueFn[scope] = fn;
 ### <a name="_removeAllHandlers"></a>::removeAllHandlers(t)
 
 
+Souce code:
 ```javascript
 
 if(this._ev) {
@@ -3778,6 +3860,7 @@ if(this._ev) {
 ### <a name="_removeListener"></a>::removeListener(eventName, fn)
 
 
+Souce code:
 ```javascript
 if(this._ev && this._ev[eventName]) {
     var i = this._ev[eventName].indexOf(fn);
@@ -3792,6 +3875,7 @@ if(this._ev && this._ev[eventName]) {
 ### <a name="_router"></a>::router(eventName, fn)
 
 
+Souce code:
 ```javascript
 
 var me = this;
@@ -3809,6 +3893,7 @@ this._dom.addEventListener(eventName, function(event) {
 ### <a name="_setRoute"></a>::setRoute(obj, recursive)
 
 
+Souce code:
 ```javascript
 
 var routeId = this.guid();
@@ -3825,6 +3910,7 @@ _routes[routeId] = obj;
 ### <a name="_trigger"></a>::trigger(en, data, fn)
 
 triggers event with data and optional function
+Souce code:
 ```javascript
 if(this._delegates) {
     this._delegates.forEach( function(d) {
@@ -3846,6 +3932,7 @@ return this;
 ### <a name="_uniqueListener"></a>::uniqueListener(listenerName, fn)
 
 
+Souce code:
 ```javascript
 var oldList = this.namedListener(listenerName);
 if(oldList) {
@@ -3868,6 +3955,7 @@ The class has following internal singleton variables:
 ### <a name="InputHandling_bind"></a>InputHandling::bind(obj, varName, withFunction)
 
 Binds input value to an object with data
+Souce code:
 ```javascript
 var o = this, me = this;
 
@@ -4006,6 +4094,7 @@ return o;
 ### <a name="InputHandling_bindVal"></a>InputHandling::bindVal(v)
 
 
+Souce code:
 ```javascript
 
 
@@ -4023,6 +4112,7 @@ return this;
 ### <a name="InputHandling_blur"></a>InputHandling::blur(t)
 
 
+Souce code:
 ```javascript
 if(this._dom.blur) this._dom.blur();
 ```
@@ -4030,6 +4120,7 @@ if(this._dom.blur) this._dom.blur();
 ### <a name="InputHandling_checked"></a>InputHandling::checked(v)
 
 
+Souce code:
 ```javascript
 if(typeof(v)=="undefined") {
 
@@ -4052,6 +4143,7 @@ return this;
 ### <a name="InputHandling_clearOptions"></a>InputHandling::clearOptions(t)
 
 
+Souce code:
 ```javascript
  if(this._dataList) {
     var node = this._dataList._dom;
@@ -4064,6 +4156,7 @@ return this;
 ### <a name="InputHandling_focus"></a>InputHandling::focus(t)
 
 Focus into this element
+Souce code:
 ```javascript
 if(this._dom.focus) this._dom.focus();
 ```
@@ -4071,6 +4164,7 @@ if(this._dom.focus) this._dom.focus();
 ### <a name="InputHandling_getClipboard"></a>InputHandling::getClipboard(name)
 
 
+Souce code:
 ```javascript
 return clipBoard( name );
 ```
@@ -4078,6 +4172,7 @@ return clipBoard( name );
 ### <a name="InputHandling_localStore"></a>InputHandling::localStore(withName)
 
 
+Souce code:
 ```javascript
 
 
@@ -4100,6 +4195,7 @@ return this;
 ### <a name="InputHandling_options"></a>InputHandling::options(list)
 
 
+Souce code:
 ```javascript
 // creates the input options for html5 usage...
 
@@ -4164,6 +4260,7 @@ return this;
 ### <a name="InputHandling_toBacon"></a>InputHandling::toBacon(transformFn)
 
 
+Souce code:
 ```javascript
 
 var me = this;
@@ -4190,6 +4287,7 @@ return Bacon.fromBinder( function(sink) {
 ### <a name="InputHandling_val"></a>InputHandling::val(v)
 
 Sets or gets the input value
+Souce code:
 ```javascript
 if(typeof(v)=="undefined"){
     if(this._type=="select" || this._type=="input" || this._type=="textarea") {
@@ -4225,6 +4323,7 @@ The class has following internal singleton variables:
 ### <a name="domShortcuts_a"></a>domShortcuts::a(className, attrs)
 
 
+Souce code:
 ```javascript
 var el = this.shortcutFor("a", className, attrs);
 return el;
@@ -4233,6 +4332,7 @@ return el;
 ### <a name="domShortcuts_attr"></a>domShortcuts::attr(v, v2)
 
 
+Souce code:
 ```javascript
 
 if(this.isObject(v)) {
@@ -4257,6 +4357,7 @@ return this;
 ### <a name="domShortcuts_b"></a>domShortcuts::b(className, attrs)
 
 
+Souce code:
 ```javascript
 var el = this.shortcutFor("b", className, attrs);
 return el;
@@ -4265,6 +4366,7 @@ return el;
 ### <a name="domShortcuts_button"></a>domShortcuts::button(className, attrs)
 
 
+Souce code:
 ```javascript
 var el = this.shortcutFor("button", className, attrs);
 return el;
@@ -4273,6 +4375,7 @@ return el;
 ### <a name="domShortcuts_canvas"></a>domShortcuts::canvas(className, attrs)
 
 
+Souce code:
 ```javascript
 var el = this.shortcutFor("canvas", className, attrs);
 el._canvas = true;
@@ -4282,6 +4385,7 @@ return el;
 ### <a name="domShortcuts_checkbox"></a>domShortcuts::checkbox(className, attrs)
 
 
+Souce code:
 ```javascript
 var el = this.shortcutFor("checkbox", className, attrs);
 return el;
@@ -4290,6 +4394,7 @@ return el;
 ### <a name="domShortcuts_clearCanvas"></a>domShortcuts::clearCanvas(t)
 
 
+Souce code:
 ```javascript
 var ctx = this.ctx(),
     canvas = this._dom;
@@ -4302,6 +4407,7 @@ return this;
 ### <a name="domShortcuts_ctx"></a>domShortcuts::ctx(t)
 
 
+Souce code:
 ```javascript
 if(this._dom.getContext) {
     return this._dom.getContext("2d")
@@ -4311,6 +4417,7 @@ if(this._dom.getContext) {
 ### <a name="domShortcuts_div"></a>domShortcuts::div(className, attrs)
 
 
+Souce code:
 ```javascript
 var el = this.shortcutFor("div", className, attrs);
 return el;
@@ -4319,6 +4426,7 @@ return el;
 ### <a name="domShortcuts_e"></a>domShortcuts::e(elemName, className, attrs)
 
 
+Souce code:
 ```javascript
 
 if(!this._isStdElem(elemName)) {
@@ -4356,6 +4464,7 @@ return el;
 ### <a name="domShortcuts_form"></a>domShortcuts::form(className, attrs)
 
 
+Souce code:
 ```javascript
 var el = this.shortcutFor("form", className, attrs);
 return el;
@@ -4364,6 +4473,7 @@ return el;
 ### <a name="domShortcuts_getPixelFn"></a>domShortcuts::getPixelFn(pixelData)
 
 
+Souce code:
 ```javascript
 
 var ctx = this.ctx();
@@ -4395,6 +4505,7 @@ return function(x,y) {
 ### <a name="domShortcuts_h1"></a>domShortcuts::h1(className, attrs)
 
 
+Souce code:
 ```javascript
 var el = this.shortcutFor("h1", className, attrs);
 return el;
@@ -4403,6 +4514,7 @@ return el;
 ### <a name="domShortcuts_h2"></a>domShortcuts::h2(className, attrs)
 
 
+Souce code:
 ```javascript
 var el = this.shortcutFor("h2", className, attrs);
 return el;
@@ -4411,6 +4523,7 @@ return el;
 ### <a name="domShortcuts_h3"></a>domShortcuts::h3(className, attrs)
 
 
+Souce code:
 ```javascript
 var el = this.shortcutFor("h3", className, attrs);
 return el;
@@ -4419,6 +4532,7 @@ return el;
 ### <a name="domShortcuts_h4"></a>domShortcuts::h4(className, attrs)
 
 
+Souce code:
 ```javascript
 var el = this.shortcutFor("h4", className, attrs);
 return el;
@@ -4427,6 +4541,7 @@ return el;
 ### <a name="domShortcuts_img"></a>domShortcuts::img(className, attrs)
 
 
+Souce code:
 ```javascript
 var el = this.shortcutFor("img", className, attrs);
 return el;
@@ -4442,6 +4557,7 @@ return el;
 ### <a name="domShortcuts_input"></a>domShortcuts::input(className, attrs)
 
 
+Souce code:
 ```javascript
 var el = this.shortcutFor("input", className, attrs);
 return el;
@@ -4450,6 +4566,7 @@ return el;
 ### <a name="domShortcuts_label"></a>domShortcuts::label(className, attrs)
 
 
+Souce code:
 ```javascript
 var el = this.shortcutFor("label", className, attrs);
 return el;
@@ -4458,6 +4575,7 @@ return el;
 ### <a name="domShortcuts_li"></a>domShortcuts::li(className, attrs)
 
 
+Souce code:
 ```javascript
 var el = this.shortcutFor("li", className, attrs);
 return el;
@@ -4466,6 +4584,7 @@ return el;
 ### <a name="domShortcuts_ol"></a>domShortcuts::ol(className, attrs)
 
 
+Souce code:
 ```javascript
 var el = this.shortcutFor("ol", className, attrs);
 return el;
@@ -4474,6 +4593,7 @@ return el;
 ### <a name="domShortcuts_p"></a>domShortcuts::p(className, attrs)
 
 
+Souce code:
 ```javascript
 var el = this.shortcutFor("p", className, attrs);
 return el;
@@ -4482,6 +4602,7 @@ return el;
 ### <a name="domShortcuts_pre"></a>domShortcuts::pre(className, attrs)
 
 
+Souce code:
 ```javascript
 var el = this.shortcutFor("pre", className, attrs);
 return el;
@@ -4490,6 +4611,7 @@ return el;
 ### <a name="domShortcuts_processPixels"></a>domShortcuts::processPixels(fn, pixelData, doNotUpdate)
 
 
+Souce code:
 ```javascript
 
 var ctx = this.ctx();
@@ -4532,6 +4654,7 @@ return pixelData;
 ### <a name="domShortcuts_row"></a>domShortcuts::row(params)
 
 
+Souce code:
 ```javascript
 var args = Array.prototype.slice.call(arguments);
 if(this._tag == "table") {
@@ -4547,6 +4670,7 @@ return tbl;
 ### <a name="domShortcuts_shortcutFor"></a>domShortcuts::shortcutFor(name, className, attrs)
 
 
+Souce code:
 ```javascript
 var el = _e(name);
 this.add(el);
@@ -4599,6 +4723,7 @@ return el;
 ### <a name="domShortcuts_span"></a>domShortcuts::span(className, attrs)
 
 
+Souce code:
 ```javascript
 var el = this.shortcutFor("span", className, attrs);
 return el;
@@ -4607,6 +4732,7 @@ return el;
 ### <a name="domShortcuts_src"></a>domShortcuts::src(src)
 
 
+Souce code:
 ```javascript
 if(this._tag=="img") {
     if(!this._hasLoadL) {
@@ -4656,6 +4782,7 @@ return this;
 ### <a name="domShortcuts_strong"></a>domShortcuts::strong(className, attrs)
 
 
+Souce code:
 ```javascript
 var el = this.shortcutFor("strong", className, attrs);
 return el;
@@ -4664,6 +4791,7 @@ return el;
 ### <a name="domShortcuts_table"></a>domShortcuts::table(className, attrs)
 
 
+Souce code:
 ```javascript
 var el = this.shortcutFor("table", className, attrs);
 return el;
@@ -4672,6 +4800,7 @@ return el;
 ### <a name="domShortcuts_textarea"></a>domShortcuts::textarea(className, attrs)
 
 
+Souce code:
 ```javascript
 var el = this.shortcutFor("textarea", className, attrs);
 return el;
@@ -4680,6 +4809,7 @@ return el;
 ### <a name="domShortcuts_toDataURL"></a>domShortcuts::toDataURL(format, quality)
 
 
+Souce code:
 ```javascript
 
 if(!quality) quality = 1;
@@ -4690,6 +4820,7 @@ return this._dom.toDataURL(format || "image/png", quality);
 ### <a name="domShortcuts_ul"></a>domShortcuts::ul(className, attrs)
 
 
+Souce code:
 ```javascript
 var el = this.shortcutFor("ul", className, attrs);
 return el;
@@ -4698,6 +4829,7 @@ return el;
 ### <a name="domShortcuts_video"></a>domShortcuts::video(className, attrs)
 
 
+Souce code:
 ```javascript
 var el = this.shortcutFor("video", className, attrs);
 return el;
@@ -4715,6 +4847,7 @@ The class has following internal singleton variables:
 ### <a name="domContent__setDomText"></a>domContent::_setDomText(elem, text)
 
 
+Souce code:
 ```javascript
 if( typeof(elem.textContent)!="undefined") {
    elem.textContent = text;
@@ -4730,6 +4863,7 @@ if( typeof(elem.textContent)!="undefined") {
 ### <a name="domContent_html"></a>domContent::html(h)
 
 
+Souce code:
 ```javascript
 
 // test if the value is a stream
@@ -4766,6 +4900,7 @@ return this;
 ### <a name="domContent_text"></a>domContent::text(t)
 
 
+Souce code:
 ```javascript
 if(typeof(t)=="undefined") return this._html;
 
@@ -4914,6 +5049,7 @@ The class has following internal singleton variables:
 ### <a name="viewsNavis__refreshView"></a>viewsNavis::_refreshView(oldObj)
 
 
+Souce code:
 ```javascript
 
 if(!oldObj) oldObj = this;
@@ -5021,6 +5157,7 @@ if(obj) {
 ### <a name="viewsNavis_contentRouter"></a>viewsNavis::contentRouter(name, fn)
 
 
+Souce code:
 ```javascript
 
 if(!_contentRouters) _contentRouters  = {};
@@ -5034,6 +5171,7 @@ if(this.isFunction(name)) {
 ### <a name="viewsNavis_createLayout"></a>viewsNavis::createLayout(name, fn)
 
 
+Souce code:
 ```javascript
 if(!_viewStructures) _viewStructures = {}
 
@@ -5054,6 +5192,7 @@ _viewStructures[name] = {
 ### <a name="viewsNavis_factoryLoader"></a>viewsNavis::factoryLoader(data)
 
 This is very opinionated function to load _data from some store
+Souce code:
 ```javascript
 
 // load the factories from the _data()
@@ -5072,6 +5211,7 @@ return data.then( function(res) {
 ### <a name="viewsNavis_fiddle"></a>viewsNavis::fiddle(options)
 
 
+Souce code:
 ```javascript
 var iframe = _e("iframe"); 
 var myId = this.guid();
@@ -5120,6 +5260,7 @@ return this;
 ### <a name="viewsNavis_findViewByName"></a>viewsNavis::findViewByName(name, layout)
 
 
+Souce code:
 ```javascript
 
 if(layout.hasClass(name)) {
@@ -5142,6 +5283,7 @@ if(layout.hasClass(name)) {
 ### <a name="viewsNavis_findViewFactory"></a>viewsNavis::findViewFactory(name, role)
 
 
+Souce code:
 ```javascript
 
 if(!role) {
@@ -5168,6 +5310,7 @@ return null;
 ### <a name="viewsNavis_getLayouts"></a>viewsNavis::getLayouts(t)
 
 
+Souce code:
 ```javascript
 return _viewStructures;
 ```
@@ -5175,6 +5318,7 @@ return _viewStructures;
 ### <a name="viewsNavis_getRole"></a>viewsNavis::getRole(t)
 
 
+Souce code:
 ```javascript
 if(this._role) {
     return this._role;
@@ -5186,6 +5330,7 @@ if(p) return p.getRole();
 ### <a name="viewsNavis_getRouteObj"></a>viewsNavis::getRouteObj(t)
 
 
+Souce code:
 ```javascript
 var parts = document.location.hash.split("/");
 
@@ -5260,6 +5405,7 @@ if(!_eventState) {
 ### <a name="viewsNavis_initScreenEvents"></a>viewsNavis::initScreenEvents(t)
 
 
+Souce code:
 ```javascript
 // object.addEventListener("resize", myScript);
 // if(window.matchMedia) {
@@ -5357,6 +5503,7 @@ if(window.matchMedia) {
 ### <a name="viewsNavis_layout"></a>viewsNavis::layout(layoutName, layoutDef)
 
 
+Souce code:
 ```javascript
 
 if(!layoutDef) {
@@ -5420,6 +5567,7 @@ return this;
 ### <a name="viewsNavis_onMediaChange"></a>viewsNavis::onMediaChange(fn)
 
 
+Souce code:
 ```javascript
 
 _mediaListeners.push(fn);
@@ -5428,6 +5576,7 @@ _mediaListeners.push(fn);
 ### <a name="viewsNavis_onRoute"></a>viewsNavis::onRoute(fn)
 
 
+Souce code:
 ```javascript
 
 _eventState.routers.push(fn);
@@ -5442,6 +5591,7 @@ later().add(
 ### <a name="viewsNavis_pageController"></a>viewsNavis::pageController(page, controllerObj)
 
 
+Souce code:
 ```javascript
 
 if(!this._pageController) this._pageController = {};
@@ -5459,6 +5609,7 @@ if(_ctrlObjs.indexOf( this ) < 0) {
 ### <a name="viewsNavis_popView"></a>viewsNavis::popView(toView)
 
 
+Souce code:
 ```javascript
 
 
@@ -5527,6 +5678,7 @@ cont.forChildren(function(ch) {
 ### <a name="viewsNavis_push"></a>viewsNavis::push(model, viewName)
 
 
+Souce code:
 ```javascript
 
 var fn = this.findViewFactory(viewName);
@@ -5553,6 +5705,7 @@ return this;
  
 
 
+Souce code:
 ```javascript
 
 if(this.isObject(paramName)) {
@@ -5666,6 +5819,7 @@ if(!this._activeLayout) {
 ### <a name="viewsNavis_pushView"></a>viewsNavis::pushView(newView, params, oldViewHolder)
 
 
+Souce code:
 ```javascript
 
 if(!this._views) {
@@ -5770,6 +5924,7 @@ return this;
 ### <a name="viewsNavis_removeControllersFor"></a>viewsNavis::removeControllersFor(o)
 
 
+Souce code:
 ```javascript
 var i = _ctrlObjs.indexOf( o );
 
@@ -5783,6 +5938,7 @@ if(i>=0) {
  
 
 Make the window scroll to this element
+Souce code:
 ```javascript
 if(window) {
     var box = this.offset();
@@ -5811,6 +5967,7 @@ if(window) {
 ### <a name="viewsNavis_setLayout"></a>viewsNavis::setLayout(name)
 
 
+Souce code:
 ```javascript
 var me = this;
 // ok, need to think about how to create this thing
@@ -5833,6 +5990,7 @@ if(_viewStructures && _viewStructures[name]) {
 ### <a name="viewsNavis_setRole"></a>viewsNavis::setRole(name)
 
 The role the user interface is currently at
+Souce code:
 ```javascript
 
 if(this._role && this._role != name) {
@@ -5851,9 +6009,10 @@ if(this._role && this._role != name) {
 ### <a name="viewsNavis_viewFactory"></a>viewsNavis::viewFactory(role, name, fn)
 
 one could call it like 
-o.viewFactory(&quot;children&quot;, &quot;messages&quot;, function() {
+o.viewFactory("children", "messages", function() {
 
 });
+Souce code:
 ```javascript
 
 if(this.isFunction(name)) {
@@ -5913,6 +6072,7 @@ The class has following internal singleton variables:
 ### <a name="mvc_trait__findSendHandler"></a>mvc_trait::_findSendHandler(url)
 
 
+Souce code:
 ```javascript
 if(this._sendHook) {
     var h = this._sendHook[url];
@@ -5927,6 +6087,7 @@ if(p) return p._findSendHandler(url);
 ### <a name="mvc_trait_createItemView"></a>mvc_trait::createItemView(item)
 
 
+Souce code:
 ```javascript
 var vf = this.getViewFunction(item),
     me = this,
@@ -5958,6 +6119,7 @@ return newView;
 ### <a name="mvc_trait_data"></a>mvc_trait::data(v)
 
 
+Souce code:
 ```javascript
 if(typeof(v) != "undefined") {
     this.__mdata = v;
@@ -5969,6 +6131,7 @@ return this.__mdata;
 ### <a name="mvc_trait_findModelFactory"></a>mvc_trait::findModelFactory(name)
 
 
+Souce code:
 ```javascript
 
 if(this._modelFactory) {
@@ -5986,6 +6149,7 @@ return null;
 ### <a name="mvc_trait_fromStream"></a>mvc_trait::fromStream(stream, viewFn)
 
 
+Souce code:
 ```javascript
 
 var me = this;
@@ -6002,6 +6166,7 @@ stream.onValue( function(data) {
 ### <a name="mvc_trait_getViewFunction"></a>mvc_trait::getViewFunction(item)
 
 
+Souce code:
 ```javascript
 if(this.isFunction(this._view)) {
     return this._view;
@@ -6031,6 +6196,7 @@ for(var n in this._view) {
 ### <a name="mvc_trait_model"></a>mvc_trait::model(name, params)
 
 
+Souce code:
 ```javascript
 
 var me = this;
@@ -6082,6 +6248,7 @@ return _promise( function(result, reject) {
 ### <a name="mvc_trait_modelFactory"></a>mvc_trait::modelFactory(name, fn, autoCache)
 
 
+Souce code:
 ```javascript
 
 if(!this._modelFactory) this._modelFactory = {};
@@ -6094,6 +6261,7 @@ fn._autoCache = autoCache;
 ### <a name="mvc_trait_modelFactoryLoader"></a>mvc_trait::modelFactoryLoader(data)
 
 
+Souce code:
 ```javascript
 // load the factories from the _data()
 var me = this;
@@ -6111,6 +6279,7 @@ return data.then( function(res) {
 ### <a name="mvc_trait_mv"></a>mvc_trait::mv(model, type, controller)
 
 
+Souce code:
 ```javascript
 
 var o, fn, elemName = "div";
@@ -6145,6 +6314,7 @@ if(fn) {
 ### <a name="mvc_trait_mvc"></a>mvc_trait::mvc(model, view, controller)
 
 
+Souce code:
 ```javascript
 
 var me = this;
@@ -6246,7 +6416,7 @@ return this;
 You can create a send handler using
 
 ```
-obj.sendHandler(&quot;post-url&quot;, function(data, result, fail) { });
+obj.sendHandler(url, function(data, result, fail) { });
 ```
 
 To send into this url use
@@ -6255,6 +6425,7 @@ To send into this url use
      
   });
 ```
+Souce code:
 ```javascript
 
 var list = this._findSendHandler(url);
@@ -6275,6 +6446,7 @@ if(list) {
 ### <a name="mvc_trait_sendHandler"></a>mvc_trait::sendHandler(url, handlerFunction)
 
 
+Souce code:
 ```javascript
 if(!this._sendHook) {
     this._sendHook = {};
@@ -6290,6 +6462,7 @@ this._sendHook[url].unshift( handlerFunction );
 ### <a name="mvc_trait_tree"></a>mvc_trait::tree(treeData, itemFn, options)
 
 
+Souce code:
 ```javascript
 var _dragState = {};      
 var _dragOn;
@@ -6438,6 +6611,7 @@ The class has following internal singleton variables:
 ### <a name="svgShortcuts_circle"></a>svgShortcuts::circle(className, attrs)
 
 
+Souce code:
 ```javascript
 var el = this.shortcutFor("circle", className, attrs);
 return el;
@@ -6446,6 +6620,7 @@ return el;
 ### <a name="svgShortcuts_defs"></a>svgShortcuts::defs(className, attrs)
 
 
+Souce code:
 ```javascript
 var el = this.shortcutFor("defs", className, attrs);
 return el;
@@ -6454,6 +6629,7 @@ return el;
 ### <a name="svgShortcuts_feGaussianBlur"></a>svgShortcuts::feGaussianBlur(className, attrs)
 
 
+Souce code:
 ```javascript
 var el = this.shortcutFor("feGaussianBlur", className, attrs);
 return el;
@@ -6462,6 +6638,7 @@ return el;
 ### <a name="svgShortcuts_feMerge"></a>svgShortcuts::feMerge(className, attrs)
 
 
+Souce code:
 ```javascript
 var el = this.shortcutFor("feMerge", className, attrs);
 return el;
@@ -6470,6 +6647,7 @@ return el;
 ### <a name="svgShortcuts_feMergeNode"></a>svgShortcuts::feMergeNode(className, attrs)
 
 
+Souce code:
 ```javascript
 var el = this.shortcutFor("feMergeNode", className, attrs);
 return el;
@@ -6478,6 +6656,7 @@ return el;
 ### <a name="svgShortcuts_feOffset"></a>svgShortcuts::feOffset(className, attrs)
 
 
+Souce code:
 ```javascript
 var el = this.shortcutFor("feOffset", className, attrs);
 return el;
@@ -6486,6 +6665,7 @@ return el;
 ### <a name="svgShortcuts_filter"></a>svgShortcuts::filter(className, attrs)
 
 
+Souce code:
 ```javascript
 var el = this.shortcutFor("filter", className, attrs);
 return el;
@@ -6494,6 +6674,7 @@ return el;
 ### <a name="svgShortcuts_g"></a>svgShortcuts::g(className, attrs)
 
 
+Souce code:
 ```javascript
 var el = this.shortcutFor("g", className, attrs);
 return el;
@@ -6502,6 +6683,7 @@ return el;
 ### <a name="svgShortcuts_image"></a>svgShortcuts::image(className, attrs)
 
 
+Souce code:
 ```javascript
 var el = this.shortcutFor("image", className, attrs);
 return el;
@@ -6510,6 +6692,7 @@ return el;
 ### <a name="svgShortcuts_line"></a>svgShortcuts::line(className, attrs)
 
 
+Souce code:
 ```javascript
 var el = this.shortcutFor("line", className, attrs);
 return el;
@@ -6518,6 +6701,7 @@ return el;
 ### <a name="svgShortcuts_path"></a>svgShortcuts::path(className, attrs)
 
 
+Souce code:
 ```javascript
 var el = this.shortcutFor("path", className, attrs);
 return el;
@@ -6526,6 +6710,7 @@ return el;
 ### <a name="svgShortcuts_rect"></a>svgShortcuts::rect(className, attrs)
 
 
+Souce code:
 ```javascript
 var el = this.shortcutFor("rect", className, attrs);
 return el;
@@ -6534,6 +6719,7 @@ return el;
 ### <a name="svgShortcuts_svg"></a>svgShortcuts::svg(className, attrs, none)
 
 
+Souce code:
 ```javascript
 var el = this.shortcutFor("svg", className, attrs);
 return el;
@@ -6542,6 +6728,7 @@ return el;
 ### <a name="svgShortcuts_svg_text"></a>svgShortcuts::svg_text(className, attrs)
 
 
+Souce code:
 ```javascript
 var el = this.shortcutFor("text", className, attrs);
 return el;
@@ -6550,6 +6737,7 @@ return el;
 ### <a name="svgShortcuts_tspan"></a>svgShortcuts::tspan(className, attrs)
 
 
+Souce code:
 ```javascript
 var el = this.shortcutFor("tspan", className, attrs);
 return el;
@@ -6567,6 +6755,7 @@ The class has following internal singleton variables:
 ### <a name="util_fns_guid"></a>util_fns::guid(t)
 
 
+Souce code:
 ```javascript
 return Math.random().toString(36).substring(2, 15) +
         Math.random().toString(36).substring(2, 15);
@@ -6575,6 +6764,7 @@ return Math.random().toString(36).substring(2, 15) +
 ### <a name="util_fns_isArray"></a>util_fns::isArray(someVar)
 
 
+Souce code:
 ```javascript
 return Object.prototype.toString.call( someVar ) === '[object Array]';
 ```
@@ -6582,6 +6772,7 @@ return Object.prototype.toString.call( someVar ) === '[object Array]';
 ### <a name="util_fns_isFunction"></a>util_fns::isFunction(fn)
 
 
+Souce code:
 ```javascript
 return Object.prototype.toString.call(fn) == '[object Function]';
 ```
@@ -6589,6 +6780,7 @@ return Object.prototype.toString.call(fn) == '[object Function]';
 ### <a name="util_fns_isObject"></a>util_fns::isObject(obj)
 
 
+Souce code:
 ```javascript
 return obj === Object(obj);
 ```
@@ -6596,6 +6788,7 @@ return obj === Object(obj);
 ### <a name="util_fns_isStream"></a>util_fns::isStream(obj)
 
 
+Souce code:
 ```javascript
 
 if(this.isObject(obj)) {
@@ -6616,6 +6809,7 @@ return false;
 ### <a name="util_fns_str"></a>util_fns::str(params)
 
 
+Souce code:
 ```javascript
 
 var args;
@@ -6665,6 +6859,7 @@ return Bacon.fromBinder(function(sink) {
 ### <a name="util_fns_whenLoaded"></a>util_fns::whenLoaded(imgList, fn)
 
 
+Souce code:
 ```javascript
 
 var cnt = imgList.length;
@@ -6700,6 +6895,7 @@ The class has following internal singleton variables:
 ### <a name="_colorMix"></a>::colorMix(c1, c2, t)
 
 
+Souce code:
 ```javascript
 
 var from = this.toRGB(c1),
@@ -6719,6 +6915,7 @@ return res;
 ### <a name="_colorToHex"></a>::colorToHex(color)
 
 
+Souce code:
 ```javascript
 if (color.substr(0, 1) === '#') {
     return color;
@@ -6736,6 +6933,7 @@ return digits[1] + '#' + rgb.toString(16);
 ### <a name="_colourNameToHex"></a>::colourNameToHex(colour)
 
 
+Souce code:
 ```javascript
 
 if (typeof colors[colour.toLowerCase()] != 'undefined')
@@ -6747,6 +6945,7 @@ return false;
 ### <a name="_componentToHex"></a>::componentToHex(c)
 
 
+Souce code:
 ```javascript
 c = parseInt(c);
 var hex = c.toString(16);
@@ -6756,6 +6955,7 @@ return hex.length == 1 ? "0" + hex : hex;
 ### <a name="_dim"></a>::dim(colorName, brightness)
 
 
+Souce code:
 ```javascript
 return this.yuvConversion( colorName, function(yuv) {
         yuv.y = yuv.y - brightness;
@@ -6766,6 +6966,7 @@ return this.yuvConversion( colorName, function(yuv) {
 ### <a name="_hexToRgb"></a>::hexToRgb(hex)
 
 
+Souce code:
 ```javascript
 if (hex[0]=="#") hex=hex.substr(1);
 if (hex.length==3) {
@@ -6787,6 +6988,7 @@ return {
 ### <a name="_hexToYuv"></a>::hexToYuv(hexVal)
 
 
+Souce code:
 ```javascript
 var me = this;
 return me.rgbToYuv( me.toRGB(hexVal) );
@@ -6795,6 +6997,7 @@ return me.rgbToYuv( me.toRGB(hexVal) );
 ### <a name="_hsvToRgb"></a>::hsvToRgb(c)
 
 
+Souce code:
 ```javascript
 var r, g, b;
 var i;
@@ -6900,6 +7103,7 @@ if(!colors) {
 ### <a name="_mix"></a>::mix(c1, c2, amount)
 
 
+Souce code:
 ```javascript
 
 if(typeof(amount)=="undefined") amount = 0.5;
@@ -6916,6 +7120,7 @@ return this.yuvConversion2( c1,c2, function(y1,y2) {
 ### <a name="_rgbToHex"></a>::rgbToHex(p)
 
 
+Souce code:
 ```javascript
 var me = this;
 return "#" + me.componentToHex(p.r) + me.componentToHex(p.g) + me.componentToHex(p.b);
@@ -6924,6 +7129,7 @@ return "#" + me.componentToHex(p.r) + me.componentToHex(p.g) + me.componentToHex
 ### <a name="_rgbToHsv"></a>::rgbToHsv(c)
 
 
+Souce code:
 ```javascript
 var rr, gg, bb,
     r = c.r / 255,
@@ -6967,6 +7173,7 @@ return {
 ### <a name="_rgbToYuv"></a>::rgbToYuv(c)
 
 
+Souce code:
 ```javascript
 var R = c.r / 255;
 var G = c.g / 255;
@@ -6979,6 +7186,7 @@ return { y : 0.299 * R + 0.587 * G + 0.114 * B,
 ### <a name="_toRGB"></a>::toRGB(c)
 
 
+Souce code:
 ```javascript
 if(typeof(c)=="object") return c;
 var me = this;
@@ -6993,6 +7201,7 @@ return me.hexToRgb(hex);
 ### <a name="_toRSpace"></a>::toRSpace(v)
 
 
+Souce code:
 ```javascript
 return Math.max(0, Math.min(255, Math.round(v)));
 ```
@@ -7000,6 +7209,7 @@ return Math.max(0, Math.min(255, Math.round(v)));
 ### <a name="_yuvConversion"></a>::yuvConversion(c, fn)
 
 
+Souce code:
 ```javascript
 var me = this;
 var yuv = me.rgbToYuv( me.toRGB(c) );
@@ -7011,6 +7221,7 @@ return me.rgbToHex( rgb );
 ### <a name="_yuvConversion2"></a>::yuvConversion2(c1, c2, fn)
 
 
+Souce code:
 ```javascript
 var me = this;
 var yuv = me.rgbToYuv( me.toRGB(c1) );
@@ -7023,6 +7234,7 @@ return me.rgbToHex( rgb );
 ### <a name="_yuvPixelConversion"></a>::yuvPixelConversion(c, fn)
 
 
+Souce code:
 ```javascript
 var yuv = me.rgbToYuv( c );
 yuv = fn(yuv);
@@ -7036,6 +7248,7 @@ return c;
 ### <a name="_yuvToRgb"></a>::yuvToRgb(c)
 
 
+Souce code:
 ```javascript
 var Y = c.y;
 var U = c.u;
@@ -7076,6 +7289,7 @@ The class has following internal singleton variables:
  
 
 
+Souce code:
 ```javascript
 var x = this._initAjax();
 x.open(method, url);
@@ -7099,6 +7313,7 @@ return this;
 ### <a name="__initAjax"></a>::_initAjax(t)
 
 
+Souce code:
 ```javascript
 if (typeof XMLHttpRequest !== 'undefined') {
     return new XMLHttpRequest();  
@@ -7126,6 +7341,7 @@ return xhr;
 ### <a name="__traditionalUpload"></a>::_traditionalUpload(options)
 
 
+Souce code:
 ```javascript
 
 var o = _e();
@@ -7322,6 +7538,7 @@ return o;
 ### <a name="_ajaxHook"></a>::ajaxHook(url, handlerFunction)
 
 
+Souce code:
 ```javascript
 if(!_ajaxHook) {
     _ajaxHook = {};
@@ -7338,6 +7555,7 @@ _ajaxHook[url].unshift( handlerFunction );
 ### <a name="_createUploader"></a>::createUploader(options)
 
 
+Souce code:
 ```javascript
 
 if(options.testTraditional || typeof(window.FormData) == "undefined") {
@@ -7506,6 +7724,7 @@ return inp;
 ### <a name="_fileObjectThumbnail"></a>::fileObjectThumbnail(width, height, fileObject)
 
 
+Souce code:
 ```javascript
 var reader = new FileReader();
 var myImage = _e("img");
@@ -7528,6 +7747,7 @@ return myImage;
 ### <a name="_get"></a>::get(url, data, callback)
 
 
+Souce code:
 ```javascript
 var query = [];
 if(this.isFunction(data)) {
@@ -7547,6 +7767,7 @@ return this;
 ### <a name="_getJSON"></a>::getJSON(url, data, callback)
 
 
+Souce code:
 ```javascript
 var query = [];
 if(this.isFunction(data)) {
@@ -7569,6 +7790,7 @@ return this;
 ### <a name="_post"></a>::post(url, data, callback, errCallback)
 
 
+Souce code:
 ```javascript
 
 if(_ajaxHook && _ajaxHook[url]) {
@@ -7600,6 +7822,7 @@ return this;
 ### <a name="_postJSON"></a>::postJSON(url, data, callback, errCallback)
 
 
+Souce code:
 ```javascript
 
 if(_ajaxHook && _ajaxHook[url]) {
@@ -7633,6 +7856,7 @@ return this;
 ### <a name="_uploadHook"></a>::uploadHook(url, handlerFunction)
 
 
+Souce code:
 ```javascript
 if(!_uploadHook) {
     _uploadHook = {};
@@ -7655,6 +7879,7 @@ The class has following internal singleton variables:
 ### <a name="__findCustomElem"></a>::_findCustomElem(name)
 
 
+Souce code:
 ```javascript
 // might be also hierarchy based
 // if(this._customElems) 
@@ -7675,6 +7900,7 @@ if(p) return p._findCustomElem(name);
 ### <a name="_customElement"></a>::customElement(elemName, options)
 
 
+Souce code:
 ```javascript
 
 if(!this._customElems) this._customElems = {};
@@ -7741,6 +7967,7 @@ The class has following internal singleton variables:
 ### <a name="_qc_attr"></a>_qc::attr(n, v)
 
 
+Souce code:
 ```javascript
 
 
@@ -7928,6 +8155,7 @@ return this;
 ### <a name="_qc_bindSysEvent"></a>_qc::bindSysEvent(en, fn, stop)
 
 
+Souce code:
 ```javascript
 en = en.toLowerCase();
 if(!this._sys) this._sys = {};
@@ -7968,6 +8196,7 @@ return true;
 ### <a name="_qc_blur"></a>_qc::blur(t)
 
 
+Souce code:
 ```javascript
 if(this._dom.blur) this._dom.blur();
 ```
@@ -7975,6 +8204,7 @@ if(this._dom.blur) this._dom.blur();
 ### <a name="_qc_css"></a>_qc::css(n, v)
 
 
+Souce code:
 ```javascript
 if(n=="background-color") n = "backgroundColor";
 if(n=="margin-left") n = "marginLeft";
@@ -8000,6 +8230,7 @@ return this;
 ### <a name="_qc_focus"></a>_qc::focus(t)
 
 
+Souce code:
 ```javascript
 if(this._dom.focus) this._dom.focus();
 ```
@@ -8007,6 +8238,7 @@ if(this._dom.focus) this._dom.focus();
 ### <a name="_qc_get"></a>_qc::get(index)
 
 
+Souce code:
 ```javascript
 return this._dom;
 ```
@@ -8021,6 +8253,7 @@ this._host = host;
 ### <a name="_qc_pxParam"></a>_qc::pxParam(v)
 
 
+Souce code:
 ```javascript
 
 if(v=="auto") return v;
@@ -8097,6 +8330,7 @@ The class has following internal singleton variables:
 ### <a name="later_add"></a>later::add(fn, thisObj, args)
 
 
+Souce code:
 ```javascript
 if(thisObj || args) {
    var tArgs;
@@ -8115,6 +8349,7 @@ if(thisObj || args) {
 ### <a name="later_after"></a>later::after(seconds, fn, name)
 
 
+Souce code:
 ```javascript
 
 if(!name) {
@@ -8132,6 +8367,7 @@ _everies[name] = {
 ### <a name="later_asap"></a>later::asap(fn)
 
 
+Souce code:
 ```javascript
 this.add(fn);
 
@@ -8140,6 +8376,7 @@ this.add(fn);
 ### <a name="later_every"></a>later::every(seconds, fn, name)
 
 
+Souce code:
 ```javascript
 
 if(!name) {
@@ -8250,6 +8487,7 @@ if(!_initDone) {
 ### <a name="later_once"></a>later::once(key, fn, value)
 
 
+Souce code:
 ```javascript
 // _oneTimers
 
@@ -8259,6 +8497,7 @@ _oneTimers[key] = [fn,value];
 ### <a name="later_onFrame"></a>later::onFrame(fn)
 
 
+Souce code:
 ```javascript
 
 _framers.push(fn);
@@ -8267,6 +8506,7 @@ _framers.push(fn);
 ### <a name="later_polyfill"></a>later::polyfill(t)
 
 
+Souce code:
 ```javascript
 // --- let's not ---
 ```
@@ -8274,6 +8514,7 @@ _framers.push(fn);
 ### <a name="later_removeFrameFn"></a>later::removeFrameFn(fn)
 
 
+Souce code:
 ```javascript
 
 var i = _framers.indexOf(fn);
@@ -8324,6 +8565,7 @@ The class has following internal singleton variables:
 ### <a name="css__classFactory"></a>css::_classFactory(id)
 
 
+Souce code:
 ```javascript
 
 if(!id) id = "_global_";
@@ -8340,6 +8582,7 @@ if(!_instances) {
 ### <a name="css_animation"></a>css::animation(animName, settings)
 
 
+Souce code:
 ```javascript
 
 var args = Array.prototype.slice.call(arguments),
@@ -8382,6 +8625,7 @@ if(this.isObject(settings)) {
 ### <a name="css_animSettings"></a>css::animSettings(obj)
 
 
+Souce code:
 ```javascript
 
 if(this.isObject(obj)) {
@@ -8400,6 +8644,7 @@ if(this.isObject(obj)) {
 ### <a name="css_assign"></a>css::assign(objectList)
 
 
+Souce code:
 ```javascript
 var o = {}, args;
 if(this.isArray(objectList)) {
@@ -8421,6 +8666,7 @@ return o;
 ### <a name="css_bind"></a>css::bind(t)
 
 
+Souce code:
 ```javascript
 // my rulesets...
 var args = Array.prototype.slice.call(arguments),
@@ -8436,6 +8682,7 @@ return this;
 ### <a name="css_buildCss"></a>css::buildCss(mediaRule)
 
 
+Souce code:
 ```javascript
 
 if(this._data) {
@@ -8458,6 +8705,7 @@ if(this._data) {
 ### <a name="css_collectAnimationCss"></a>css::collectAnimationCss(t)
 
 
+Souce code:
 ```javascript
 
 var anims = this._animations,
@@ -8472,6 +8720,7 @@ return str;
 ### <a name="css_convert"></a>css::convert(n, v)
 
 
+Souce code:
 ```javascript
 var str = "", gPos;
 
@@ -8564,6 +8813,7 @@ if(!_insInit[id]) {
 ### <a name="css_initConversions"></a>css::initConversions(t)
 
 
+Souce code:
 ```javascript
 head = document.getElementsByTagName('head')[0];
 var styleTag = document.createElement('style');
@@ -8656,6 +8906,7 @@ bexp2 = function(p, v) {
 ### <a name="css_makeCss"></a>css::makeCss(o, mediaRule)
 
 
+Souce code:
 ```javascript
 var str = mediaRule ?  mediaRule + "{" : "";
 
@@ -8682,6 +8933,7 @@ return str;
 ### <a name="css_ruleToCss"></a>css::ruleToCss(cssRulesObj)
 
 
+Souce code:
 ```javascript
 var str = "{";
 for(var n in cssRulesObj) {
@@ -8694,6 +8946,7 @@ return str;
 ### <a name="css_updateStyleTag"></a>css::updateStyleTag(cssText)
 
 
+Souce code:
 ```javascript
 var styleTag = this._styleTag,
     old =  styleTag.firstChild;
@@ -8724,6 +8977,7 @@ The class has following internal singleton variables:
 ### <a name="_dataTrait_guid"></a>_dataTrait::guid(t)
 
 
+Souce code:
 ```javascript
 
 return Math.random().toString(36).substring(2, 15) +
@@ -8734,6 +8988,7 @@ return Math.random().toString(36).substring(2, 15) +
 ### <a name="_dataTrait_isArray"></a>_dataTrait::isArray(t)
 
 
+Souce code:
 ```javascript
 
 if(typeof(t)=="undefined") return this.__isA;
@@ -8744,6 +8999,7 @@ return Object.prototype.toString.call( t ) === '[object Array]';
 ### <a name="_dataTrait_isFunction"></a>_dataTrait::isFunction(fn)
 
 
+Souce code:
 ```javascript
 return Object.prototype.toString.call(fn) == '[object Function]';
 ```
@@ -8751,6 +9007,7 @@ return Object.prototype.toString.call(fn) == '[object Function]';
 ### <a name="_dataTrait_isObject"></a>_dataTrait::isObject(t)
 
 
+Souce code:
 ```javascript
 
 if(typeof(t)=="undefined") return this.__isO;
@@ -8791,6 +9048,7 @@ The class has following internal singleton variables:
 ### <a name="later_add"></a>later::add(fn, thisObj, args)
 
 
+Souce code:
 ```javascript
 if(thisObj || args) {
    var tArgs;
@@ -8809,6 +9067,7 @@ if(thisObj || args) {
 ### <a name="later_after"></a>later::after(seconds, fn, name)
 
 
+Souce code:
 ```javascript
 
 if(!name) {
@@ -8826,6 +9085,7 @@ _everies[name] = {
 ### <a name="later_asap"></a>later::asap(fn)
 
 
+Souce code:
 ```javascript
 this.add(fn);
 
@@ -8834,6 +9094,7 @@ this.add(fn);
 ### <a name="later_every"></a>later::every(seconds, fn, name)
 
 
+Souce code:
 ```javascript
 
 if(!name) {
@@ -8944,6 +9205,7 @@ if(!_initDone) {
 ### <a name="later_once"></a>later::once(key, fn, value)
 
 
+Souce code:
 ```javascript
 // _oneTimers
 
@@ -8953,6 +9215,7 @@ _oneTimers[key] = [fn,value];
 ### <a name="later_onFrame"></a>later::onFrame(fn)
 
 
+Souce code:
 ```javascript
 
 _framers.push(fn);
@@ -8961,6 +9224,7 @@ _framers.push(fn);
 ### <a name="later_polyfill"></a>later::polyfill(t)
 
 
+Souce code:
 ```javascript
 // --- let's not ---
 ```
@@ -8968,6 +9232,7 @@ _framers.push(fn);
 ### <a name="later_removeFrameFn"></a>later::removeFrameFn(fn)
 
 
+Souce code:
 ```javascript
 
 var i = _framers.indexOf(fn);
@@ -9013,6 +9278,7 @@ The class has following internal singleton variables:
 ### <a name="clipBoard_del"></a>clipBoard::del(name)
 
 
+Souce code:
 ```javascript
 
 if( this.localStoreSupport() ) {
@@ -9027,6 +9293,7 @@ else {
 ### <a name="clipBoard_fromClipboard"></a>clipBoard::fromClipboard(opts)
 
 
+Souce code:
 ```javascript
 
 var str = this.get( this._name  );
@@ -9038,6 +9305,7 @@ return o;
 ### <a name="clipBoard_get"></a>clipBoard::get(name)
 
 
+Souce code:
 ```javascript
 
 if( this.localStoreSupport() ) {
@@ -9065,6 +9333,7 @@ this._name = name;
 ### <a name="clipBoard_localStoreSupport"></a>clipBoard::localStoreSupport(t)
 
 
+Souce code:
 ```javascript
 if(_hasSupport) return _hasSupport;
 
@@ -9079,6 +9348,7 @@ try {
 ### <a name="clipBoard_set"></a>clipBoard::set(name, value, days)
 
 
+Souce code:
 ```javascript
 
 if (days) {
@@ -9100,6 +9370,7 @@ else {
 ### <a name="clipBoard_toClipboard"></a>clipBoard::toClipboard(items)
 
 
+Souce code:
 ```javascript
 this.set(this._name, JSON.stringify( items ) );
 
