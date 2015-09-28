@@ -2470,7 +2470,7 @@
             if (this.isArray(v2)) {
               var varObj = v2[0];
               var varName = v2[1];
-
+              console.log("Has array ", varName, varObj);
               if (varName == "value") {
                 debugger;
                 varObj.on(varName, function () {
