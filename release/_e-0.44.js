@@ -2465,7 +2465,17 @@
           }
         } else {
           if (elem._compBaseData) {
-            elem._compBaseData.set(v, v2);
+
+            if (this.isArray(v2)) {
+              var varObj = v2[0];
+              var varName = v2[1];
+              varObj.on(varName, function () {
+                elem._compBaseData.set(v, varObj.get(varName));
+              });
+              elem._compBaseData.set(v, varObj.get(varName));
+            } else {
+              elem._compBaseData.set(v, v2);
+            }
           } else {
             if (this._tag == "canvas") {
               if (v == "width") {
