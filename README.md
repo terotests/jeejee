@@ -3961,17 +3961,16 @@ var o = this, me = this;
 
 if(this.isFunction(obj[varName])) {
 
-    
-    var val = obj[varName](),
+    var val = obj.get(varName),
         o = this,
         fn = function(v) {
-            obj[varName](v);
+            obj.set(varName, v);
+            // obj[varName](v);
         },
         bSendingEvent = false,
         me = this;
   
     var isNumber = false;
-        
     var oo = obj;
 
     var valueInListener = this.uniqueListener("bind:valueIn", function(obj, newVal) {
@@ -4058,13 +4057,13 @@ this.on("value", function() {
         if(o._type=="checkbox") {
             
             if(o.checked()) {
-                obj[varName] = true;
+                obj.set(varName, true);
             } else {
-                obj[varName] = false;
+                obj.set(varName, false);
             }
             
         } else {
-            obj[varName] = o.val();
+            obj.set(varName, o.val());
         }
 
     }
@@ -4074,7 +4073,7 @@ this.on("value", function() {
 
 if(obj) {
     if(o._type=="checkbox") {
-
+        
         if(obj[varName]) {
             o.checked(true);
         } else {
@@ -4350,10 +4349,15 @@ if(this.isObject(v)) {
        if(this.isArray(v2)) {
            var varObj  = v2[0];
            var varName = v2[1];
+
            varObj.on(varName, function() {
                elem._compBaseData.set(v, varObj.get(varName));
            });
            elem._compBaseData.set(v, varObj.get(varName));
+           // --> two way
+           elem._compBaseData.on(v, function() {
+               varObj.set(varName, elem._compBaseData.get(v));
+           });
        } else {
            elem._compBaseData.set(v, v2);
        }
@@ -4472,7 +4476,6 @@ if(!this._isStdElem(elemName)) {
                     // TODO: make this batter, now only one-dimensional :/ 
                     for( var n in oo) {
                         if(oo.hasOwnProperty(n)) {
-                            // currently setting objects or arrays is not possible
                             elem.attr(n, oo[n]);
                         }
                     }  

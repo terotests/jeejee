@@ -2595,12 +2595,7 @@
                   // TODO: make this batter, now only one-dimensional :/
                   for (var n in oo) {
                     if (oo.hasOwnProperty(n)) {
-                      if (n == "value") {
-                        elem.attr(n, oo[n]);
-                      } else {
-                        // currently setting objects or arrays is not possible
-                        elem.attr(n, oo[n]);
-                      }
+                      elem.attr(n, oo[n]);
                     }
                   }
                 }
