@@ -6092,14 +6092,12 @@
           if (!_instances) _instances = {};
           p.createdCallback = function () {};
           p.attachedCallback = function () {
-            var obj = _e();
-            obj.initAsTag(elemName, this.parentNode);
+            var obj = _e(elemName, this);
+            // obj.initAsTag(elemName, this.parentNode);
             var id = me.guid();
             _instances[id] = obj;
             obj._dom.setAttribute("data-instance-id", id);
 
-            // collect attributes of DOM node
-            this.attributes;
             var cnt = this.attributes.length;
             var attrObj = {};
             for (var i = 0; i < cnt; i++) {
