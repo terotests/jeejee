@@ -6432,7 +6432,7 @@ var list = this._findSendHandler(url);
 if(list) {
     for(var i=0; i<list.length; i++) {
         var fn = list[i];
-        var res = fn( data, callBack, errorCallback );
+        var res = fn.apply( fn._context || this, [data, callBack, errorCallback] );
         if(res === true) {
             return;
         }
@@ -6443,7 +6443,9 @@ if(list) {
 
 ```
 
-### <a name="mvc_trait_sendHandler"></a>mvc_trait::sendHandler(url, handlerFunction)
+### <a name="mvc_trait_sendHandler"></a>mvc_trait::sendHandler(url, handlerFunction, context)
+`context` value of &quot;this&quot; when the handler is going to be called
+ 
 
 
 Souce code:
@@ -6455,6 +6457,8 @@ if(!this._sendHook) {
 if(!this._sendHook[url]) {
     this._sendHook[url] = [];
 }
+
+if(context) handlerFunction._context = context;
 
 this._sendHook[url].unshift( handlerFunction );
 ```

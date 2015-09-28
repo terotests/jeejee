@@ -4497,7 +4497,7 @@
           this._sendHook[url] = [];
         }
 
-        if (contest) handlerFunction._context = context;
+        if (context) handlerFunction._context = context;
 
         this._sendHook[url].unshift(handlerFunction);
       };
