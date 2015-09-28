@@ -5660,7 +5660,7 @@ cont.forChildren(function(ch) {
             showP = false;
             later().after(0.2, function() {
                 _transitionOn = 0;
-                if(addThese[0]) addThese[0].scrollTo();
+                if(addThese[0]) addThese[0].scrollTo(view._y, view._x);
             });
         });
     }
@@ -5853,6 +5853,10 @@ var viewData = {
     oldChildren : oldChildren,
     params : params
 };        
+if(window) {
+    viewData._x = window.pageXOffset;
+    viewData._y = window.pageYOffset;
+}
 
 var showP = true,
     hadChildren = false,
@@ -5933,16 +5937,23 @@ if(i>=0) {
 }
 ```
 
-### <a name="viewsNavis_scrollTo"></a>viewsNavis::scrollTo(noThing)
-`noThing` Not a param
+### <a name="viewsNavis_scrollTo"></a>viewsNavis::scrollTo(yPosition, xPosition)
+`yPosition` Given y scroll position
+ 
+`xPosition` Given x position
  
 
 Make the window scroll to this element
 Souce code:
 ```javascript
 if(window) {
+    var currLeft = xPosition || window.pageXOffset;
+    if(yPosition) {
+        window.scrollTo( currLeft, parseInt(yPosition));
+        return this;
+    }
+    
     var box = this.offset();
-    var currLeft = window.pageXOffset;
 
     this.addClass("lastScrollTarget");
     var me = this;
@@ -5959,9 +5970,9 @@ if(window) {
     } else {
         toY = toY - window.innerHeight*0.2
     }
-    if(parseInt(toY) < 300) toY = 0;
     window.scrollTo(currLeft || 0, parseInt(toY));
 }
+return this;
 ```
 
 ### <a name="viewsNavis_setLayout"></a>viewsNavis::setLayout(name)

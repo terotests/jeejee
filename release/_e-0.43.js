@@ -3736,7 +3736,7 @@
               showP = false;
               later().after(0.2, function () {
                 _transitionOn = 0;
-                if (addThese[0]) addThese[0].scrollTo();
+                if (addThese[0]) addThese[0].scrollTo(view._y, view._x);
               });
             });
           }
@@ -3918,6 +3918,10 @@
           oldChildren: oldChildren,
           params: params
         };
+        if (window) {
+          viewData._x = window.pageXOffset;
+          viewData._y = window.pageYOffset;
+        }
 
         var showP = true,
             hadChildren = false,
@@ -3998,12 +4002,18 @@
 
       /**
        * Make the window scroll to this element
-       * @param int noThing  - Not a param
+       * @param int yPosition  - Given y scroll position
+       * @param int xPosition  - Given x position
        */
-      _myTrait_.scrollTo = function (noThing) {
+      _myTrait_.scrollTo = function (yPosition, xPosition) {
         if (window) {
+          var currLeft = xPosition || window.pageXOffset;
+          if (yPosition) {
+            window.scrollTo(currLeft, parseInt(yPosition));
+            return this;
+          }
+
           var box = this.offset();
-          var currLeft = window.pageXOffset;
 
           this.addClass("lastScrollTarget");
           var me = this;
@@ -4020,9 +4030,9 @@
           } else {
             toY = toY - window.innerHeight * 0.2;
           }
-          if (parseInt(toY) < 300) toY = 0;
           window.scrollTo(currLeft || 0, parseInt(toY));
         }
+        return this;
       };
 
       /**
