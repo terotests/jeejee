@@ -1168,6 +1168,7 @@ MIT. Currently use at own risk.
     
 ##### trait mvc_trait
 
+- [_findSendHandler](README.md#mvc_trait__findSendHandler)
 - [createItemView](README.md#mvc_trait_createItemView)
 - [data](README.md#mvc_trait_data)
 - [findModelFactory](README.md#mvc_trait_findModelFactory)
@@ -1178,6 +1179,8 @@ MIT. Currently use at own risk.
 - [modelFactoryLoader](README.md#mvc_trait_modelFactoryLoader)
 - [mv](README.md#mvc_trait_mv)
 - [mvc](README.md#mvc_trait_mvc)
+- [send](README.md#mvc_trait_send)
+- [sendHandler](README.md#mvc_trait_sendHandler)
 - [tree](README.md#mvc_trait_tree)
 
 
@@ -5907,6 +5910,20 @@ The class has following internal singleton variables:
 * _customDirectives
         
         
+### <a name="mvc_trait__findSendHandler"></a>mvc_trait::_findSendHandler(url)
+
+
+```javascript
+if(this._sendHook) {
+    var h = this._sendHook[url];
+    if(h) return h;
+}
+var p = this.parent();
+if(p) return p._findSendHandler(url);
+
+
+```
+
 ### <a name="mvc_trait_createItemView"></a>mvc_trait::createItemView(item)
 
 
@@ -6220,6 +6237,54 @@ if(controller) {
     this._controller = controller;
 }
 return this;
+```
+
+### <a name="mvc_trait_send"></a>mvc_trait::send(url, data, callBack, errorCallback)
+`url` URL or controller name to send the data to
+ 
+
+You can create a send handler using
+
+```
+obj.sendHandler(&quot;post-url&quot;, function(data, result, fail) { });
+```
+
+To send into this url use
+```
+  obj.send(url, data, function(result) {
+     
+  });
+```
+```javascript
+
+var list = this._findSendHandler(url);
+if(list) {
+    for(var i=0; i<list.length; i++) {
+        var fn = list[i];
+        var res = fn( data, callBack, errorCallback );
+        if(res === true) {
+            return;
+        }
+    }
+} else {
+    console.error("Controller or send handler for ",url, " was not found");
+}
+
+```
+
+### <a name="mvc_trait_sendHandler"></a>mvc_trait::sendHandler(url, handlerFunction)
+
+
+```javascript
+if(!this._sendHook) {
+    this._sendHook = {};
+}
+
+if(!this._sendHook[url]) {
+    this._sendHook[url] = [];
+}
+
+this._sendHook[url].unshift( handlerFunction );
 ```
 
 ### <a name="mvc_trait_tree"></a>mvc_trait::tree(treeData, itemFn, options)

@@ -4453,11 +4453,20 @@
       };
 
       /**
-       * @param string url  - URL or controller name to send the data to
-       * @param Object data
-       * @param function callBack
-       * @param function errorCallback
-       */
+      * You can create a send handler using
+      ```
+      obj.sendHandler(&quot;post-url&quot;, function(data, result, fail) { });
+      ```
+      To send into this url use
+      ```
+      obj.send(url, data, function(result) {
+        });
+      ```
+      * @param string url  - URL or controller name to send the data to 
+      * @param Object data  
+      * @param function callBack  
+      * @param function errorCallback  
+      */
       _myTrait_.send = function (url, data, callBack, errorCallback) {
 
         var list = this._findSendHandler(url);
