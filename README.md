@@ -1253,6 +1253,7 @@ MIT. Currently use at own risk.
     
 ##### trait ajax_methods
 
+- [_httpsend](README.md#__httpsend)
 - [_initAjax](README.md#__initAjax)
 - [_traditionalUpload](README.md#__traditionalUpload)
 - [ajaxHook](README.md#_ajaxHook)
@@ -1262,7 +1263,6 @@ MIT. Currently use at own risk.
 - [getJSON](README.md#_getJSON)
 - [post](README.md#_post)
 - [postJSON](README.md#_postJSON)
-- [send](README.md#_send)
 - [uploadHook](README.md#_uploadHook)
 
 
@@ -6998,6 +6998,39 @@ The class has following internal singleton variables:
 * _uploadHook
         
         
+### <a name="__httpsend"></a>::_httpsend(url, callback, method, data, errorCallback)
+`url` request target url
+ 
+`callback` function to receive HTTP return value
+ 
+`method` POST or GET
+ 
+`data` String data to send
+ 
+`errorCallback` error function
+ 
+
+
+```javascript
+var x = this._initAjax();
+x.open(method, url);
+x.onreadystatechange = function() {
+    if (x.readyState == 4) {
+        if (x.status==200) {
+            callback(x.responseText)
+        } else {
+            errorCallback(x);
+        }
+    }
+};
+if (method == 'POST') {
+    x.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+}
+x.send(data);
+return this;
+
+```
+
 ### <a name="__initAjax"></a>::_initAjax(t)
 
 
@@ -7434,12 +7467,12 @@ return myImage;
 var query = [];
 if(this.isFunction(data)) {
     callback = data;
-    this.send(url, callback, 'GET', null);
+    this._httpsend(url, callback, 'GET', null);
 } else {
     for (var key in data) {
         query.push(encodeURIComponent(key) + '=' + encodeURIComponent(data[key]));
     }
-    this.send(url + (query.length ? '?' + query.join('&') : ''), callback, 'GET', null);
+    this._httpsend(url + (query.length ? '?' + query.join('&') : ''), callback, 'GET', null);
 }
 return this;
 
@@ -7453,14 +7486,14 @@ return this;
 var query = [];
 if(this.isFunction(data)) {
     callback = data;
-    this.send(url, function(r) {
+    this._httpsend(url, function(r) {
         callback(JSON.parse(r));
     }, 'GET', null);
 } else {
     for (var key in data) {
         query.push(encodeURIComponent(key) + '=' + encodeURIComponent(data[key]));
     }
-    this.send(url + (query.length ? '?' + query.join('&') : ''), function(r) {
+    this._httpsend(url + (query.length ? '?' + query.join('&') : ''), function(r) {
         callback(JSON.parse(r));
     }, 'GET', null);
 }
@@ -7493,7 +7526,7 @@ var query = [];
 for (var key in data) {
     query.push(encodeURIComponent(key) + '=' + encodeURIComponent(data[key]));
 }
-this.send(url, callback, 'POST', query.join('&'), errCallback);
+this._httpsend(url, callback, 'POST', query.join('&'), errCallback);
 
 return this;
 
@@ -7519,7 +7552,7 @@ if(_ajaxHook && _ajaxHook[url]) {
     }
     return this;
 }
-this.send(url, function(result) {
+this._httpsend(url, function(result) {
     try {
         var data = JSON.parse(result);
         callback(data);
@@ -7530,45 +7563,6 @@ this.send(url, function(result) {
 
 return this;
 
-```
-
-### <a name="_send"></a>::send(url, callback, method, data, errorCallback)
-
-
-```javascript
-var x = this._initAjax();
-x.open(method, url);
-x.onreadystatechange = function() {
-    if (x.readyState == 4) {
-        if (x.status==200) {
-            callback(x.responseText)
-        } else {
-            errorCallback(x);
-        }
-    }
-};
-if (method == 'POST') {
-    x.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-}
-x.send(data);
-
-return this;
-
-/*
-ajax.send = function(url, callback, method, data, sync) {
-    var x = ajax.x();
-    x.open(method, url, sync);
-    x.onreadystatechange = function() {
-        if (x.readyState == 4) {
-            callback(x.responseText)
-        }
-    };
-    if (method == 'POST') {
-        x.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-    }
-    x.send(data)
-};
-*/
 ```
 
 ### <a name="_uploadHook"></a>::uploadHook(url, handlerFunction)

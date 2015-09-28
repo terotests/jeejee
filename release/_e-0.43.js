@@ -4119,6 +4119,18 @@
       // Initialize static variables here...
 
       /**
+       * @param String url
+       */
+      _myTrait_._findSendHandler = function (url) {
+        if (this._sendHook) {
+          var h = this._sendHook[url];
+          if (h) return h;
+        }
+        var p = this.parent();
+        if (p) return p._findSendHandler(url);
+      };
+
+      /**
        * @param Object item
        */
       _myTrait_.createItemView = function (item) {
@@ -4438,6 +4450,38 @@
           this._controller = controller;
         }
         return this;
+      };
+
+      /**
+       * @param string url  - URL or controller name to send the data to
+       * @param Object data
+       * @param function callBack
+       * @param function errorCallback
+       */
+      _myTrait_.send = function (url, data, callBack, errorCallback) {
+
+        var h = this._findSendHandler(url);
+        if (h) {
+          return h(data, callBack, errorCallback);
+        } else {
+          console.error("Controller or send handler for ", url, " was not found");
+        }
+      };
+
+      /**
+       * @param function url
+       * @param float handlerFunction
+       */
+      _myTrait_.sendHandler = function (url, handlerFunction) {
+        if (!this._sendHook) {
+          this._sendHook = {};
+        }
+
+        if (!this._sendHook[url]) {
+          this._sendHook[url] = [];
+        }
+
+        this._sendHook[url].unshift(handlerFunction);
       };
 
       /**
@@ -5349,6 +5393,32 @@
       // Initialize static variables here...
 
       /**
+       * @param String url  - request target url
+       * @param function callback  - function to receive HTTP return value
+       * @param String method  - POST or GET
+       * @param String data  - String data to send
+       * @param function errorCallback  - error function
+       */
+      _myTrait_._httpsend = function (url, callback, method, data, errorCallback) {
+        var x = this._initAjax();
+        x.open(method, url);
+        x.onreadystatechange = function () {
+          if (x.readyState == 4) {
+            if (x.status == 200) {
+              callback(x.responseText);
+            } else {
+              errorCallback(x);
+            }
+          }
+        };
+        if (method == "POST") {
+          x.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        }
+        x.send(data);
+        return this;
+      };
+
+      /**
        * @param float t
        */
       _myTrait_._initAjax = function (t) {
@@ -5770,12 +5840,12 @@
         var query = [];
         if (this.isFunction(data)) {
           callback = data;
-          this.send(url, callback, "GET", null);
+          this._httpsend(url, callback, "GET", null);
         } else {
           for (var key in data) {
             query.push(encodeURIComponent(key) + "=" + encodeURIComponent(data[key]));
           }
-          this.send(url + (query.length ? "?" + query.join("&") : ""), callback, "GET", null);
+          this._httpsend(url + (query.length ? "?" + query.join("&") : ""), callback, "GET", null);
         }
         return this;
       };
@@ -5789,14 +5859,14 @@
         var query = [];
         if (this.isFunction(data)) {
           callback = data;
-          this.send(url, function (r) {
+          this._httpsend(url, function (r) {
             callback(JSON.parse(r));
           }, "GET", null);
         } else {
           for (var key in data) {
             query.push(encodeURIComponent(key) + "=" + encodeURIComponent(data[key]));
           }
-          this.send(url + (query.length ? "?" + query.join("&") : ""), function (r) {
+          this._httpsend(url + (query.length ? "?" + query.join("&") : ""), function (r) {
             callback(JSON.parse(r));
           }, "GET", null);
         }
@@ -5831,7 +5901,7 @@
         for (var key in data) {
           query.push(encodeURIComponent(key) + "=" + encodeURIComponent(data[key]));
         }
-        this.send(url, callback, "POST", query.join("&"), errCallback);
+        this._httpsend(url, callback, "POST", query.join("&"), errCallback);
 
         return this;
       };
@@ -5859,7 +5929,7 @@
           }
           return this;
         }
-        this.send(url, function (result) {
+        this._httpsend(url, function (result) {
           try {
             var data = JSON.parse(result);
             callback(data);
@@ -5869,49 +5939,6 @@
         }, "POST", JSON.stringify(data), errCallback);
 
         return this;
-      };
-
-      /**
-       * @param float url
-       * @param float callback
-       * @param float method
-       * @param float data
-       * @param float errorCallback
-       */
-      _myTrait_.send = function (url, callback, method, data, errorCallback) {
-        var x = this._initAjax();
-        x.open(method, url);
-        x.onreadystatechange = function () {
-          if (x.readyState == 4) {
-            if (x.status == 200) {
-              callback(x.responseText);
-            } else {
-              errorCallback(x);
-            }
-          }
-        };
-        if (method == "POST") {
-          x.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        }
-        x.send(data);
-
-        return this;
-
-        /*
-        ajax.send = function(url, callback, method, data, sync) {
-        var x = ajax.x();
-        x.open(method, url, sync);
-        x.onreadystatechange = function() {
-        if (x.readyState == 4) {
-            callback(x.responseText)
-        }
-        };
-        if (method == 'POST') {
-        x.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-        }
-        x.send(data)
-        };
-        */
       };
 
       /**
