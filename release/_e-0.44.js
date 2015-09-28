@@ -2590,11 +2590,7 @@
                   for (var n in oo) {
                     if (oo.hasOwnProperty(n)) {
                       // currently setting objects or arrays is not possible
-                      // TODO: make possible setting them
-
-                      if (!this.isObject(oo[n])) {
-                        elem.attr(n, oo[n]);
-                      }
+                      elem.attr(n, oo[n]);
                     }
                   }
                 }
