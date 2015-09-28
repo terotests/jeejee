@@ -4474,8 +4474,12 @@ if(!this._isStdElem(elemName)) {
                 elem.addClass( customElem.baseCss._nameSpace);
             }
             
-            // then apply the component init routine
-            customElem.init.apply(elem, [className || {}, customElem]);
+            if(baseData) {
+                customElem.init.apply(elem, [baseData, customElem]);
+            } else {
+                // then apply the component init routine
+                customElem.init.apply(elem, [className || {}, customElem]);
+            }
             
             return elem;
         }
