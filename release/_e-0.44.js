@@ -2470,19 +2470,14 @@
             if (this.isArray(v2)) {
               var varObj = v2[0];
               var varName = v2[1];
-              if (varName == "value") {
-                varObj.on(varName, function () {
-                  elem._compBaseData.set(v, varObj.get(varName));
-                });
-              } else {
-                varObj.on(varName, function () {
-                  elem._compBaseData.set(v, varObj.get(varName));
-                });
-              }
+
+              varObj.on(varName, function () {
+                elem._compBaseData.set(v, varObj.get(varName));
+              });
               elem._compBaseData.set(v, varObj.get(varName));
               // --> two way
               elem._compBaseData.on(v, function () {
-                varObj.set(varName);
+                varObj.set(varName, elem._compBaseData.get(v));
               });
             } else {
               elem._compBaseData.set(v, v2);
