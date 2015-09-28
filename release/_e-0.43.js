@@ -4460,17 +4460,23 @@
        */
       _myTrait_.send = function (url, data, callBack, errorCallback) {
 
-        var h = this._findSendHandler(url);
-        if (h) {
-          return h(data, callBack, errorCallback);
+        var list = this._findSendHandler(url);
+        if (list) {
+          for (var i = 0; i < list.length; i++) {
+            var fn = list[i];
+            var res = fn(data, callBack, errorCallback);
+            if (res === true) {
+              return;
+            }
+          }
         } else {
           console.error("Controller or send handler for ", url, " was not found");
         }
       };
 
       /**
-       * @param function url
-       * @param float handlerFunction
+       * @param String url
+       * @param function handlerFunction
        */
       _myTrait_.sendHandler = function (url, handlerFunction) {
         if (!this._sendHook) {
