@@ -2470,9 +2470,7 @@
             if (this.isArray(v2)) {
               var varObj = v2[0];
               var varName = v2[1];
-              console.log("Has array ", varName, varObj);
               if (varName == "value") {
-                debugger;
                 varObj.on(varName, function () {
                   elem._compBaseData.set(v, varObj.get(varName));
                 });
@@ -2598,8 +2596,13 @@
                   // TODO: make this batter, now only one-dimensional :/
                   for (var n in oo) {
                     if (oo.hasOwnProperty(n)) {
-                      // currently setting objects or arrays is not possible
-                      elem.attr(n, oo[n]);
+                      if (n == "value") {
+
+                        elem.attr(n, oo[n]);
+                      } else {
+                        // currently setting objects or arrays is not possible
+                        elem.attr(n, oo[n]);
+                      }
                     }
                   }
                 }
