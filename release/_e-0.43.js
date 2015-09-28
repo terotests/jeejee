@@ -4473,7 +4473,7 @@
         if (list) {
           for (var i = 0; i < list.length; i++) {
             var fn = list[i];
-            var res = fn(data, callBack, errorCallback);
+            var res = fn.apply(fn._context || this, [data, callBack, errorCallback]);
             if (res === true) {
               return;
             }
@@ -4486,8 +4486,9 @@
       /**
        * @param String url
        * @param function handlerFunction
+       * @param float context  - value of &quot;this&quot; when the handler is going to be called
        */
-      _myTrait_.sendHandler = function (url, handlerFunction) {
+      _myTrait_.sendHandler = function (url, handlerFunction, context) {
         if (!this._sendHook) {
           this._sendHook = {};
         }
@@ -4495,6 +4496,8 @@
         if (!this._sendHook[url]) {
           this._sendHook[url] = [];
         }
+
+        if (contest) handlerFunction._context = context;
 
         this._sendHook[url].unshift(handlerFunction);
       };
