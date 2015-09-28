@@ -4479,7 +4479,7 @@
             }
           }
         } else {
-          console.error("Controller or send handler for ", url, " was not found");
+          errorCallback("Controller or send handler for ", url, " was not found");
         }
       };
 
