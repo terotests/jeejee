@@ -6438,7 +6438,7 @@ if(list) {
         }
     }
 } else {
-    errorCallback("Controller or send handler for ",url, " was not found");
+    errorCallback("Controller or send handler for "+url+" was not found");
 }
 
 ```
