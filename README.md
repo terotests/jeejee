@@ -4459,6 +4459,9 @@ if(!this._isStdElem(elemName)) {
         if(customElem.init) {
             
             var baseData;
+            // create the element HTML tag
+            var elem = _e(customElem.tagName);
+            
             if(customElem.data) {
                 // if there is attributes set for the object
                 baseData = _data(customElem.data)
@@ -4469,16 +4472,16 @@ if(!this._isStdElem(elemName)) {
                         if(oo.hasOwnProperty(n)) {
                             // currently setting objects or arrays is not possible
                             // TODO: make possible setting them
+                            
                             if(!this.isObject(oo[n])) {
-                                baseData.set(n, oo[n]); 
+                                elem.attr(n, oo[n]);
                             }
                         }
                     }  
                 } 
             }
             
-            // create the element HTML tag
-            var elem = _e(customElem.tagName);
+
             if(baseData) elem._compBaseData = baseData;
             this.add(elem);
             if(customElem.baseCss) {
