@@ -8209,10 +8209,13 @@
           if (!_elemNames[elemName] && !_svgElems[elemName]) {
             // custom element, this may be a polymer element or similar
             hasCustom = this._findCustomElem(elemName);
-            this._customElement = hasCustom;
-            this._customAttrs = into; // second attribute { title : name } etc.
 
-            elemName = hasCustom.tagName || "div";
+            if (hasCustom) {
+              this._customElement = hasCustom;
+              this._customAttrs = into; // second attribute { title : name } etc.
+
+              elemName = hasCustom.tagName || "div";
+            }
           }
         }
 
