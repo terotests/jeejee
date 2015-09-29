@@ -6054,7 +6054,7 @@
           }
         }
 
-        if (parentE) parentE.add(elem);
+        // if(parentE) parentE.add(elem);
 
         if (customElem.baseCss) {
           elem.addClass(customElem.baseCss._nameSpace);
