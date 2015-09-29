@@ -1275,6 +1275,7 @@ MIT. Currently use at own risk.
 ##### trait web_comp
 
 - [_findCustomElem](README.md#__findCustomElem)
+- [_initCustom](README.md#__initCustom)
 - [customElement](README.md#_customElement)
 
 
@@ -1637,6 +1638,7 @@ if(!_eg) {
 }
 var svgNS = "http://www.w3.org/2000/svg";  
 var origElemName = elemName;
+var hasCustom;
 elemName = elemName.toLowerCase()
 
 if(force) {
@@ -1644,7 +1646,11 @@ if(force) {
 } else {
     if(!_elemNames[elemName] && !_svgElems[elemName] ) {
         // custom element, this may be a polymer element or similar
-        this._customElement = elemName;
+        hasCustom = this._findCustomElem( elemName );
+        this._customElement = hasCustom;
+        this._customAttrs = into; // second attribute { title : name } etc.
+        
+        elemName = hasCustom.tagName || "div";
     }
 }
 
@@ -1765,6 +1771,8 @@ if(! (items instanceof Array) ) {
 var me = this;
 items.forEach(  function(e) {
  
+
+ 
     //
     if(me.isFunction(e)) {
         var creator = e;
@@ -1810,6 +1818,16 @@ items.forEach(  function(e) {
         e._parent = me;
         e._svg = me._svg;
         me._dom.appendChild(e._dom);            
+
+        if(e._customElement) {
+            var reCheck;
+            if(e._customElement.customTag) {
+                reCheck = e._findCustomElem(e._customElement.customTag);
+            }
+            e.clear(); // -- clear the old element data, if it exists
+            me._initCustom( e, reCheck || e._customElement, me, e._customAttrs || {} );
+        }        
+        
         
         e.trigger("parent",me);
         me.trigger("child",e);
@@ -4451,49 +4469,17 @@ return el;
 ```javascript
 
 if(!this._isStdElem(elemName)) {
-    
-    // o.e("pri-buttom", {});
-    
+
     var customElem = this._findCustomElem(elemName);
     if(customElem) {
-        // customElem.data
-        // customElem.css
-        // customElem.tagName
-        // customElem.init
-        // customElem.baseCss
+
         if(customElem.init) {
             
             var baseData;
             // create the element HTML tag
-            var elem = _e(customElem.tagName);
-            
-            if(customElem.data) {
-                // if there is attributes set for the object
-                baseData = _data(JSON.parse(JSON.stringify(customElem.data)));
-                if(baseData) elem._compBaseData = baseData;
-                if(this.isObject(className)) {
-                    var oo = className;
-                    // TODO: make this batter, now only one-dimensional :/ 
-                    for( var n in oo) {
-                        if(oo.hasOwnProperty(n)) {
-                            elem.attr(n, oo[n]);
-                        }
-                    }  
-                } 
-            }
-         
-            this.add(elem);
-            if(customElem.baseCss) {
-                elem.addClass( customElem.baseCss._nameSpace);
-            }
-            
-            if(baseData) {
-                customElem.init.apply(elem, [baseData, customElem]);
-            } else {
-                // then apply the component init routine
-                customElem.init.apply(elem, [className || {}, customElem]);
-            }
-            
+            var elem = _e(customElem.customTag, className);
+            // this._initCustom( elem, customElem, this, className );
+            this.add( elem );
             return elem;
         }
         
@@ -7933,6 +7919,8 @@ The class has following internal singleton variables:
         
 * _customElems
         
+* _instances
+        
         
 ### <a name="__findCustomElem"></a>::_findCustomElem(name)
 
@@ -7952,7 +7940,50 @@ if(this._customElems) {
 var p = this.parent();
 if(p) return p._findCustomElem(name);
 
+if(_customElems) return _customElems[name];
 
+
+```
+
+### <a name="__initCustom"></a>::_initCustom(elem, customElem, parentE, attrObj)
+`elem` _e() element to init the element to
+ 
+`customElem` Custom element initialization data
+ 
+
+
+*The source code for the function*:
+```javascript
+
+var baseData;
+
+if(customElem.data) {
+    // if there is attributes set for the object
+    baseData = _data(JSON.parse(JSON.stringify(customElem.data)));
+    if(baseData) elem._compBaseData = baseData;
+    if(this.isObject(attrObj)) {
+        var oo = attrObj;
+        // TODO: make this batter, now only one-dimensional :/ 
+        for( var n in oo) {
+            if(oo.hasOwnProperty(n)) {
+                elem.attr(n, oo[n]);
+            }
+        }  
+    } 
+}
+
+// if(parentE) parentE.add(elem);
+
+if(customElem.baseCss) {
+    elem.addClass( customElem.baseCss._nameSpace);
+}
+
+if(baseData) {
+    customElem.init.apply(elem, [baseData, customElem]);
+} else {
+    // then apply the component init routine
+    customElem.init.apply(elem, [attrObj || {}, customElem]);
+}
 ```
 
 ### <a name="_customElement"></a>::customElement(elemName, options)
@@ -7962,6 +7993,7 @@ if(p) return p._findCustomElem(name);
 ```javascript
 
 if(!this._customElems) this._customElems = {};
+if(!_customElems) _customElems = {};
 
 // options.css = factory object for creating CSS styles for the element
 // options.init = factory to create the actual user interface element
@@ -7972,20 +8004,28 @@ if(this._customElems[elemName]) return;
 
 // this would create the factory for the custom element to be used
 this._customElems[elemName] = options;
+if(!_customElems[elemName]) _customElems[elemName] = options;
 
 // register the element creation process...
-if(document.registerElement) {
-    // custom elements can be used to create the element eventually
-    options._customElems = true;
+if(document.registerElement && (elemName.indexOf("x-")==0)) {
+   
 } else {
     
 }
+// save the custom element tag name for further referencese
+options.customTag = elemName;
 
 // create the CSS if necessary to the namespace of the element
 if(options.css) {
     var baseCss = this.css(elemName);
     options.css(baseCss);
     options.baseCss = baseCss;
+    // TODO: add _firstUpdate to 
+    /*
+    baseCss._firstUpdate = function() {
+        
+    }
+    */
 }
 
 ```
@@ -8851,6 +8891,10 @@ if(!head) {
                 if(ins._dirty) {
                     ins.buildCss();
                     ins._dirty = false;
+                    if(ins._firstUpdate) {
+                        ins._firstUpdate();
+                        delete ins._firstUpdate;
+                    }
                 }
             }
             

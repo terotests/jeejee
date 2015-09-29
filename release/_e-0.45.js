@@ -6083,11 +6083,10 @@
 
         // do not re-create this time the element
         if (this._customElems[elemName]) return;
-        if (_customElems[elemName]) return;
 
         // this would create the factory for the custom element to be used
         this._customElems[elemName] = options;
-        _customElems[elemName] = options;
+        if (!_customElems[elemName]) _customElems[elemName] = options;
 
         // register the element creation process...
         if (document.registerElement && elemName.indexOf("x-") == 0) {} else {}
