@@ -1820,15 +1820,15 @@ items.forEach(  function(e) {
         me._dom.appendChild(e._dom);            
 
         if(e._customElement) {
-            var reCheck;
+            var reCheck, oldDef = e._customElement;
             if(e._customElement.customTag) {
                 reCheck = e._findCustomElem(e._customElement.customTag);
             }
+            if(reCheck === oldDef) oldDef = null;
             e.clear(); // -- clear the old element data, if it exists
-            me._initCustom( e, reCheck || e._customElement, me, e._customAttrs || {} );
+            me._initCustom( e, reCheck || e._customElement, me, e._customAttrs || {}, oldDef );
         }        
-        
-        
+
         e.trigger("parent",me);
         me.trigger("child",e);
     }                    
@@ -7945,7 +7945,7 @@ if(_customElems) return _customElems[name];
 
 ```
 
-### <a name="__initCustom"></a>::_initCustom(elem, customElem, parentE, attrObj)
+### <a name="__initCustom"></a>::_initCustom(elem, customElem, parentE, attrObj, oldDefinition)
 `elem` _e() element to init the element to
  
 `customElem` Custom element initialization data
@@ -7972,12 +7972,11 @@ if(customElem.data) {
     } 
 }
 
-// if(parentE) parentE.add(elem);
-
 if(customElem.baseCss) {
+    if(elem._customCssBase) elem.removeClass( elem._customCssBase  );
     elem.addClass( customElem.baseCss._nameSpace);
+    elem._customCssBase = customElem.baseCss._nameSpace;
 }
-
 if(baseData) {
     customElem.init.apply(elem, [baseData, customElem]);
 } else {
