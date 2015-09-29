@@ -71,6 +71,15 @@
             e._svg = me._svg;
             me._dom.appendChild(e._dom);
 
+            if (e._customElement) {
+              var reCheck;
+              if (e._customElement.customTag) {
+                reCheck = e._findCustomElem(e._customElement.customTag);
+              }
+              e.clear(); // -- clear the old element data, if it exists
+              this._initCustom(e, reCheck || e._customElement, me, e._customAttrs || {});
+            }
+
             e.trigger("parent", me);
             me.trigger("child", e);
           }
@@ -2571,21 +2580,16 @@
 
         if (!this._isStdElem(elemName)) {
 
-          // o.e("pri-buttom", {});
-
           var customElem = this._findCustomElem(elemName);
           if (customElem) {
-            // customElem.data
-            // customElem.css
-            // customElem.tagName
-            // customElem.init
-            // customElem.baseCss
+
             if (customElem.init) {
 
               var baseData;
               // create the element HTML tag
               var elem = _e(customElem.tagName);
-              this._initCustom(elem, customElem, this, className);
+              // this._initCustom( elem, customElem, this, className );
+              this.add(elem);
               return elem;
             }
           }
@@ -6022,7 +6026,7 @@
         var p = this.parent();
         if (p) return p._findCustomElem(name);
 
-        return _customElems[name];
+        if (_customElems) return _customElems[name];
       };
 
       /**
@@ -6087,6 +6091,8 @@
 
         // register the element creation process...
         if (document.registerElement && elemName.indexOf("x-") == 0) {} else {}
+        // save the custom element tag name for further referencese
+        options.customTag = elemName;
 
         // create the CSS if necessary to the namespace of the element
         if (options.css) {
@@ -8064,12 +8070,17 @@
         }
         var svgNS = "http://www.w3.org/2000/svg";
         var origElemName = elemName;
+        var hasCustom;
         elemName = elemName.toLowerCase();
 
         if (force) {} else {
           if (!_elemNames[elemName] && !_svgElems[elemName]) {
             // custom element, this may be a polymer element or similar
-            this._customElement = elemName;
+            hasCustom = this._findCustomElem(elemName);
+            this._customElement = hasCustom;
+            this._customAttrs = into; // second attribute { title : name } etc.
+
+            elemName = hasCustom.tagName || "div";
           }
         }
 
