@@ -2663,7 +2663,9 @@
        * @param float attrs
        */
       _myTrait_.e = function (elemName, className, attrs) {
-
+        if (this._contentObj) {
+          return this._contentObj.e.apply(this._contentObj, Array.prototype.slice.call(arguments));
+        }
         if (!this._isStdElem(elemName)) {
 
           var customElem = this._findCustomElem(elemName);
