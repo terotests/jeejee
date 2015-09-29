@@ -1568,10 +1568,7 @@
           return this;
         }
 
-        // Test: removed the postfix from the class names
-        var pf = this.findPostFix();
-        if (pf) {}
-
+        if (this.hasClass(c)) return;
         this._classes.push(c);
         if (!this._svg) this._dom.className = this._classes.join(" ");
 
@@ -8220,9 +8217,6 @@
 // should we have named styles... perhaps... TODO
 
 // console.log("**** SHOULD NOT ITERATE CHILDREN *****");
-
-//this._classes.push(c+pf);
-// this._dom.className = this._classes.join(" ");    
 
 /*
 while( (i = this._classes.indexOf(c+pf))>=0) {

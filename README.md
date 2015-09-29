@@ -3399,13 +3399,7 @@ if(this.isStream(c)) {
     return this;
 }
 
-// Test: removed the postfix from the class names
-var pf = this.findPostFix();
-if(pf) {
-    //this._classes.push(c+pf);
-    // this._dom.className = this._classes.join(" ");     
-}
-
+if(this.hasClass(c)) return;
 this._classes.push(c);
 if(!this._svg) this._dom.className = this._classes.join(" "); 
 
@@ -7961,19 +7955,20 @@ if(customElem.data && !elem._compBaseData) {
     // if there is attributes set for the object
     baseData = _data(JSON.parse(JSON.stringify(customElem.data)));
     if(baseData) elem._compBaseData = baseData;
+    if(this.isObject(attrObj)) {
+        var oo = attrObj;
+        // TODO: make this batter, now only one-dimensional :/ 
+        for( var n in oo) {
+            if(oo.hasOwnProperty(n)) {
+                elem.attr(n, oo[n]);
+            }
+        }  
+    }     
 } else {
     baseData = elem._compBaseData;
 }
 
-if(this.isObject(attrObj)) {
-    var oo = attrObj;
-    // TODO: make this batter, now only one-dimensional :/ 
-    for( var n in oo) {
-        if(oo.hasOwnProperty(n)) {
-            elem.attr(n, oo[n]);
-        }
-    }  
-} 
+
 
 if(customElem.baseCss) {
     if(elem._customCssBase) elem.removeClass( elem._customCssBase  );
