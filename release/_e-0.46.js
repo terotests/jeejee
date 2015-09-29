@@ -19,6 +19,9 @@
        * @param array items
        */
       _myTrait_.add = function (items) {
+        if (this._contentObj) {
+          return this._contentObj.add.apply(this._contentObj, Array.prototype.slice.call(arguments));
+        }
         if (!(items instanceof Array)) {
           items = Array.prototype.slice.call(arguments, 0);
         }
@@ -105,9 +108,9 @@
        */
       _myTrait_.clear = function (t) {
 
-        //this.removeAllHandlers();
-        //this.removeChildEvents();
-        //this.removeControllersFor(this);
+        if (this._contentObj) {
+          return this._contentObj.clear.apply(this._contentObj, Array.prototype.slice.call(arguments));
+        }
 
         this._children.forEach(function (c) {
           c.remove();
@@ -163,7 +166,9 @@
        * @param Object newItem
        */
       _myTrait_.insertAfter = function (newItem) {
-
+        if (this._contentObj) {
+          return this._contentObj.insertAfter.apply(this._contentObj, Array.prototype.slice.call(arguments));
+        }
         // referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
 
         if (!this._parent) return;
@@ -208,7 +213,9 @@
        * @param float obj
        */
       _myTrait_.insertAt = function (i, obj) {
-
+        if (this._contentObj) {
+          return this._contentObj.insertAt.apply(this._contentObj, Array.prototype.slice.call(arguments));
+        }
         if (i < this._children.length) {
           var ch = this.child(i);
           ch.insertBefore(obj);
@@ -222,7 +229,9 @@
        * @param _e newItem  - Item to be inserted
        */
       _myTrait_.insertBefore = function (newItem) {
-
+        if (this._contentObj) {
+          return this._contentObj.insertBefore.apply(this._contentObj, Array.prototype.slice.call(arguments));
+        }
         if (!this._parent) return;
         if (!this._parent._children) return;
 
@@ -265,6 +274,10 @@
        * @param float t
        */
       _myTrait_.moveDown = function (t) {
+        if (this._contentObj) {
+          return this._contentObj.moveDown.apply(this._contentObj, Array.prototype.slice.call(arguments));
+        }
+
         if (typeof this._index != "undefined" && this._parent) {
           var myIndex = this._index,
               nextIndex;
@@ -294,6 +307,10 @@
        * @param float t
        */
       _myTrait_.moveUp = function (t) {
+        if (this._contentObj) {
+          return this._contentObj.moveUp.apply(this._contentObj, Array.prototype.slice.call(arguments));
+        }
+
         if (this._index && this._parent) {
 
           var myIndex = this._index,
@@ -320,6 +337,9 @@
        * @param float t
        */
       _myTrait_.parent = function (t) {
+        if (this._contentParent) {
+          return this._contentParent;
+        }
         return this._parent;
       };
 
@@ -328,6 +348,10 @@
        * @param array items
        */
       _myTrait_.prepend = function (items) {
+        if (this._contentObj) {
+          return this._contentObj.prepend.apply(this._contentObj, Array.prototype.slice.call(arguments));
+        }
+
         if (!(items instanceof Array)) {
           items = Array.prototype.slice.call(arguments, 0);
         }
@@ -370,6 +394,7 @@
        * @param float t
        */
       _myTrait_.reIndex = function (t) {
+
         var chList = this._children;
         var i = 0;
         chList.forEach(function (ch) {
@@ -401,6 +426,10 @@
        * @param Object o
        */
       _myTrait_.removeChild = function (o) {
+        if (this._contentObj) {
+          return this._contentObj.removeChild.apply(this._contentObj, Array.prototype.slice.call(arguments));
+        }
+
         if (this._children) {
 
           var me = this;
@@ -1157,7 +1186,9 @@
        * @param String subNamespace
        */
       _myTrait_.css = function (subNamespace) {
-
+        if (this._contentObj) {
+          return this._contentObj.css.apply(this._contentObj, Array.prototype.slice.call(arguments));
+        }
         // convert the namespaces to shorter versions
         if (!_nsConversion) {
           _nsConversion = {};
@@ -1392,6 +1423,11 @@
        * @param Array items
        */
       _myTrait_.addRow = function (items) {
+
+        if (this._contentObj) {
+          return this._contentObj.addRow.apply(this._contentObj, Array.prototype.slice.call(arguments));
+        }
+
         var row = new _e("tr");
         this.addItem(row);
 
@@ -1429,6 +1465,10 @@
        * @param int i
        */
       _myTrait_.child = function (i) {
+        if (this._contentObj) {
+          return this._contentObj.child.apply(this._contentObj, Array.prototype.slice.call(arguments));
+        }
+
         if (this._children[i]) {
           return this._children[i];
         }
@@ -1438,6 +1478,10 @@
        * @param float t
        */
       _myTrait_.childCount = function (t) {
+        if (this._contentObj) {
+          return this._contentObj.childCount.apply(this._contentObj, Array.prototype.slice.call(arguments));
+        }
+
         if (!this._children) return 0;
         return this._children.length;
       };
@@ -1498,6 +1542,10 @@
        * @param float recursive
        */
       _myTrait_.forChildren = function (fn, recursive) {
+        if (this._contentObj) {
+          return this._contentObj.forChildren.apply(this._contentObj, Array.prototype.slice.call(arguments));
+        }
+
         if (this._children) {
           this._children.forEach(function (c) {
             fn(c);
@@ -1511,6 +1559,10 @@
        * @param function fn
        */
       _myTrait_.forEach = function (fn) {
+        if (this._contentObj) {
+          return this._contentObj.forEach.apply(this._contentObj, Array.prototype.slice.call(arguments));
+        }
+
         if (this._children) this._children.forEach(function (c) {
           fn(c);
           // c.forChildren(fn);
@@ -1523,6 +1575,10 @@
        * @param float list
        */
       _myTrait_.searchTree = function (fn, list) {
+        if (this._contentObj) {
+          return this._contentObj.searchTree.apply(this._contentObj, Array.prototype.slice.call(arguments));
+        }
+
         if (!list) list = [];
         var v;
         if (v = fn(this)) list.push(v);
@@ -1544,7 +1600,9 @@
        * @param string c
        */
       _myTrait_.addClass = function (c) {
-        // safari problem
+        if (this._contentObj) {
+          return this._contentObj.addClass.apply(this._contentObj, Array.prototype.slice.call(arguments));
+        }
 
         if (this._svg) return this;
         if (this._dom instanceof SVGElement) return;
@@ -1593,6 +1651,9 @@
        * @param string c
        */
       _myTrait_.hasClass = function (c) {
+        if (this._contentObj) {
+          return this._contentObj.hasClass.apply(this._contentObj, Array.prototype.slice.call(arguments));
+        }
         if (!this._classes) return false;
         if (this._classes.indexOf(c) >= 0) return true;
         return false;
@@ -1602,6 +1663,10 @@
        * @param string c
        */
       _myTrait_.removeClass = function (c) {
+        if (this._contentObj) {
+          return this._contentObj.removeClass.apply(this._contentObj, Array.prototype.slice.call(arguments));
+        }
+
         if (!this._classes) return this;
         var i;
         while ((i = this._classes.indexOf(c)) >= 0) {
@@ -1610,11 +1675,6 @@
             this._dom.className = this._classes.join(" ");
           }
         }
-
-        var pf = this.findPostFix();
-
-        if (pf) {}
-
         return this;
       };
     })(this);
@@ -1800,6 +1860,10 @@
        * @param float ef
        */
       _myTrait_.on = function (en, ef) {
+        if (this._contentObj) {
+          return this._contentObj.on.apply(this._contentObj, Array.prototype.slice.call(arguments));
+        }
+
         if (!this._ev) this._ev = {};
         if (!this._ev[en]) this._ev[en] = [];
 
@@ -2068,6 +2132,10 @@
        * @param float fn
        */
       _myTrait_.trigger = function (en, data, fn) {
+        if (this._contentObj) {
+          return this._contentObj.trigger.apply(this._contentObj, Array.prototype.slice.call(arguments));
+        }
+
         if (this._delegates) {
           this._delegates.forEach(function (d) {
             if (d && d.trigger) d.trigger(en, data, fn);
@@ -2112,6 +2180,10 @@
        * @param function withFunction
        */
       _myTrait_.bind = function (obj, varName, withFunction) {
+        if (this._contentObj) {
+          return this._contentObj.bind.apply(this._contentObj, Array.prototype.slice.call(arguments));
+        }
+
         var o = this,
             me = this;
 
@@ -2262,6 +2334,9 @@
        * @param float t
        */
       _myTrait_.blur = function (t) {
+        if (this._contentObj) {
+          return this._contentObj.blur.apply(this._contentObj, Array.prototype.slice.call(arguments));
+        }
         if (this._dom.blur) this._dom.blur();
       };
 
@@ -2269,6 +2344,10 @@
        * @param bool v
        */
       _myTrait_.checked = function (v) {
+        if (this._contentObj) {
+          return this._contentObj.checked.apply(this._contentObj, Array.prototype.slice.call(arguments));
+        }
+
         if (typeof v == "undefined") {
 
           // if(typeof( this._checked)=="undefined") {
@@ -2304,6 +2383,9 @@
        * @param float t
        */
       _myTrait_.focus = function (t) {
+        if (this._contentObj) {
+          return this._contentObj.focus();
+        }
         if (this._dom.focus) this._dom.focus();
       };
 
@@ -2401,7 +2483,9 @@
        * @param float transformFn
        */
       _myTrait_.toBacon = function (transformFn) {
-
+        if (this._contentObj) {
+          return this._contentObj.toBacon.apply(this._contentObj, Array.prototype.slice.call(arguments));
+        }
         var me = this;
         later().asap(function () {
           if (typeof me.val() != "undefined") {
@@ -2426,6 +2510,9 @@
        * @param object v
        */
       _myTrait_.val = function (v) {
+        if (this._contentObj) {
+          return this._contentObj.val.apply(this._contentObj, Array.prototype.slice.call(arguments));
+        }
         if (typeof v == "undefined") {
           if (this._type == "select" || this._type == "input" || this._type == "textarea") {
             this._value = this._dom.value;
@@ -2805,6 +2892,10 @@
        * @param float attrs
        */
       _myTrait_.shortcutFor = function (name, className, attrs) {
+        if (this._contentObj) {
+          return this._contentObj.shortcutFor.apply(this._contentObj, Array.prototype.slice.call(arguments));
+        }
+
         var el = _e(name);
         this.add(el);
 
@@ -2996,7 +3087,9 @@
        * @param string h
        */
       _myTrait_.html = function (h) {
-
+        if (this._contentObj) {
+          return this._contentObj.html.apply(this._contentObj, Array.prototype.slice.call(arguments));
+        }
         // test if the value is a stream
         if (this.isStream(h)) {
           var me = this;
@@ -3032,6 +3125,10 @@
        * @param string t
        */
       _myTrait_.text = function (t) {
+        if (this._contentObj) {
+          return this._contentObj.text.apply(this._contentObj, Array.prototype.slice.call(arguments));
+        }
+
         if (typeof t == "undefined") return this._html;
 
         var args = Array.prototype.slice.call(arguments);
@@ -3322,6 +3419,9 @@
        * @param float options
        */
       _myTrait_.fiddle = function (options) {
+        if (this._contentObj) {
+          return this._contentObj.fiddle.apply(this._contentObj, Array.prototype.slice.call(arguments));
+        }
         var iframe = _e("iframe");
         var myId = this.guid();
 
@@ -3610,6 +3710,9 @@
        * @param float layoutDef
        */
       _myTrait_.layout = function (layoutName, layoutDef) {
+        if (this._contentObj) {
+          return this._contentObj.layout.apply(this._contentObj, Array.prototype.slice.call(arguments));
+        }
 
         if (!layoutDef) {
           layoutDef = layoutName;
@@ -3707,6 +3810,10 @@
        */
       _myTrait_.popView = function (toView) {
 
+        if (this._contentObj) {
+          return this._contentObj.popView.apply(this._contentObj, Array.prototype.slice.call(arguments));
+        }
+
         if (!this._views || this._views.length == 0) {
           if (this._parent) {
             this._parent.popView();
@@ -3770,7 +3877,9 @@
        * @param String viewName
        */
       _myTrait_.push = function (model, viewName) {
-
+        if (this._contentObj) {
+          return this._contentObj.push.apply(this._contentObj, Array.prototype.slice.call(arguments));
+        }
         var fn = this.findViewFactory(viewName);
         if (fn) {
           var modelId;
@@ -3904,6 +4013,10 @@
        * @param float oldViewHolder
        */
       _myTrait_.pushView = function (newView, params, oldViewHolder) {
+
+        if (this._contentObj) {
+          return this._contentObj.pushView.apply(this._contentObj, Array.prototype.slice.call(arguments));
+        }
 
         if (!this._views) {
           this._views = [];
@@ -4057,6 +4170,10 @@
        * @param float name
        */
       _myTrait_.setLayout = function (name) {
+        if (this._contentObj) {
+          return this._contentObj.setLayout.apply(this._contentObj, Array.prototype.slice.call(arguments));
+        }
+
         var me = this;
         // ok, need to think about how to create this thing
         if (_viewStructures && _viewStructures[name]) {
@@ -4352,7 +4469,9 @@
        * @param float controller
        */
       _myTrait_.mv = function (model, type, controller) {
-
+        if (this._contentObj) {
+          return this._contentObj.mv.apply(this._contentObj, Array.prototype.slice.call(arguments));
+        }
         var o,
             fn,
             elemName = "div";
@@ -4389,6 +4508,9 @@
        * @param float controller
        */
       _myTrait_.mvc = function (model, view, controller) {
+        if (this._contentObj) {
+          return this._contentObj.mvc.apply(this._contentObj, Array.prototype.slice.call(arguments));
+        }
 
         var me = this;
         if (view) {
@@ -4536,6 +4658,11 @@
        * @param float options
        */
       _myTrait_.tree = function (treeData, itemFn, options) {
+
+        if (this._contentObj) {
+          return this._contentObj.tree.apply(this._contentObj, Array.prototype.slice.call(arguments));
+        }
+
         var _dragState = {};
         var _dragOn;
 
@@ -6062,10 +6189,15 @@
           elem._customCssBase = customElem.baseCss._nameSpace;
         }
         if (baseData) {
-          customElem.init.apply(elem, [baseData, customElem]);
+          var contentObj = customElem.init.apply(elem, [baseData, customElem]);
         } else {
           // then apply the component init routine
-          customElem.init.apply(elem, [attrObj || {}, customElem]);
+          var contentObj = customElem.init.apply(elem, [attrObj || {}, customElem]);
+        }
+
+        if (contentObj) {
+          elem._contentObj = contentObj;
+          contentObj._contentParent = elem;
         }
       };
 
@@ -8217,15 +8349,6 @@
 // should we have named styles... perhaps... TODO
 
 // console.log("**** SHOULD NOT ITERATE CHILDREN *****");
-
-/*
-while( (i = this._classes.indexOf(c+pf))>=0) {
-if(i>=0) {
-  this._classes.splice(i,1);
-  this._dom.className = this._classes.join(" ");
-}
-}  
-*/
 
 // this._dom.innerHTML = v;
 
