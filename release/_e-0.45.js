@@ -72,12 +72,14 @@
             me._dom.appendChild(e._dom);
 
             if (e._customElement) {
-              var reCheck;
+              var reCheck,
+                  oldDef = e._customElement;
               if (e._customElement.customTag) {
                 reCheck = e._findCustomElem(e._customElement.customTag);
               }
+              if (reCheck === oldDef) oldDef = null;
               e.clear(); // -- clear the old element data, if it exists
-              me._initCustom(e, reCheck || e._customElement, me, e._customAttrs || {});
+              me._initCustom(e, reCheck || e._customElement, me, e._customAttrs || {}, oldDef);
             }
 
             e.trigger("parent", me);
@@ -6034,8 +6036,9 @@
        * @param Object customElem  - Custom element initialization data
        * @param float parentE
        * @param float attrObj
+       * @param float oldDefinition
        */
-      _myTrait_._initCustom = function (elem, customElem, parentE, attrObj) {
+      _myTrait_._initCustom = function (elem, customElem, parentE, attrObj, oldDefinition) {
 
         var baseData;
 
@@ -6058,6 +6061,11 @@
 
         if (customElem.baseCss) {
           elem.addClass(customElem.baseCss._nameSpace);
+        }
+        if (oldDefinition) {
+          if (oldDefinition.baseCss) {
+            elem.removeClass(oldDefinition.baseCss._nameSpace);
+          }
         }
 
         if (baseData) {
