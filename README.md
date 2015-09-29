@@ -7957,20 +7957,23 @@ if(_customElems) return _customElems[name];
 
 var baseData;
 
-if(customElem.data) {
+if(customElem.data && !elem._compBaseData) {
     // if there is attributes set for the object
     baseData = _data(JSON.parse(JSON.stringify(customElem.data)));
     if(baseData) elem._compBaseData = baseData;
-    if(this.isObject(attrObj)) {
-        var oo = attrObj;
-        // TODO: make this batter, now only one-dimensional :/ 
-        for( var n in oo) {
-            if(oo.hasOwnProperty(n)) {
-                elem.attr(n, oo[n]);
-            }
-        }  
-    } 
+} else {
+    baseData = elem._compBaseData;
 }
+
+if(this.isObject(attrObj)) {
+    var oo = attrObj;
+    // TODO: make this batter, now only one-dimensional :/ 
+    for( var n in oo) {
+        if(oo.hasOwnProperty(n)) {
+            elem.attr(n, oo[n]);
+        }
+    }  
+} 
 
 if(customElem.baseCss) {
     if(elem._customCssBase) elem.removeClass( elem._customCssBase  );
