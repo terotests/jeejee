@@ -79,7 +79,6 @@
               }
               if (reCheck === oldDef) oldDef = null;
               e.clear(); // -- clear the old element data, if it exists
-              debugger;
               me._initCustom(e, reCheck || e._customElement, me, e._customAttrs || {}, oldDef);
             }
 
@@ -6059,14 +6058,10 @@
         }
 
         if (customElem.baseCss) {
+          if (elem._customCssBase) elem.removeClass(elem._customCssBase);
           elem.addClass(customElem.baseCss._nameSpace);
+          elem._customCssBase = customElem.baseCss._nameSpace;
         }
-        if (oldDefinition) {
-          if (oldDefinition.baseCss) {
-            elem.removeClass(oldDefinition.baseCss._nameSpace);
-          }
-        }
-
         if (baseData) {
           customElem.init.apply(elem, [baseData, customElem]);
         } else {
