@@ -6042,7 +6042,7 @@
 
         var baseData;
 
-        if (customElem.data) {
+        if (customElem.data && !elem._compBaseData) {
           // if there is attributes set for the object
           baseData = _data(JSON.parse(JSON.stringify(customElem.data)));
           if (baseData) elem._compBaseData = baseData;
