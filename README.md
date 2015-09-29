@@ -1647,10 +1647,13 @@ if(force) {
     if(!_elemNames[elemName] && !_svgElems[elemName] ) {
         // custom element, this may be a polymer element or similar
         hasCustom = this._findCustomElem( elemName );
-        this._customElement = hasCustom;
-        this._customAttrs = into; // second attribute { title : name } etc.
         
-        elemName = hasCustom.tagName || "div";
+        if(hasCustom) {
+            this._customElement = hasCustom;
+            this._customAttrs = into; // second attribute { title : name } etc.
+            
+            elemName = hasCustom.tagName || "div";
+        }
     }
 }
 
@@ -1765,14 +1768,15 @@ The class has following internal singleton variables:
 
 *The source code for the function*:
 ```javascript
+if(this._contentObj) {
+    return this._contentObj.add.apply(this._contentObj, Array.prototype.slice.call(arguments));
+}
 if(! (items instanceof Array) ) {
     items = Array.prototype.slice.call(arguments, 0);
 }    
 var me = this;
 items.forEach(  function(e) {
- 
 
- 
     //
     if(me.isFunction(e)) {
         var creator = e;
@@ -1853,9 +1857,9 @@ Removes all the subnodes
 *The source code for the function*:
 ```javascript
 
-//this.removeAllHandlers();
-//this.removeChildEvents();
-//this.removeControllersFor(this);
+if(this._contentObj) {
+    return this._contentObj.clear.apply(this._contentObj, Array.prototype.slice.call(arguments));
+}
 
 this._children.forEach( function(c) {
     c.remove();
@@ -1915,7 +1919,9 @@ return e;
 
 *The source code for the function*:
 ```javascript
-
+if(this._contentObj) {
+    return this._contentObj.insertAfter.apply(this._contentObj, Array.prototype.slice.call(arguments));
+}
 // referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
 
 if(!this._parent) return;
@@ -1960,7 +1966,9 @@ var mDOM = this._dom;
 
 *The source code for the function*:
 ```javascript
-
+if(this._contentObj) {
+    return this._contentObj.insertAt.apply(this._contentObj, Array.prototype.slice.call(arguments));
+}
 if(i < this._children.length) {
     var ch = this.child(i);
     ch.insertBefore(obj);
@@ -1977,7 +1985,9 @@ if(i < this._children.length) {
 Inserts a new node before an existing node
 *The source code for the function*:
 ```javascript
-
+if(this._contentObj) {
+    return this._contentObj.insertBefore.apply(this._contentObj, Array.prototype.slice.call(arguments));
+}
 if(!this._parent) return;
 if(!this._parent._children) return;
 
@@ -2021,6 +2031,10 @@ return this;
 Moves the node down in the DOM tree
 *The source code for the function*:
 ```javascript
+if(this._contentObj) {
+    return this._contentObj.moveDown.apply(this._contentObj, Array.prototype.slice.call(arguments));
+}
+
 if(typeof(this._index)!="undefined" && this._parent) {
     var myIndex = this._index,
         nextIndex;
@@ -2052,6 +2066,10 @@ if(typeof(this._index)!="undefined" && this._parent) {
 Moves the node up in the DOM tree
 *The source code for the function*:
 ```javascript
+if(this._contentObj) {
+    return this._contentObj.moveUp.apply(this._contentObj, Array.prototype.slice.call(arguments));
+}
+
 if(this._index && this._parent) {
 
     var myIndex = this._index,
@@ -2080,6 +2098,9 @@ if(this._index && this._parent) {
 
 *The source code for the function*:
 ```javascript
+if(this._contentParent) {
+    return this._contentParent;
+}
 return this._parent;
 ```
 
@@ -2088,6 +2109,11 @@ return this._parent;
 Adds items as the first child of the current node
 *The source code for the function*:
 ```javascript
+if(this._contentObj) {
+    return this._contentObj.prepend.apply(this._contentObj, Array.prototype.slice.call(arguments));
+}
+
+
 if(! (items instanceof Array) ) {
     items = Array.prototype.slice.call(arguments, 0);
 }    
@@ -2131,6 +2157,7 @@ return this;
 
 *The source code for the function*:
 ```javascript
+
 var chList = this._children;
 var i=0;
 chList.forEach(function(ch) {
@@ -2162,6 +2189,10 @@ this.removeAllHandlers();
 Removes a child of the node
 *The source code for the function*:
 ```javascript
+if(this._contentObj) {
+    return this._contentObj.removeChild.apply(this._contentObj, Array.prototype.slice.call(arguments));
+}
+
 if(this._children) {
 
     var me = this;
@@ -2963,7 +2994,9 @@ _effects[name] = options;
 
 *The source code for the function*:
 ```javascript
-
+if(this._contentObj) {
+    return this._contentObj.css.apply(this._contentObj, Array.prototype.slice.call(arguments));
+}
 // convert the namespaces to shorter versions
 if(!_nsConversion) {
     _nsConversion = {};
@@ -3211,6 +3244,11 @@ The class has following internal singleton variables:
 adds rows of items into the table, for example tbl.addRow(a,b,c)
 *The source code for the function*:
 ```javascript
+
+if(this._contentObj) {
+    return this._contentObj.addRow.apply(this._contentObj, Array.prototype.slice.call(arguments));
+}
+
 var row = new _e("tr");
 this.addItem(row);
 
@@ -3251,6 +3289,10 @@ The class has following internal singleton variables:
 
 *The source code for the function*:
 ```javascript
+if(this._contentObj) {
+    return this._contentObj.child.apply(this._contentObj, Array.prototype.slice.call(arguments));
+}
+
 if(this._children[i]) {
    return this._children[i];
 }
@@ -3261,6 +3303,10 @@ if(this._children[i]) {
 
 *The source code for the function*:
 ```javascript
+if(this._contentObj) {
+    return this._contentObj.childCount.apply(this._contentObj, Array.prototype.slice.call(arguments));
+}
+
 if(!this._children) return 0;
 return this._children.length
 ```
@@ -3325,6 +3371,11 @@ if(childNodes) {
 Calls function for all the direct children of this node
 *The source code for the function*:
 ```javascript
+if(this._contentObj) {
+    return this._contentObj.forChildren.apply(this._contentObj, Array.prototype.slice.call(arguments));
+}
+
+
 if(this._children) {
     this._children.forEach( function(c) {
         fn(c);
@@ -3338,6 +3389,10 @@ if(this._children) {
 Calls function for all the direct children of this node
 *The source code for the function*:
 ```javascript
+if(this._contentObj) {
+    return this._contentObj.forEach.apply(this._contentObj, Array.prototype.slice.call(arguments));
+}
+
 if(this._children) 
     this._children.forEach( function(c) {
         fn(c);
@@ -3350,6 +3405,10 @@ if(this._children)
 Returns all the children which return true when given as parameter to function fn.
 *The source code for the function*:
 ```javascript
+if(this._contentObj) {
+    return this._contentObj.searchTree.apply(this._contentObj, Array.prototype.slice.call(arguments));
+}
+
 if(!list) list = [];
 var v;
 if(v = fn(this)) list.push(v)
@@ -3375,7 +3434,9 @@ The class has following internal singleton variables:
 
 *The source code for the function*:
 ```javascript
-// safari problem
+if(this._contentObj) {
+    return this._contentObj.addClass.apply(this._contentObj, Array.prototype.slice.call(arguments));
+}
 
 if(this._svg) return this;
 if(this._dom instanceof SVGElement) return;
@@ -3426,6 +3487,9 @@ return "";
 
 *The source code for the function*:
 ```javascript
+if(this._contentObj) {
+    return this._contentObj.hasClass.apply(this._contentObj, Array.prototype.slice.call(arguments));
+}
 if(!this._classes) return false;
 if(this._classes.indexOf(c)>=0) return true;
 return false;
@@ -3436,6 +3500,10 @@ return false;
 
 *The source code for the function*:
 ```javascript
+if(this._contentObj) {
+    return this._contentObj.removeClass.apply(this._contentObj, Array.prototype.slice.call(arguments));
+}
+
 if(!this._classes) return this;
 var i;
 while( (i = this._classes.indexOf(c))>=0) {
@@ -3444,20 +3512,6 @@ while( (i = this._classes.indexOf(c))>=0) {
         this._dom.className = this._classes.join(" ");
     }
 }
-
-var pf = this.findPostFix();
-
-if(pf) {
-    /*
-    while( (i = this._classes.indexOf(c+pf))>=0) {
-        if(i>=0) {
-            this._classes.splice(i,1);
-            this._dom.className = this._classes.join(" ");
-        }
-    }  
-    */
-}
-
 return this;
 ```
 
@@ -3651,6 +3705,10 @@ return this._namedListeners[name];
 Binds event name to event function
 *The source code for the function*:
 ```javascript
+if(this._contentObj) {
+    return this._contentObj.on.apply(this._contentObj, Array.prototype.slice.call(arguments));
+}
+
 if(!this._ev) this._ev = {};
 if(!this._ev[en]) this._ev[en] = [];
 
@@ -3924,6 +3982,10 @@ _routes[routeId] = obj;
 triggers event with data and optional function
 *The source code for the function*:
 ```javascript
+if(this._contentObj) {
+    return this._contentObj.trigger.apply(this._contentObj, Array.prototype.slice.call(arguments));
+}
+
 if(this._delegates) {
     this._delegates.forEach( function(d) {
         if(d && d.trigger) d.trigger(en,data, fn);
@@ -3969,6 +4031,10 @@ The class has following internal singleton variables:
 Binds input value to an object with data
 *The source code for the function*:
 ```javascript
+if(this._contentObj) {
+    return this._contentObj.bind.apply(this._contentObj, Array.prototype.slice.call(arguments));
+}
+
 var o = this, me = this;
 
 if(this.isFunction(obj[varName])) {
@@ -4125,6 +4191,9 @@ return this;
 
 *The source code for the function*:
 ```javascript
+if(this._contentObj) {
+    return this._contentObj.blur.apply(this._contentObj, Array.prototype.slice.call(arguments));
+}
 if(this._dom.blur) this._dom.blur();
 ```
 
@@ -4133,6 +4202,10 @@ if(this._dom.blur) this._dom.blur();
 
 *The source code for the function*:
 ```javascript
+if(this._contentObj) {
+    return this._contentObj.checked.apply(this._contentObj, Array.prototype.slice.call(arguments));
+}
+
 if(typeof(v)=="undefined") {
 
     // if(typeof( this._checked)=="undefined") {
@@ -4169,6 +4242,9 @@ return this;
 Focus into this element
 *The source code for the function*:
 ```javascript
+if(this._contentObj) {
+    return this._contentObj.focus();
+}
 if(this._dom.focus) this._dom.focus();
 ```
 
@@ -4273,7 +4349,9 @@ return this;
 
 *The source code for the function*:
 ```javascript
-
+if(this._contentObj) {
+    return this._contentObj.toBacon.apply(this._contentObj, Array.prototype.slice.call(arguments));
+}
 var me = this;
 later().asap( function() {
     if(typeof( me.val()) != "undefined" ) {
@@ -4300,6 +4378,9 @@ return Bacon.fromBinder( function(sink) {
 Sets or gets the input value
 *The source code for the function*:
 ```javascript
+if(this._contentObj) {
+    return this._contentObj.val.apply(this._contentObj, Array.prototype.slice.call(arguments));
+}
 if(typeof(v)=="undefined"){
     if(this._type=="select" || this._type=="input" || this._type=="textarea") {
         this._value = this._dom.value;
@@ -4461,7 +4542,9 @@ return el;
 
 *The source code for the function*:
 ```javascript
-
+if(this._contentObj) {
+    return this._contentObj.e.apply(this._contentObj, Array.prototype.slice.call(arguments));
+}
 if(!this._isStdElem(elemName)) {
 
     var customElem = this._findCustomElem(elemName);
@@ -4695,9 +4778,12 @@ return tbl;
 
 *The source code for the function*:
 ```javascript
+if(this._contentObj) {
+    return this._contentObj.shortcutFor.apply(this._contentObj, Array.prototype.slice.call(arguments));
+}
+
 var el = _e(name);
 this.add(el);
-
 
 var constr = [],
     classes = [],
@@ -4888,7 +4974,9 @@ if( typeof(elem.textContent)!="undefined") {
 
 *The source code for the function*:
 ```javascript
-
+if(this._contentObj) {
+    return this._contentObj.html.apply(this._contentObj, Array.prototype.slice.call(arguments));
+}
 // test if the value is a stream
 if(this.isStream(h)) {
     var me = this;
@@ -4925,6 +5013,10 @@ return this;
 
 *The source code for the function*:
 ```javascript
+if(this._contentObj) {
+    return this._contentObj.text.apply(this._contentObj, Array.prototype.slice.call(arguments));
+}
+
 if(typeof(t)=="undefined") return this._html;
 
 var args = Array.prototype.slice.call(arguments);
@@ -5236,6 +5328,9 @@ return data.then( function(res) {
 
 *The source code for the function*:
 ```javascript
+if(this._contentObj) {
+    return this._contentObj.fiddle.apply(this._contentObj, Array.prototype.slice.call(arguments));
+}
 var iframe = _e("iframe"); 
 var myId = this.guid();
 
@@ -5528,6 +5623,9 @@ if(window.matchMedia) {
 
 *The source code for the function*:
 ```javascript
+if(this._contentObj) {
+    return this._contentObj.layout.apply(this._contentObj, Array.prototype.slice.call(arguments));
+}
 
 if(!layoutDef) {
     layoutDef = layoutName;
@@ -5635,6 +5733,9 @@ if(_ctrlObjs.indexOf( this ) < 0) {
 *The source code for the function*:
 ```javascript
 
+if(this._contentObj) {
+    return this._contentObj.popView.apply(this._contentObj, Array.prototype.slice.call(arguments));
+}
 
 if(!this._views || this._views.length==0) {
     if(this._parent) {
@@ -5703,7 +5804,9 @@ cont.forChildren(function(ch) {
 
 *The source code for the function*:
 ```javascript
-
+if(this._contentObj) {
+    return this._contentObj.push.apply(this._contentObj, Array.prototype.slice.call(arguments));
+}
 var fn = this.findViewFactory(viewName);
 if(fn) {
     var modelId;
@@ -5844,6 +5947,10 @@ if(!this._activeLayout) {
 
 *The source code for the function*:
 ```javascript
+
+if(this._contentObj) {
+    return this._contentObj.pushView.apply(this._contentObj, Array.prototype.slice.call(arguments));
+}
 
 if(!this._views) {
     this._views = [];
@@ -6003,6 +6110,10 @@ return this;
 
 *The source code for the function*:
 ```javascript
+if(this._contentObj) {
+    return this._contentObj.setLayout.apply(this._contentObj, Array.prototype.slice.call(arguments));
+}
+
 var me = this;
 // ok, need to think about how to create this thing
 if(_viewStructures && _viewStructures[name]) {
@@ -6315,7 +6426,9 @@ return data.then( function(res) {
 
 *The source code for the function*:
 ```javascript
-
+if(this._contentObj) {
+    return this._contentObj.mv.apply(this._contentObj, Array.prototype.slice.call(arguments));
+}
 var o, fn, elemName = "div";
 if(this.isFunction(type)) {
     fn = type;
@@ -6350,6 +6463,9 @@ if(fn) {
 
 *The source code for the function*:
 ```javascript
+if(this._contentObj) {
+    return this._contentObj.mvc.apply(this._contentObj, Array.prototype.slice.call(arguments));
+}
 
 var me = this;
 if(view) {
@@ -6502,6 +6618,11 @@ this._sendHook[url].unshift( handlerFunction );
 
 *The source code for the function*:
 ```javascript
+
+if(this._contentObj) {
+    return this._contentObj.tree.apply(this._contentObj, Array.prototype.slice.call(arguments));
+}
+
 var _dragState = {};      
 var _dragOn;
 
@@ -7968,18 +8089,21 @@ if(customElem.data && !elem._compBaseData) {
     baseData = elem._compBaseData;
 }
 
-
-
 if(customElem.baseCss) {
     if(elem._customCssBase) elem.removeClass( elem._customCssBase  );
     elem.addClass( customElem.baseCss._nameSpace);
     elem._customCssBase = customElem.baseCss._nameSpace;
 }
 if(baseData) {
-    customElem.init.apply(elem, [baseData, customElem]);
+    var contentObj = customElem.init.apply(elem, [baseData, customElem]);
 } else {
     // then apply the component init routine
-    customElem.init.apply(elem, [attrObj || {}, customElem]);
+    var contentObj = customElem.init.apply(elem, [attrObj || {}, customElem]);
+}
+
+if(contentObj) {
+    elem._contentObj = contentObj;
+    contentObj._contentParent = elem;
 }
 ```
 
