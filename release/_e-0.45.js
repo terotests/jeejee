@@ -77,7 +77,7 @@
                 reCheck = e._findCustomElem(e._customElement.customTag);
               }
               e.clear(); // -- clear the old element data, if it exists
-              this._initCustom(e, reCheck || e._customElement, me, e._customAttrs || {});
+              me._initCustom(e, reCheck || e._customElement, me, e._customAttrs || {});
             }
 
             e.trigger("parent", me);
