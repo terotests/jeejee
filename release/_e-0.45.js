@@ -79,6 +79,7 @@
               }
               if (reCheck === oldDef) oldDef = null;
               e.clear(); // -- clear the old element data, if it exists
+              debugger;
               me._initCustom(e, reCheck || e._customElement, me, e._customAttrs || {}, oldDef);
             }
 
@@ -6056,8 +6057,6 @@
             }
           }
         }
-
-        // if(parentE) parentE.add(elem);
 
         if (customElem.baseCss) {
           elem.addClass(customElem.baseCss._nameSpace);
