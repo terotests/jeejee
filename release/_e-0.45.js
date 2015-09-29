@@ -2587,7 +2587,7 @@
 
               var baseData;
               // create the element HTML tag
-              var elem = _e(customElem.tagName);
+              var elem = _e(customElem.customTag);
               // this._initCustom( elem, customElem, this, className );
               this.add(elem);
               return elem;
