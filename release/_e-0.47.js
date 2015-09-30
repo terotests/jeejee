@@ -6182,8 +6182,8 @@
           elem._customCssBase = customElem.baseCss._nameSpace;
         }
 
+        var current_ch = [];
         if (elem._contentObj) {
-          var current_ch = [];
           elem._contentObj.forChildren(function (ch) {
             current_ch.push(ch);
           });
