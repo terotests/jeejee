@@ -2563,7 +2563,9 @@
 
               varObj.on(varName, function () {
                 console.log("binded object sent ", varName, varObj.get(varName));
-                elem._compBaseData.set(v, varObj.get(varName));
+                setTimeout(function () {
+                  elem._compBaseData.set(v, varObj.get(varName));
+                }, 1);
               });
               elem._compBaseData.set(v, varObj.get(varName));
               // --> two way
