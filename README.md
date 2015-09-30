@@ -1277,6 +1277,7 @@ MIT. Currently use at own risk.
 - [_findCustomElem](README.md#__findCustomElem)
 - [_initCustom](README.md#__initCustom)
 - [customElement](README.md#_customElement)
+- [registerElement](README.md#_registerElement)
 
 
     
@@ -1706,6 +1707,10 @@ if(!this._component && into) {
     if(typeof(into.appendChild)!="undefined")
         into.appendChild(this._dom);
 }
+
+if(hasCustom) {
+    this._initCustom( this, hasCustom, null, this._customAttrs || {}, null );
+}
 ```
 
 ### <a name="_e_initElemNames"></a>_e::initElemNames(t)
@@ -1829,8 +1834,11 @@ items.forEach(  function(e) {
                 reCheck = e._findCustomElem(e._customElement.customTag);
             }
             if(reCheck === oldDef) oldDef = null;
-            e.clear(); // -- clear the old element data, if it exists
-            me._initCustom( e, reCheck || e._customElement, me, e._customAttrs || {}, oldDef );
+            var useDef = reCheck || e._customElement;
+            if(!e._initWithDef || ( e._initWithDef != useDef) ) {
+                // e.clear(); // <- removed clear, should be taken care by _initCustom
+                me._initCustom( e, reCheck || e._customElement, me, e._customAttrs || {}, oldDef );
+            }
         }        
 
         e.trigger("parent",me);
@@ -1919,9 +1927,7 @@ return e;
 
 *The source code for the function*:
 ```javascript
-if(this._contentObj) {
-    return this._contentObj.insertAfter.apply(this._contentObj, Array.prototype.slice.call(arguments));
-}
+
 // referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
 
 if(!this._parent) return;
@@ -1966,9 +1972,7 @@ var mDOM = this._dom;
 
 *The source code for the function*:
 ```javascript
-if(this._contentObj) {
-    return this._contentObj.insertAt.apply(this._contentObj, Array.prototype.slice.call(arguments));
-}
+
 if(i < this._children.length) {
     var ch = this.child(i);
     ch.insertBefore(obj);
@@ -1985,9 +1989,7 @@ if(i < this._children.length) {
 Inserts a new node before an existing node
 *The source code for the function*:
 ```javascript
-if(this._contentObj) {
-    return this._contentObj.insertBefore.apply(this._contentObj, Array.prototype.slice.call(arguments));
-}
+
 if(!this._parent) return;
 if(!this._parent._children) return;
 
@@ -2031,9 +2033,6 @@ return this;
 Moves the node down in the DOM tree
 *The source code for the function*:
 ```javascript
-if(this._contentObj) {
-    return this._contentObj.moveDown.apply(this._contentObj, Array.prototype.slice.call(arguments));
-}
 
 if(typeof(this._index)!="undefined" && this._parent) {
     var myIndex = this._index,
@@ -2066,9 +2065,6 @@ if(typeof(this._index)!="undefined" && this._parent) {
 Moves the node up in the DOM tree
 *The source code for the function*:
 ```javascript
-if(this._contentObj) {
-    return this._contentObj.moveUp.apply(this._contentObj, Array.prototype.slice.call(arguments));
-}
 
 if(this._index && this._parent) {
 
@@ -2101,7 +2097,9 @@ if(this._index && this._parent) {
 if(this._contentParent) {
     return this._contentParent;
 }
-return this._parent;
+var p = this._parent;
+if(p && p._contentParent) return p._contentParent;
+return p;
 ```
 
 ### <a name="_prepend"></a>::prepend(items)
@@ -2223,6 +2221,9 @@ this.forChildren( function(ch) {
 Removes the node from the index, but not from the DOM tree
 *The source code for the function*:
 ```javascript
+if(this._contentObj) {
+    return this._contentObj.removeIndexedChild.apply(this._contentObj, Array.prototype.slice.call(arguments));
+}
 if(this._children) {
     var i = this._children.indexOf(o);
     if(i>=0) {
@@ -3437,7 +3438,6 @@ The class has following internal singleton variables:
 if(this._contentObj) {
     return this._contentObj.addClass.apply(this._contentObj, Array.prototype.slice.call(arguments));
 }
-
 if(this._svg) return this;
 if(this._dom instanceof SVGElement) return;
 
@@ -5738,8 +5738,9 @@ if(this._contentObj) {
 }
 
 if(!this._views || this._views.length==0) {
-    if(this._parent) {
-        this._parent.popView();
+    var p = this.parent();
+    if(p) {
+        p.popView();
         return this;
     }
     this._views = [];
@@ -8042,11 +8043,6 @@ The class has following internal singleton variables:
 
 *The source code for the function*:
 ```javascript
-// might be also hierarchy based
-// if(this._customElems) 
-
-// ?? could you delay the execution of the initialization code to the point
-// the element is actually attached to the tree?
 
 if(this._customElems) {
     var e = this._customElems[name];
@@ -8094,6 +8090,14 @@ if(customElem.baseCss) {
     elem.addClass( customElem.baseCss._nameSpace);
     elem._customCssBase = customElem.baseCss._nameSpace;
 }
+
+var current_ch = [];
+if(elem._contentObj) {
+    elem._contentObj.forChildren( function(ch) {
+         current_ch.push(ch);
+    });
+}
+
 if(baseData) {
     var contentObj = customElem.init.apply(elem, [baseData, customElem]);
 } else {
@@ -8101,9 +8105,18 @@ if(baseData) {
     var contentObj = customElem.init.apply(elem, [attrObj || {}, customElem]);
 }
 
+// mark the last definition to be used to initialized the component
+elem._initWithDef = customElem;
+
 if(contentObj) {
+    
     elem._contentObj = contentObj;
     contentObj._contentParent = elem;
+
+    current_ch.forEach( function(ch) {
+        contentObj.add( ch );
+    });
+    
 }
 ```
 
@@ -8116,10 +8129,6 @@ if(contentObj) {
 if(!this._customElems) this._customElems = {};
 if(!_customElems) _customElems = {};
 
-// options.css = factory object for creating CSS styles for the element
-// options.init = factory to create the actual user interface element
-// options.tagName = tag name to use to create the element, if
-
 // do not re-create this time the element
 if(this._customElems[elemName]) return;
 
@@ -8127,12 +8136,6 @@ if(this._customElems[elemName]) return;
 this._customElems[elemName] = options;
 if(!_customElems[elemName]) _customElems[elemName] = options;
 
-// register the element creation process...
-if(document.registerElement && (elemName.indexOf("x-")==0)) {
-   
-} else {
-    
-}
 // save the custom element tag name for further referencese
 options.customTag = elemName;
 
@@ -8141,14 +8144,19 @@ if(options.css) {
     var baseCss = this.css(elemName);
     options.css(baseCss);
     options.baseCss = baseCss;
-    // TODO: add _firstUpdate to 
-    /*
-    baseCss._firstUpdate = function() {
-        
-    }
-    */
+    
+    // TODO: add _firstUpdate to  
+    // CSS object baseCss._firstUpdate = function() { --- } 
 }
 
+```
+
+### <a name="_registerElement"></a>::registerElement(elemName, options)
+
+
+*The source code for the function*:
+```javascript
+return this.customElement(elemName, options);
 ```
 
 
