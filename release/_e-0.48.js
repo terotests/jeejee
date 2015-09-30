@@ -2673,6 +2673,10 @@
               var elem = _e(customElem.customTag, className);
               // this._initCustom( elem, customElem, this, className );
               this.add(elem);
+
+              if (this.isFunction(attrs)) {
+                attrs.apply(elem, [elem]);
+              }
               return elem;
             }
           }
