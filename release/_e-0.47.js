@@ -6190,8 +6190,10 @@
         }
 
         if (contentObj) {
+          debugger;
           elem._contentObj = contentObj;
           contentObj._contentParent = elem;
+
           current_ch.forEach(function (ch) {
             contentObj.add(ch);
           });
