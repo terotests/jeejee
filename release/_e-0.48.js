@@ -2671,7 +2671,7 @@
               var baseData,
                   elemAttrs = {};
 
-              if (this.isObject(className)) elemAttrs = className;
+              if (this.isObject(className) && !this.isFunction(className)) elemAttrs = className;
 
               // create the element HTML tag
               var elem = _e(customElem.customTag, elemAttrs, attrs);
