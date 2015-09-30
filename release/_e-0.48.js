@@ -8230,7 +8230,7 @@
 
           if (hasCustom) {
             this._customElement = hasCustom;
-            if (this.isArray(into)) {
+            if (this.isObject(into)) {
               this._customAttrs = into; // second attribute { title : name } etc.
             } else {
               this._customAttrs = {};
