@@ -2562,11 +2562,13 @@
               var varName = v2[1];
 
               varObj.on(varName, function () {
+                console.log("binded object sent ", varName, varObj.get(varName));
                 elem._compBaseData.set(v, varObj.get(varName));
               });
               elem._compBaseData.set(v, varObj.get(varName));
               // --> two way
               elem._compBaseData.on(v, function () {
+                console.log("compBaseData sent ", v, elem._compBaseData.get(v));
                 varObj.set(varName, elem._compBaseData.get(v));
               });
             } else {
