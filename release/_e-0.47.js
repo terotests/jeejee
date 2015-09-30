@@ -6178,6 +6178,9 @@
           elem.addClass(customElem.baseCss._nameSpace);
           elem._customCssBase = customElem.baseCss._nameSpace;
         }
+
+        debugger;
+
         var current_ch = [];
         elem.forChildren(function (ch) {
           current_ch.push(ch);
@@ -6190,7 +6193,7 @@
         }
 
         if (contentObj) {
-          debugger;
+
           elem._contentObj = contentObj;
           contentObj._contentParent = elem;
 
