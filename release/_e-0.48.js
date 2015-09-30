@@ -2670,11 +2670,15 @@
 
               var baseData,
                   elemAttrs = {};
+              var constr_fn;
+
+              if (this.isFunction(attrs)) constr_fn = attrs;
+              if (this.isFunction(className)) constr_fn = className;
 
               if (this.isObject(className) && !this.isFunction(className)) elemAttrs = className;
 
               // create the element HTML tag
-              var elem = _e(customElem.customTag, elemAttrs, attrs);
+              var elem = _e(customElem.customTag, elemAttrs, constr_fn);
               // this._initCustom( elem, customElem, this, className );
               this.add(elem);
 
