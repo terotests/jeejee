@@ -81,8 +81,11 @@
                 reCheck = e._findCustomElem(e._customElement.customTag);
               }
               if (reCheck === oldDef) oldDef = null;
-              e.clear(); // -- clear the old element data, if it exists
-              me._initCustom(e, reCheck || e._customElement, me, e._customAttrs || {}, oldDef);
+              var useDef = reCheck || e._customElement;
+              if (!e._initWithDef || e._initWithDef != useDef) {
+                // e.clear(); // <- removed clear, should be taken care by _initCustom
+                me._initCustom(e, reCheck || e._customElement, me, e._customAttrs || {}, oldDef);
+              }
             }
 
             e.trigger("parent", me);
@@ -6179,7 +6182,13 @@
           elem._customCssBase = customElem.baseCss._nameSpace;
         }
 
-        if (!this._parent) {}
+        if (elem._contentObj) {
+          var current_ch = [];
+          elem._contentObj.forChildren(function (ch) {
+            current_ch.push(ch);
+          });
+        }
+
         if (baseData) {
           var contentObj = customElem.init.apply(elem, [baseData, customElem]);
         } else {
@@ -6187,14 +6196,17 @@
           var contentObj = customElem.init.apply(elem, [attrObj || {}, customElem]);
         }
 
+        // mark the last definition to be used to initialized the component
+        elem._initWithDef = customElem;
+
         if (contentObj) {
 
           elem._contentObj = contentObj;
           contentObj._contentParent = elem;
-          /*    
-          current_ch.forEach( function(ch) {
-          contentObj.add( ch );
-          });*/
+
+          current_ch.forEach(function (ch) {
+            contentObj.add(ch);
+          });
         }
       };
 
@@ -8263,6 +8275,10 @@
         if (!this._component && into) {
           if (typeof into.appendChild != "undefined") into.appendChild(this._dom);
         }
+
+        if (hasCustom) {
+          this._initCustom(this, hasCustom, null, this._customAttrs || {}, null);
+        }
       };
 
       /**
@@ -8351,13 +8367,6 @@
 // console.log("**** SHOULD NOT ITERATE CHILDREN *****");
 
 // this._dom.innerHTML = v;
-
-/*
-var current_ch = [];
-this.forChildren( function(ch) {
-current_ch.push(ch);
-});
-*/
 
 //console.log("Attr set to ", n);
 //console.trace();
