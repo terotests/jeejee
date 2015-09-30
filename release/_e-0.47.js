@@ -1596,7 +1596,6 @@
         if (this._contentObj) {
           return this._contentObj.addClass.apply(this._contentObj, Array.prototype.slice.call(arguments));
         }
-
         if (this._svg) return this;
         if (this._dom instanceof SVGElement) return;
 
