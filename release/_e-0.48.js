@@ -8136,16 +8136,16 @@
 
       if (_myTrait_.__traitInit && !_myTrait_.hasOwnProperty("__traitInit")) _myTrait_.__traitInit = _myTrait_.__traitInit.slice();
       if (!_myTrait_.__traitInit) _myTrait_.__traitInit = [];
-      _myTrait_.__traitInit.push(function (elemName, into) {
+      _myTrait_.__traitInit.push(function (elemName, into, childConstructor) {
         this.initAsTag(elemName, into);
       });
 
       /**
        * @param float elemName
        * @param float into
-       * @param float force
+       * @param float childConstructor
        */
-      _myTrait_.initAsTag = function (elemName, into, force) {
+      _myTrait_.initAsTag = function (elemName, into, childConstructor) {
 
         if (this.isObject(elemName)) {
           this._dom = elemName;
@@ -8214,17 +8214,15 @@
         var hasCustom;
         elemName = elemName.toLowerCase();
 
-        if (force) {} else {
-          if (!_elemNames[elemName] && !_svgElems[elemName]) {
-            // custom element, this may be a polymer element or similar
-            hasCustom = this._findCustomElem(elemName);
+        if (!_elemNames[elemName] && !_svgElems[elemName]) {
+          // custom element, this may be a polymer element or similar
+          hasCustom = this._findCustomElem(elemName);
 
-            if (hasCustom) {
-              this._customElement = hasCustom;
-              this._customAttrs = into; // second attribute { title : name } etc.
+          if (hasCustom) {
+            this._customElement = hasCustom;
+            this._customAttrs = into; // second attribute { title : name } etc.
 
-              elemName = hasCustom.tagName || "div";
-            }
+            elemName = hasCustom.tagName || "div";
           }
         }
 
@@ -8278,6 +8276,10 @@
 
         if (hasCustom) {
           this._initCustom(this, hasCustom, null, this._customAttrs || {}, null);
+        }
+
+        if (this.isFunction(childConstructor)) {
+          childConstructor.apply(this, [this]);
         }
       };
 
