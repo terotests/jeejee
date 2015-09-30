@@ -6179,10 +6179,12 @@
           elem._customCssBase = customElem.baseCss._nameSpace;
         }
 
-        var current_ch = [];
-        this.forChildren(function (ch) {
-          current_ch.push(ch);
-        });
+        if (!this._parent) {
+          var current_ch = [];
+          this.forChildren(function (ch) {
+            current_ch.push(ch);
+          });
+        }
         if (baseData) {
           var contentObj = customElem.init.apply(elem, [baseData, customElem]);
         } else {
