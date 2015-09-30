@@ -328,7 +328,9 @@
         if (this._contentParent) {
           return this._contentParent;
         }
-        return this._parent;
+        var p = this._parent;
+        if (p._contentParent) return p._contentParent;
+        return p;
       };
 
       /**
