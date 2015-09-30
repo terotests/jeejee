@@ -166,9 +166,7 @@
        * @param Object newItem
        */
       _myTrait_.insertAfter = function (newItem) {
-        if (this._contentObj) {
-          return this._contentObj.insertAfter.apply(this._contentObj, Array.prototype.slice.call(arguments));
-        }
+
         // referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
 
         if (!this._parent) return;
@@ -213,9 +211,7 @@
        * @param float obj
        */
       _myTrait_.insertAt = function (i, obj) {
-        if (this._contentObj) {
-          return this._contentObj.insertAt.apply(this._contentObj, Array.prototype.slice.call(arguments));
-        }
+
         if (i < this._children.length) {
           var ch = this.child(i);
           ch.insertBefore(obj);
@@ -229,9 +225,7 @@
        * @param _e newItem  - Item to be inserted
        */
       _myTrait_.insertBefore = function (newItem) {
-        if (this._contentObj) {
-          return this._contentObj.insertBefore.apply(this._contentObj, Array.prototype.slice.call(arguments));
-        }
+
         if (!this._parent) return;
         if (!this._parent._children) return;
 
@@ -274,9 +268,6 @@
        * @param float t
        */
       _myTrait_.moveDown = function (t) {
-        if (this._contentObj) {
-          return this._contentObj.moveDown.apply(this._contentObj, Array.prototype.slice.call(arguments));
-        }
 
         if (typeof this._index != "undefined" && this._parent) {
           var myIndex = this._index,
@@ -307,9 +298,6 @@
        * @param float t
        */
       _myTrait_.moveUp = function (t) {
-        if (this._contentObj) {
-          return this._contentObj.moveUp.apply(this._contentObj, Array.prototype.slice.call(arguments));
-        }
 
         if (this._index && this._parent) {
 
@@ -458,6 +446,9 @@
        * @param Object o
        */
       _myTrait_.removeIndexedChild = function (o) {
+        if (this._contentObj) {
+          return this._contentObj.removeIndexedChild.apply(this._contentObj, Array.prototype.slice.call(arguments));
+        }
         if (this._children) {
           var i = this._children.indexOf(o);
           if (i >= 0) {
@@ -3817,8 +3808,9 @@
         }
 
         if (!this._views || this._views.length == 0) {
-          if (this._parent) {
-            this._parent.popView();
+          var p = this.parent();
+          if (p) {
+            p.popView();
             return this;
           }
           this._views = [];
