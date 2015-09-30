@@ -329,7 +329,7 @@
           return this._contentParent;
         }
         var p = this._parent;
-        if (p._contentParent) return p._contentParent;
+        if (p && p._contentParent) return p._contentParent;
         return p;
       };
 
