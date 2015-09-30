@@ -6179,10 +6179,8 @@
           elem._customCssBase = customElem.baseCss._nameSpace;
         }
 
-        debugger;
-
         var current_ch = [];
-        elem.forChildren(function (ch) {
+        this.forChildren(function (ch) {
           current_ch.push(ch);
         });
         if (baseData) {
