@@ -2668,15 +2668,17 @@
 
             if (customElem.init) {
 
-              var baseData;
+              var baseData,
+                  elemAttrs = {};
+
+              if (this.isObject(className)) elemAttrs = className;
+
               // create the element HTML tag
-              var elem = _e(customElem.customTag, className);
+              var elem = _e(customElem.customTag, elemAttrs, attrs);
               // this._initCustom( elem, customElem, this, className );
               this.add(elem);
 
-              if (this.isFunction(attrs)) {
-                attrs.apply(elem, [elem]);
-              }
+              if (this.isFunction(attrs)) {}
               return elem;
             }
           }
@@ -8175,6 +8177,10 @@
           }
         }
 
+        var const_fn;
+        if (this.isFunction(into)) const_fn = into;
+        if (this.isFunction(childConstructor)) const_fn = childConstructor;
+
         if (!_registry) {
           _registry = {};
         }
@@ -8224,8 +8230,11 @@
 
           if (hasCustom) {
             this._customElement = hasCustom;
-            this._customAttrs = into; // second attribute { title : name } etc.
-
+            if (this.isArray(into)) {
+              this._customAttrs = into; // second attribute { title : name } etc.
+            } else {
+              this._customAttrs = {};
+            }
             elemName = hasCustom.tagName || "div";
           }
         }
@@ -8282,8 +8291,8 @@
           this._initCustom(this, hasCustom, null, this._customAttrs || {}, null);
         }
 
-        if (this.isFunction(childConstructor)) {
-          childConstructor.apply(this, [this]);
+        if (this.isFunction(const_fn)) {
+          const_fn.apply(this, [this]);
         }
       };
 
@@ -8373,6 +8382,8 @@
 // console.log("**** SHOULD NOT ITERATE CHILDREN *****");
 
 // this._dom.innerHTML = v;
+
+// attrs.apply(elem, [elem]);
 
 //console.log("Attr set to ", n);
 //console.trace();
