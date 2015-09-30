@@ -6135,11 +6135,6 @@
        * @param String name
        */
       _myTrait_._findCustomElem = function (name) {
-        // might be also hierarchy based
-        // if(this._customElems)
-
-        // ?? could you delay the execution of the initialization code to the point
-        // the element is actually attached to the tree?
 
         if (this._customElems) {
           var e = this._customElems[name];
@@ -6206,10 +6201,6 @@
         if (!this._customElems) this._customElems = {};
         if (!_customElems) _customElems = {};
 
-        // options.css = factory object for creating CSS styles for the element
-        // options.init = factory to create the actual user interface element
-        // options.tagName = tag name to use to create the element, if
-
         // do not re-create this time the element
         if (this._customElems[elemName]) return;
 
@@ -6217,8 +6208,6 @@
         this._customElems[elemName] = options;
         if (!_customElems[elemName]) _customElems[elemName] = options;
 
-        // register the element creation process...
-        if (document.registerElement && elemName.indexOf("x-") == 0) {} else {}
         // save the custom element tag name for further referencese
         options.customTag = elemName;
 
@@ -6227,11 +6216,9 @@
           var baseCss = this.css(elemName);
           options.css(baseCss);
           options.baseCss = baseCss;
-          // TODO: add _firstUpdate to
-          /*
-          baseCss._firstUpdate = function() {
-             }
-          */
+
+          // TODO: add _firstUpdate to 
+          // CSS object baseCss._firstUpdate = function() { --- }
         }
       };
 
