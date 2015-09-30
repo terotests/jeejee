@@ -6234,6 +6234,14 @@
           */
         }
       };
+
+      /**
+       * @param String elemName
+       * @param Object options
+       */
+      _myTrait_.registerElement = function (elemName, options) {
+        return this.customElement(elemName, options);
+      };
     })(this);
 
     // the subclass definition comes around here then
