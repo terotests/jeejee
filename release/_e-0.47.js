@@ -6179,12 +6179,7 @@
           elem._customCssBase = customElem.baseCss._nameSpace;
         }
 
-        if (!this._parent) {
-          var current_ch = [];
-          this.forChildren(function (ch) {
-            current_ch.push(ch);
-          });
-        }
+        if (!this._parent) {}
         if (baseData) {
           var contentObj = customElem.init.apply(elem, [baseData, customElem]);
         } else {
@@ -6196,13 +6191,10 @@
 
           elem._contentObj = contentObj;
           contentObj._contentParent = elem;
-
-          current_ch.forEach(function (ch) {
-            contentObj.add(ch);
-          });
-          //elem.forChildren( function(ch) {
-          //     current_ch.push(ch);
-          //});  
+          /*    
+          current_ch.forEach( function(ch) {
+          contentObj.add( ch );
+          });*/
         }
       };
 
@@ -8359,6 +8351,13 @@
 // console.log("**** SHOULD NOT ITERATE CHILDREN *****");
 
 // this._dom.innerHTML = v;
+
+/*
+var current_ch = [];
+this.forChildren( function(ch) {
+current_ch.push(ch);
+});
+*/
 
 //console.log("Attr set to ", n);
 //console.trace();
