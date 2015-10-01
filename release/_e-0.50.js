@@ -72,6 +72,13 @@
             me._children.push(e);
             e._parent = me;
             e._svg = me._svg;
+
+            if (e._customElement) {
+              if (e._initWithDef && e._initWithDef.componentWillMount) {
+                e._initWithDef.componentWillMount.apply(e, []);
+              }
+            }
+
             me._dom.appendChild(e._dom);
 
             if (e._customElement) {
