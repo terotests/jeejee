@@ -2563,12 +2563,10 @@
           var elem = this;
 
           if (v == "ref") {
-            console.log("There was ref attribute");
-            debugger;
+
             var pComp = elem._findComp();
             if (pComp) {
               if (pComp._initWithDef) {
-                alert("Found the ref def!");
                 var initData = pComp._initWithDef;
                 if (!initData.refs) initData.refs = {};
                 initData.refs[v2] = elem;
@@ -6287,20 +6285,8 @@
 
         var renderFn = customElem.init || customElem.render;
 
-        var contentObj = renderFn.apply(elem, [objProperties, customElem]);
-
-        // TODO: remove lines below if above does work
-        /*
-        if(baseData) {
-        var contentObj = customElem.init.apply(elem, [baseData, customElem]);
-        } else {
-        // then apply the component init routine
-        var contentObj = customElem.init.apply(elem, [attrObj || {}, customElem]);
-        }
-        */
-
-        // mark the last definition to be used to initialized the component
         elem._initWithDef = customElem;
+        var contentObj = renderFn.apply(elem, [objProperties, customElem]);
 
         if (contentObj) {
 
