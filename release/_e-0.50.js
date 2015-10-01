@@ -441,6 +441,7 @@
           var me = this;
           var i = this._children.indexOf(o);
           if (i >= 0) {
+
             this._children.splice(i, 1);
             this._dom.removeChild(o._dom);
           }
@@ -453,6 +454,9 @@
        */
       _myTrait_.removeChildEvents = function (t) {
         this.forChildren(function (ch) {
+          if (ch._initWithDef && ch._initWithDef.componentWillUnmount) {
+            ch._initWithDef.componentWillUnmount.apply(ch, []);
+          }
           ch.removeAllHandlers();
           ch.removeChildEvents();
           ch.removeControllersFor(ch);
