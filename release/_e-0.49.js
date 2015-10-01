@@ -6323,6 +6323,11 @@
        * @param float t
        */
       _myTrait_.props = function (t) {
+        if (!this._compBaseData) {
+          var p = this._parent;
+          if (p) return p.props();
+          return null;
+        }
         return this._compBaseData;
       };
 
@@ -6342,8 +6347,13 @@
         if (this._compState) {
           return this._compState;
         } else {
-          this._compState = _data({});
-          return this._compState;
+          if (this._initWithDef) {
+            this._compState = _data({});
+            return this._compState;
+          } else {
+            var p = this._parent;
+            if (p) return p.state();
+          }
         }
       };
     })(this);
