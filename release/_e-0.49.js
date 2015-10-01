@@ -6230,7 +6230,7 @@
             var fn = customElem[prop];
             if (this.isFunction(fn)) {
               var me = this;
-              this.sendHandler(prop, function (params) {
+              elem.sendHandler(prop, function (params) {
                 fn.apply(elem, [params]);
               });
             }
