@@ -6241,7 +6241,7 @@
 
         if (customElem.getInitialState) {
           var stateData = customElem.getInitialState.apply(elem, [objProperties]);
-          this._compState = _data(stateData);
+          elem._compState = _data(stateData);
         }
 
         var renderFn = customElem.init || customElem.render;
