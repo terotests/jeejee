@@ -2674,7 +2674,7 @@
           var customElem = this._findCustomElem(elemName);
           if (customElem) {
 
-            if (customElem.init) {
+            if (customElem.init || customElem.render) {
 
               var baseData,
                   elemAttrs = {};
