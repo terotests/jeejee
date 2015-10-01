@@ -4298,6 +4298,7 @@
         this.on("click", function () {
           this.send(eventName, id);
         });
+        return this;
       };
 
       /**
