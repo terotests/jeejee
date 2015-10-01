@@ -6203,7 +6203,11 @@
             // if there is attributes set for the object
             baseData = _data(JSON.parse(JSON.stringify(customElem.data)));
           } else {
-            baseData = _data({});
+            if (customElem.getDefaultProps) {
+              baseData = _data(customElem.getDefaultProps());
+            } else {
+              baseData = _data({});
+            }
           }
           elem._compBaseData = baseData;
           if (this.isObject(attrObj)) {
