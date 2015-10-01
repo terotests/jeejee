@@ -6316,6 +6316,13 @@
       };
 
       /**
+       * @param float t
+       */
+      _myTrait_.params = function (t) {
+        return this._compBaseData;
+      };
+
+      /**
        * @param String elemName
        * @param Object options
        */
