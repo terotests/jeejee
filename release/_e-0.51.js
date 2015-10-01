@@ -186,11 +186,8 @@
         if (!this._parent._children) return;
 
         if (newItem == this) {
-          console.log("The items were the same!!!");
           return;
         }
-        console.log("--- insert after ----");
-
         // var newItem = _e(a,b,c,d,e,f);
         var myIndex = this._index;
         var chList = this._parent._children;
@@ -447,7 +444,6 @@
           var me = this;
           var i = this._children.indexOf(o);
           if (i >= 0) {
-
             this._children.splice(i, 1);
             this._dom.removeChild(o._dom);
           }
