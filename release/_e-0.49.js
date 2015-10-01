@@ -86,6 +86,9 @@
                 // e.clear(); // <- removed clear, should be taken care by _initCustom
                 me._initCustom(e, reCheck || e._customElement, me, e._customAttrs || {}, oldDef);
               }
+              if (e._initWithDef && e._initWithDef.componentDidMount) {
+                e._initWithDef.componentDidMount.apply(e, []);
+              }
             }
 
             e.trigger("parent", me);
@@ -401,6 +404,9 @@
        */
       _myTrait_.remove = function (t) {
 
+        if (this._initWithDef && this._initWithDef.componentWillUnmount) {
+          this._initWithDef.componentWillUnmount.apply(this, []);
+        }
         this.removeChildEvents();
 
         if (this._parent) {
@@ -6187,6 +6193,8 @@
 
         var baseData;
 
+        // getInitialState
+
         if (customElem.data && !elem._compBaseData) {
           // if there is attributes set for the object
           baseData = _data(JSON.parse(JSON.stringify(customElem.data)));
@@ -6216,13 +6224,39 @@
             current_ch.push(ch);
           });
         }
-
-        if (baseData) {
-          var contentObj = customElem.init.apply(elem, [baseData, customElem]);
-        } else {
-          // then apply the component init routine
-          var contentObj = customElem.init.apply(elem, [attrObj || {}, customElem]);
+        var known = ["data", "css", "init", "render", "baseCss"];
+        for (var prop in customElem) {
+          if (customElem.hasOwnProperty(prop)) {
+            var fn = customElem[prop];
+            if (this.isFunction(fn)) {
+              var me = this;
+              this.sendHandler(prop, function (params) {
+                fn.apply(elem, [params]);
+              });
+            }
+          }
         }
+
+        var objProperties = baseData || attrObj || {};
+
+        if (customElem.getInitialState) {
+          var stateData = customElem.getInitialState.apply(elem, [objProperties]);
+          this._compState = _data(stateData);
+        }
+
+        var renderFn = customElem.init || customElem.render;
+
+        var contentObj = renderFn.apply(elem, [objProperties, customElem]);
+
+        // TODO: remove lines below if above does work
+        /*
+        if(baseData) {
+        var contentObj = customElem.init.apply(elem, [baseData, customElem]);
+        } else {
+        // then apply the component init routine
+        var contentObj = customElem.init.apply(elem, [attrObj || {}, customElem]);
+        }
+        */
 
         // mark the last definition to be used to initialized the component
         elem._initWithDef = customElem;
@@ -6274,6 +6308,19 @@
        */
       _myTrait_.registerElement = function (elemName, options) {
         return this.customElement(elemName, options);
+      };
+
+      /**
+       * @param float t
+       */
+      _myTrait_.state = function (t) {
+
+        if (this._compState) {
+          return this._compState;
+        } else {
+          this._compState = _data({});
+          return this._compState;
+        }
       };
     })(this);
 
