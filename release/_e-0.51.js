@@ -7002,6 +7002,17 @@
     };
     later.prototype = new later_prototype();
 
+    (function () {
+      if (typeof define !== "undefined" && define !== null && define.amd != null) {
+        __amdDefs__["later"] = later;
+        this.later = later;
+      } else if (typeof module !== "undefined" && module !== null && module.exports != null) {
+        module.exports["later"] = later;
+      } else {
+        this.later = later;
+      }
+    }).call(new Function("return this")());
+
     // the subclass definition comes around here then
 
     // The class definition is here...
