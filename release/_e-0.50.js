@@ -2563,6 +2563,8 @@
           var elem = this;
 
           if (v == "ref") {
+            console.log("There was ref attribute");
+            debugger;
             var pComp = elem._findComp();
             if (pComp) {
               if (pComp._initWithDef) {
