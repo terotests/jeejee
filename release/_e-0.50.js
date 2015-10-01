@@ -2566,6 +2566,7 @@
             var pComp = elem._findComp();
             if (pComp) {
               if (pComp._initWithDef) {
+                alert("Found the ref def!");
                 var initData = pComp._initWithDef;
                 if (!initData.refs) initData.refs = {};
                 initData.refs[v2] = elem;
