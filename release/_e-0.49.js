@@ -6273,6 +6273,14 @@
       };
 
       /**
+       * @param float elemName
+       * @param float options
+       */
+      _myTrait_.createClass = function (elemName, options) {
+        return this.customElement(elemName, options);
+      };
+
+      /**
        * @param String elemName
        * @param Object options
        */
