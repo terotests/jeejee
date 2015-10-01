@@ -205,7 +205,6 @@
             var oldIndex = chList.indexOf(newItem);
             chList.splice(oldIndex, 1);
             var myIndex = chList.indexOf(this);
-            console.log("--- insert placing into ", myIndex + 1, " ----");
             chList.splice(myIndex + 1, 0, newItem);
           }
           this._parent.reIndex();
@@ -7001,17 +7000,6 @@
       name: "later"
     };
     later.prototype = new later_prototype();
-
-    (function () {
-      if (typeof define !== "undefined" && define !== null && define.amd != null) {
-        __amdDefs__["later"] = later;
-        this.later = later;
-      } else if (typeof module !== "undefined" && module !== null && module.exports != null) {
-        module.exports["later"] = later;
-      } else {
-        this.later = later;
-      }
-    }).call(new Function("return this")());
 
     // the subclass definition comes around here then
 
