@@ -8374,7 +8374,7 @@
 
         if (!_elemNames[elemName] && !_svgElems[elemName]) {
           // custom element, this may be a polymer element or similar
-          hasCustom = this._findCustomElem(elemName);
+          hasCustom = this._findCustomElem(origElemName);
 
           if (hasCustom) {
             this._customElement = hasCustom;
