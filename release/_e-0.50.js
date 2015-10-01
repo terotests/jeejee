@@ -2573,8 +2573,8 @@
 
             var pComp = elem._findComp();
             if (pComp) {
-              if (pComp._initWithDef) {
-                var initData = pComp._initWithDef;
+              if (pComp._instanceVars) {
+                var initData = pComp._instanceVars;
                 if (!initData.refs) initData.refs = {};
                 initData.refs[v2] = elem;
               }
@@ -6293,6 +6293,7 @@
         var renderFn = customElem.init || customElem.render;
 
         elem._initWithDef = customElem;
+        elem._instanceVars = {};
         var contentObj = renderFn.apply(elem, [objProperties, customElem]);
 
         if (contentObj) {
@@ -6362,8 +6363,8 @@
       _myTrait_.ref = function (name) {
         var pComp = this._findComp();
         if (pComp) {
-          if (pComp._initWithDef) {
-            var initData = pComp._initWithDef;
+          if (pComp._instanceVars) {
+            var initData = pComp._instanceVars;
             if (initData.refs) {
               return initData.refs[name];
             }
