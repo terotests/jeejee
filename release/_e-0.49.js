@@ -4287,7 +4287,8 @@
           var h = this._sendHook[url];
           if (h) return h;
         }
-        var p = this.parent();
+        // don't use the .parent() because it will skip the component
+        var p = this._parent;
         if (p) return p._findSendHandler(url);
       };
 
@@ -6224,15 +6225,19 @@
             current_ch.push(ch);
           });
         }
+
+        // -- initialize the controllers --
         var known = ["data", "css", "init", "render", "baseCss"];
         for (var prop in customElem) {
           if (customElem.hasOwnProperty(prop)) {
             var fn = customElem[prop];
             if (this.isFunction(fn)) {
               var me = this;
-              elem.sendHandler(prop, function (params) {
-                fn.apply(elem, [params]);
-              });
+              (function (fn) {
+                elem.sendHandler(prop, function (params) {
+                  fn.apply(elem, [params]);
+                });
+              })(fn);
             }
           }
         }
