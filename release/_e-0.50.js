@@ -827,6 +827,9 @@
        * @param float v
        */
       _myTrait_.height = function (v) {
+        if (this._contentObj) {
+          return this._contentObj.height.apply(this._contentObj, Array.prototype.slice.call(arguments));
+        }
         if (typeof v == "undefined") return this._h;
 
         if (this.isStream(v)) {
@@ -985,6 +988,10 @@
        * @param float v
        */
       _myTrait_.width = function (v) {
+        if (this._contentObj) {
+          return this._contentObj.width.apply(this._contentObj, Array.prototype.slice.call(arguments));
+        }
+
         if (typeof v == "undefined") return this._w;
 
         if (this.isStream(v)) {
