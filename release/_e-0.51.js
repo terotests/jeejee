@@ -6364,6 +6364,13 @@
       /**
        * @param float t
        */
+      _myTrait_.getRegisteredClasses = function (t) {
+        return _customElems || {};
+      };
+
+      /**
+       * @param float t
+       */
       _myTrait_.props = function (t) {
         if (!this._compBaseData) {
           var p = this._parent;
