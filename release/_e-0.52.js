@@ -102,6 +102,8 @@
               }
             }
 
+            if (e._contentObj) e._contentObj._contentParent = me;
+
             e.trigger("parent", me);
             me.trigger("child", e);
           }
@@ -2726,6 +2728,8 @@
               // this._initCustom( elem, customElem, this, className );
               this.add(elem);
 
+              // _contentParent
+
               if (this.isFunction(attrs)) {}
               return elem;
             }
@@ -4332,13 +4336,12 @@
           var had = p._findSendHandler(url);
           if (had) return had;
         }
-        /*
+
         var cp = this._contentParent;
-        if(cp) {
-        var had = cp._findSendHandler(url);
-        return had;
+        if (cp) {
+          var had = cp._findSendHandler(url);
+          return had;
         }
-        */
       };
 
       /**
@@ -6294,6 +6297,10 @@
           elem._contentObj.forChildren(function (ch) {
             current_ch.push(ch);
           });
+        }
+
+        if (parentE) {
+          elem._contentParent = parentE;
         }
 
         // -- initialize the controllers --
