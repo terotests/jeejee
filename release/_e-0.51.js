@@ -4694,7 +4694,7 @@
         if (list) {
           for (var i = 0; i < list.length; i++) {
             var fn = list[i];
-            var res = fn.apply(fn._context || this, [data, callBack, errorCallback]);
+            var res = fn.apply(fn._context || this, [data, callBack, errorCallback, url]);
             if (res === true) {
               return;
             }
