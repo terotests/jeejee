@@ -4332,8 +4332,10 @@
           if (had) return had;
         }
         var cp = this._contentParent;
-        var had = cp._findSendHandler(url);
-        return had;
+        if (cp) {
+          var had = cp._findSendHandler(url);
+          return had;
+        }
       };
 
       /**
