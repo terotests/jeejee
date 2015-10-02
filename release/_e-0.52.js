@@ -4327,7 +4327,13 @@
         }
         // don't use the .parent() because it will skip the component
         var p = this._parent;
-        if (p) return p._findSendHandler(url);
+        if (p) {
+          var had = p._findSendHandler(url);
+          if (had) return had;
+        }
+        var cp = this._contentParent;
+        var had = cp._findSendHandler(url);
+        return had;
       };
 
       /**
