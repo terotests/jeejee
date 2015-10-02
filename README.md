@@ -1169,6 +1169,7 @@ MIT. Currently use at own risk.
 ##### trait mvc_trait
 
 - [_findSendHandler](README.md#mvc_trait__findSendHandler)
+- [clickTo](README.md#mvc_trait_clickTo)
 - [createItemView](README.md#mvc_trait_createItemView)
 - [data](README.md#mvc_trait_data)
 - [findModelFactory](README.md#mvc_trait_findModelFactory)
@@ -1274,10 +1275,16 @@ MIT. Currently use at own risk.
     
 ##### trait web_comp
 
+- [_findComp](README.md#__findComp)
 - [_findCustomElem](README.md#__findCustomElem)
 - [_initCustom](README.md#__initCustom)
+- [createClass](README.md#_createClass)
 - [customElement](README.md#_customElement)
+- [getRegisteredClasses](README.md#_getRegisteredClasses)
+- [props](README.md#_props)
+- [ref](README.md#_ref)
 - [registerElement](README.md#_registerElement)
+- [state](README.md#_state)
 
 
     
@@ -1561,14 +1568,14 @@ return _elemNamesList;
 ```
 
         
-### _e::constructor( elemName, into )
+### _e::constructor( elemName, into, childConstructor )
 
 ```javascript
-this.initAsTag(elemName, into);
+this.initAsTag(elemName, into, childConstructor);
 
 ```
         
-### <a name="_e_initAsTag"></a>_e::initAsTag(elemName, into, force)
+### <a name="_e_initAsTag"></a>_e::initAsTag(elemName, into, childConstructor)
 
 
 *The source code for the function*:
@@ -1597,6 +1604,10 @@ if(this.isObject(elemName)) {
        }
    }
 }
+
+var const_fn;
+if(this.isFunction(into)) const_fn = into;
+if(this.isFunction(childConstructor)) const_fn = childConstructor;
 
 if(!_registry) {
     _registry = {};
@@ -1642,19 +1653,18 @@ var origElemName = elemName;
 var hasCustom;
 elemName = elemName.toLowerCase()
 
-if(force) {
+if(!_elemNames[elemName] && !_svgElems[elemName] ) {
+    // custom element, this may be a polymer element or similar
+    hasCustom = this._findCustomElem( origElemName );
     
-} else {
-    if(!_elemNames[elemName] && !_svgElems[elemName] ) {
-        // custom element, this may be a polymer element or similar
-        hasCustom = this._findCustomElem( elemName );
-        
-        if(hasCustom) {
-            this._customElement = hasCustom;
+    if(hasCustom) {
+        this._customElement = hasCustom;
+        if(this.isObject(into)) {
             this._customAttrs = into; // second attribute { title : name } etc.
-            
-            elemName = hasCustom.tagName || "div";
+        } else {
+            this._customAttrs = {};
         }
+        elemName = hasCustom.tagName || "div";
     }
 }
 
@@ -1711,6 +1721,11 @@ if(!this._component && into) {
 if(hasCustom) {
     this._initCustom( this, hasCustom, null, this._customAttrs || {}, null );
 }
+
+if(this.isFunction(const_fn)) {
+    const_fn.apply(this, [this]);
+}
+
 ```
 
 ### <a name="_e_initElemNames"></a>_e::initElemNames(t)
@@ -1826,18 +1841,32 @@ items.forEach(  function(e) {
         me._children.push(e);
         e._parent = me;
         e._svg = me._svg;
+
+        if(e._customElement) {
+            if(e._initWithDef && e._initWithDef.componentWillMount) {
+                e._initWithDef.componentWillMount.apply( e, []);
+            }
+        }         
+        
         me._dom.appendChild(e._dom);            
 
         if(e._customElement) {
-            var reCheck, oldDef = e._customElement;
-            if(e._customElement.customTag) {
-                reCheck = e._findCustomElem(e._customElement.customTag);
+
+            // disallow locally scoped elements for now...
+            if(!e._initWithDef )  {          
+                var reCheck, oldDef = e._customElement;
+                if(e._customElement.customTag) {
+                    reCheck = e._findCustomElem(e._customElement.customTag);
+                }
+                if(reCheck === oldDef) oldDef = null;
+                var useDef = reCheck || e._customElement;
+                if(!e._initWithDef || ( e._initWithDef != useDef) ) {
+                    // e.clear(); // <- removed clear, should be taken care by _initCustom
+                    me._initCustom( e, reCheck || e._customElement, me, e._customAttrs || {}, oldDef );
+                }
             }
-            if(reCheck === oldDef) oldDef = null;
-            var useDef = reCheck || e._customElement;
-            if(!e._initWithDef || ( e._initWithDef != useDef) ) {
-                // e.clear(); // <- removed clear, should be taken care by _initCustom
-                me._initCustom( e, reCheck || e._customElement, me, e._customAttrs || {}, oldDef );
+            if(e._initWithDef && e._initWithDef.componentDidMount) {
+                e._initWithDef.componentDidMount.apply( e, []);
             }
         }        
 
@@ -1934,11 +1963,8 @@ if(!this._parent) return;
 if(!this._parent._children) return;
 
 if(newItem==this) {
-    console.log("The items were the same!!!");
     return;
 }
-console.log("--- insert after ----");
-
 // var newItem = _e(a,b,c,d,e,f);
 var myIndex = this._index;
 var chList = this._parent._children;
@@ -1956,7 +1982,6 @@ if(newItem._parent && (newItem._parent!=this._parent)) {
         var oldIndex = chList.indexOf(newItem);
         chList.splice(oldIndex,1);
         var myIndex = chList.indexOf(this);
-        console.log("--- insert placing into ",myIndex+1," ----");
         chList.splice(myIndex+1,0,newItem);
     }
     this._parent.reIndex();
@@ -1964,7 +1989,7 @@ if(newItem._parent && (newItem._parent!=this._parent)) {
 
 var pDOM = newItem._dom;
 var mDOM = this._dom;
-       mDOM.parentNode.insertBefore(pDOM, mDOM.nextSibling);  
+mDOM.parentNode.insertBefore(pDOM, mDOM.nextSibling);  
 ```
 
 ### <a name="_insertAt"></a>::insertAt(i, obj)
@@ -2157,10 +2182,15 @@ return this;
 ```javascript
 
 var chList = this._children;
-var i=0;
+var i=0, len = chList.length;
+for(var i=0; i<len; i++) {
+    this._children[i]._index = i;
+}
+/*
 chList.forEach(function(ch) {
    ch._index = i++;
 });
+*/
 ```
 
 ### <a name="_remove"></a>::remove(t)
@@ -2169,6 +2199,9 @@ Removes the item from the DOM -tree
 *The source code for the function*:
 ```javascript
 
+if(this._initWithDef && this._initWithDef.componentWillUnmount) {
+    this._initWithDef.componentWillUnmount.apply( this, []);
+}
 this.removeChildEvents();
 
 if(this._parent) {
@@ -2198,7 +2231,6 @@ if(this._children) {
     if(i>=0) {
         this._children.splice(i,1);
         this._dom.removeChild( o._dom );
-        
     } 
     this.reIndex();
 }
@@ -2210,6 +2242,9 @@ if(this._children) {
 *The source code for the function*:
 ```javascript
 this.forChildren( function(ch) {
+    if(ch._initWithDef && ch._initWithDef.componentWillUnmount) {
+        ch._initWithDef.componentWillUnmount.apply( ch, []);
+    }     
     ch.removeAllHandlers();
     ch.removeChildEvents();
     ch.removeControllersFor(ch);
@@ -2590,6 +2625,9 @@ return box;
 
 *The source code for the function*:
 ```javascript
+if(this._contentObj) {
+    return this._contentObj.height.apply(this._contentObj, Array.prototype.slice.call(arguments));
+}
 if(typeof(v)=="undefined") return this._h;
 
 if(this.isStream(v)) {
@@ -2759,6 +2797,10 @@ return this;
 
 *The source code for the function*:
 ```javascript
+if(this._contentObj) {
+    return this._contentObj.width.apply(this._contentObj, Array.prototype.slice.call(arguments));
+}
+
 if(typeof(v)=="undefined") return this._w;
 
 if(this.isStream(v)) {
@@ -4437,6 +4479,19 @@ if(this.isObject(v)) {
    
 } else {
     var elem = this;
+    
+    if(v == "ref") {
+
+        var pComp = elem._findComp();
+        if(pComp) {
+            if( pComp._instanceVars ) {
+                var initData = pComp._instanceVars;
+                if(!initData.refs) initData.refs = {};
+                initData.refs[v2] = elem;
+            }
+        }
+    }
+    
     if(elem._compBaseData) {
         
        if(this.isArray(v2)) {
@@ -4444,7 +4499,10 @@ if(this.isObject(v)) {
            var varName = v2[1];
 
            varObj.on(varName, function() {
-               elem._compBaseData.set(v, varObj.get(varName));
+               later().add(
+                   function() {
+                       elem._compBaseData.set(v, varObj.get(varName));
+                   });
            });
            elem._compBaseData.set(v, varObj.get(varName));
            // --> two way
@@ -4550,13 +4608,24 @@ if(!this._isStdElem(elemName)) {
     var customElem = this._findCustomElem(elemName);
     if(customElem) {
 
-        if(customElem.init) {
+        if(customElem.init || customElem.render) {
             
-            var baseData;
+            var baseData, elemAttrs = {};
+            var constr_fn;
+            
+            if(this.isFunction(attrs)) constr_fn = attrs;
+            if(this.isFunction(className)) constr_fn = className;
+            
+            if(this.isObject(className) && !this.isFunction(className)) elemAttrs = className;
+            
             // create the element HTML tag
-            var elem = _e(customElem.customTag, className);
+            var elem = _e(customElem.customTag, elemAttrs, constr_fn);
             // this._initCustom( elem, customElem, this, className );
             this.add( elem );
+            
+            if(this.isFunction(attrs)) {
+                // attrs.apply(elem, [elem]);
+            }
             return elem;
         }
         
@@ -4825,6 +4894,7 @@ attrList.forEach( function(myAttrs) {
 constr.forEach( function(c) {     
       c.apply(el, [el]);
     });
+
 
 return el;
 ```
@@ -6224,10 +6294,27 @@ if(this._sendHook) {
     var h = this._sendHook[url];
     if(h) return h;
 }
-var p = this.parent();
+// don't use the .parent() because it will skip the component
+var p = this._parent;
 if(p) return p._findSendHandler(url);
 
 
+```
+
+### <a name="mvc_trait_clickTo"></a>mvc_trait::clickTo(eventName, eventParams)
+
+
+*The source code for the function*:
+```javascript
+
+var id = eventParams;
+if(this.isObject(id)) {
+    if(id.getID) id = id.getID();
+}
+this.on("click", function() {
+    this.send(eventName, id);
+})
+return this;
 ```
 
 ### <a name="mvc_trait_createItemView"></a>mvc_trait::createItemView(item)
@@ -8038,6 +8125,19 @@ The class has following internal singleton variables:
 * _instances
         
         
+### <a name="__findComp"></a>::_findComp(t)
+
+Finds the first parent component
+*The source code for the function*:
+```javascript
+if(!this._compBaseData) {
+    var p = this._parent;
+    if(p) return p._findComp();
+    return null;
+}
+return this;
+```
+
 ### <a name="__findCustomElem"></a>::_findCustomElem(name)
 
 
@@ -8068,10 +8168,22 @@ if(_customElems) return _customElems[name];
 
 var baseData;
 
-if(customElem.data && !elem._compBaseData) {
-    // if there is attributes set for the object
-    baseData = _data(JSON.parse(JSON.stringify(customElem.data)));
-    if(baseData) elem._compBaseData = baseData;
+// getInitialState
+
+if(elem._compBaseData) {
+    baseData = elem._compBaseData;
+} else {
+    if(customElem.data ) {
+        // if there is attributes set for the object
+        baseData = _data(JSON.parse(JSON.stringify(customElem.data)));
+    } else {
+        if(customElem.getDefaultProps) {
+            baseData = _data(customElem.getDefaultProps());
+        } else {
+            baseData = _data({});
+        }
+    }
+    elem._compBaseData = baseData;
     if(this.isObject(attrObj)) {
         var oo = attrObj;
         // TODO: make this batter, now only one-dimensional :/ 
@@ -8081,8 +8193,6 @@ if(customElem.data && !elem._compBaseData) {
             }
         }  
     }     
-} else {
-    baseData = elem._compBaseData;
 }
 
 if(customElem.baseCss) {
@@ -8098,15 +8208,35 @@ if(elem._contentObj) {
     });
 }
 
-if(baseData) {
-    var contentObj = customElem.init.apply(elem, [baseData, customElem]);
-} else {
-    // then apply the component init routine
-    var contentObj = customElem.init.apply(elem, [attrObj || {}, customElem]);
+// -- initialize the controllers --
+var known = ["data", "css", "init", "render", "baseCss"];
+for( var prop in customElem ) {
+    if(customElem.hasOwnProperty(prop)) {
+        var fn = customElem[prop];
+        if(this.isFunction(fn)) {
+            var me = this;
+            (function(fn) {
+                elem.sendHandler(prop, function(params) {
+                    fn.apply(elem, [params]);
+                });
+            }(fn));
+        }
+    }
 }
 
-// mark the last definition to be used to initialized the component
+
+var objProperties = baseData || attrObj || {};
+
+if(customElem.getInitialState) {
+    var stateData = customElem.getInitialState.apply( elem, [objProperties] );
+    elem._compState = _data(stateData);
+}
+
+var renderFn = customElem.init || customElem.render;
+
 elem._initWithDef = customElem;
+elem._instanceVars = {};
+var contentObj = renderFn.apply(elem, [objProperties, customElem]);
 
 if(contentObj) {
     
@@ -8118,6 +8248,14 @@ if(contentObj) {
     });
     
 }
+```
+
+### <a name="_createClass"></a>::createClass(elemName, options)
+
+
+*The source code for the function*:
+```javascript
+return this.customElement(elemName, options);
 ```
 
 ### <a name="_customElement"></a>::customElement(elemName, options)
@@ -8151,12 +8289,69 @@ if(options.css) {
 
 ```
 
+### <a name="_getRegisteredClasses"></a>::getRegisteredClasses(t)
+
+
+*The source code for the function*:
+```javascript
+return _customElems || {};
+```
+
+### <a name="_props"></a>::props(t)
+
+
+*The source code for the function*:
+```javascript
+if(!this._compBaseData) {
+    var p = this._parent;
+    if(p) return p.props();
+    return null;
+}
+return this._compBaseData;
+```
+
+### <a name="_ref"></a>::ref(name)
+
+
+*The source code for the function*:
+```javascript
+var pComp = this._findComp();
+if(pComp) {
+    if( pComp._instanceVars ) {
+        var initData = pComp._instanceVars;
+        if(initData.refs) {
+            return initData.refs[name];
+        }
+    }
+}
+```
+
 ### <a name="_registerElement"></a>::registerElement(elemName, options)
 
 
 *The source code for the function*:
 ```javascript
 return this.customElement(elemName, options);
+```
+
+### <a name="_state"></a>::state(t)
+
+
+*The source code for the function*:
+```javascript
+
+if(this._compState) {
+    return this._compState;
+} else {
+    if(this._initWithDef) {
+        this._compState = _data({});
+        return this._compState;
+    } else {
+        var p = this._parent;
+        if(p) return p.state();
+    }
+    
+}
 ```
 
 

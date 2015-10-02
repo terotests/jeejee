@@ -4322,6 +4322,8 @@
         if (this._sendHook) {
           var h = this._sendHook[url];
           if (h) return h;
+          var h = this._sendHook["*"]; // catch all if "*" is used.
+          if (h) return h;
         }
         // don't use the .parent() because it will skip the component
         var p = this._parent;
