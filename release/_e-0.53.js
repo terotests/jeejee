@@ -4714,7 +4714,11 @@
             }
           }
         } else {
-          errorCallback("Controller or send handler for " + url + " was not found");
+          if (errorCallback) {
+            errorCallback("Controller or send handler for " + url + " was not found");
+          } else {
+            console.error("controller for message " + url + " was not found");
+          }
         }
       };
 
