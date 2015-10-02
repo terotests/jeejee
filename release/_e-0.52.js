@@ -4319,6 +4319,7 @@
        * @param String url
        */
       _myTrait_._findSendHandler = function (url) {
+        debugger;
         if (this._sendHook) {
           var h = this._sendHook[url];
           if (h) return h;
@@ -4331,11 +4332,13 @@
           var had = p._findSendHandler(url);
           if (had) return had;
         }
+        /*
         var cp = this._contentParent;
-        if (cp) {
-          var had = cp._findSendHandler(url);
-          return had;
+        if(cp) {
+        var had = cp._findSendHandler(url);
+        return had;
         }
+        */
       };
 
       /**
