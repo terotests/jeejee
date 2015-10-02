@@ -6356,6 +6356,7 @@
       };
 
       /**
+       * Registers a custom element. Note: Allows rewriting the element definition.
        * @param String elemName
        * @param Object options
        */
@@ -6364,12 +6365,8 @@
         if (!this._customElems) this._customElems = {};
         if (!_customElems) _customElems = {};
 
-        // do not re-create this time the element
-        if (this._customElems[elemName]) return;
-
-        // this would create the factory for the custom element to be used
         this._customElems[elemName] = options;
-        if (!_customElems[elemName]) _customElems[elemName] = options;
+        _customElems[elemName] = options;
 
         // save the custom element tag name for further referencese
         options.customTag = elemName;
