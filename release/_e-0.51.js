@@ -82,16 +82,20 @@
             me._dom.appendChild(e._dom);
 
             if (e._customElement) {
-              var reCheck,
-                  oldDef = e._customElement;
-              if (e._customElement.customTag) {
-                reCheck = e._findCustomElem(e._customElement.customTag);
-              }
-              if (reCheck === oldDef) oldDef = null;
-              var useDef = reCheck || e._customElement;
-              if (!e._initWithDef || e._initWithDef != useDef) {
-                // e.clear(); // <- removed clear, should be taken care by _initCustom
-                me._initCustom(e, reCheck || e._customElement, me, e._customAttrs || {}, oldDef);
+
+              // disallow locally scoped elements for now...
+              if (!e._initWithDef) {
+                var reCheck,
+                    oldDef = e._customElement;
+                if (e._customElement.customTag) {
+                  reCheck = e._findCustomElem(e._customElement.customTag);
+                }
+                if (reCheck === oldDef) oldDef = null;
+                var useDef = reCheck || e._customElement;
+                if (!e._initWithDef || e._initWithDef != useDef) {
+                  // e.clear(); // <- removed clear, should be taken care by _initCustom
+                  me._initCustom(e, reCheck || e._customElement, me, e._customAttrs || {}, oldDef);
+                }
               }
               if (e._initWithDef && e._initWithDef.componentDidMount) {
                 e._initWithDef.componentDidMount.apply(e, []);
