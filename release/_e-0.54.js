@@ -7337,9 +7337,11 @@
         // Initialize static variables here...
 
         if (!_myTrait_.hasOwnProperty("__factoryClass")) _myTrait_.__factoryClass = [];
-        _myTrait_.__factoryClass.push(function (id) {
+        _myTrait_.__factoryClass.push(function (id, mediaRule) {
 
           if (!id) id = "_global_";
+
+          if (mediaRule) id += "/" + mediaRule;
 
           if (!_instances) {
             _instances = {};
@@ -7577,7 +7579,8 @@
             });
           }
           if (!_insInit) _insInit = {};
-          var id = (cssScope || "_global_") + "/" + this._mediaRule;
+          var id = cssScope || "_global_";
+          if (mediaRule) id += "/" + mediaRule;
           if (!_insInit[id]) {
             _insInit[id] = true;
             this.initConversions();
