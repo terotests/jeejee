@@ -7490,6 +7490,7 @@
                   rule_obj[n] = new_obj[n];
                 }
               }
+              i++;
               continue;
             }
             this._data[rule].push(args[i]);
