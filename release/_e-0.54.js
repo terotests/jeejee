@@ -7621,7 +7621,35 @@
          * @param float mediaRule
          */
         _myTrait_.forMedia = function (mediaRule) {
-          return css(this._cssScope, mediaRule);
+
+          var mediaObj = css(this._cssScope, mediaRule);
+
+          if (!this._mediaHash) this._mediaHash = {};
+          if (!this._mediaHash[mediaRule]) this._mediaHash[mediaRule] = mediaObj;
+
+          return mediaObj;
+        };
+
+        /**
+         * @param function fn
+         */
+        _myTrait_.forRules = function (fn) {
+          // TODO: consider how the if media rules need to be given using this function
+          /*
+          var mediaList = [];
+          if( this._mediaHash ) {
+          for(var n in this._mediaHash) {
+          if(this._mediaHash.hasOwnProperty(n)) {
+            
+          }
+          }
+          }*/
+
+          for (var n in this._data) {
+            if (this._data.hasOwnProperty(n)) {
+              fn(n, this._assign(this._data[n]));
+            }
+          }
         };
 
         if (_myTrait_.__traitInit && !_myTrait_.hasOwnProperty("__traitInit")) _myTrait_.__traitInit = _myTrait_.__traitInit.slice();
