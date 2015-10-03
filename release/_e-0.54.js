@@ -6402,6 +6402,15 @@
           compName = false;
         }
 
+        if (compName) {
+          var ob = cList[compName];
+          if (ob && ob.baseCss) {
+            // TODO: add also the CSS construction parameters here
+            fn(n, ob.baseCss);
+          }
+          return this;
+        }
+
         for (var n in cList) {
 
           if (compName && n != compName) continue;
@@ -6414,6 +6423,7 @@
             }
           }
         }
+        return this;
       };
 
       /**
