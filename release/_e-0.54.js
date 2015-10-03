@@ -6390,6 +6390,33 @@
       };
 
       /**
+       * Creates &quot;postcss&quot; like postprocessing for every CSS object in registered components list
+       * @param String compName  - The component or element name
+       * @param function fn  - Function
+       */
+      _myTrait_.modifyCss = function (compName, fn) {
+        var cList = this.getRegisteredClasses();
+
+        if (!fn) {
+          fn = compName;
+          compName = false;
+        }
+
+        for (var n in cList) {
+
+          if (compName && n != compName) continue;
+
+          if (cList.hasOwnProperty(n)) {
+            var ob = cList[n];
+            if (ob.baseCss) {
+              // TODO: add also the CSS construction parameters here
+              fn(n, ob.baseCss);
+            }
+          }
+        }
+      };
+
+      /**
        * @param float t
        */
       _myTrait_.props = function (t) {
