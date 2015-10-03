@@ -7647,7 +7647,7 @@
 
           for (var n in this._data) {
             if (this._data.hasOwnProperty(n)) {
-              fn(n, this._assign(this._data[n]));
+              fn.apply(this, [n, this._assign(this._data[n])]);
             }
           }
         };
