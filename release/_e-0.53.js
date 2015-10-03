@@ -7577,7 +7577,7 @@
             });
           }
           if (!_insInit) _insInit = {};
-          var id = cssScope || "_global_";
+          var id = (cssScope || "_global_") + "/" + this._mediaRule;
           if (!_insInit[id]) {
             _insInit[id] = true;
             this.initConversions();
