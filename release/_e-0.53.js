@@ -7453,6 +7453,7 @@
         _myTrait_.buildCss = function (mediaRule) {
 
           if (this._data) {
+            if (!mediaRule) mediaRule = this._mediaRule;
             var o = {};
             for (var rule in this._data) {
               if (this._data.hasOwnProperty(rule)) {
@@ -7536,13 +7537,22 @@
           return str;
         };
 
+        /**
+         * @param float mediaRule
+         */
+        _myTrait_.forMedia = function (mediaRule) {
+          return css(this._cssScope, mediaRule);
+        };
+
         if (_myTrait_.__traitInit && !_myTrait_.hasOwnProperty("__traitInit")) _myTrait_.__traitInit = _myTrait_.__traitInit.slice();
         if (!_myTrait_.__traitInit) _myTrait_.__traitInit = [];
-        _myTrait_.__traitInit.push(function (cssScope) {
+        _myTrait_.__traitInit.push(function (cssScope, mediaRule) {
           // my rulesets...
           this._data = this._data || {};
           this._animations = {};
           this._composedData = this._composedData || {};
+
+          this._mediaRule = mediaRule;
 
           // this used to be cssPostFix;
           this._cssScope = cssScope || "";
@@ -7692,6 +7702,14 @@
 
           str += mediaRule ? "}\n" : "";
           return str;
+        };
+
+        /**
+         * @param String mediaRule
+         */
+        _myTrait_.mediaFork = function (mediaRule) {
+
+          return css(this._cssScope, mediaRule);
         };
 
         /**
