@@ -7333,8 +7333,35 @@
         var _conversions;
         var _instances;
         var _insInit;
+        var _someDirty;
 
         // Initialize static variables here...
+
+        /**
+         * @param Object objectList
+         */
+        _myTrait_._assign = function (objectList) {
+          var o = {},
+              args;
+          if (this.isArray(objectList)) {
+            args = objectList;
+          } else {
+            args = Array.prototype.slice.call(arguments);
+          }
+          args.forEach(function (rules) {
+            for (var n in rules) {
+              if (rules.hasOwnProperty(n)) {
+                var value = rules[n];
+                if (value === null || value === false) {
+                  delete o[n];
+                } else {
+                  o[n] = rules[n];
+                }
+              }
+            }
+          });
+          return o;
+        };
 
         if (!_myTrait_.hasOwnProperty("__factoryClass")) _myTrait_.__factoryClass = [];
         _myTrait_.__factoryClass.push(function (id, mediaRule) {
@@ -7415,36 +7442,49 @@
         };
 
         /**
-         * @param float objectList
+         * @param String cssRule  - The rule to modify
          */
-        _myTrait_.assign = function (objectList) {
-          var o = {},
-              args;
-          if (this.isArray(objectList)) {
-            args = objectList;
-          } else {
-            args = Array.prototype.slice.call(arguments);
-          }
-          args.forEach(function (rules) {
-            for (var n in rules) {
-              if (rules.hasOwnProperty(n)) {
-                o[n] = rules[n];
+        _myTrait_.assign = function (cssRule) {
+          // my rulesets...
+          var args = Array.prototype.slice.call(arguments);
+          var rule = args[0];
+
+          if (!this._data[rule]) this._data[rule] = [];
+
+          var i = 1;
+          var max = 3; // maximum number, until we just merge rest to the last...
+
+          while (args[i]) {
+            if (this._data[rule].length >= max) {
+              var new_obj = args[i];
+              var rule_obj = this._data[rule][this._data[rule].length - 1];
+              for (var n in new_obj) {
+                if (new_obj.hasOwnProperty(n)) {
+                  rule_obj[n] = new_obj[n];
+                }
               }
+              continue;
             }
-          });
-          return o;
+            this._data[rule].push(args[i]);
+            i++;
+          }
+          this._dirty = true;
+          _someDirty = true;
+          return this;
         };
 
         /**
-         * @param float t
+         * @param String className
+         * @param Object obj  - one or more objects to combine
          */
-        _myTrait_.bind = function (t) {
+        _myTrait_.bind = function (className, obj) {
           // my rulesets...
           var args = Array.prototype.slice.call(arguments),
               rule = args.shift();
 
           this._data[rule] = args;
           this._dirty = true;
+          _someDirty = true;
 
           return this;
         };
@@ -7463,7 +7503,7 @@
                 if (this._composedData[rule]) {
                   ruleData = [this._composedData[rule]].concat(ruleData);
                 }
-                o[rule] = this.assign(ruleData);
+                o[rule] = this._assign(ruleData);
               }
             }
             this._composedData = o;
@@ -7563,6 +7603,9 @@
           if (!head) {
             var me = this;
             later().every(1 / 10, function () {
+              if (!_someDirty) return;
+              _someDirty = false;
+
               for (var id in _instances) {
                 if (_instances.hasOwnProperty(id)) {
                   var ins = _instances[id];
