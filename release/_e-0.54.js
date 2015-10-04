@@ -1710,6 +1710,8 @@
     (function (_myTrait_) {
       var _routes;
       var _touchClick;
+      var _outInit;
+      var _outListeners;
 
       // Initialize static variables here...
 
@@ -1899,6 +1901,39 @@
         ef._unbindEvent = function () {
           me.removeListener(en, ef);
         };
+
+        if (en == "outclick") {
+          if (!_outInit) {
+            _outInit = true;
+            _outListeners = [];
+            var lastClickTime = null;
+            later().every(0.5, function () {
+              if (lastClickTime) {
+                var ms = lastClickTime;
+                var currTime = new Date().getTime();
+                lastClickTime = null;
+                for (var i = 0; i < _outListeners.length; i++) {
+                  var out = _outListeners[i];
+                  if (out._lastClickTime < lastClickTime) {
+                    out.trigger("outclick");
+                  }
+                }
+              }
+            });
+            if (document.body) {
+              document.body.addEventListener("click", function () {
+                lastClickTime = new Date().getTime();
+              }, true);
+            }
+          }
+          if (_outListeners.indexOf(me) < 0) {
+            _outListeners.push(me);
+          }
+          this.on("click", function () {
+            me._lastClickTime = new Date().getTime();
+          });
+          return this;
+        }
 
         if (en == "load") {
           if (this._imgLoaded) {
@@ -2097,6 +2132,11 @@
               }
               delete this._namedListeners[n];
             }
+          }
+
+          var i = _outListeners.indexOf(this);
+          if (i >= 0) {
+            _outListeners.splice(i, 1);
           }
         }
       };
