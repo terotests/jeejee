@@ -5951,7 +5951,6 @@
         if (!p && typeof _promise != "undefined") p = _promise;
 
         if (p) {
-
           if (!_loadedLibs) {
             _loadedLibs = {};
           }
@@ -5978,10 +5977,10 @@
               fail("Unknown element type " + url);
               return;
             }
-            script.onload = function () {
+            ext.onload = function () {
               accept(url);
             };
-            script.onerror = function () {
+            ext.onerror = function () {
               fail(url);
             };
             document.head.appendChild(ext);
