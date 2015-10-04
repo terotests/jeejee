@@ -1907,33 +1907,20 @@
           if (!_outInit) {
             _outInit = true;
             _outListeners = [];
-            var lastClickTime = null;
-            later().every(0.5, function () {
-              if (lastClickTime) {
-                var lastTime = lastClickTime;
-                var currTime = new Date().getTime();
-                lastClickTime = null;
-                for (var i = 0; i < _outListeners.length; i++) {
-                  var out = _outListeners[i];
-                  if (out._lastClickTime < lastTime) {
-                    out.trigger("outclick");
-                  }
-                }
-              }
-            });
             if (document.body) {
               document.body.addEventListener("click", function () {
-                lastClickTime = new Date().getTime();
+                // isHovering
+                for (var i = 0; i < _outListeners.length; i++) {
+                  var out = _outListeners[i];
+                  if (!out.isHovering()) out.trigger("outclick");
+                }
               }, true);
             }
           }
           if (_outListeners.indexOf(me) < 0) {
             _outListeners.push(me);
           }
-          me._lastClickTime = new Date().getTime();
-          this.on("click", function () {
-            me._lastClickTime = new Date().getTime();
-          });
+          this.isHovering();
           return this;
         }
 
