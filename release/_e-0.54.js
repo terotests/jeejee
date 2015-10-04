@@ -5680,6 +5680,7 @@
       var x;
       var _ajaxHook;
       var _uploadHook;
+      var _loadedLibs;
 
       // Initialize static variables here...
 
@@ -5932,6 +5933,60 @@
         }
 
         _ajaxHook[url].unshift(handlerFunction);
+      };
+
+      /**
+       * @param string elemType
+       * @param float url
+       */
+      _myTrait_.appendToHead = function (elemType, url) {
+
+        if (!url) {
+          url = elemType;
+          var parts = url.split(".");
+          elemType = parts.pop(); // for example file.css -> css
+        }
+        var p;
+        if (typeof Promise != "undefined") p = Promise;
+        if (!p && typeof _promise != "undefined") p = _promise;
+
+        if (p) {
+
+          if (!_loadedLibs) {
+            _loadedLibs = {};
+          }
+          if (_loadedLibs[url]) {
+            return new p(function (accept, fail) {
+              accept(url);
+            });
+          }
+          _loadedLibs[url] = true;
+          return new p(function (accept, fail) {
+
+            var ext;
+            if (elemType == "js") {
+              ext = document.createElement("script");
+              ext.src = url;
+            }
+            if (elemType == "css") {
+              ext = document.createElement("link");
+              ext.setAttribute("rel", "stylesheet");
+              ext.setAttribute("type", "text/css");
+              ext.setAttribute("href", url);
+            }
+            if (!ext) {
+              fail("Unknown element type " + url);
+              return;
+            }
+            script.onload = function () {
+              accept(url);
+            };
+            script.onerror = function () {
+              fail(url);
+            };
+            document.head.appendChild(ext);
+          });
+        }
       };
 
       /**
