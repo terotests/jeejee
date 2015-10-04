@@ -1903,7 +1903,6 @@
         };
 
         if (en == "outclick") {
-          debugger;
           if (!_outInit) {
             _outInit = true;
             _outListeners = [];
