@@ -6433,14 +6433,14 @@
           if (customElem.requires.js) {
             customElem.requires.js.forEach(function (item) {
               prom = prom.then(function () {
-                return me.appendToHead("js", item.url);
+                return elem.appendToHead("js", item.url);
               });
             });
           }
           if (customElem.requires.css) {
             customElem.requires.css.forEach(function (item) {
               prom = prom.then(function () {
-                return me.appendToHead("css", item.url);
+                return elem.appendToHead("css", item.url);
               });
             });
           }
