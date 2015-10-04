@@ -6416,16 +6416,54 @@
 
         elem._initWithDef = customElem;
         elem._instanceVars = {};
-        var contentObj = renderFn.apply(elem, [objProperties, customElem]);
 
-        if (contentObj) {
+        // ready to go with render function
+        /*
+        requires : {
+        js : [
+            { url : "https://rawgit.com/terotests/displayList/master/release/displayList-0.05.js?v=2" }
+        ]  
+        },
+        */
+        if (customElem.requires) {
 
-          elem._contentObj = contentObj;
-          contentObj._contentParent = elem;
-
-          current_ch.forEach(function (ch) {
-            contentObj.add(ch);
+          var prom = _promise(); // should be available
+          var start = prom;
+          // -- load if promises available...
+          if (customElem.requires.js) {
+            customElem.requires.js.forEach(function (item) {
+              prom = prom.then(function () {
+                return me.appendToHead("js", item.url);
+              });
+            });
+          }
+          if (customElem.requires.css) {
+            customElem.requires.css.forEach(function (item) {
+              prom = prom.then(function () {
+                return me.appendToHead("css", item.url);
+              });
+            });
+          }
+          prom.then(function () {
+            var contentObj = renderFn.apply(elem, [objProperties, customElem]);
+            if (contentObj) {
+              elem._contentObj = contentObj;
+              contentObj._contentParent = elem;
+              current_ch.forEach(function (ch) {
+                contentObj.add(ch);
+              });
+            }
           });
+          start.resolve();
+        } else {
+          var contentObj = renderFn.apply(elem, [objProperties, customElem]);
+          if (contentObj) {
+            elem._contentObj = contentObj;
+            contentObj._contentParent = elem;
+            current_ch.forEach(function (ch) {
+              contentObj.add(ch);
+            });
+          }
         }
       };
 
