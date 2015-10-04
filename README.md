@@ -1261,6 +1261,7 @@ MIT. Currently use at own risk.
 - [_initAjax](README.md#__initAjax)
 - [_traditionalUpload](README.md#__traditionalUpload)
 - [ajaxHook](README.md#_ajaxHook)
+- [appendToHead](README.md#_appendToHead)
 - [createUploader](README.md#_createUploader)
 - [fileObjectThumbnail](README.md#_fileObjectThumbnail)
 - [get](README.md#_get)
@@ -1281,6 +1282,7 @@ MIT. Currently use at own risk.
 - [createClass](README.md#_createClass)
 - [customElement](README.md#_customElement)
 - [getRegisteredClasses](README.md#_getRegisteredClasses)
+- [modifyCss](README.md#_modifyCss)
 - [props](README.md#_props)
 - [ref](README.md#_ref)
 - [registerElement](README.md#_registerElement)
@@ -1376,6 +1378,7 @@ MIT. Currently use at own risk.
 #### Class css
 
 
+- [_assign](README.md#css__assign)
 - [_classFactory](README.md#css__classFactory)
 - [animation](README.md#css_animation)
 - [animSettings](README.md#css_animSettings)
@@ -1384,8 +1387,11 @@ MIT. Currently use at own risk.
 - [buildCss](README.md#css_buildCss)
 - [collectAnimationCss](README.md#css_collectAnimationCss)
 - [convert](README.md#css_convert)
+- [forMedia](README.md#css_forMedia)
+- [forRules](README.md#css_forRules)
 - [initConversions](README.md#css_initConversions)
 - [makeCss](README.md#css_makeCss)
+- [mediaFork](README.md#css_mediaFork)
 - [ruleToCss](README.md#css_ruleToCss)
 - [updateStyleTag](README.md#css_updateStyleTag)
 
@@ -1869,6 +1875,8 @@ items.forEach(  function(e) {
                 e._initWithDef.componentDidMount.apply( e, []);
             }
         }        
+        
+        if( e._contentObj ) e._contentObj._contentParent = me;
 
         e.trigger("parent",me);
         me.trigger("child",e);
@@ -3569,6 +3577,10 @@ The class has following internal singleton variables:
         
 * _touchClick
         
+* _outInit
+        
+* _outListeners
+        
         
 ### <a name="__alwaysTouchclick"></a>::_alwaysTouchclick(t)
 
@@ -3761,6 +3773,26 @@ ef._unbindEvent = function() {
    me.removeListener(en,ef);    
 }
 
+if(en=="outclick") {
+    if(!_outInit) {
+        _outInit= true;
+        _outListeners = [];
+        if(document.body) {
+            document.body.addEventListener("click", function() {
+                // isHovering
+                for(var i=0; i<_outListeners.length; i++) {
+                    var out = _outListeners[i];
+                    if(!out.isHovering()) out.trigger("outclick");
+                }
+            }, true)
+        }
+    }
+    if(_outListeners.indexOf(me) < 0 ) {
+        _outListeners.push( me );
+    } 
+    this.isHovering();
+    return this;
+}
 
 if(en=="load") {
     if(this._imgLoaded) {
@@ -3965,6 +3997,11 @@ if(this._ev) {
             }
             delete this._namedListeners[n];
         }
+    }
+    
+    var i = _outListeners.indexOf( this );
+    if(i >=0) {
+        _outListeners.splice(i,1);
     }
 }
 ```
@@ -4622,6 +4659,9 @@ if(!this._isStdElem(elemName)) {
             var elem = _e(customElem.customTag, elemAttrs, constr_fn);
             // this._initCustom( elem, customElem, this, className );
             this.add( elem );
+            
+            // _contentParent
+            
             
             if(this.isFunction(attrs)) {
                 // attrs.apply(elem, [elem]);
@@ -6290,14 +6330,25 @@ The class has following internal singleton variables:
 
 *The source code for the function*:
 ```javascript
+
 if(this._sendHook) {
     var h = this._sendHook[url];
     if(h) return h;
+    var h = this._sendHook["*"]; // catch all if "*" is used.
+    if(h) return h;    
 }
 // don't use the .parent() because it will skip the component
 var p = this._parent;
-if(p) return p._findSendHandler(url);
+if(p) {
+    var had = p._findSendHandler(url);
+    if(had) return had;
+}
 
+var cp = this._contentParent;
+if(cp) {
+    var had = cp._findSendHandler(url);
+    return had;
+}
 
 ```
 
@@ -6670,13 +6721,17 @@ var list = this._findSendHandler(url);
 if(list) {
     for(var i=0; i<list.length; i++) {
         var fn = list[i];
-        var res = fn.apply( fn._context || this, [data, callBack, errorCallback] );
+        var res = fn.apply( fn._context || this, [data, callBack, errorCallback, url] );
         if(res === true) {
             return;
         }
     }
 } else {
-    errorCallback("Controller or send handler for "+url+" was not found");
+    if(errorCallback) {
+        errorCallback("Controller or send handler for "+url+" was not found");
+    } else {
+        console.error("controller for message "+url+" was not found");
+    }
 }
 
 ```
@@ -7522,6 +7577,8 @@ The class has following internal singleton variables:
         
 * _uploadHook
         
+* _loadedLibs
+        
         
 ### <a name="__httpsend"></a>::_httpsend(url, callback, method, data, errorCallback)
 `url` request target url
@@ -7796,6 +7853,64 @@ if(!_ajaxHook[url]) {
 }
 
 _ajaxHook[url].unshift( handlerFunction );
+
+```
+
+### <a name="_appendToHead"></a>::appendToHead(elemType, url)
+
+
+*The source code for the function*:
+```javascript
+
+if(!url) {
+    url = elemType;
+    var parts = url.split(".");
+    elemType = parts.pop(); // for example file.css -> css
+}
+var p;
+if(typeof(Promise) != "undefined") p = Promise;
+if(!p && typeof(_promise) != "undefined") p = _promise;
+
+if(p) {
+    if(!_loadedLibs) {
+        _loadedLibs = {};
+    }
+    if(_loadedLibs[url]) {
+        return new p(
+            function(accept, fail) {        
+                accept(url);
+            });
+    }
+    _loadedLibs[url] = true;
+    return new p(
+        function(accept, fail) {
+
+            var ext;
+            if(elemType == "js") {
+                ext = document.createElement("script");
+                ext.src = url;
+            }
+            if(elemType == "css") {
+                ext = document.createElement("link");
+                ext.setAttribute("rel", "stylesheet");
+                ext.setAttribute("type", "text/css");
+                ext.setAttribute("href", url);        
+                 
+            }
+            if(!ext) {
+                fail("Unknown element type "+url);
+                return;
+            }
+            ext.onload = function () {
+                accept(url);
+            }
+            ext.onerror = function() {
+                fail(url);
+            }     
+            document.head.appendChild(ext);
+
+        });
+}
 
 ```
 
@@ -8208,6 +8323,10 @@ if(elem._contentObj) {
     });
 }
 
+if(parentE) {
+    elem._contentParent = parentE;
+}
+
 // -- initialize the controllers --
 var known = ["data", "css", "init", "render", "baseCss"];
 for( var prop in customElem ) {
@@ -8236,18 +8355,57 @@ var renderFn = customElem.init || customElem.render;
 
 elem._initWithDef = customElem;
 elem._instanceVars = {};
-var contentObj = renderFn.apply(elem, [objProperties, customElem]);
 
-if(contentObj) {
+// ready to go with render function
+/*
+    requires : {
+        js : [
+            { url : "https://rawgit.com/terotests/displayList/master/release/displayList-0.05.js?v=2" }
+        ]  
+    },
+*/
+if( customElem.requires ) {
     
-    elem._contentObj = contentObj;
-    contentObj._contentParent = elem;
-
-    current_ch.forEach( function(ch) {
-        contentObj.add( ch );
+    var prom = _promise(); // should be available
+    var start = prom;
+    // -- load if promises available...
+    if(customElem.requires.js) {
+        customElem.requires.js.forEach( function(item) {
+            prom = prom.then( function() {
+                return elem.appendToHead("js", item.url);
+            });
+        });
+    }
+    if(customElem.requires.css) {
+        customElem.requires.css.forEach( function(item) {
+            prom = prom.then( function() {
+                return elem.appendToHead("css", item.url);
+            });
+        });
+    }    
+    prom.then( function() {
+        var contentObj = renderFn.apply(elem, [objProperties, customElem]);
+        if(contentObj) {
+            elem._contentObj = contentObj;
+            contentObj._contentParent = elem;
+            current_ch.forEach( function(ch) {
+                contentObj.add( ch );
+            });
+        }            
     });
+    start.resolve();
     
+} else {
+    var contentObj = renderFn.apply(elem, [objProperties, customElem]);
+    if(contentObj) {
+        elem._contentObj = contentObj;
+        contentObj._contentParent = elem;
+        current_ch.forEach( function(ch) {
+            contentObj.add( ch );
+        });
+    }    
 }
+
 ```
 
 ### <a name="_createClass"></a>::createClass(elemName, options)
@@ -8260,19 +8418,15 @@ return this.customElement(elemName, options);
 
 ### <a name="_customElement"></a>::customElement(elemName, options)
 
-
+Registers a custom element. Note: Allows rewriting the element definition.
 *The source code for the function*:
 ```javascript
 
 if(!this._customElems) this._customElems = {};
 if(!_customElems) _customElems = {};
 
-// do not re-create this time the element
-if(this._customElems[elemName]) return;
-
-// this would create the factory for the custom element to be used
 this._customElems[elemName] = options;
-if(!_customElems[elemName]) _customElems[elemName] = options;
+_customElems[elemName] = options;
 
 // save the custom element tag name for further referencese
 options.customTag = elemName;
@@ -8295,6 +8449,46 @@ if(options.css) {
 *The source code for the function*:
 ```javascript
 return _customElems || {};
+```
+
+### <a name="_modifyCss"></a>::modifyCss(compName, fn)
+`compName` The component or element name
+ 
+`fn` Function
+ 
+
+Creates "postcss" like postprocessing for every CSS object in registered components list
+*The source code for the function*:
+```javascript
+var cList = this.getRegisteredClasses();
+
+if(!fn) {
+    fn = compName;
+    compName = false;
+}
+
+if(compName) {
+    var ob = cList[compName];
+    if(ob && ob.baseCss) {
+        // TODO: add also the CSS construction parameters here
+        fn( n, ob.baseCss ); 
+    }
+    return this;
+}
+
+for( var n in cList ) {
+    
+    if(compName && (n!=compName)) continue;
+    
+    if(cList.hasOwnProperty(n)) {
+        var ob = cList[n];
+        if(ob.baseCss) {
+            // TODO: add also the CSS construction parameters here
+            fn( n, ob.baseCss ); 
+        }
+    }
+}
+return this;
 ```
 
 ### <a name="_props"></a>::props(t)
@@ -8983,14 +9177,53 @@ The class has following internal singleton variables:
         
 * _insInit
         
+* _someDirty
         
-### <a name="css__classFactory"></a>css::_classFactory(id)
+* _virtualTags
+        
+* _virtualSize
+        
+* _IE9Limits
+        
+* _IE9Tag
+        
+        
+### <a name="css__assign"></a>css::_assign(objectList)
+
+
+*The source code for the function*:
+```javascript
+var o = {}, args;
+if(this.isArray(objectList)) {
+    args = objectList;
+} else {
+    args = Array.prototype.slice.call(arguments);
+}
+args.forEach(function(rules) {
+            for(var n in rules) {
+                if(rules.hasOwnProperty(n)) {
+                    var value = rules[n];
+                    if(value===null || value === false) {
+                        delete o[n];
+                    } else {
+                        o[n] = rules[n]; 
+                    }
+                }
+            }
+        });          
+return o;
+
+```
+
+### <a name="css__classFactory"></a>css::_classFactory(id, mediaRule)
 
 
 *The source code for the function*:
 ```javascript
 
 if(!id) id = "_global_";
+
+if(mediaRule) id+="/"+mediaRule;
 
 if(!_instances) {
     _instances = {};
@@ -9063,29 +9296,46 @@ if(this.isObject(obj)) {
 }
 ```
 
-### <a name="css_assign"></a>css::assign(objectList)
+### <a name="css_assign"></a>css::assign(cssRule)
+`cssRule` The rule to modify
+ 
 
 
 *The source code for the function*:
 ```javascript
-var o = {}, args;
-if(this.isArray(objectList)) {
-    args = objectList;
-} else {
-    args = Array.prototype.slice.call(arguments);
-}
-args.forEach(function(rules) {
-            for(var n in rules) {
-                if(rules.hasOwnProperty(n)) {
-                    o[n] = rules[n];
-                }
+// my rulesets...
+var args = Array.prototype.slice.call(arguments);
+var rule = args[0];
+
+if(!this._data[rule]) this._data[rule] = [];
+
+var i = 1;
+var max = 3; // maximum number, until we just merge rest to the last...
+
+while(args[i]) {
+    if(this._data[rule].length>=max) {
+        var new_obj = args[i];
+        var rule_obj = this._data[rule][this._data[rule].length-1];
+        for(var n in new_obj) {
+            if(new_obj.hasOwnProperty(n)) {
+                rule_obj[n] = new_obj[n];
             }
-        });          
-return o;
+        }
+        i++;
+        continue;
+    }
+    this._data[rule].push( args[i] ); 
+    i++;
+}
+this._dirty = true;
+_someDirty = true;
+return this;
 
 ```
 
-### <a name="css_bind"></a>css::bind(t)
+### <a name="css_bind"></a>css::bind(className, obj)
+`obj` one or more objects to combine
+ 
 
 
 *The source code for the function*:
@@ -9096,6 +9346,7 @@ var args = Array.prototype.slice.call(arguments),
 
 this._data[rule] = args;
 this._dirty = true;
+_someDirty = true;
 
 return this;
 
@@ -9108,6 +9359,7 @@ return this;
 ```javascript
 
 if(this._data) {
+    if(!mediaRule) mediaRule = this._mediaRule;
     var o = {};
     for( var rule in this._data) {
         if(this._data.hasOwnProperty(rule)) {
@@ -9115,7 +9367,7 @@ if(this._data) {
             if(this._composedData[rule]) {
                 ruleData = [this._composedData[rule]].concat(ruleData);
             }
-            o[rule] = this.assign( ruleData );
+            o[rule] = this._assign( ruleData );
         }
     }
     this._composedData = o;
@@ -9194,7 +9446,46 @@ if(_conversions[n]) {
 return str;
 ```
 
-### css::constructor( cssScope )
+### <a name="css_forMedia"></a>css::forMedia(mediaRule)
+
+
+*The source code for the function*:
+```javascript
+
+var mediaObj = css( this._cssScope , mediaRule);
+
+if(!this._mediaHash) this._mediaHash = {};
+if(!this._mediaHash[mediaRule]) this._mediaHash[mediaRule] = mediaObj;
+
+return mediaObj;
+
+```
+
+### <a name="css_forRules"></a>css::forRules(fn)
+
+
+*The source code for the function*:
+```javascript
+// TODO: consider how the if media rules need to be given using this function 
+/*
+var mediaList = [];
+if( this._mediaHash ) {
+    for(var n in this._mediaHash) {
+        if(this._mediaHash.hasOwnProperty(n)) {
+            
+        }
+    }
+}*/
+
+for(var n in this._data) {
+    if(this._data.hasOwnProperty(n)) {
+        fn.apply(this, [n, this._assign( this._data[n]) ] );
+    }
+}
+
+```
+
+### css::constructor( cssScope, mediaRule )
 
 ```javascript
 // my rulesets...
@@ -9202,13 +9493,19 @@ this._data = this._data  || {};
 this._animations = {};
 this._composedData = this._composedData || {};
 
+this._mediaRule = mediaRule;
+
 // this used to be cssPostFix;
 this._cssScope = cssScope || "";
 // this._postFix = cssPostFix || "";
 
 if(!head) {
+    _virtualTags = [];
     var me = this;
     later().every(1/10, function() {
+        if(!_someDirty) return;
+        _someDirty = false;
+
         for( var id in _instances) {
             if(_instances.hasOwnProperty(id)) {
                 var ins = _instances[id];
@@ -9221,13 +9518,16 @@ if(!head) {
                     }
                 }
             }
-            
         }
+        if(_IE9Limits && _IE9Tag) {
+            _IE9Tag.styleSheet.cssText = _virtualTags.join(" ");
+        };
 
     });
 }
 if(!_insInit) _insInit = {};
-var id = cssScope || "_global_";
+var id = (cssScope || "_global_");
+if(mediaRule) id+="/"+mediaRule;
 if(!_insInit[id]) {
     _insInit[id] = true;
     this.initConversions();
@@ -9241,6 +9541,17 @@ if(!_insInit[id]) {
 
 *The source code for the function*:
 ```javascript
+
+// -- moving this to virtual tags for IE9 ----
+// _virtualTags
+
+if(!_virtualSize) _virtualSize = 0;
+
+if(!window.atob && document.all) {
+    _IE9Limits = true;
+}
+
+/*
 head = document.getElementsByTagName('head')[0];
 var styleTag = document.createElement('style');
 styleTag.setAttribute('type', 'text/css');
@@ -9251,6 +9562,10 @@ if (styleTag.styleSheet) {   // IE
 }
 head.appendChild(styleTag);      
 this._styleTag = styleTag;
+*/
+
+this._virtualTagId = _virtualSize++;
+_virtualTags[this._virtualTagId] = ""; // make it string to support array join
 
 bexp = function(p, v) {
     var str = "";
@@ -9356,6 +9671,15 @@ str += mediaRule ? "}\n" : "";
 return str;
 ```
 
+### <a name="css_mediaFork"></a>css::mediaFork(mediaRule)
+
+
+*The source code for the function*:
+```javascript
+
+return css( this._cssScope , mediaRule);
+```
+
 ### <a name="css_ruleToCss"></a>css::ruleToCss(cssRulesObj)
 
 
@@ -9374,20 +9698,63 @@ return str;
 
 *The source code for the function*:
 ```javascript
-var styleTag = this._styleTag,
-    old =  styleTag.firstChild;
+
     
 // console.log(cssText);
     
-if (styleTag.styleSheet) {   // IE
-    styleTag.styleSheet.cssText = cssText;
-} else {                // the world
-    var old = styleTag.firstChild;
-    styleTag.appendChild(document.createTextNode(cssText));
-    if(typeof(old)!="undefined") {
-        styleTag.removeChild(old);
+try {
+    if(_IE9Limits) {
+        // if the styletag does not exist create it for IE9
+        if(!_IE9Tag) {
+            head = document.getElementsByTagName('head')[0];
+            var styleTag = document.createElement('style');
+            styleTag.setAttribute('type', 'text/css');
+            styleTag.styleSheet.cssText = "";
+            _IE9Tag = styleTag;
+            head.appendChild(styleTag);      
+        }
+        // for IE9 build CSS into virtual tags first
+        _virtualTags[this._virtualTagId] = cssText;      
+    } else {
+        
+        var styleTag;
+        
+        if(!this._styleTag) {
+            head = document.getElementsByTagName('head')[0];
+            var styleTag = document.createElement('style');
+            styleTag.setAttribute('type', 'text/css');
+            if (styleTag.styleSheet) {   // IE
+                styleTag.styleSheet.cssText = "";
+            } else {                // the world
+                styleTag.appendChild(document.createTextNode(""));
+            }
+            head.appendChild(styleTag);      
+            this._styleTag = styleTag;            
+        }
+        
+        styleTag = this._styleTag;
+        var old =  styleTag.firstChild;        
+        styleTag.appendChild(document.createTextNode(cssText));
+        if(typeof(old)!="undefined") {
+            styleTag.removeChild(old);
+        }
     }
-} 
+/*
+head = document.getElementsByTagName('head')[0];
+var styleTag = document.createElement('style');
+styleTag.setAttribute('type', 'text/css');
+if (styleTag.styleSheet) {   // IE
+    styleTag.styleSheet.cssText = "";
+} else {                // the world
+    styleTag.appendChild(document.createTextNode(""));
+}
+head.appendChild(styleTag);      
+this._styleTag = styleTag;
+*/
+
+} catch(e) {
+    if(console && console.log) console.log(e.message, cssText);
+}
 
 ```
 
