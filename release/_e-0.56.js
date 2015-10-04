@@ -5953,13 +5953,11 @@
           if (!_loadedLibs) {
             _loadedLibs = {};
           }
+          // if loading, return the promise
           if (_loadedLibs[url]) {
-            return new p(function (accept, fail) {
-              accept(url);
-            });
+            return _loadedLibs[url];
           }
-          _loadedLibs[url] = true;
-          return new p(function (accept, fail) {
+          _loadedLibs[url] = new p(function (accept, fail) {
 
             var ext;
             if (elemType == "js") {
@@ -5984,6 +5982,7 @@
             };
             document.head.appendChild(ext);
           });
+          return _loadedLibs[url];
         }
       };
 
