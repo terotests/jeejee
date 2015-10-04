@@ -1910,12 +1910,12 @@
             var lastClickTime = null;
             later().every(0.5, function () {
               if (lastClickTime) {
-                var ms = lastClickTime;
+                var lastTime = lastClickTime;
                 var currTime = new Date().getTime();
                 lastClickTime = null;
                 for (var i = 0; i < _outListeners.length; i++) {
                   var out = _outListeners[i];
-                  if (out._lastClickTime < lastClickTime) {
+                  if (out._lastClickTime < lastTime) {
                     out.trigger("outclick");
                   }
                 }
@@ -1930,6 +1930,7 @@
           if (_outListeners.indexOf(me) < 0) {
             _outListeners.push(me);
           }
+          me._lastClickTime = new Date().getTime();
           this.on("click", function () {
             me._lastClickTime = new Date().getTime();
           });
