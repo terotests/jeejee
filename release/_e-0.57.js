@@ -2592,51 +2592,6 @@
       // Initialize static variables here...
 
       /**
-       * @param Array args  - Array of Arguments to extract
-       */
-      _myTrait_._constrArgs = function (args) {
-        // var args = Array.prototype.slice.call(arguments);
-
-        var res = {},
-            me = this;
-
-        res.elemName = args.shift();
-        /*
-        res.elemName
-        res.classStr
-        res.data
-        res.stream
-        res.attrs
-        res.constr
-        */
-
-        args.forEach(function (a, i) {
-
-          if (typeof a == "string") {
-            res.classStr = a;
-            return;
-          }
-          if (me.isObject(a) && me.isFunction(a.getID)) {
-            res.data = a;
-            return;
-          }
-          if (me.isStream(a)) {
-            res.stream = a;
-            return;
-          }
-          if (me.isObject(a) && !me.isFunction(a)) {
-            res.attrs = a;
-            return;
-          }
-          if (me.isFunction(a)) {
-            res.constr = a;
-            return;
-          }
-        });
-        return res;
-      };
-
-      /**
        * @param float className
        * @param float attrs
        */
@@ -8326,6 +8281,52 @@
       });
 
       /**
+       * Parse element constructor argumens, typically: elementName, attributes, constructor function and custom data.
+       * @param Array args
+       */
+      _myTrait_._constrArgs = function (args) {
+        // var args = Array.prototype.slice.call(arguments);
+
+        var res = {},
+            me = this;
+
+        res.elemName = args.shift();
+        /*
+        res.elemName
+        res.classStr
+        res.data
+        res.stream
+        res.attrs
+        res.constr
+        */
+
+        args.forEach(function (a, i) {
+
+          if (typeof a == "string") {
+            res.classStr = a;
+            return;
+          }
+          if (me.isObject(a) && me.isFunction(a.getID)) {
+            res.data = a;
+            return;
+          }
+          if (me.isStream(a)) {
+            res.stream = a;
+            return;
+          }
+          if (me.isObject(a) && !me.isFunction(a)) {
+            res.attrs = a;
+            return;
+          }
+          if (me.isFunction(a)) {
+            res.constr = a;
+            return;
+          }
+        });
+        return res;
+      };
+
+      /**
        * @param String name
        */
       _myTrait_._isStdElem = function (name) {
@@ -8718,17 +8719,29 @@
       _myTrait_.__traitInit.push(function (elemName, into, childConstructor) {
 
         var argList = Array.prototype.slice.call(arguments);
-        this.initAsTag.apply(this, argList);
+
+        var res = this._constrArgs(argList);
+
+        this.initAsTag.apply(this, [res.elemName, res.attrs, res.constr, res.data]);
 
         // this.initAsTag(elemName, into, childConstructor);
+        /*
+        res.elemName
+        res.classStr
+        res.data
+        res.stream
+        res.attrs
+        res.constr
+        */
       });
 
       /**
        * @param float elemName
        * @param float into
        * @param float childConstructor
+       * @param float elemStateData
        */
-      _myTrait_.initAsTag = function (elemName, into, childConstructor) {
+      _myTrait_.initAsTag = function (elemName, into, childConstructor, elemStateData) {
 
         if (this.isObject(elemName)) {
           this._dom = elemName;
@@ -8865,7 +8878,7 @@
         }
 
         if (hasCustom) {
-          this._initCustom(this, hasCustom, null, this._customAttrs || {}, null);
+          this._initCustom(this, hasCustom, null, this._customAttrs || {}, elemStateData);
         }
 
         if (this.isFunction(const_fn)) {
