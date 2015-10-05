@@ -6378,16 +6378,21 @@
         if (elem._compBaseData) {
           baseData = elem._compBaseData;
         } else {
-          if (customElem.data) {
-            // if there is attributes set for the object
-            baseData = _data(JSON.parse(JSON.stringify(customElem.data)));
+          if (givenBaseData) {
+            baseData = givenBaseData;
           } else {
-            if (customElem.getDefaultProps) {
-              baseData = _data(customElem.getDefaultProps());
+            if (customElem.data) {
+              // if there is attributes set for the object
+              baseData = _data(JSON.parse(JSON.stringify(customElem.data)));
             } else {
-              baseData = _data({});
+              if (customElem.getDefaultProps) {
+                baseData = _data(customElem.getDefaultProps());
+              } else {
+                baseData = _data({});
+              }
             }
           }
+
           elem._compBaseData = baseData;
           if (this.isObject(attrObj)) {
             var oo = attrObj;
