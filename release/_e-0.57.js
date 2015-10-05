@@ -6378,18 +6378,15 @@
         if (elem._compBaseData) {
           baseData = elem._compBaseData;
         } else {
-          if (givenBaseData) {
-            baseData = givenBaseData;
+
+          if (customElem.data) {
+            // if there is attributes set for the object
+            baseData = _data(JSON.parse(JSON.stringify(customElem.data)));
           } else {
-            if (customElem.data) {
-              // if there is attributes set for the object
-              baseData = _data(JSON.parse(JSON.stringify(customElem.data)));
+            if (customElem.getDefaultProps) {
+              baseData = _data(customElem.getDefaultProps());
             } else {
-              if (customElem.getDefaultProps) {
-                baseData = _data(customElem.getDefaultProps());
-              } else {
-                baseData = _data({});
-              }
+              baseData = _data({});
             }
           }
 
@@ -6439,10 +6436,13 @@
         }
 
         var objProperties = baseData || attrObj || {};
-
-        if (customElem.getInitialState) {
-          var stateData = customElem.getInitialState.apply(elem, [objProperties]);
-          elem._compState = _data(stateData);
+        if (givenBaseData) {
+          elem._compState = givenBaseData;
+        } else {
+          if (customElem.getInitialState) {
+            var stateData = customElem.getInitialState.apply(elem, [objProperties]);
+            elem._compState = _data(stateData);
+          }
         }
 
         var renderFn = customElem.init || customElem.render;
