@@ -3898,7 +3898,7 @@
         }
 
         if (!this._views || this._views.length == 0) {
-          var p = this.parent();
+          var p = this.parent(true);
           if (p) {
             p.popView();
             return this;
