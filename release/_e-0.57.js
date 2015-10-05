@@ -2601,6 +2601,14 @@
             me = this;
 
         res.elemName = args.shift();
+        /*
+        res.elemName
+        res.classStr
+        res.data
+        res.stream
+        res.attrs
+        res.constr
+        */
 
         args.forEach(function (a, i) {
 
@@ -2769,38 +2777,37 @@
        * @param float attrs
        */
       _myTrait_.e = function (elemName, className, attrs) {
-        if (this._contentObj) {
-          return this._contentObj.e.apply(this._contentObj, Array.prototype.slice.call(arguments));
-        }
-        if (!this._isStdElem(elemName)) {
 
-          var customElem = this._findCustomElem(elemName);
+        var argList = Array.prototype.slice.call(arguments);
+
+        if (this._contentObj) {
+          return this._contentObj.e.apply(this._contentObj, argList);
+        }
+        /*
+        res.elemName
+        res.classStr
+        res.data
+        res.stream
+        res.attrs
+        res.constr
+        */
+        var res = this._constrArgs(argList);
+
+        if (!this._isStdElem(res.elemName)) {
+
+          var customElem = this._findCustomElem(res.elemName);
           if (customElem) {
 
             if (customElem.init || customElem.render) {
 
-              var baseData,
-                  elemAttrs = {};
-              var constr_fn;
-
-              if (this.isFunction(attrs)) constr_fn = attrs;
-              if (this.isFunction(className)) constr_fn = className;
-
-              if (this.isObject(className) && !this.isFunction(className)) elemAttrs = className;
-
               // create the element HTML tag
-              var elem = _e(customElem.customTag, elemAttrs, constr_fn);
-              // this._initCustom( elem, customElem, this, className );
+              var elem = _e(customElem.customTag, res.attrs, res.constr, res.data);
               this.add(elem);
-
-              // _contentParent
-
-              if (this.isFunction(attrs)) {}
               return elem;
             }
           }
         }
-        var el = this.shortcutFor(elemName, className, attrs);
+        var el = this.shortcutFor.apply(this, argList); // (elemName, className, attrs);
         return el;
       };
 
@@ -6405,9 +6412,9 @@
        * @param Object customElem  - Custom element initialization data
        * @param float parentE
        * @param float attrObj
-       * @param float oldDefinition
+       * @param Object givenBaseData
        */
-      _myTrait_._initCustom = function (elem, customElem, parentE, attrObj, oldDefinition) {
+      _myTrait_._initCustom = function (elem, customElem, parentE, attrObj, givenBaseData) {
 
         var baseData;
 
@@ -8709,7 +8716,11 @@
       if (_myTrait_.__traitInit && !_myTrait_.hasOwnProperty("__traitInit")) _myTrait_.__traitInit = _myTrait_.__traitInit.slice();
       if (!_myTrait_.__traitInit) _myTrait_.__traitInit = [];
       _myTrait_.__traitInit.push(function (elemName, into, childConstructor) {
-        this.initAsTag(elemName, into, childConstructor);
+
+        var argList = Array.prototype.slice.call(arguments);
+        this.initAsTag.apply(this, argList);
+
+        // this.initAsTag(elemName, into, childConstructor);
       });
 
       /**
@@ -8948,8 +8959,6 @@
 // console.log("**** SHOULD NOT ITERATE CHILDREN *****");
 
 // this._dom.innerHTML = v;
-
-// attrs.apply(elem, [elem]);
 
 //console.log("Attr set to ", n);
 //console.trace();
