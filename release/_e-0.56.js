@@ -337,14 +337,14 @@
       };
 
       /**
-       * @param float t
+       * @param boolean dontSkipToContParent  - If set to true does not immediately skip to the parent&#39;s content parent
        */
-      _myTrait_.parent = function (t) {
+      _myTrait_.parent = function (dontSkipToContParent) {
         if (this._contentParent) {
           return this._contentParent;
         }
         var p = this._parent;
-        if (p && p._contentParent) return p._contentParent;
+        if (p && p._contentParent && !dontSkipToContParent) return p._contentParent;
         return p;
       };
 
