@@ -6026,7 +6026,7 @@
         // upload handler here...
         var upload = function upload(uploadElement) {
 
-          var hook = _uploadHook[options.url];
+          var hook = _uploadHook && _uploadHook[options.url];
           if (hook) {
 
             var sendData = {
