@@ -4524,6 +4524,10 @@
        */
       _myTrait_.model = function (name, params) {
 
+        if (!name) {
+          return this.state();
+        }
+
         var me = this;
         return _promise(function (result, reject) {
 
