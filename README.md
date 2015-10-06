@@ -917,6 +917,7 @@ MIT. Currently use at own risk.
 
 - [__singleton](README.md#_e___singleton)
 - [_classFactory](README.md#_e__classFactory)
+- [_constrArgs](README.md#_e__constrArgs)
 - [_isStdElem](README.md#_e__isStdElem)
 - [extendAll](README.md#_e_extendAll)
 - [getComponentRegistry](README.md#_e_getComponentRegistry)
@@ -1528,6 +1529,51 @@ if(elemName) {
 
 ```
 
+### <a name="_e__constrArgs"></a>_e::_constrArgs(args)
+
+Parse element constructor argumens, typically: elementName, attributes, constructor function and custom data.
+*The source code for the function*:
+```javascript
+// var args = Array.prototype.slice.call(arguments);
+
+var res = {}, me = this;
+
+res.elemName = args.shift();
+/*
+res.elemName
+res.classStr
+res.data
+res.stream
+res.attrs
+res.constr
+*/
+
+args.forEach( function( a, i ) {
+    
+    if(typeof a == "string" ) {
+        res.classStr = a;
+        return;
+    }
+    if(me.isObject( a ) && me.isFunction(a.getID) ) {
+        res.data = a;
+        return;
+    }      
+    if(me.isStream( a ) ) {
+        res.stream = a;
+        return;
+    }  
+    if(me.isObject( a ) && (!me.isFunction( a )) ) {
+        res.attrs = a;
+        return;
+    }  
+    if(me.isFunction( a ) ) {
+        res.constr = a;
+        return;
+    }     
+});
+return res;
+```
+
 ### <a name="_e__isStdElem"></a>_e::_isStdElem(name)
 
 
@@ -1577,11 +1623,26 @@ return _elemNamesList;
 ### _e::constructor( elemName, into, childConstructor )
 
 ```javascript
-this.initAsTag(elemName, into, childConstructor);
+
+var argList = Array.prototype.slice.call(arguments);
+
+var res = this._constrArgs( argList );
+
+this.initAsTag.apply( this, [res.elemName, res.attrs, res.constr, res.data] );
+
+// this.initAsTag(elemName, into, childConstructor);
+/*
+res.elemName
+res.classStr
+res.data
+res.stream
+res.attrs
+res.constr
+*/
 
 ```
         
-### <a name="_e_initAsTag"></a>_e::initAsTag(elemName, into, childConstructor)
+### <a name="_e_initAsTag"></a>_e::initAsTag(elemName, into, childConstructor, elemStateData)
 
 
 *The source code for the function*:
@@ -1725,7 +1786,7 @@ if(!this._component && into) {
 }
 
 if(hasCustom) {
-    this._initCustom( this, hasCustom, null, this._customAttrs || {}, null );
+    this._initCustom( this, hasCustom, null, this._customAttrs || {}, elemStateData );
 }
 
 if(this.isFunction(const_fn)) {
@@ -2122,7 +2183,9 @@ if(this._index && this._parent) {
 }
 ```
 
-### <a name="_parent"></a>::parent(t)
+### <a name="_parent"></a>::parent(dontSkipToContParent)
+`dontSkipToContParent` If set to true does not immediately skip to the parent&#39;s content parent
+ 
 
 
 *The source code for the function*:
@@ -2131,7 +2194,7 @@ if(this._contentParent) {
     return this._contentParent;
 }
 var p = this._parent;
-if(p && p._contentParent) return p._contentParent;
+if(p && p._contentParent && !dontSkipToContParent) return p._contentParent;
 return p;
 ```
 
@@ -3999,9 +4062,11 @@ if(this._ev) {
         }
     }
     
-    var i = _outListeners.indexOf( this );
-    if(i >=0) {
-        _outListeners.splice(i,1);
+    if(_outListeners) {
+        var i = _outListeners.indexOf( this );
+        if(i >=0) {
+            _outListeners.splice(i,1);
+        }
     }
 }
 ```
@@ -4637,42 +4702,37 @@ return el;
 
 *The source code for the function*:
 ```javascript
-if(this._contentObj) {
-    return this._contentObj.e.apply(this._contentObj, Array.prototype.slice.call(arguments));
-}
-if(!this._isStdElem(elemName)) {
 
-    var customElem = this._findCustomElem(elemName);
+var argList = Array.prototype.slice.call(arguments);
+
+if(this._contentObj) {
+    return this._contentObj.e.apply(this._contentObj, argList);
+}
+/*
+res.elemName
+res.classStr
+res.data
+res.stream
+res.attrs
+res.constr
+*/
+var res = this._constrArgs(argList);
+
+if(!this._isStdElem(res.elemName)) {
+
+    var customElem = this._findCustomElem(res.elemName);
     if(customElem) {
 
         if(customElem.init || customElem.render) {
-            
-            var baseData, elemAttrs = {};
-            var constr_fn;
-            
-            if(this.isFunction(attrs)) constr_fn = attrs;
-            if(this.isFunction(className)) constr_fn = className;
-            
-            if(this.isObject(className) && !this.isFunction(className)) elemAttrs = className;
-            
+
             // create the element HTML tag
-            var elem = _e(customElem.customTag, elemAttrs, constr_fn);
-            // this._initCustom( elem, customElem, this, className );
+            var elem = _e(customElem.customTag, res.attrs, res.constr, res.data);
             this.add( elem );
-            
-            // _contentParent
-            
-            
-            if(this.isFunction(attrs)) {
-                // attrs.apply(elem, [elem]);
-            }
             return elem;
         }
-        
     }
-    
 }
-var el = this.shortcutFor(elemName, className, attrs);
+var el = this.shortcutFor.apply( this, argList); // (elemName, className, attrs);
 return el;
 ```
 
@@ -4894,6 +4954,44 @@ if(this._contentObj) {
 var el = _e(name);
 this.add(el);
 
+var argData = this._constrArgs( Array.prototype.slice.call(arguments) );
+
+if(argData.classStr) el.addClass( argData.classStr );
+if(argData.stream) el.addClass( argData.stream );
+
+if(argData.attrs) {
+    var myAttrs = argData.attrs;
+    for(var n in myAttrs) {
+        if(myAttrs.hasOwnProperty(n)) {
+            if(name=="input" && (n=="type" && myAttrs[n]=="checkbox")) {
+                el._type = "checkbox";
+            }
+            el.attr(n, myAttrs[n]);
+        }
+    }
+}
+
+if(argData.constr) {
+    argData.constr.apply(el, [el]);
+}
+
+return el;
+/*
+classes.forEach( function(c) { el.addClass( c )});
+attrList.forEach( function(myAttrs) {     
+      for(var n in myAttrs) {
+        if(myAttrs.hasOwnProperty(n)) {
+            if(name=="input" && (n=="type" && myAttrs[n]=="checkbox")) {
+                el._type = "checkbox";
+            }
+            el.attr(n, myAttrs[n]);
+        }
+    }});
+constr.forEach( function(c) {     
+      c.apply(el, [el]);
+    });
+
+
 var constr = [],
     classes = [],
     attrList = [];
@@ -4937,6 +5035,7 @@ constr.forEach( function(c) {
 
 
 return el;
+*/
 ```
 
 ### <a name="domShortcuts_span"></a>domShortcuts::span(className, attrs)
@@ -5848,7 +5947,7 @@ if(this._contentObj) {
 }
 
 if(!this._views || this._views.length==0) {
-    var p = this.parent();
+    var p = this.parent(true);
     if(p) {
         p.popView();
         return this;
@@ -6482,6 +6581,10 @@ for(var n in this._view) {
 
 *The source code for the function*:
 ```javascript
+
+if(!name) {
+    return this.state();
+}
 
 var me = this;
 return _promise( function(result, reject) {
@@ -7751,7 +7854,7 @@ o.add( iFrame );
 o.uploadFiles = function(vars) {
 
 
-    var hook = _uploadHook[options.url];
+    var hook = _uploadHook && _uploadHook[options.url];
     if(hook) {
         
         var sendData = {
@@ -7875,14 +7978,11 @@ if(p) {
     if(!_loadedLibs) {
         _loadedLibs = {};
     }
+    // if loading, return the promise
     if(_loadedLibs[url]) {
-        return new p(
-            function(accept, fail) {        
-                accept(url);
-            });
+        return _loadedLibs[url];
     }
-    _loadedLibs[url] = true;
-    return new p(
+    _loadedLibs[url] = new p(
         function(accept, fail) {
 
             var ext;
@@ -7910,6 +8010,7 @@ if(p) {
             document.head.appendChild(ext);
 
         });
+    return _loadedLibs[url];
 }
 
 ```
@@ -7955,7 +8056,7 @@ if(options.images) {
 // upload handler here...
 var upload = function(uploadElement) {
 
-    var hook = _uploadHook[options.url];
+    var hook = _uploadHook && _uploadHook[options.url];
     if(hook) {
         
         var sendData = {
@@ -8271,7 +8372,7 @@ if(_customElems) return _customElems[name];
 
 ```
 
-### <a name="__initCustom"></a>::_initCustom(elem, customElem, parentE, attrObj, oldDefinition)
+### <a name="__initCustom"></a>::_initCustom(elem, customElem, parentE, attrObj, givenBaseData)
 `elem` _e() element to init the element to
  
 `customElem` Custom element initialization data
@@ -8288,6 +8389,7 @@ var baseData;
 if(elem._compBaseData) {
     baseData = elem._compBaseData;
 } else {
+
     if(customElem.data ) {
         // if there is attributes set for the object
         baseData = _data(JSON.parse(JSON.stringify(customElem.data)));
@@ -8297,7 +8399,8 @@ if(elem._compBaseData) {
         } else {
             baseData = _data({});
         }
-    }
+    }        
+
     elem._compBaseData = baseData;
     if(this.isObject(attrObj)) {
         var oo = attrObj;
@@ -8345,11 +8448,15 @@ for( var prop in customElem ) {
 
 
 var objProperties = baseData || attrObj || {};
-
-if(customElem.getInitialState) {
-    var stateData = customElem.getInitialState.apply( elem, [objProperties] );
-    elem._compState = _data(stateData);
+if(givenBaseData) {
+    elem._compState = givenBaseData;
+} else {
+    if(customElem.getInitialState ) {
+        var stateData = customElem.getInitialState.apply( elem, [objProperties] );
+        elem._compState = _data(stateData);
+    }
 }
+
 
 var renderFn = customElem.init || customElem.render;
 
