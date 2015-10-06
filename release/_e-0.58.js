@@ -2122,9 +2122,11 @@
             }
           }
 
-          var i = _outListeners.indexOf(this);
-          if (i >= 0) {
-            _outListeners.splice(i, 1);
+          if (_outListeners) {
+            var i = _outListeners.indexOf(this);
+            if (i >= 0) {
+              _outListeners.splice(i, 1);
+            }
           }
         }
       };
