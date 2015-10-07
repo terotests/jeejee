@@ -6849,6 +6849,7 @@
             className: className,
             id: id
           }, function (result) {
+            alert("Object created!");
             success(result);
           });
         });
