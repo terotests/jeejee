@@ -6859,7 +6859,6 @@
             console.error("Unknown message from the worker ", oEvent.data);
           };
           if (typeof index != "undefined") {
-            alert("Created pool " + index);
             _threadPool[index] = ww;
           }
           return ww;
