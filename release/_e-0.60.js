@@ -6762,9 +6762,11 @@
        * @param function callBack  - callback
        */
       _myTrait_._callWorker = function (worker, objectID, functionName, dataToSend, callBack) {
+        if (!_worker) return;
+
         _callBackHash[_idx] = callBack;
         if (typeof dataToSend == "object") dataToSend = JSON.stringify(dataToSend);
-        ww.postMessage({
+        _worker.postMessage({
           cmd: "call",
           id: objectID,
           fn: functionName,
