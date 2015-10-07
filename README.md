@@ -1530,8 +1530,8 @@ Will return the Promise class implementation, if available
 *The source code for the function*:
 ```javascript
 var p;
-if(typeof(Promise) != "undefined") p = Promise;
-if(!p && typeof(_promise) != "undefined") p = _promise;
+if(typeof(_promise) != "undefined") p = _promise;
+if(!p && typeof(Promise) != "undefined") p = Promise;
 return p;
 ```
 
@@ -8541,7 +8541,7 @@ if( customElem.requires || customElem._waitClass) {
         elem._workerObjId = this.guid();
         var self = this;
         prom = prom.then( function() {
-            return self._createWorkerObj(customElem.customTag, elem._workerObjId);
+            return self._createWorkerObj(customElem.customTag, elem._workerObjId, elem);
         });
         prom = prom.then( function() {
             var ww = customElem.webWorkers;
@@ -8759,10 +8759,20 @@ The class has following internal singleton variables:
         
 * _initDone
         
+* _objRefs
+        
+* _threadPool
+        
+* _maxWorkerCnt
+        
+* _roundRobin
+        
+* _objPool
+        
         
 ### <a name="__baseWorker"></a>::_baseWorker(t)
 
-The bootstrap for the worker to receive and delegate commands
+The bootstrap for the worker to receive and delegate commands. This is the code running at the worker -side of the pool.
 *The source code for the function*:
 ```javascript
 return {
@@ -8790,12 +8800,20 @@ return {
         var dataObj = JSON.parse( msg.data.data );
         var newClass = this._classes[dataObj.className];
         if (newClass) {
-          var instance = Object.create(newClass);
-          this._instances[dataObj.id] = instance;
+          var o_instance = Object.create(newClass);
+          this._instances[dataObj.id] = o_instance;
+          o_instance.send = function(msg, data, cb) {
+              postMessage({
+                msg : msg,
+                data : data,
+                ref_id : dataObj.id
+              });             
+          }
+          o_instance._ref_id = dataObj.id;
           postMessage({
             cbid: msg.data.cbid,
             data : "Done"
-        });
+          });
         }
       }
       return;
@@ -8832,7 +8850,10 @@ return {
 
 *The source code for the function*:
 ```javascript
-this._callWorker(_worker, id, fnName, data, callback );
+var o = _objRefs[id];
+if(o) {
+    this._callWorker(_threadPool[o.__wPool], id, fnName, data, callback );
+}
 return this;
 
 ```
@@ -8856,7 +8877,7 @@ if(!_worker) return;
 
 _callBackHash[_idx] = callBack;
 if(typeof(dataToSend) == "object") dataToSend = JSON.stringify(dataToSend);
-_worker.postMessage({
+worker.postMessage({
   cmd: "call",
   id: objectID,
   fn: functionName,
@@ -8866,7 +8887,9 @@ _worker.postMessage({
 
 ```
 
-### <a name="__createWorker"></a>::_createWorker(t)
+### <a name="__createWorker"></a>::_createWorker(index)
+`index` Thread index
+ 
 
 
 *The source code for the function*:
@@ -8874,7 +8897,10 @@ _worker.postMessage({
 try {
     
     // currently only one worker in the system...
-    if(_worker) return _worker;
+    
+    if(typeof(index) == "undefined") {
+        if(_worker) return _worker;
+    }
     
     var theCode = "var o = " + this._serializeClass(this._baseWorker()) +
       "\n onmessage = function(eEvent) { o.start.apply(o, [eEvent]); } ";
@@ -8894,11 +8920,28 @@ try {
               delete _callBackHash[oEvent.data.cbid];
               cb( oEvent.data.data );
           }
+          if(oEvent.data.ref_id) {
+              var oo = _objRefs[oEvent.data.ref_id];
+              
+              if(oo) {
+                  var dd = oEvent.data.data;
+                  if (typeof(dd) == "object") dd = JSON.stringify( dd );
+                  oo.send( oEvent.data.msg, dd, function(res) {
+                      if(oEvent.data.cbid) {
+                          // --> might send the message back to the worker
+                          // TODO: send msg back
+                      }
+                  });
+              }
+          }          
           return;
         }
         // unknown message
         console.error("Unknown message from the worker ", oEvent.data);
     };    
+    if(typeof(index) != "undefined") {
+        _threadPool[index] = ww;
+    }    
     return ww;
 } catch(e) {
     return null;
@@ -8914,16 +8957,45 @@ var p = this.__promiseClass(), me = this;
 
 return new p(
     function(success) {
+        var prom, first;
+        var codeStr = me._serializeClass(classObj);
+        for(var i=0; i<_maxWorkerCnt; i++) {
+            ( function(i) {
+            if(!prom) {
+                first = prom = new p(function(done) {
+                    me._callWorker(_threadPool[i], "/", "createClass",  {
+                        className: className,
+                        code: codeStr
+                    }, done );
+                });
+            } else {
+                prom = prom.then( function() {
+                    return new p(function(done) {
+                        me._callWorker(_threadPool[i], "/", "createClass",  {
+                            className: className,
+                            code: codeStr
+                        }, done );
+                    })
+                })
+            }
+            })(i);
+        }
+        prom.then( function() {
+            success(true);
+        })
+        // first.resolve(true);
+        /*
         me._callWorker(_worker, "/", "createClass",  {
             className: className,
             code: me._serializeClass(classObj)
         }, function( result ) {
             success( result ); 
         });
+        */
 });
 ```
 
-### <a name="__createWorkerObj"></a>::_createWorkerObj(className, id)
+### <a name="__createWorkerObj"></a>::_createWorkerObj(className, id, refObj)
 `className` Class of the Object
  
 `id` Object ID
@@ -8935,10 +9007,15 @@ return new p(
 var p = this.__promiseClass(), me = this;
 return new p(
     function(success) {
-        me._callWorker(_worker, "/", "createObject",  {
+        
+        var pool_index = (_roundRobin++) % _maxWorkerCnt;
+        refObj.__wPool = pool_index;
+        
+        me._callWorker(_threadPool[pool_index], "/", "createObject",  {
             className: className,
             id: id
         }, function( result ) {
+            _objRefs[id] = refObj;
             success( result ); 
         });
 });
@@ -8977,7 +9054,14 @@ return _worker;
 
 if(!_initDone) {
     _initDone = true;
-    this._createWorker();
+    _maxWorkerCnt = 4;
+    _roundRobin = 0;
+    _threadPool = [];
+    _objRefs = {};
+    for(var i=0; i<_maxWorkerCnt;i++) {
+        this._createWorker(i);
+    }
+    
 }
 
 ```
