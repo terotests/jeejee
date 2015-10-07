@@ -6495,7 +6495,7 @@
               for (var fName in ww) {
                 if (ww.hasOwnProperty(fName)) {
                   var fn = ww[fName];
-                  if (this.isFunction(fn)) {
+                  if (self.isFunction(fn)) {
                     elem.sendHandler(fName, function (params, callback) {
                       self._callObject(elem._workerObjId, prop, params, callback);
                     });
