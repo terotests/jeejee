@@ -6503,9 +6503,11 @@
                 if (ww.hasOwnProperty(fName)) {
                   var fn = ww[fName];
                   if (self.isFunction(fn)) {
-                    elem.sendHandler(fName, function (params, callback) {
-                      self._callObject(elem._workerObjId, prop, params, callback);
-                    });
+                    (function (fName) {
+                      elem.sendHandler(fName, function (params, callback) {
+                        self._callObject(elem._workerObjId, fName, params, callback);
+                      });
+                    })(fName);
                     console.log("WW: DID to register the sendHandler... for " + fName);
                   }
                 }
