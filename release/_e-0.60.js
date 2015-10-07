@@ -6833,11 +6833,11 @@
               }
               if (oEvent.data.ref_id) {
                 var oo = _objRefs[oEvent.data.ref_id];
-                alert("Got msg to " + oEvent.data.ref_id);
+
                 if (oo) {
                   var dd = oEvent.data.data;
                   if (typeof dd == "object") dd = JSON.stringify(dd);
-
+                  alert("Got msg " + oEvent.data.msg + " to " + oEvent.data.ref_id + " with data " + dd);
                   oo.send(oEvent.data.msg, dd, function (res) {
                     if (oEvent.data.cbid) {}
                   });
