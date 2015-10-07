@@ -6467,19 +6467,21 @@
           var prom = _promise(); // should be available
           var start = prom;
           // -- load if promises available...
-          if (customElem.requires.js) {
-            customElem.requires.js.forEach(function (item) {
-              prom = prom.then(function () {
-                return elem.appendToHead("js", item.url);
+          if (customElem.requires) {
+            if (customElem.requires.js) {
+              customElem.requires.js.forEach(function (item) {
+                prom = prom.then(function () {
+                  return elem.appendToHead("js", item.url);
+                });
               });
-            });
-          }
-          if (customElem.requires.css) {
-            customElem.requires.css.forEach(function (item) {
-              prom = prom.then(function () {
-                return elem.appendToHead("css", item.url);
+            }
+            if (customElem.requires.css) {
+              customElem.requires.css.forEach(function (item) {
+                prom = prom.then(function () {
+                  return elem.appendToHead("css", item.url);
+                });
               });
-            });
+            }
           }
           // got to wait for the web worker class creation, if it has been defined
           if (customElem._waitClass) {
