@@ -6876,18 +6876,26 @@
             me = this;
 
         return new p(function (success) {
-          var prom = new p(),
-              first = prom;
+          var prom, first;
           var codeStr = me._serializeClass(classObj);
           for (var i = 0; i < _maxWorkerCnt; i++) {
-            prom = prom.then(function () {
-              return new p(function (done) {
+            if (!prom) {
+              first = prom = new p(function (done) {
                 me._callWorker(_threadPool[i], "/", "createClass", {
                   className: className,
                   code: codeStr
                 }, done);
               });
-            });
+            } else {
+              prom = prom.then(function () {
+                return new p(function (done) {
+                  me._callWorker(_threadPool[i], "/", "createClass", {
+                    className: className,
+                    code: codeStr
+                  }, done);
+                });
+              });
+            }
           }
           prom.then(function () {
             success(true);
