@@ -6704,11 +6704,12 @@
       var _idx;
       var _worker;
       var _initDone;
+      var _objRefs;
 
       // Initialize static variables here...
 
       /**
-       * The bootstrap for the worker to receive and delegate commands
+       * The bootstrap for the worker to receive and delegate commands. This is the code running at the worker -side of the pool.
        * @param float t
        */
       _myTrait_._baseWorker = function (t) {
@@ -6737,8 +6738,16 @@
                 var dataObj = JSON.parse(msg.data.data);
                 var newClass = this._classes[dataObj.className];
                 if (newClass) {
-                  var instance = Object.create(newClass);
-                  this._instances[dataObj.id] = instance;
+                  var o_instance = Object.create(newClass);
+                  this._instances[dataObj.id] = o_instance;
+                  o_instance.send = function (msg, data, cb) {
+                    postMessage({
+                      msg: msg,
+                      data: data,
+                      ref_id: dataObj.id
+                    });
+                  };
+                  o_instance._ref_id = dataObj.id;
                   postMessage({
                     cbid: msg.data.cbid,
                     data: "Done"
@@ -6822,6 +6831,17 @@
                 delete _callBackHash[oEvent.data.cbid];
                 cb(oEvent.data.data);
               }
+              if (oEvent.data.ref_id) {
+                var oo = _objRefs[oEvent.data.ref_id];
+                if (oo) {
+                  var dd = oEvent.data.data;
+                  if (typeof dd == "object") dd = JSON.stringify(dd);
+
+                  oo.send(oEvent.data.msg, dd, function (res) {
+                    if (oEvent.data.cbid) {}
+                  });
+                }
+              }
               return;
             }
             // unknown message
@@ -6854,8 +6874,9 @@
       /**
        * @param String className  - Class of the Object
        * @param String id  - Object ID
+       * @param float refObj
        */
-      _myTrait_._createWorkerObj = function (className, id) {
+      _myTrait_._createWorkerObj = function (className, id, refObj) {
         var p = this.__promiseClass(),
             me = this;
         return new p(function (success) {
@@ -6863,6 +6884,7 @@
             className: className,
             id: id
           }, function (result) {
+            _objRefs[id] = refObj;
             success(result);
           });
         });
@@ -6895,6 +6917,7 @@
 
         if (!_initDone) {
           _initDone = true;
+          _objRefs = {};
           this._createWorker();
         }
       });
@@ -9257,6 +9280,9 @@
 // this._dom.innerHTML = v;
 
 // TODO: error handling postMessage("no instance found");
+
+// --> might send the message back to the worker
+// TODO: send msg back
 
 //console.log("Attr set to ", n);
 //console.trace();
