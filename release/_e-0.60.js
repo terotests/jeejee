@@ -6506,7 +6506,7 @@
             elem._workerObjId = this.guid();
             var self = this;
             prom = prom.then(function () {
-              return self._createWorkerObj(customElem.customTag, elem._workerObjId);
+              return self._createWorkerObj(customElem.customTag, elem._workerObjId, elem);
             });
             prom = prom.then(function () {
               var ww = customElem.webWorkers;
