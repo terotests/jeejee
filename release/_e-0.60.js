@@ -6831,6 +6831,7 @@
             className: className,
             code: me._serializeClass(classObj)
           }, function (result) {
+            alert("Class created!");
             success(result);
           });
         });
