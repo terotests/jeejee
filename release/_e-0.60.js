@@ -6491,15 +6491,11 @@
             elem._workerObjId = this.guid();
             var self = this;
             prom = prom.then(function () {
-              alert("Wait class resolved!");
               return self._createWorkerObj(customElem.customTag, elem._workerObjId);
             });
             prom = prom.then(function () {
-              alert("Created " + customElem.customTag + "." + elem._workerObjId);
-              console.log("WW: Worker obj has been created for " + elem._workerObjId);
               var ww = customElem.webWorkers;
               for (var fName in ww) {
-                console.log("WW: About to register the sendHandler... for " + fName);
                 if (ww.hasOwnProperty(fName)) {
                   var fn = ww[fName];
                   if (self.isFunction(fn)) {
@@ -6508,7 +6504,6 @@
                         self._callObject(elem._workerObjId, fName, params, callback);
                       });
                     })(fName);
-                    console.log("WW: DID to register the sendHandler... for " + fName);
                   }
                 }
               }
@@ -6817,7 +6812,6 @@
             // unknown message
             console.error("Unknown message from the worker ", oEvent.data);
           };
-          alert("Worker initialized");
           return ww;
         } catch (e) {
           return null;
@@ -6837,7 +6831,6 @@
             className: className,
             code: me._serializeClass(classObj)
           }, function (result) {
-            alert("Class created!");
             success(result);
           });
         });
@@ -6855,7 +6848,6 @@
             className: className,
             id: id
           }, function (result) {
-            alert("Object created!");
             success(result);
           });
         });
