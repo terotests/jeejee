@@ -6437,6 +6437,21 @@
             }
           }
         }
+        if (customElem.webWorkers && !this._workersAvailable()) {
+          for (var prop in customElem.webWorkers) {
+            if (customElem.webWorkers.hasOwnProperty(prop)) {
+              var fn = customElem.webWorkers[prop];
+              if (this.isFunction(fn)) {
+                var me = this;
+                (function (fn, prop) {
+                  elem.sendHandler(prop, function (params, callback, errCb) {
+                    fn.apply(elem, [params, callback, errCb]);
+                  });
+                })(fn, prop);
+              }
+            }
+          }
+        }
 
         var objProperties = baseData || attrObj || {};
         if (givenBaseData) {
