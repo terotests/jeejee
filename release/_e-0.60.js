@@ -6811,6 +6811,7 @@
             // unknown message
             console.error("Unknown message from the worker ", oEvent.data);
           };
+          alert("Worker initialized");
           return ww;
         } catch (e) {
           return null;
