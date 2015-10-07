@@ -6738,7 +6738,6 @@
             if (msg.data.cmd == "call" && msg.data.id) {
               var ob = this._instances[msg.data.id];
               if (ob) {
-                postMessage("instance called ");
                 if (ob[msg.data.fn]) {
                   ob[msg.data.fn].apply(ob, [msg.data.data, function (msgData) {
                     postMessage({
