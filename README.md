@@ -915,6 +915,7 @@ MIT. Currently use at own risk.
 #### Class _e
 
 
+- [__promiseClass](README.md#_e___promiseClass)
 - [__singleton](README.md#_e___singleton)
 - [_classFactory](README.md#_e__classFactory)
 - [_constrArgs](README.md#_e__constrArgs)
@@ -1292,6 +1293,21 @@ MIT. Currently use at own risk.
 
     
     
+    
+##### trait web_worker
+
+- [_baseWorker](README.md#__baseWorker)
+- [_callObject](README.md#__callObject)
+- [_callWorker](README.md#__callWorker)
+- [_createWorker](README.md#__createWorker)
+- [_createWorkerClass](README.md#__createWorkerClass)
+- [_createWorkerObj](README.md#__createWorkerObj)
+- [_serializeClass](README.md#__serializeClass)
+- [_workersAvailable](README.md#__workersAvailable)
+
+
+    
+    
 
 
    
@@ -1476,6 +1492,8 @@ MIT. Currently use at own risk.
     
       
     
+      
+    
 
 
 
@@ -1506,6 +1524,17 @@ The class has following internal singleton variables:
 * _elemNamesList
         
         
+### <a name="_e___promiseClass"></a>_e::__promiseClass(t)
+
+Will return the Promise class implementation, if available
+*The source code for the function*:
+```javascript
+var p;
+if(typeof(Promise) != "undefined") p = Promise;
+if(!p && typeof(_promise) != "undefined") p = _promise;
+return p;
+```
+
 ### <a name="_e___singleton"></a>_e::__singleton(t)
 
 
@@ -7970,10 +7999,7 @@ if(!url) {
     var parts = url.split(".");
     elemType = parts.pop(); // for example file.css -> css
 }
-var p;
-if(typeof(Promise) != "undefined") p = Promise;
-if(!p && typeof(_promise) != "undefined") p = _promise;
-
+var p = this.__promiseClass();
 if(p) {
     if(!_loadedLibs) {
         _loadedLibs = {};
@@ -8438,12 +8464,27 @@ for( var prop in customElem ) {
         if(this.isFunction(fn)) {
             var me = this;
             (function(fn) {
-                elem.sendHandler(prop, function(params) {
-                    fn.apply(elem, [params]);
+                elem.sendHandler(prop, function(params, callback, errCb) {
+                    fn.apply(elem, [params, callback, errCb]);
                 });
             }(fn));
         }
     }
+}
+if(customElem.webWorkers && !this._workersAvailable()) {
+     for( var prop in customElem.webWorkers ) {
+        if(customElem.webWorkers .hasOwnProperty(prop)) {
+            var fn = customElem.webWorkers[prop];
+            if(this.isFunction(fn)) {
+                var me = this;
+                (function(fn, prop) {
+                    elem.sendHandler(prop, function(params, callback, errCb) {
+                        fn.apply(elem, [params, callback, errCb]);
+                    });
+                }(fn, prop));
+            }
+        }
+    }   
 }
 
 
@@ -8456,7 +8497,6 @@ if(givenBaseData) {
         elem._compState = _data(stateData);
     }
 }
-
 
 var renderFn = customElem.init || customElem.render;
 
@@ -8471,25 +8511,57 @@ elem._instanceVars = {};
         ]  
     },
 */
-if( customElem.requires ) {
+// _createWorkerObj ... options._waitClass
+if( customElem.requires || customElem._waitClass) {
     
     var prom = _promise(); // should be available
     var start = prom;
     // -- load if promises available...
-    if(customElem.requires.js) {
-        customElem.requires.js.forEach( function(item) {
-            prom = prom.then( function() {
-                return elem.appendToHead("js", item.url);
+    if(customElem.requires) {
+        if(customElem.requires.js) {
+            customElem.requires.js.forEach( function(item) {
+                prom = prom.then( function() {
+                    return elem.appendToHead("js", item.url);
+                });
             });
-        });
+        }
+        if(customElem.requires.css) {
+            customElem.requires.css.forEach( function(item) {
+                prom = prom.then( function() {
+                    return elem.appendToHead("css", item.url);
+                });
+            });
+        }    
     }
-    if(customElem.requires.css) {
-        customElem.requires.css.forEach( function(item) {
-            prom = prom.then( function() {
-                return elem.appendToHead("css", item.url);
-            });
+    // got to wait for the web worker class creation, if it has been defined
+    if(customElem._waitClass) {
+        prom = prom.then( function() {
+            return customElem._waitClass; 
         });
-    }    
+        elem._workerObjId = this.guid();
+        var self = this;
+        prom = prom.then( function() {
+            return self._createWorkerObj(customElem.customTag, elem._workerObjId);
+        });
+        prom = prom.then( function() {
+            var ww = customElem.webWorkers;
+            for( var fName in ww ) {
+                if(ww.hasOwnProperty(fName)) {
+                    var fn = ww[fName];
+                    if(self.isFunction(fn)) {
+                        (function(fName) {
+                            elem.sendHandler(fName, function(params, callback) {
+                                self._callObject( elem._workerObjId, fName, params, callback );
+                            });
+                        })(fName);
+                    }
+                }
+            }            
+        });
+       
+    }
+    
+    
     prom.then( function() {
         var contentObj = renderFn.apply(elem, [objProperties, customElem]);
         if(contentObj) {
@@ -8547,6 +8619,22 @@ if(options.css) {
     // TODO: add _firstUpdate to  
     // CSS object baseCss._firstUpdate = function() { --- } 
 }
+
+// Object 
+if(options.webWorkers && this.isObject(options.webWorkers) && this._workersAvailable()) {
+    // this._createWorkerClass
+    options._waitClass = this._createWorkerClass( elemName, options.webWorkers );
+}
+
+/*
+_e().createClass({
+    webWorkers : {
+        hello : function(data, callback) {
+            
+        }
+    }
+})
+*/
 
 ```
 
@@ -8655,6 +8743,245 @@ if(this._compState) {
 }
 ```
 
+
+    
+    
+    
+## trait web_worker
+
+The class has following internal singleton variables:
+        
+* _callBackHash
+        
+* _idx
+        
+* _worker
+        
+* _initDone
+        
+        
+### <a name="__baseWorker"></a>::_baseWorker(t)
+
+The bootstrap for the worker to receive and delegate commands
+*The source code for the function*:
+```javascript
+return {
+  init: function() {
+    if (this._initDone) return;
+    this._initDone = true;
+    this._classes = {};
+    this._instances = {};
+  },
+  start: function(msg) {
+    this.init();
+    // Root object call
+    if (msg.data.cmd == "call" && msg.data.id == "/") {
+      if (msg.data.fn == "createClass") {
+        var newClass;
+        var dataObj = JSON.parse( msg.data.data );
+        eval("newClass = " + dataObj.code);
+        this._classes[dataObj.className] = newClass;
+        postMessage({
+          cbid: msg.data.cbid,
+          data : "Done"
+        });        
+      }
+      if (msg.data.fn== "createObject" && msg.data.data ) {
+        var dataObj = JSON.parse( msg.data.data );
+        var newClass = this._classes[dataObj.className];
+        if (newClass) {
+          var instance = Object.create(newClass);
+          this._instances[dataObj.id] = instance;
+          postMessage({
+            cbid: msg.data.cbid,
+            data : "Done"
+        });
+        }
+      }
+      return;
+    }
+    if (msg.data.cmd == "call" && msg.data.id) {
+      var ob = this._instances[msg.data.id];
+      if (ob) {
+        if (ob[msg.data.fn]) {
+          ob[msg.data.fn].apply(ob, [msg.data.data, function(msgData) {
+            postMessage({
+              cbid: msg.data.cbid,
+              data : msgData
+            });
+          }]);
+        }
+      } else {
+         // TODO: error handling postMessage("no instance found");
+      }
+    }
+  }
+}
+```
+
+### <a name="__callObject"></a>::_callObject(id, fnName, data, callback)
+`id` Object ID to call
+ 
+`fnName` Name of function
+ 
+`data` Data as string
+ 
+`callback` Callback when done
+ 
+
+
+*The source code for the function*:
+```javascript
+this._callWorker(_worker, id, fnName, data, callback );
+return this;
+
+```
+
+### <a name="__callWorker"></a>::_callWorker(worker, objectID, functionName, dataToSend, callBack)
+`worker` Web Worker to call
+ 
+`objectID` ID of function or / to call the root
+ 
+`functionName` Name of the function to call 
+ 
+`dataToSend` Data, converted to string if object
+ 
+`callBack` callback
+ 
+
+
+*The source code for the function*:
+```javascript
+if(!_worker) return;
+
+_callBackHash[_idx] = callBack;
+if(typeof(dataToSend) == "object") dataToSend = JSON.stringify(dataToSend);
+_worker.postMessage({
+  cmd: "call",
+  id: objectID,
+  fn: functionName,
+  cbid: _idx++,
+  data: dataToSend
+});
+
+```
+
+### <a name="__createWorker"></a>::_createWorker(t)
+
+
+*The source code for the function*:
+```javascript
+try {
+    
+    // currently only one worker in the system...
+    if(_worker) return _worker;
+    
+    var theCode = "var o = " + this._serializeClass(this._baseWorker()) +
+      "\n onmessage = function(eEvent) { o.start.apply(o, [eEvent]); } ";
+    var blob = new Blob([theCode], {
+      type: "text/javascript"
+    });
+    var ww = new Worker(window.URL.createObjectURL(blob));
+    if(!_callBackHash) {
+        _callBackHash = {};
+        _idx = 1;
+    }
+    _worker = ww;
+    ww.onmessage = function(oEvent) {
+        if (typeof(oEvent.data) == "object") {
+          if(oEvent.data.cbid) {
+              var cb = _callBackHash[oEvent.data.cbid];
+              delete _callBackHash[oEvent.data.cbid];
+              cb( oEvent.data.data );
+          }
+          return;
+        }
+        // unknown message
+        console.error("Unknown message from the worker ", oEvent.data);
+    };    
+    return ww;
+} catch(e) {
+    return null;
+}
+```
+
+### <a name="__createWorkerClass"></a>::_createWorkerClass(className, classObj)
+
+
+*The source code for the function*:
+```javascript
+var p = this.__promiseClass(), me = this;
+
+return new p(
+    function(success) {
+        me._callWorker(_worker, "/", "createClass",  {
+            className: className,
+            code: me._serializeClass(classObj)
+        }, function( result ) {
+            success( result ); 
+        });
+});
+```
+
+### <a name="__createWorkerObj"></a>::_createWorkerObj(className, id)
+`className` Class of the Object
+ 
+`id` Object ID
+ 
+
+
+*The source code for the function*:
+```javascript
+var p = this.__promiseClass(), me = this;
+return new p(
+    function(success) {
+        me._callWorker(_worker, "/", "createObject",  {
+            className: className,
+            id: id
+        }, function( result ) {
+            success( result ); 
+        });
+});
+
+```
+
+### <a name="__serializeClass"></a>::_serializeClass(o)
+`o` The Object with functions as properties
+ 
+
+
+*The source code for the function*:
+```javascript
+var res = "{";
+var i = 0;
+for (var n in o) {
+    if (i++) res += ",";
+    res += n + " : " + (o[n].toString());
+}
+res += "};";
+return res;
+
+```
+
+### <a name="__workersAvailable"></a>::_workersAvailable(t)
+
+
+*The source code for the function*:
+```javascript
+return _worker;
+```
+
+### ::constructor( t )
+
+```javascript
+
+if(!_initDone) {
+    _initDone = true;
+    this._createWorker();
+}
+
+```
+        
 
     
     
@@ -10287,6 +10614,8 @@ return this;
 
 
 
+      
+    
       
     
       
