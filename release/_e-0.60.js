@@ -6705,6 +6705,10 @@
       var _worker;
       var _initDone;
       var _objRefs;
+      var _threadPool;
+      var _maxWorkerCnt;
+      var _roundRobin;
+      var _objPool;
 
       // Initialize static variables here...
 
@@ -6780,7 +6784,10 @@
        * @param function callback  - Callback when done
        */
       _myTrait_._callObject = function (id, fnName, data, callback) {
-        this._callWorker(_worker, id, fnName, data, callback);
+        var o = _objRefs[id];
+        if (o) {
+          this._callWorker(_threadPool[o.__wPool], id, fnName, data, callback);
+        }
         return this;
       };
 
@@ -6796,7 +6803,7 @@
 
         _callBackHash[_idx] = callBack;
         if (typeof dataToSend == "object") dataToSend = JSON.stringify(dataToSend);
-        _worker.postMessage({
+        worker.postMessage({
           cmd: "call",
           id: objectID,
           fn: functionName,
@@ -6806,13 +6813,16 @@
       };
 
       /**
-       * @param float t
+       * @param int index  - Thread index
        */
-      _myTrait_._createWorker = function (t) {
+      _myTrait_._createWorker = function (index) {
         try {
 
           // currently only one worker in the system...
-          if (_worker) return _worker;
+
+          if (typeof index == "undefined") {
+            if (_worker) return _worker;
+          }
 
           var theCode = "var o = " + this._serializeClass(this._baseWorker()) + "\n onmessage = function(eEvent) { o.start.apply(o, [eEvent]); } ";
           var blob = new Blob([theCode], {
@@ -6847,6 +6857,9 @@
             // unknown message
             console.error("Unknown message from the worker ", oEvent.data);
           };
+          if (typeof index != "undefined") {
+            _threadPool[index] = ww;
+          }
           return ww;
         } catch (e) {
           return null;
@@ -6862,12 +6875,31 @@
             me = this;
 
         return new p(function (success) {
-          me._callWorker(_worker, "/", "createClass", {
-            className: className,
-            code: me._serializeClass(classObj)
-          }, function (result) {
-            success(result);
+          var prom = new p(),
+              first = prom;
+          var codeStr = me._serializeClass(classObj);
+          for (var i = 0; i < _maxWorkerCnt; i++) {
+            prom = prom.then(function () {
+              return new p(function (done) {
+                me._callWorker(_threadPool[i], "/", "createClass", {
+                  className: className,
+                  code: codeStr
+                }, done);
+              });
+            });
+          }
+          prom.then(function () {
+            success(true);
           });
+          first.resolve(true);
+          /*
+          me._callWorker(_worker, "/", "createClass",  {
+          className: className,
+          code: me._serializeClass(classObj)
+          }, function( result ) {
+          success( result ); 
+          });
+          */
         });
       };
 
@@ -6880,7 +6912,11 @@
         var p = this.__promiseClass(),
             me = this;
         return new p(function (success) {
-          me._callWorker(_worker, "/", "createObject", {
+
+          var pool_index = _roundRobin++ % _maxWorkerCnt;
+          refObj.__wPool = pool_index;
+
+          me._callWorker(_threadPool[pool_index], "/", "createObject", {
             className: className,
             id: id
           }, function (result) {
@@ -6917,8 +6953,13 @@
 
         if (!_initDone) {
           _initDone = true;
+          _maxWorkerCnt = 4;
+          _roundRobin = 0;
+          _threadPool = [];
           _objRefs = {};
-          this._createWorker();
+          for (var i = 0; i < _maxWorkerCnt; i++) {
+            this._createWorker(i);
+          }
         }
       });
     })(this);
