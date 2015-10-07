@@ -6900,15 +6900,6 @@
           prom.then(function () {
             success(true);
           });
-          first.resolve(true);
-          /*
-          me._callWorker(_worker, "/", "createClass",  {
-          className: className,
-          code: me._serializeClass(classObj)
-          }, function( result ) {
-          success( result ); 
-          });
-          */
         });
       };
 
@@ -8613,8 +8604,8 @@
        */
       _myTrait_.__promiseClass = function (t) {
         var p;
-        if (typeof Promise != "undefined") p = Promise;
-        if (!p && typeof _promise != "undefined") p = _promise;
+        if (typeof _promise != "undefined") p = _promise;
+        if (!p && typeof Promise != "undefined") p = Promise;
         return p;
       };
 
@@ -9333,6 +9324,15 @@
 
 // --> might send the message back to the worker
 // TODO: send msg back
+// first.resolve(true);
+/*
+me._callWorker(_worker, "/", "createClass",  {
+className: className,
+code: me._serializeClass(classObj)
+}, function( result ) {
+success( result ); 
+});
+*/
 
 //console.log("Attr set to ", n);
 //console.trace();
