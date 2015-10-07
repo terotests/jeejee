@@ -6786,6 +6786,7 @@
       _myTrait_._callObject = function (id, fnName, data, callback) {
         var o = _objRefs[id];
         if (o) {
+          console.log("the pool " + o.__wPool);
           this._callWorker(_threadPool[o.__wPool], id, fnName, data, callback);
         }
         return this;
