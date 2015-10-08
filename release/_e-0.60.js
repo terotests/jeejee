@@ -9225,12 +9225,13 @@
           if (typeof into.appendChild != "undefined") into.appendChild(this._dom);
         }
 
+        var cElem = this;
         if (hasCustom) {
-          this._initCustom(this, hasCustom, null, this._customAttrs || {}, elemStateData);
+          cElem = this._initCustom(this, hasCustom, null, this._customAttrs || {}, elemStateData);
         }
 
         if (this.isFunction(const_fn)) {
-          const_fn.apply(this, [this]);
+          const_fn.apply(cElem, [this]);
         }
       };
 
