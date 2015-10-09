@@ -6525,7 +6525,7 @@
             });
           }
 
-          prom.then(function () {
+          prom = prom.then(function () {
             var contentObj = renderFn.apply(elem, [objProperties, customElem]);
             if (contentObj) {
               elem._contentObj = contentObj;
@@ -6536,6 +6536,7 @@
             }
           });
           start.resolve();
+          elem._uiWaitProm = prom;
         } else {
           var contentObj = renderFn.apply(elem, [objProperties, customElem]);
           if (contentObj) {
@@ -9230,10 +9231,21 @@
         }
 
         if (this.isFunction(const_fn)) {
-          if (this._contentObj) {
-            const_fn.apply(this._contentObj, [this._contentObj]);
+          if (this._uiWaitProm) {
+            var me = this;
+            this._uiWaitProm.then(function () {
+              if (me._contentObj) {
+                const_fn.apply(me._contentObj, [me._contentObj]);
+              } else {
+                const_fn.apply(me, [me]);
+              }
+            });
           } else {
-            const_fn.apply(this, [this]);
+            if (this._contentObj) {
+              const_fn.apply(this._contentObj, [this._contentObj]);
+            } else {
+              const_fn.apply(this, [this]);
+            }
           }
         }
       };
