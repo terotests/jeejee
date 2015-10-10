@@ -7368,6 +7368,20 @@
               if (t < 0.5) return t * t;
               return -1 * t * (t - 2);
             },
+            //t - current time of tween
+            //b - starting value of property
+            //c - change needed in value
+            //d - total duration of tween   
+            easeInElastic: function easeInElastic(t) {
+              var s;
+              if (t == 0) return 0;
+              if (t == 1) return 1;
+              var p = 0.3;
+              var a = 1;
+              s = p / 4;
+              var tt = t - 1;
+              return -1 * (Math.pow(2, 10 * tt) * Math.sin((tt - s) * (2 * Math.PI) / p));
+            },
             easeInCirc: function easeInCirc(t) {
               return -1 * (Math.sqrt(1 - t * t) - 1);
             },
