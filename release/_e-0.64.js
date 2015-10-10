@@ -7368,6 +7368,9 @@
               if (t < 0.5) return t * t;
               return -1 * t * (t - 2);
             },
+            easeInCirc: function easeInCirc(t) {
+              return -1 * (Math.sqrt(1 - t * t) - 1);
+            },
             easeInCubic: function easeInCubic(t) {
               return t * t * t;
             },
