@@ -7337,8 +7337,35 @@
         var _everies;
         var _framers;
         var _localCnt;
+        var _easings;
+        var _easeFns;
 
         // Initialize static variables here...
+
+        /**
+         * @param float t
+         */
+        _myTrait_._easeFns = function (t) {
+          _easings = {
+            bounceOut: function bounceOut(t) {
+              if (t < 1 / 2.75) {
+                return 7.5625 * t * t;
+              } else if (t < 2 / 2.75) {
+                return 7.5625 * (t -= 1.5 / 2.75) * t + 0.75;
+              } else if (t < 2.5 / 2.75) {
+                return 7.5625 * (t -= 2.25 / 2.75) * t + 0.9375;
+              } else {
+                return 7.5625 * (t -= 2.625 / 2.75) * t + 0.984375;
+              }
+            },
+            pow: function pow(t) {
+              return Math.pow(t, parseFloat(1.5 - t));
+            },
+            linear: function linear(t) {
+              return t;
+            }
+          };
+        };
 
         /**
          * @param function fn
@@ -7358,6 +7385,14 @@
           } else {
             _callers.push(fn);
           }
+        };
+
+        /**
+         * @param float name
+         * @param float fn
+         */
+        _myTrait_.addEasingFn = function (name, fn) {
+          _easings[name] = fn;
         };
 
         /**
@@ -7387,6 +7422,28 @@
         };
 
         /**
+         * @param String name  - Optional easing name
+         * @param int delay  - Delay of the transformation in ms
+         * @param function callback  - Callback to set the values
+         */
+        _myTrait_.ease = function (name, delay, callback) {
+
+          if (!callback) {
+            callback = delay;
+            delay = name;
+            name = "pow";
+          }
+          var fn = _easings[name];
+          if (!fn) fn = _easings.pow;
+          var id_name = "e_" + _localCnt++;
+          _easeFns[id_name] = {
+            easeFn: fn,
+            duration: delay,
+            cb: callback
+          };
+        };
+
+        /**
          * @param float seconds
          * @param float fn
          * @param float name
@@ -7408,7 +7465,7 @@
         if (!_myTrait_.__traitInit) _myTrait_.__traitInit = [];
         _myTrait_.__traitInit.push(function (interval, fn) {
           if (!_initDone) {
-
+            this._easeFns();
             _localCnt = 1;
             this.polyfill();
 
@@ -7436,10 +7493,14 @@
             _oneTimers = {};
             _everies = {};
             _framers = [];
+            _easeFns = {};
             var lastMs = 0;
 
             var _callQueQue = function _callQueQue() {
-              var ms = new Date().getTime();
+              var ms = new Date().getTime(),
+                  elapsed = lastMs - ms;
+
+              if (lastMs == 0) elapsed = 0;
               var fn;
               while (fn = _callers.shift()) {
                 if (Object.prototype.toString.call(fn) === "[object Array]") {
@@ -7452,6 +7513,26 @@
               for (var i = 0; i < _framers.length; i++) {
                 var fFn = _framers[i];
                 fFn();
+              }
+              /*
+              _easeFns.push({
+              easeFn : fn,
+              duration : delay,
+              cb : callback
+              });
+               */
+              for (var n in _easeFns) {
+                if (_easeFns.hasOwnProperty(n)) {
+                  var v = _easeFns[n];
+                  if (!v.start) v.start = ms;
+                  var delta = ms - v.start,
+                      dt = delta / v.duration;
+                  if (dt >= 1) {
+                    dt = 1;
+                    delete _easeFns[n];
+                  }
+                  v.cb(v.easeFn(dt));
+                }
               }
 
               for (var n in _oneTimers) {
