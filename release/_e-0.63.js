@@ -7547,7 +7547,7 @@
                     delete _easeFns[n];
                   }
                   v.cb(v.easeFn(dt));
-                  if (v.over) v.over();
+                  if (dt == 1 && v.over) v.over();
                 }
               }
 
