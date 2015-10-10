@@ -5776,8 +5776,9 @@
           "name": o.guid()
         });
 
-        var maxCnt = options.maxCnt || 20;
+        var maxCnt = options.maxCnt || 1;
         var chStr = "complete" + this.guid();
+        var toBeRemoved = [];
 
         var onComplete = function onComplete(v) {
           delete window[chStr];
@@ -5814,7 +5815,8 @@
         var uplFields = form.div("form-group");
 
         var maxFileCnt = options.maxFileCnt || 5,
-            fileCnt = 0;
+            fileCnt = 0,
+            uploadInProgress = false;
 
         // <input type="file" name="my-file" size="50" maxlength="25" /> <br />
 
@@ -5849,10 +5851,16 @@
 
         // iFrame._dom.onreadystatechange = MyIframeReadyStateChanged;
         iFrame._dom.addEventListener("load", function () {
+          uploadInProgress = false;
           loadCnt++;
           if (loadCnt == 1) return;
 
+          // remove the input
+          toBeRemoved.forEach(function (oldInput) {
+            oldInput.remove();
+          });
           if (options.done) {
+
             var ifrm = iFrame._dom;
             var doc = ifrm.contentDocument ? ifrm.contentDocument : ifrm.contentWindow.document;
             // var form = doc.getElementById('demoForm');       
@@ -5869,6 +5877,9 @@
         o.add(iFrame);
 
         o.uploadFiles = function (vars) {
+
+          if (uploadInProgress) return;
+          uploadInProgress = true;
 
           var hook = _uploadHook && _uploadHook[options.url];
           if (hook) {
@@ -5888,6 +5899,7 @@
               }
             }
             uplFields.forEach(function (input) {
+              toBeRemoved.push(input);
               if (!input._dom.files) return;
               var len = input._dom.files.length;
               for (var fi = 0; fi < len; fi++) {
