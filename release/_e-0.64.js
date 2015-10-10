@@ -7441,12 +7441,6 @@
          */
         _myTrait_.ease = function (name, delay, callback, over) {
 
-          if (!callback) {
-            over = callback;
-            callback = delay;
-            delay = name;
-            name = "pow";
-          }
           var fn = _easings[name];
           if (!fn) fn = _easings.pow;
           var id_name = "e_" + _localCnt++;
