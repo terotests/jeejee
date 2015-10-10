@@ -7364,6 +7364,10 @@
             easeOut: function easeOut(t) {
               return -1 * t * (t - 2);
             },
+            easeInOut: function easeInOut(t) {
+              if (t < 0.5) return t * t;
+              return -1 * t * (t - 2);
+            },
             easeInCubic: function easeInCubic(t) {
               return t * t * t;
             },
