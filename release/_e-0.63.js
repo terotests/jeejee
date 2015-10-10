@@ -7434,13 +7434,15 @@
         };
 
         /**
-         * @param String name  - Optional easing name
+         * @param String name  - Name of the easing to use
          * @param int delay  - Delay of the transformation in ms
          * @param function callback  - Callback to set the values
+         * @param function over  - When animation is over
          */
-        _myTrait_.ease = function (name, delay, callback) {
+        _myTrait_.ease = function (name, delay, callback, over) {
 
           if (!callback) {
+            over = callback;
             callback = delay;
             delay = name;
             name = "pow";
@@ -7451,7 +7453,8 @@
           _easeFns[id_name] = {
             easeFn: fn,
             duration: delay,
-            cb: callback
+            cb: callback,
+            over: over
           };
         };
 
@@ -7544,6 +7547,7 @@
                     delete _easeFns[n];
                   }
                   v.cb(v.easeFn(dt));
+                  if (v.over) v.over();
                 }
               }
 
