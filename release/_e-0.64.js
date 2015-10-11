@@ -2594,6 +2594,33 @@
       // Initialize static variables here...
 
       /**
+       * Creates a custom tag function, if possible, to the prototype of the class
+       * @param String name  - Name of the custom tag
+       */
+      _myTrait_._addCustomTagFn = function (name) {
+        var me = this;
+        this.extendAll(name, function () {
+
+          var argList = Array.prototype.slice.call(arguments);
+
+          //if(this._contentObj) {
+          //    return this._contentObj.e.apply(this._contentObj, argList);
+          //}
+          /*
+          res.elemName
+          res.classStr
+          res.data
+          res.stream
+          res.attrs
+          res.constr
+          */
+          // TODO: how about the className for custom tags?
+          var res = me._constrArgs(argList);
+          me.e.apply(me, [res.elemName, res.attrs, res.data, res.constr]);
+        });
+      };
+
+      /**
        * @param float className
        * @param float attrs
        */
@@ -6600,6 +6627,7 @@
           // this._createWorkerClass
           options._waitClass = this._createWorkerClass(elemName, options.webWorkers);
         }
+        this._addCustomTagFn(elemName);
 
         /*
         _e().createClass({
