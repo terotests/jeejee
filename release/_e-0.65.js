@@ -2615,8 +2615,8 @@
           res.constr
           */
           // TODO: how about the className for custom tags?
-          var res = me._constrArgs(argList);
-          me.e.apply(me, [res.elemName, res.attrs, res.data, res.constr]);
+          argList.unshift(name);
+          me.e.apply(me, argList);
         });
       };
 
