@@ -1088,6 +1088,7 @@ MIT. Currently use at own risk.
     
 ##### trait domShortcuts
 
+- [_addCustomTagFn](README.md#domShortcuts__addCustomTagFn)
 - [a](README.md#domShortcuts_a)
 - [attr](README.md#domShortcuts_attr)
 - [b](README.md#domShortcuts_b)
@@ -1370,9 +1371,12 @@ MIT. Currently use at own risk.
 #### Class later
 
 
+- [_easeFns](README.md#later__easeFns)
 - [add](README.md#later_add)
+- [addEasingFn](README.md#later_addEasingFn)
 - [after](README.md#later_after)
 - [asap](README.md#later_asap)
+- [ease](README.md#later_ease)
 - [every](README.md#later_every)
 - [once](README.md#later_once)
 - [onFrame](README.md#later_onFrame)
@@ -1426,36 +1430,9 @@ MIT. Currently use at own risk.
 
     
     
-    
-    
 
 
    
-      
-    
-      
-            
-#### Class later
-
-
-- [add](README.md#later_add)
-- [after](README.md#later_after)
-- [asap](README.md#later_asap)
-- [every](README.md#later_every)
-- [once](README.md#later_once)
-- [onFrame](README.md#later_onFrame)
-- [polyfill](README.md#later_polyfill)
-- [removeFrameFn](README.md#later_removeFrameFn)
-
-
-
-   
-
-
-   
-
-
-
       
     
 
@@ -1819,7 +1796,23 @@ if(hasCustom) {
 }
 
 if(this.isFunction(const_fn)) {
-    const_fn.apply(this, [this]);
+    if(this._uiWaitProm) {
+        var me = this;
+        this._uiWaitProm.then( function() {
+            if(me._contentObj) {
+                const_fn.apply(me._contentObj, [me._contentObj]);
+            } else {
+                const_fn.apply(me, [me]);
+            }
+        })
+    } else {
+        if(this._contentObj) {
+            const_fn.apply(this._contentObj, [this._contentObj]);
+        } else {
+            const_fn.apply(this, [this]);
+        }
+    }
+    
 }
 
 ```
@@ -4585,6 +4578,20 @@ The class has following internal singleton variables:
 * _shInit
         
         
+### <a name="domShortcuts__addCustomTagFn"></a>domShortcuts::_addCustomTagFn(name)
+`name` Name of the custom tag
+ 
+
+Creates a custom tag function, if possible, to the prototype of the class
+*The source code for the function*:
+```javascript
+this.extendAll(name, function() {
+    var argList = Array.prototype.slice.call(arguments);
+    argList.unshift(name);
+    return this.e.apply(this, argList);
+});
+```
+
 ### <a name="domShortcuts_a"></a>domShortcuts::a(className, attrs)
 
 
@@ -7788,8 +7795,9 @@ var form = o.form("",{
     "name" : o.guid()
 });
 
-var maxCnt = options.maxCnt || 20;
+var maxCnt = options.maxCnt || 1;
 var chStr = "complete"+this.guid();
+var toBeRemoved = [];
 
 var onComplete = function(v) {
    delete window[chStr];
@@ -7826,7 +7834,8 @@ if(options.vars) {
 var uplFields = form.div("form-group");
 
 var maxFileCnt = options.maxFileCnt || 5,
-    fileCnt = 0;
+    fileCnt = 0, 
+    uploadInProgress = false;
 
 // <input type="file" name="my-file" size="50" maxlength="25" /> <br />
 
@@ -7861,10 +7870,16 @@ var loadCnt = 0;
 
 // iFrame._dom.onreadystatechange = MyIframeReadyStateChanged;
 iFrame._dom.addEventListener("load", function() {
+    uploadInProgress = false;
     loadCnt++;
     if(loadCnt==1) return;
     
+    // remove the input
+    toBeRemoved.forEach( function(oldInput) {
+        oldInput.remove();
+    })
     if(options.done) {
+        
         var ifrm = iFrame._dom;
         var doc = ifrm.contentDocument? ifrm.contentDocument: ifrm.contentWindow.document;
         // var form = doc.getElementById('demoForm');        
@@ -7882,7 +7897,9 @@ o.add( iFrame );
 
 o.uploadFiles = function(vars) {
 
-
+    if(uploadInProgress) return;
+    uploadInProgress = true;
+    
     var hook = _uploadHook && _uploadHook[options.url];
     if(hook) {
         
@@ -7902,6 +7919,7 @@ o.uploadFiles = function(vars) {
         }        
         uplFields.forEach(
             function(input) {
+                toBeRemoved.push(input);
                 if(!input._dom.files) return;
                 var len = input._dom.files.length;
                 for(var fi=0; fi<len; fi++) {
@@ -8562,7 +8580,7 @@ if( customElem.requires || customElem._waitClass) {
     }
     
     
-    prom.then( function() {
+    prom = prom.then( function() {
         var contentObj = renderFn.apply(elem, [objProperties, customElem]);
         if(contentObj) {
             elem._contentObj = contentObj;
@@ -8573,6 +8591,7 @@ if( customElem.requires || customElem._waitClass) {
         }            
     });
     start.resolve();
+    elem._uiWaitProm = prom;
     
 } else {
     var contentObj = renderFn.apply(elem, [objProperties, customElem]);
@@ -8625,6 +8644,7 @@ if(options.webWorkers && this.isObject(options.webWorkers) && this._workersAvail
     // this._createWorkerClass
     options._waitClass = this._createWorkerClass( elemName, options.webWorkers );
 }
+this._addCustomTagFn(elemName);
 
 /*
 _e().createClass({
@@ -9460,7 +9480,57 @@ The class has following internal singleton variables:
         
 * _localCnt
         
+* _easings
         
+* _easeFns
+        
+        
+### <a name="later__easeFns"></a>later::_easeFns(t)
+
+
+*The source code for the function*:
+```javascript
+_easings = { 
+    bounceOut : function(t){
+        if (t < 1/2.75) {
+            return (7.5625*t*t);
+        } else if (t < 2/2.75) {
+            return (7.5625*(t-=1.5/2.75)*t+0.75);
+        } else if (t < 2.5/2.75) {
+            return (7.5625*(t-=2.25/2.75)*t+0.9375);
+        } else {
+            return (7.5625*(t-=2.625/2.75)*t +0.984375);
+        }
+    },
+    easeIn : function(t) {
+        return t*t;
+    },
+    easeOut : function(t) {
+        return -1*t*(t-2);
+    },   
+    easeInOut : function(t) {
+        if(t < 0.5) return t*t;
+        return -1*t*(t-2);
+    },
+    easeInCirc : function(t) {
+        return -1*(Math.sqrt(1 -t*t) - 1);
+    },
+    easeInCubic : function(t) {
+        return t*t*t;
+    },
+    easeOutCubic : function(t) {
+        return (1-t)*(1-t)*(1-t) + 1;
+    },    
+    pow : function(t) {
+        return Math.pow(t,parseFloat(1.5-t));
+    },
+    linear : function(t) {
+        return t;
+    }
+}
+
+```
+
 ### <a name="later_add"></a>later::add(fn, thisObj, args)
 
 
@@ -9478,6 +9548,14 @@ if(thisObj || args) {
 } else {
     _callers.push(fn);
 }
+```
+
+### <a name="later_addEasingFn"></a>later::addEasingFn(name, fn)
+
+
+*The source code for the function*:
+```javascript
+_easings[name] = fn;
 ```
 
 ### <a name="later_after"></a>later::after(seconds, fn, name)
@@ -9507,6 +9585,34 @@ this.add(fn);
 
 ```
 
+### <a name="later_ease"></a>later::ease(name, delay, callback, over)
+`name` Name of the easing to use
+ 
+`delay` Delay of the transformation in ms
+ 
+`callback` Callback to set the values
+ 
+`over` When animation is over
+ 
+
+
+*The source code for the function*:
+```javascript
+
+var fn = _easings[name];
+if(!fn) fn = _easings.pow;
+var id_name = "e_"+(_localCnt++);
+_easeFns[id_name] = {
+    easeFn : fn,
+    duration : delay,
+    cb : callback,
+    over : over
+};
+
+
+
+```
+
 ### <a name="later_every"></a>later::every(seconds, fn, name)
 
 
@@ -9528,7 +9634,7 @@ _everies[name] = {
 
 ```javascript
 if(!_initDone) {
-
+   this._easeFns();
    _localCnt=1;
    this.polyfill();
  
@@ -9559,10 +9665,14 @@ if(!_initDone) {
     _oneTimers = {};
     _everies = {};
     _framers = [];
+    _easeFns = {};
     var lastMs = 0;
     
     var _callQueQue = function() {
-       var ms = (new Date()).getTime();
+       var ms = (new Date()).getTime(),
+           elapsed = lastMs - ms;
+       
+       if(lastMs==0) elapsed = 0;
        var fn;
        while(fn=_callers.shift()) {
           if(Object.prototype.toString.call( fn ) === '[object Array]' ) {
@@ -9577,7 +9687,29 @@ if(!_initDone) {
            var fFn = _framers[i];
            fFn();
        }
+       /*
+_easeFns.push({
+    easeFn : fn,
+    duration : delay,
+    cb : callback
+});
        
+       */
+       for(var n in _easeFns) {
+           if(_easeFns.hasOwnProperty(n)) {
+               var v = _easeFns[n];
+               if(!v.start) v.start = ms;
+               var delta = ms - v.start,
+                   dt = delta / v.duration;
+               if(dt>=1) {
+                   dt = 1;
+                   delete _easeFns[n];
+               }
+               v.cb(v.easeFn(dt));
+               if((dt == 1) && v.over) v.over();
+           }
+       }   
+
        for(var n in _oneTimers) {
            if(_oneTimers.hasOwnProperty(n)) {
                var v = _oneTimers[n];
@@ -10329,244 +10461,9 @@ return t === Object(t);
 
     
     
-    
-    
 
 
    
-      
-    
-      
-            
-# Class later
-
-
-The class has following internal singleton variables:
-        
-* _initDone
-        
-* _callers
-        
-* _oneTimers
-        
-* _everies
-        
-* _framers
-        
-* _localCnt
-        
-        
-### <a name="later_add"></a>later::add(fn, thisObj, args)
-
-
-*The source code for the function*:
-```javascript
-if(thisObj || args) {
-   var tArgs;
-   if( Object.prototype.toString.call( args ) === '[object Array]' ) {
-       tArgs = args;
-   } else {
-       tArgs = Array.prototype.slice.call(arguments, 2);
-       if(!tArgs) tArgs = [];
-   }
-   _callers.push([thisObj, fn, tArgs]);   
-} else {
-    _callers.push(fn);
-}
-```
-
-### <a name="later_after"></a>later::after(seconds, fn, name)
-
-
-*The source code for the function*:
-```javascript
-
-if(!name) {
-    name = "aft7491_"+(_localCnt++);
-}
-
-_everies[name] = {
-    step : Math.floor(seconds * 1000),
-    fn : fn,
-    nextTime : 0,
-    remove : true
-};
-```
-
-### <a name="later_asap"></a>later::asap(fn)
-
-
-*The source code for the function*:
-```javascript
-this.add(fn);
-
-```
-
-### <a name="later_every"></a>later::every(seconds, fn, name)
-
-
-*The source code for the function*:
-```javascript
-
-if(!name) {
-    name = "t7491_"+(_localCnt++);
-}
-
-_everies[name] = {
-    step : Math.floor(seconds * 1000),
-    fn : fn,
-    nextTime : 0
-};
-```
-
-### later::constructor( interval, fn )
-
-```javascript
-if(!_initDone) {
-
-   _localCnt=1;
-   this.polyfill();
- 
-   var frame, cancelFrame;
-   if(typeof(window) != "undefined") {
-       var frame = window['requestAnimationFrame'], 
-           cancelFrame= window['cancelRequestAnimationFrame'];
-       ['', 'ms', 'moz', 'webkit', 'o'].forEach( function(x) { 
-           if(!frame) {
-            frame = window[x+'RequestAnimationFrame'];
-            cancelFrame = window[x+'CancelAnimationFrame'] 
-                                       || window[x+'CancelRequestAnimationFrame'];
-           }
-        });
-   }
- 
-    if (!frame)
-        frame= function(cb) {
-            return setTimeout(cb, 16);
-        };
- 
-    if (!cancelFrame)
-        cancelFrame = function(id) {
-            clearTimeout(id);
-        };    
-        
-    _callers = [];
-    _oneTimers = {};
-    _everies = {};
-    _framers = [];
-    var lastMs = 0;
-    
-    var _callQueQue = function() {
-       var ms = (new Date()).getTime();
-       var fn;
-       while(fn=_callers.shift()) {
-          if(Object.prototype.toString.call( fn ) === '[object Array]' ) {
-              fn[1].apply(fn[0], fn[2]);
-          } else {
-              fn();
-          }
-           
-       }
-       
-       for(var i=0; i<_framers.length;i++) {
-           var fFn = _framers[i];
-           fFn();
-       }
-       
-       for(var n in _oneTimers) {
-           if(_oneTimers.hasOwnProperty(n)) {
-               var v = _oneTimers[n];
-               v[0](v[1]);
-               delete _oneTimers[n];
-           }
-       }
-       
-       for(var n in _everies) {
-           if(_everies.hasOwnProperty(n)) {
-               var v = _everies[n];
-               if(v.nextTime < ms) {
-                   if(v.remove) {
-                       if(v.nextTime > 0) {
-                          v.fn(); 
-                          delete _everies[n];
-                       } else {
-                          v.nextTime = ms + v.step; 
-                       }
-                   } else {
-                       v.fn();
-                       v.nextTime = ms + v.step;
-                   }
-               }
-               if(v.until) {
-                   if(v.until < ms) {
-                       delete _everies[n];
-                   }
-               }
-           }
-       }       
-       
-       frame(_callQueQue);
-       lastMs = ms;
-    };
-    _callQueQue();
-    _initDone = true;
-}
-```
-        
-### <a name="later_once"></a>later::once(key, fn, value)
-
-
-*The source code for the function*:
-```javascript
-// _oneTimers
-
-_oneTimers[key] = [fn,value];
-```
-
-### <a name="later_onFrame"></a>later::onFrame(fn)
-
-
-*The source code for the function*:
-```javascript
-
-_framers.push(fn);
-```
-
-### <a name="later_polyfill"></a>later::polyfill(t)
-
-
-*The source code for the function*:
-```javascript
-// --- let's not ---
-```
-
-### <a name="later_removeFrameFn"></a>later::removeFrameFn(fn)
-
-
-*The source code for the function*:
-```javascript
-
-var i = _framers.indexOf(fn);
-if(i>=0) {
-    if(fn._onRemove) {
-        fn._onRemove();
-    }
-    _framers.splice(i,1);
-    return true;
-} else {
-    return false;
-}
-```
-
-
-
-   
-
-
-   
-
-
-
       
     
 
