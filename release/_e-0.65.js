@@ -2601,8 +2601,7 @@
         this.extendAll(name, function () {
           var argList = Array.prototype.slice.call(arguments);
           argList.unshift(name);
-          this.e.apply(this, argList);
-          return this;
+          return this.e.apply(this, argList);
         });
       };
 
