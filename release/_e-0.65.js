@@ -2598,23 +2598,8 @@
        * @param String name  - Name of the custom tag
        */
       _myTrait_._addCustomTagFn = function (name) {
-
         this.extendAll(name, function () {
-
           var argList = Array.prototype.slice.call(arguments);
-
-          //if(this._contentObj) {
-          //    return this._contentObj.e.apply(this._contentObj, argList);
-          //}
-          /*
-          res.elemName
-          res.classStr
-          res.data
-          res.stream
-          res.attrs
-          res.constr
-          */
-          // TODO: how about the className for custom tags?
           argList.unshift(name);
           this.e.apply(this, argList);
         });
