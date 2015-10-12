@@ -6296,7 +6296,7 @@
               }
             }
           } catch (e) {
-            errCallback(e);
+            if (errCallback) errCallback(e);
           }
           return this;
         }
@@ -6336,9 +6336,9 @@
         this._httpsend(url, function (result) {
           try {
             var data = JSON.parse(result);
-            callback(data);
+            if (callback) callback(data);
           } catch (e) {
-            errCallback(e);
+            if (errCallback) errCallback(e);
           }
         }, "POST", JSON.stringify(data), errCallback);
 
