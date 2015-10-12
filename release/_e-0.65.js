@@ -5883,7 +5883,10 @@
               };
               options.progress(info);
             }
-            if (options.done) options.done(doc.body.innerHTML);
+            if (options.done) {
+              var ihtml = doc.body.innerHTML;
+              if (ihtml) options.done(ihtml);
+            }
           }
         });
         o.add(iFrame);
