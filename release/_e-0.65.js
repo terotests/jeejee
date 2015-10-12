@@ -4268,7 +4268,11 @@
           var currLeft = xPosition || window.pageXOffset;
           var currTop = window.pageYOffset;
           if (yPosition) {
-            window.scrollTo(currLeft, parseInt(yPosition));
+            var dy = parseInt(yPosition) - currTop;
+            later().ease("pow", 600, function (t) {
+              window.scrollTo(currLeft || 0, parseInt(currTop + dy * t));
+            });
+            // window.scrollTo( currLeft, parseInt(yPosition));
             return this;
           }
 
@@ -4284,7 +4288,7 @@
             toY = toY - window.innerHeight * 0.2;
           }
           var dy = parseInt(toY) - currTop;
-          later().ease("pow", 1000, function (t) {
+          later().ease("pow", 600, function (t) {
             window.scrollTo(currLeft || 0, parseInt(currTop + dy * t));
           });
         }
