@@ -4267,8 +4267,15 @@
         if (window) {
           var currLeft = xPosition || window.pageXOffset;
           var currTop = window.pageYOffset;
+          var pageHeight = window.innerHeight;
           if (yPosition) {
-            var dy = parseInt(yPosition) - currTop;
+            var toY = yPosition;
+            var dy = parseInt(toY) - currTop;
+            if (Math.abs(dy) < 200) {
+              if (currTop + pageHeight - 200 > toY && toY > currTop) {
+                return;
+              }
+            }
             later().ease("pow", 600, function (t) {
               window.scrollTo(currLeft || 0, parseInt(currTop + dy * t));
             });
@@ -4279,15 +4286,24 @@
           var box = this.offset();
 
           var toY = box.top;
-          if (toY < window.innerHeight / 2) {
-            return;
+          /*
+          if(toY<window.innerHeight/2) {
+          return;
           }
-          if (box.top < window.innerHeight) {
-            toY = toY / 2;
+          if(box.top<window.innerHeight) {
+          toY = toY / 2;
           } else {
-            toY = toY - window.innerHeight * 0.2;
+          toY = toY - window.innerHeight*0.2
           }
+          */
           var dy = parseInt(toY) - currTop;
+
+          if (Math.abs(dy) < 200) {
+            if (currTop + pageHeight - 200 > toY && toY > currTop) {
+              return;
+            }
+          }
+
           later().ease("pow", 600, function (t) {
             window.scrollTo(currLeft || 0, parseInt(currTop + dy * t));
           });
