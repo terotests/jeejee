@@ -4285,17 +4285,9 @@
 
           var box = this.offset();
 
-          var toY = box.top;
-          /*
-          if(toY<window.innerHeight/2) {
-          return;
-          }
-          if(box.top<window.innerHeight) {
-          toY = toY / 2;
-          } else {
-          toY = toY - window.innerHeight*0.2
-          }
-          */
+          var toY = box.top - pageHeight * 0.3;
+          if (toY < 0) toY = 0;
+
           var dy = parseInt(toY) - currTop;
 
           if (Math.abs(dy) < 200) {
