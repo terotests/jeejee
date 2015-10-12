@@ -4266,18 +4266,13 @@
       _myTrait_.scrollTo = function (yPosition, xPosition) {
         if (window) {
           var currLeft = xPosition || window.pageXOffset;
+          var currTop = window.pageYOffset;
           if (yPosition) {
             window.scrollTo(currLeft, parseInt(yPosition));
             return this;
           }
 
           var box = this.offset();
-
-          this.addClass("lastScrollTarget");
-          var me = this;
-          setTimeout(function () {
-            me.removeClass("lastScrollTarget");
-          }, 1000);
 
           var toY = box.top;
           if (toY < window.innerHeight / 2) {
@@ -4288,7 +4283,10 @@
           } else {
             toY = toY - window.innerHeight * 0.2;
           }
-          window.scrollTo(currLeft || 0, parseInt(toY));
+          var dy = parseInt(toY) - currTop;
+          later().ease("pow", 1000, function (t) {
+            window.scrollTo(currLeft || 0, parseInt(currTop + dy * t));
+          });
         }
         return this;
       };
