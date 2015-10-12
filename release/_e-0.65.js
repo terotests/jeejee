@@ -4789,22 +4789,25 @@
       */
       _myTrait_.send = function (url, data, callBack, errorCallback) {
 
-        var list = this._findSendHandler(url);
-        if (list) {
-          for (var i = 0; i < list.length; i++) {
-            var fn = list[i];
-            var res = fn.apply(fn._context || this, [data, callBack, errorCallback, url]);
-            if (res === true) {
-              return;
+        var me = this;
+        later().add(function () {
+          var list = me._findSendHandler(url);
+          if (list) {
+            for (var i = 0; i < list.length; i++) {
+              var fn = list[i];
+              var res = fn.apply(fn._context || this, [data, callBack, errorCallback, url]);
+              if (res === true) {
+                return;
+              }
+            }
+          } else {
+            if (errorCallback) {
+              errorCallback("Controller or send handler for " + url + " was not found");
+            } else {
+              console.error("controller for message " + url + " was not found");
             }
           }
-        } else {
-          if (errorCallback) {
-            errorCallback("Controller or send handler for " + url + " was not found");
-          } else {
-            console.error("controller for message " + url + " was not found");
-          }
-        }
+        });
       };
 
       /**
