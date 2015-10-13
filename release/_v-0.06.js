@@ -8687,7 +8687,7 @@
           var patch = vdom.patch;
           var createElement = vdom.createElement;
 
-          later().every(10, function () {
+          later().every(3, function () {
             if (_batchMode) {
               for (var n in _mountedNodes) {
                 var mount = _mountedNodes[n];
@@ -8699,7 +8699,7 @@
                 }
               }
               for (var bid in _batchDOM) {
-                var e = _batchDOM[mount.vElem._lid];
+                var e = _batchDOM[bid];
                 var p = e._parent;
                 while (p && _batchDOM[p._lid]) {
                   e = e._parent;
