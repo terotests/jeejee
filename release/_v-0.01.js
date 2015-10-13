@@ -58,7 +58,7 @@
 
           if (typeof e == "undefined") return;
 
-          if (typeof e._dom != "undefined") {
+          if (typeof e.initAsTag != "undefined") {
 
             if (e._parent) {
               e._parent.removeChild(e);
@@ -1868,7 +1868,7 @@
        */
       _myTrait_.on = function (en, ef) {
 
-        console.warning("Evenhandling with _v is not implemented yet");
+        // console.warning("Evenhandling with _v is not implemented yet");
 
         return;
 
@@ -2503,7 +2503,7 @@
           <option value="Blackberry">Blackberry</option>
           <option value="Blackcurrant">Blackcurrant</option>
           <option value="Blueberry">Blueberry</option>
-          <!-- … -->
+          <!-- â€¦ -->
           </datalist>
           If other, please specify:
           <input type="text" name="fruit" list="fruits">
@@ -3271,7 +3271,7 @@
               if (bTSpan) v = v.trim();
               // soon.add(me.text, me, v);
               if (bTSpan && (!v || v.length == 0)) {
-                me._dom.textContent = " ";
+                me._dom.textContent = "Â ";
               } else {
                 me._dom.textContent = v;
               }
@@ -3290,7 +3290,7 @@
             if (bTSpan) val = val.trim();
             if (bTSpan && (!val || val.length == 0)) {
               this._dom.textContent = "";
-              me._dom.textContent = " ";
+              me._dom.textContent = "Â ";
             } else {
               this._dom.textContent = val;
             }
@@ -8546,9 +8546,11 @@
       };
 
       /**
-       * @param float t
+       * @param float vdom
        */
-      _myTrait_._buildVDOM = function (t) {
+      _myTrait_._buildVDOM = function (vdom) {
+
+        var h = vdom.h;
 
         if (this._classes) {
           var classStr = this._classes.join(" ");
@@ -8556,13 +8558,13 @@
         }
         // not great but should be working about so
         if (this._html) {
-          return new VNode(this._tag, this._attributes, [new VText(this._html)]);
+          return h(this._tag, this._attributes, [String(this._html)]);
         } else {
           var chList = [];
           for (var i = 0; i < this._children.length; i++) {
-            chList.push(this._children[i]._buildVDOM());
+            chList.push(this._children[i]._buildVDOM(vdom));
           }
-          return new VNode(this._tag, this._attributes, chList);
+          return h(this._tag, this._attributes, chList);
         }
       };
 
@@ -8634,10 +8636,18 @@
        * @param float t
        */
       _myTrait_._vdomRenderer = function (t) {
-        /*var h = require('virtual-dom/h');
-        var diff = require('virtual-dom/diff');
-        var patch = require('virtual-dom/patch');
-        var createElement = require('virtual-dom/create-element');
+        /*
+        var tree = render(count);               // We need an initial tree
+        var rootNode = createElement(tree);     // Create an initial root DOM node ...
+        document.body.appendChild(rootNode);    // ... and it should be in the document
+        // 3: Wire up the update logic
+        setInterval(function () {
+        count++;
+        var newTree = render(count);
+        var patches = diff(tree, newTree);
+        rootNode = patch(rootNode, patches);
+        tree = newTree;
+        }, 1000);
         */
 
         /*
@@ -8649,16 +8659,28 @@
         */
         // 1: Create a function that declares what the DOM should look like
 
-        later().every(15, function () {
-          for (var n in _mountedNodes) {
-            var mount = _mountedNodes[n];
-            var newTree = mount.vElem._buildVDOM();
-            if (!mount.prevState) {
-              mount.prevState = mount.vElem._buildVDOM();
+        later().after(0.1, function () {
+          var vdom = window["vdom"]; // importing from the bundle this time :/
+          var h = vdom.h;
+          var diff = vdom.diff;
+          var patch = vdom.patch;
+          var createElement = vdom.createElement;
+
+          later().onFrame(function () {
+            for (var n in _mountedNodes) {
+              var mount = _mountedNodes[n];
+              var newTree = mount.vElem._buildVDOM(vdom);
+              if (!mount.prevState) {
+                mount.mountPoint = createElement(newTree);
+                mount.rootNode.appendChild(mount.mountPoint);
+                mount.prevState = newTree;
+                return;
+              }
+              var patches = diff(mount.prevState, newTree);
+              mount.mountPoint = patch(mount.mountPoint, patches);
+              mount.prevState = newTree;
             }
-            var patches = diff(mount.prevState, newTree);
-            mount.rootNode = patch(mount.rootNode, patches);
-          }
+          });
         });
       };
 
@@ -8705,6 +8727,7 @@
         if (!_mountedNodes) {
           _elemCache = {};
           _mountedNodes = {};
+          _localId = 1;
           this._vdomRenderer();
         }
 
@@ -9057,6 +9080,7 @@
 
         var res = this._constrArgs(argList);
 
+        if (!_localId) _localId = 1;
         this._lid = "ve-" + _localId++;
 
         this.initAsTag.apply(this, [res.elemName, res.attrs, res.constr, res.data]);
@@ -9319,32 +9343,3 @@
     define(__amdDefs__);
   }
 }).call(new Function("return this")());
-
-// should we have named styles... perhaps... TODO
-
-// console.log("**** SHOULD NOT ITERATE CHILDREN *****");
-
-// this._dom.value = v;
-
-// this._dom.innerHTML = v;
-
-// TODO: error handling postMessage("no instance found");
-
-// --> might send the message back to the worker
-// TODO: send msg back
-// first.resolve(true);
-/*
-me._callWorker(_worker, "/", "createClass",  {
-className: className,
-code: me._serializeClass(classObj)
-}, function( result ) {
-success( result ); 
-});
-*/
-
-//console.log("Attr set to ", n);
-//console.trace();
-
-// if(this._dom.focus) this._dom.focus();
-
-// --- let's not ---
