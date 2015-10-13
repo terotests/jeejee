@@ -8721,10 +8721,11 @@
        * @param float t
        */
       _myTrait_._initDocEvents = function (t) {
-        if (document && document.body && _elemCache) {
+        if (document && document.body) {
           var me = this;
           document.body.addEventListener("click", function (e) {
             // _elemCache[id]
+            console.log("Click");
             var el = e.currentTarget;
             var id = el.getAttribute("data-vid");
             if (id) {
