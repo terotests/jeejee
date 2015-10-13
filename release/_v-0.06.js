@@ -403,12 +403,11 @@
         }
         this.removeChildEvents();
 
+        this._addBatchCmd([4, this]); // remove batch event
+
         if (this._parent) {
           this._parent.removeChild(this);
-        } else {
-          var p = this._dom.parentElement;
-          if (p) p.removeChild(this._dom);
-        }
+        } else {}
 
         this._children = [];
         this.removeAllHandlers();
@@ -1633,6 +1632,7 @@
 
         if (this.hasClass(c)) return;
         this._classes.push(c);
+        this._addBatchCmd([3, this]);
         // if(!this._svg) this._dom.className = this._classes.join(" ");
 
         return this;
@@ -1678,6 +1678,7 @@
           if (i >= 0) {
             this._classes.splice(i, 1);
             // this._dom.className = this._classes.join(" ");
+            this._addBatchCmd([3, this]);
           }
         }
         return this;
@@ -7147,6 +7148,7 @@
 
             list = host.uniqueListener("attr:" + n, function (o, newV) {
               if (typeof newV != "undefined" && newV !== null) {
+                host._addBatchCmd([2, host, n, newV]);
                 host._attributes[n] = newV;
                 // domi.setAttribute(n, newV);
               }
@@ -7157,6 +7159,7 @@
                 console.warning("SVG attribute setting not implemented in _v");
                 // this._dom.setAttributeNS('http://www.w3.org/1999/xlink', 'href', val);    
               } else {
+                host._addBatchCmd([2, host, n, val]);
                 host._attributes[n] = val;
               }
             }
@@ -7190,15 +7193,27 @@
                 host = this._host;
 
             var list = host.uniqueListener("attr:" + n, function (o, newV) {
-              if (typeof newV != "undefined") host._attributes[n] = newV;
+              if (typeof newV != "undefined") {
+                host._addBatchCmd([2, host, n, newV]);
+                host._attributes[n] = newV;
+              }
+
               // domi.setAttribute(n,newV);
             });
             oo.me.on(oo.name, list);
-            if (typeof val != "undefined" && isNaN(n)) host._attributes[n] = vale;
+            if (typeof val != "undefined" && isNaN(n)) {
+              host._addBatchCmd([2, host, n, val]);
+              host._attributes[n] = val;
+            }
+
             // this._dom.setAttribute(n,val);
             return this;
           }
-          if (typeof v != "undefined" && isNaN(n)) host._attributes[n] = v;
+          if (typeof v != "undefined" && isNaN(n)) {
+            host._addBatchCmd([2, host, n, v]);
+            host._attributes[n] = v;
+          }
+
           return this;
         };
 
@@ -8700,7 +8715,7 @@
           var patch = vdom.patch;
           var createElement = vdom.createElement;
 
-          later().every(3, function () {
+          later().onFrame(function () {
             if (_batchMode) {
               for (var n in _mountedNodes) {
                 var mount = _mountedNodes[n];
@@ -8731,6 +8746,22 @@
                   switch (cmd[0]) {
                     case 1:
                       if (e._rDom) e._rDom.textContent = e._html;
+                      break;
+                    case 2:
+                      var n = cmd[2],
+                          v = cmd[3];
+                      if (e._rDom) e._rDom.setAttribute(n, v);
+                      break;
+                    case 3:
+                      // this._classes.join(" ");
+                      if (e._classes && e._rDom) {
+                        e._rDom.className = e._classes.join(" ");
+                      }
+                      break;
+                    case 4:
+                      if (e._rDom && e._rDom.parentNode) {
+                        e._rDom.parentNode.removeChild(e.rDom);
+                      }
                       break;
                   }
                 });
@@ -9423,6 +9454,9 @@
     define(__amdDefs__);
   }
 }).call(new Function("return this")());
+
+//var p = this._dom.parentElement;
+//if(p) p.removeChild(this._dom);
 
 // should we have named styles... perhaps... TODO
 
