@@ -4853,9 +4853,7 @@
           } else {
             if (errorCallback) {
               errorCallback("Controller or send handler for " + url + " was not found");
-            } else {
-              console.error("controller for message " + url + " was not found");
-            }
+            } else {}
           }
         });
       };
@@ -9654,6 +9652,8 @@
 // this._dom.value = v;
 
 // this._dom.innerHTML = v;
+
+// console.error("controller for message "+url+" was not found");
 
 // TODO: error handling postMessage("no instance found");
 
