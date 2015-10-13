@@ -8550,11 +8550,10 @@
        */
       _myTrait_._buildVDOM = function (t) {
 
-        if (typeof this._attributes["class"] != "undefined" || this._classes.length) {
+        if (this._classes) {
           var classStr = this._classes.join(" ");
           this._attributes["class"] = classStr;
         }
-
         // not great but should be working about so
         if (this._html) {
           return new VNode(this._tag, this._attributes, [new VText(this._html)]);
