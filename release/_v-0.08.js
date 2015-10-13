@@ -8614,18 +8614,22 @@
 
         if (this._classes) {
           var classStr = this._classes.join(" ");
-          this._attributes["className"] = classStr;
+          this._attributes["class"] = classStr;
         }
         this._attributes["data-vid"] = this._lid;
         // not great but should be working about so
         if (this._html) {
-          return new VNode(this._tag, this._attributes, [new VText(String(this._html))]);
+          return new VNode(this._tag, {
+            attributes: this._attributes
+          }, [new VText(String(this._html))]);
         } else {
           var chList = [];
           for (var i = 0; i < this._children.length; i++) {
             chList.push(this._children[i]._buildVDOM(vdom));
           }
-          return new VNode(this._tag, this._attributes, chList);
+          return new VNode(this._tag, {
+            attributes: this._attributes
+          }, chList);
         }
       };
 
