@@ -8638,6 +8638,7 @@
           this._attributes["className"] = classStr;
         }
 
+        delete _batchDOM[this._lid];
         // the DOM element
         var dom = document.createElement(this._tag);
         if (this._html) {
@@ -8679,20 +8680,15 @@
 
         later().after(0.1, function () {
 
-          if (_batchMode) {
-            later().onFrame(function () {
-              for (var n in _mountedNodes) {}
-            });
-            return;
-          }
           var vdom = window["vdom"]; // importing from the bundle this time :/
           var h = vdom.h;
           var diff = vdom.diff;
           var patch = vdom.patch;
           var createElement = vdom.createElement;
 
-          later().onFrame(function () {
+          later().every(10, function () {
             if (_batchMode) {
+              debugger;
               for (var n in _mountedNodes) {
                 var mount = _mountedNodes[n];
                 // building the tree of nodes...
