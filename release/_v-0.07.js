@@ -1885,11 +1885,19 @@
 
         // --- VDOM event handling ---
         // not optimal for all cases of course...
-        if (!_eventHandlers) _eventHandlers = {};
-        if (!_eventHandlers[this._lid]) _eventHandlers[this._lid] = {};
-        if (!_eventHandlers[this._lid][en]) _eventHandlers[this._lid][en] = [];
 
-        _eventHandlers[this._lid][en].push(ef);
+        if (this._contentObj) {
+          return this._contentObj.on.apply(this._contentObj, Array.prototype.slice.call(arguments));
+        }
+
+        if (!this._ev) this._ev = {};
+        if (!this._ev[en]) this._ev[en] = [];
+        this._ev[en].push(ef);
+
+        //if(!_eventHandlers) _eventHandlers = {};
+        //if(!_eventHandlers[this._lid]) _eventHandlers[this._lid] = {};
+        //if(!_eventHandlers[this._lid][en]) _eventHandlers[this._lid][en] = [];
+        //_eventHandlers[this._lid][en].push(ef);
 
         return this;
 
@@ -8713,12 +8721,18 @@
        * @param float t
        */
       _myTrait_._initDocEvents = function (t) {
-        if (document && document.body) {
+        if (document && document.body && _elemCache) {
           var me = this;
-          document.body.addEventHandler("click", function (e) {
+          document.body.addEventListener("click", function (e) {
             // _elemCache[id]
             var el = e.currentTarget;
-            var id = el.getAttribute("ve-id");
+            var id = el.getAttribute("data-vid");
+            if (id) {
+              var vElem = _elemCache[id];
+              if (vElem) {
+                vElem.trigger("click");
+              }
+            }
           });
         }
       };
@@ -9220,6 +9234,7 @@
         if (!_localId) {
           _localId = 1;
           _batchDOM = {};
+          this._initDocEvents();
         }
 
         this._lid = "ve-" + _localId++;
