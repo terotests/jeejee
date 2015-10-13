@@ -8769,7 +8769,7 @@
             }
           });
 
-          var _stdEvent = (function (name) {
+          var _stdEvent = function _stdEvent(name) {
             document.body.addEventListener(name, function (e) {
               var el = e.srcElement;
               var id = el.getAttribute("data-vid");
@@ -8780,7 +8780,10 @@
                 }
               }
             });
-          })[("focus", "blur", "change", "mousemove", "click")].forEach(_stdEvent);
+          };
+
+          var arr = ["focus", "blur", "change", "mousemove", "click"];
+          arr.forEach(_stdEvent);
           // mousemove
         }
       };
