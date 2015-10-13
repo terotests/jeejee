@@ -8726,7 +8726,7 @@
           document.body.addEventListener("click", function (e) {
             // _elemCache[id]
             console.log("Click");
-            var el = e.currentTarget;
+            var el = e.srcElement;
             var id = el.getAttribute("data-vid");
             console.log(id);
             if (id) {
