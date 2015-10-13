@@ -135,6 +135,7 @@
           c.remove();
         });
         this._children = [];
+        this._setToBatch();
         return this;
       };
 
@@ -403,6 +404,7 @@
         }
         this.removeChildEvents();
 
+        this._setToBatch();
         this._addBatchCmd([4, this]); // remove batch event
 
         if (this._parent) {
@@ -836,25 +838,29 @@
         }
 
         if (v == "auto") {
-          this._dom.style.height = v;
+          // this._dom.style.height = v;
           this._h = v;
+          this._setToBatch();
           return this;
         }
         if (v.slice) {
           if (v.slice(-1) == "%") {
-            this._dom.style.height = v;
+            // this._dom.style.height = v;
+            this._h = v;
+            this._setToBatch();
             return this;
           }
           if (v.slice(-2) == "em") {
-            this._dom.style.height = v;
+            this._h = v;
+            this._setToBatch();
             return this;
           }
         }
 
         var p = this.pxParam(v);
         if (typeof p != "undefined") {
-          this._dom.style.height = p;
           this._h = parseInt(v);
+          this._setToBatch();
           this.trigger("height");
         }
         return this;
@@ -1003,26 +1009,32 @@
         }
 
         if (v == "auto") {
-          this._dom.style.width = v;
+          // this._dom.style.width = v;
           this._w = v;
+          this._setToBatch();
           return this;
         }
 
         if (v.slice) {
           if (v.slice(-1) == "%") {
-            this._dom.style.width = v;
+            // this._dom.style.width = v;
+            this._w = v;
+            this._setToBatch();
             return this;
           }
           if (v.slice(-2) == "em") {
-            this._dom.style.width = v;
+            // this._dom.style.width = v;
+            this._w = v;
+            this._setToBatch();
             return this;
           }
         }
 
         var p = this.pxParam(v);
         if (typeof p != "undefined") {
-          this._dom.style.width = p;
+          // this._dom.style.width = p;
           this._w = parseInt(v);
+          this._setToBatch();
           this.trigger("width");
         }
         return this;
@@ -1633,6 +1645,7 @@
         if (this.hasClass(c)) return;
         this._classes.push(c);
         this._addBatchCmd([3, this]);
+        this._setToBatch();
         // if(!this._svg) this._dom.className = this._classes.join(" ");
 
         return this;
@@ -1679,6 +1692,7 @@
             this._classes.splice(i, 1);
             // this._dom.className = this._classes.join(" ");
             this._addBatchCmd([3, this]);
+            this._setToBatch();
           }
         }
         return this;
@@ -2397,6 +2411,7 @@
       _myTrait_.bindVal = function (v) {
         // TODO: make this work with input & DOM elems
         this._html = this._value = v;
+        this._setToBatch();
         return this;
       };
 
@@ -2592,6 +2607,7 @@
         // in VDOM implementation there are no values...
         if (typeof this._dom.value != "undefined" || this._type == "option") {} else {}
 
+        this._setToBatch();
         this._value = v;
         this.trigger("value", v);
         return this;
@@ -3252,6 +3268,7 @@
         }
         if (typeof h == "undefined") return this._html;
         this._html = h;
+        this._setToBatch();
         return this;
       };
 
@@ -3346,6 +3363,7 @@
         // Batch mode...
         this._addBatchCmd([1, this]); // textContent set
 
+        this._setToBatch();
         this._html = this._text = t;
         return this;
       };
@@ -8607,9 +8625,11 @@
        * @param float cmd
        */
       _myTrait_._addBatchCmd = function (cmd) {
-
-        if (!_batchCmds) _batchCmds = [];
-        _batchCmds.push(cmd);
+        if (_batchMode) {
+          if (!_batchCmds) _batchCmds = [];
+          _batchCmds.push(cmd);
+        }
+        this._setToBatch();
       };
 
       /**
@@ -8627,11 +8647,23 @@
         this._attributes["data-vid"] = this._lid;
 
         var props = {
-          attributes: this._attributes
+          attributes: this._attributes,
+          style: {}
         };
 
         if (this._tag == "input" || this._tag == "textarea") {
           props.value = this._value;
+        }
+
+        if (_batchDOM[this._lid]) {
+          delete _batchDOM[this._lid];
+        }
+        // style: { width: "100px", height: "100px"
+        if (typeof this._w != "undefined") {
+          props.style.width = this._w;
+        }
+        if (typeof this._h != "undefined") {
+          props.style.height = this._h;
         }
 
         // not great but should be working about so
@@ -8825,6 +8857,13 @@
       /**
        * @param float t
        */
+      _myTrait_._setToBatch = function (t) {
+        _batchDOM[this._lid] = this;
+      };
+
+      /**
+       * @param float t
+       */
       _myTrait_._vdomRenderer = function (t) {
 
         later().after(0.1, function () {
@@ -8889,18 +8928,46 @@
               }
               return;
             }
+
+            // only render once, then only after batch updates...
+            // _setToBatch
+
             for (var n in _mountedNodes) {
               var mount = _mountedNodes[n];
-              var newTree = mount.vElem._buildVDOM(vdom);
               if (!mount.prevState) {
+                var newTree = mount.vElem._buildVDOM(vdom);
                 mount.mountPoint = createElement(newTree);
                 mount.rootNode.appendChild(mount.mountPoint);
                 mount.prevState = newTree;
-                return;
+                continue;
               }
-              var patches = diff(mount.prevState, newTree);
-              mount.mountPoint = patch(mount.mountPoint, patches);
-              mount.prevState = newTree;
+              //var patches = diff(mount.prevState, newTree);
+              //mount.mountPoint = patch(mount.mountPoint, patches);
+              //mount.prevState = newTree;
+            }
+
+            //if(_batchDOM[this._lid]) {
+            //    delete _batchDOM[this._lid];
+            //}       
+
+            for (var bid in _batchDOM) {
+              var node = _batchDOM[bid];
+              while (node && !_mountedNodes[node._lid]) {
+                node = node._parent;
+              }
+              if (node && _mountedNodes[node._lid]) {
+                var mount = _mountedNodes[node._lid];
+                var newTree = mount.vElem._buildVDOM(vdom);
+                if (!mount.prevState) {
+                  mount.mountPoint = createElement(newTree);
+                  mount.rootNode.appendChild(mount.mountPoint);
+                  mount.prevState = newTree;
+                  continue;
+                }
+                var patches = diff(mount.prevState, newTree);
+                mount.mountPoint = patch(mount.mountPoint, patches);
+                mount.prevState = newTree;
+              } else {}
             }
           });
         });
@@ -9607,3 +9674,5 @@ success( result );
 // if(this._dom.focus) this._dom.focus();
 
 // --- let's not ---
+
+// delete _batchDOM[bid];
