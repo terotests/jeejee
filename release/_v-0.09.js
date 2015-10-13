@@ -8617,19 +8617,24 @@
           this._attributes["class"] = classStr;
         }
         this._attributes["data-vid"] = this._lid;
+
+        var props = {
+          attributes: this._attributes
+        };
+
+        if (this._tag == "input" || this._tag == "textarea") {
+          props.value = this._value;
+        }
+
         // not great but should be working about so
         if (this._html) {
-          return new VNode(this._tag, {
-            attributes: this._attributes
-          }, [new VText(String(this._html))]);
+          return new VNode(this._tag, props, [new VText(String(this._html))]);
         } else {
           var chList = [];
           for (var i = 0; i < this._children.length; i++) {
             chList.push(this._children[i]._buildVDOM(vdom));
           }
-          return new VNode(this._tag, {
-            attributes: this._attributes
-          }, chList);
+          return new VNode(this._tag, props, chList);
         }
       };
 
