@@ -1458,7 +1458,8 @@
             me = this;
         items.forEach(function (ii) {
           var cell = new _e("td");
-          cell._dom.setAttribute("valign", "top");
+          cell.attr("valitn", "top");
+          // cell._dom.setAttribute("valign", "top");
           if (me.isObject(ii)) {
             cell.add(ii);
           } else {
