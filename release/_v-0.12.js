@@ -213,6 +213,7 @@
           }
           this._parent.reIndex();
         }
+        this._setToBatch();
       };
 
       /**
@@ -264,6 +265,7 @@
           }
           this._parent.reIndex();
         }
+        this._setToBatch();
 
         return this;
       };
@@ -289,6 +291,7 @@
             this._index++;
             var chList = this._parent._children;
             chList.splice(myIndex + 1, 0, chList.splice(myIndex, 1)[0]);
+            this._setToBatch();
           }
         }
       };
@@ -312,6 +315,7 @@
             this._index--;
             var chList = this._parent._children;
             chList.splice(myIndex - 1, 0, chList.splice(myIndex, 1)[0]);
+            this._setToBatch();
           }
         }
       };
@@ -343,13 +347,13 @@
         var me = this;
         items.forEach(function (e) {
           if (typeof e == "string") {
-            me._dom.innerHTML = e;
+            me._html = e;
             return me;
           }
 
           if (typeof e == "undefined") return;
 
-          if (typeof e._dom != "undefined") {
+          if (typeof e.initAsTag != "undefined") {
 
             if (e._parent) {
               e._parent.removeChild(e);
@@ -362,13 +366,14 @@
             e._index = 0;
             me._children.unshift(e);
             e._parent = me;
-            me._dom.insertBefore(e._dom, me._dom.firstChild);
+            // me._dom.insertBefore(e._dom, me._dom.firstChild);
 
             var len = me._children.length;
             for (var i = 0; i < len; i++) me._children[i]._index = i;
 
             e.trigger("parent", me);
             me.trigger("child", e);
+            e._setToBatch();
           }
         });
 
@@ -386,11 +391,6 @@
         for (var i = 0; i < len; i++) {
           this._children[i]._index = i;
         }
-        /*
-        chList.forEach(function(ch) {
-        ch._index = i++;
-        });
-        */
       };
 
       /**
@@ -8666,13 +8666,13 @@
 
         // not great but should be working about so
         if (this._html) {
-          return new VNode(this._tag, props, [new VText(String(this._html))]);
+          return new VNode(this._tag, props, [new VText(String(this._html))], this._lid);
         } else {
           var chList = [];
           for (var i = 0; i < this._children.length; i++) {
             chList.push(this._children[i]._buildVDOM(vdom));
           }
-          return new VNode(this._tag, props, chList);
+          return new VNode(this._tag, props, chList, this._lid);
         }
       };
 
