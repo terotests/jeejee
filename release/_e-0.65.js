@@ -4500,6 +4500,46 @@
       };
 
       /**
+       * for example   window.forwardData( winDefData, &quot;x,y, w =&gt; width, h =&gt; height, title=&gt;text&quot;);
+       * @param float dataObj
+       * @param float variables
+       * @param float filterFn
+       */
+      _myTrait_.forwardData = function (dataObj, variables, filterFn) {
+        var list = variables.split(",");
+        var me = this;
+        list.forEach(function (vName) {
+          vName = vName.trim();
+          var targetFn = vName;
+          var parts = vName.split("=>");
+          if (parts.length > 1) {
+            vName = parts[0].trim();
+            targetFn = parts[1].trim();
+          }
+          dataObj.on(vName, function (o, v) {
+
+            try {
+              if (filterFn) {
+                v = filterFn.apply(me, [vName, v]);
+              }
+              if (typeof v != "undefined") {
+                if (me[targetFn]) me[targetFn](v);
+              }
+            } catch (e) {
+              console.error(e.message);
+            }
+          });
+          var value = dataObj.get(vName);
+          if (filterFn) {
+            value = filterFn.apply(me, [vName, value]);
+          }
+          if (typeof value != "undefined") {
+            if (me[targetFn]) me[targetFn](value);
+          }
+        });
+      };
+
+      /**
        * @param float stream
        * @param float viewFn
        */
