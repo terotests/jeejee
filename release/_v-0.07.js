@@ -8728,9 +8728,11 @@
             console.log("Click");
             var el = e.currentTarget;
             var id = el.getAttribute("data-vid");
+            console.log(id);
             if (id) {
               var vElem = _elemCache[id];
               if (vElem) {
+                console.log("had velem");
                 vElem.trigger("click");
               }
             }
