@@ -8650,7 +8650,7 @@
         */
         // 1: Create a function that declares what the DOM should look like
 
-        later().onFrame(function () {
+        later().every(15, function () {
           for (var n in _mountedNodes) {
             var mount = _mountedNodes[n];
             var newTree = mount.vElem._buildVDOM();
