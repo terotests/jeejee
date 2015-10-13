@@ -9105,8 +9105,6 @@
         }
 
         var const_fn;
-        if (this.isFunction(into)) const_fn = into;
-        if (this.isFunction(childConstructor)) const_fn = childConstructor;
 
         if (!_registry) {
           _registry = {};
@@ -9157,11 +9155,7 @@
 
           if (hasCustom) {
             this._customElement = hasCustom;
-            if (this.isObject(into)) {
-              this._customAttrs = into; // second attribute { title : name } etc.
-            } else {
-              this._customAttrs = {};
-            }
+            this._customAttrs = attributes || {}; // second attribute { title : name } etc.
             elemName = hasCustom.tagName || "div";
           }
         }
