@@ -8761,6 +8761,7 @@
             var id = el.getAttribute("data-vid");
             if (id) {
               var vElem = _elemCache[id];
+              console.log("Got keyup for ", vElem, id);
               if (vElem) {
                 if (vElem._tag == "input" || vElem._tag == "textarea") {
                   vElem.trigger("value", el.value);
