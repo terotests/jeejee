@@ -8730,7 +8730,7 @@
                   var e = cmd[1];
                   switch (cmd[0]) {
                     case 1:
-                      if (e._rDom) e._rDom = e._html;
+                      if (e._rDom) e._rDom.textContent = e._html;
                       break;
                   }
                 });
