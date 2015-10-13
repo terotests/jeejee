@@ -8723,20 +8723,65 @@
       _myTrait_._initDocEvents = function (t) {
         if (document && document.body) {
           var me = this;
-          document.body.addEventListener("click", function (e) {
-            // _elemCache[id]
-            console.log("Click");
+
+          document.body.addEventListener("value", function (e) {
             var el = e.srcElement;
             var id = el.getAttribute("data-vid");
-            console.log(id);
             if (id) {
               var vElem = _elemCache[id];
               if (vElem) {
-                console.log("had velem");
-                vElem.trigger("click");
+                vElem.trigger("value", el.value);
               }
             }
           });
+
+          document.body.addEventListener("mouseover", function (e) {
+            var el = e.srcElement;
+            var id = el.getAttribute("data-vid");
+            if (id) {
+              var vElem = _elemCache[id];
+              if (vElem) {
+                vElem.trigger("mouseenter");
+              }
+            }
+          });
+          document.body.addEventListener("mouseout", function (e) {
+            var el = e.srcElement;
+            var id = el.getAttribute("data-vid");
+            if (id) {
+              var vElem = _elemCache[id];
+              if (vElem) {
+                vElem.trigger("mouseleave");
+              }
+            }
+          });
+
+          document.body.addEventListener("keyup", function (e) {
+            var el = e.srcElement;
+            var id = el.getAttribute("data-vid");
+            if (id) {
+              var vElem = _elemCache[id];
+              if (vElem) {
+                if (vElem._tag == "input" || vElem._tag == "textarea") {
+                  vElem.trigger("value", el.value);
+                }
+              }
+            }
+          });
+
+          var _stdEvent = (function (name) {
+            document.body.addEventListener(name, function (e) {
+              var el = e.srcElement;
+              var id = el.getAttribute("data-vid");
+              if (id) {
+                var vElem = _elemCache[id];
+                if (vElem) {
+                  vElem.trigger(name);
+                }
+              }
+            });
+          })[("focus", "blur", "change", "mousemove", "click")].forEach(_stdEvent);
+          // mousemove
         }
       };
 
