@@ -8548,7 +8548,24 @@
       /**
        * @param float t
        */
-      _myTrait_._buildVDOM = function (t) {};
+      _myTrait_._buildVDOM = function (t) {
+
+        if (typeof this._attributes["class"] != "undefined" || this._classes.length) {
+          var classStr = this._classes.join(" ");
+          this._attributes["class"] = classStr;
+        }
+
+        // not great but should be working about so
+        if (this._html) {
+          return new VNode(this._tag, this._attributes, [new VText(this._html)]);
+        } else {
+          var chList = [];
+          for (var i = 0; i < this._children.length; i++) {
+            chList.push(this._children[i]._buildVDOM());
+          }
+          return new VNode(this._tag, this._attributes, chList);
+        }
+      };
 
       if (!_myTrait_.hasOwnProperty("__factoryClass")) _myTrait_.__factoryClass = [];
       _myTrait_.__factoryClass.push(function (elemName, into) {
@@ -8628,38 +8645,22 @@
         _mountedNodes[this._lid] = {
         vElem : this,
         rootNode : DOMElement,
-        preveState : null
+        prevState : null
         };
         */
         // 1: Create a function that declares what the DOM should look like
-        function render(count) {
-          return h("div", {
-            style: {
-              textAlign: "center",
-              lineHeight: 100 + count + "px",
-              border: "1px solid red",
-              width: 100 + count + "px",
-              height: 100 + count + "px"
+
+        later().onFrame(function () {
+          for (var n in _mountedNodes) {
+            var mount = _mountedNodes[n];
+            var newTree = mount.vElem._buildVDOM();
+            if (!mount.prevState) {
+              mount.prevState = mount.vElem._buildVDOM();
             }
-          }, [String(count)]);
-        }
-
-        // 2: Initialise the document
-        var count = 0; // We need some app data. Here we just store a count.
-
-        var tree = render(count); // We need an initial tree
-        var rootNode = createElement(tree); // Create an initial root DOM node ...
-        document.body.appendChild(rootNode); // ... and it should be in the document
-
-        // 3: Wire up the update logic
-        setInterval(function () {
-          count++;
-
-          var newTree = render(count);
-          var patches = diff(tree, newTree);
-          rootNode = patch(rootNode, patches);
-          tree = newTree;
-        }, 1000);
+            var patches = diff(mount.prevState, newTree);
+            mount.rootNode = patch(mount.rootNode, patches);
+          }
+        });
       };
 
       /**
@@ -8704,6 +8705,7 @@
 
         if (!_mountedNodes) {
           _mountedNodes = {};
+          this._vdomRenderer();
         }
 
         var outPosition = {
