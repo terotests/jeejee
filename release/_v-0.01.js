@@ -2358,7 +2358,8 @@
        * @param float v
        */
       _myTrait_.bindVal = function (v) {
-        this._value = v;
+        // TODO: make this work with input & DOM elems
+        this._html = this._value = v;
         return this;
       };
 
@@ -2503,7 +2504,7 @@
           <option value="Blackberry">Blackberry</option>
           <option value="Blackcurrant">Blackcurrant</option>
           <option value="Blueberry">Blueberry</option>
-          <!-- â€¦ -->
+          <!-- … -->
           </datalist>
           If other, please specify:
           <input type="text" name="fruit" list="fruits">
@@ -3271,7 +3272,7 @@
               if (bTSpan) v = v.trim();
               // soon.add(me.text, me, v);
               if (bTSpan && (!v || v.length == 0)) {
-                me._dom.textContent = "Â ";
+                me._dom.textContent = " ";
               } else {
                 me._dom.textContent = v;
               }
@@ -3290,7 +3291,7 @@
             if (bTSpan) val = val.trim();
             if (bTSpan && (!val || val.length == 0)) {
               this._dom.textContent = "";
-              me._dom.textContent = "Â ";
+              me._dom.textContent = " ";
             } else {
               this._dom.textContent = val;
             }
@@ -8554,7 +8555,7 @@
 
         if (this._classes) {
           var classStr = this._classes.join(" ");
-          this._attributes["class"] = classStr;
+          this._attributes["className"] = classStr;
         }
         // not great but should be working about so
         if (this._html) {
@@ -9129,6 +9130,7 @@
         }
 
         var const_fn;
+        if (this.isFunction(childConstructor)) const_fn = childConstructor;
 
         if (!_registry) {
           _registry = {};
@@ -9343,3 +9345,32 @@
     define(__amdDefs__);
   }
 }).call(new Function("return this")());
+
+// should we have named styles... perhaps... TODO
+
+// console.log("**** SHOULD NOT ITERATE CHILDREN *****");
+
+// this._dom.value = v;
+
+// this._dom.innerHTML = v;
+
+// TODO: error handling postMessage("no instance found");
+
+// --> might send the message back to the worker
+// TODO: send msg back
+// first.resolve(true);
+/*
+me._callWorker(_worker, "/", "createClass",  {
+className: className,
+code: me._serializeClass(classObj)
+}, function( result ) {
+success( result ); 
+});
+*/
+
+//console.log("Attr set to ", n);
+//console.trace();
+
+// if(this._dom.focus) this._dom.focus();
+
+// --- let's not ---
