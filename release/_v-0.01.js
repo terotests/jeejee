@@ -6,7 +6,7 @@
   var __amdDefs__ = {};
 
   // The class definition is here...
-  var _v_prototype = function _v_prototype() {
+  var _e_prototype = function _e_prototype() {
     // Then create the traits and subclasses for this class here...
 
     // trait comes here...
@@ -9274,17 +9274,17 @@
     })(this);
   };
 
-  var _v = function _v(a, b, c, d, e, f, g, h) {
+  var _e = function _e(a, b, c, d, e, f, g, h) {
     var m = this,
         res;
-    if (m instanceof _v) {
+    if (m instanceof _e) {
       var args = [a, b, c, d, e, f, g, h];
       if (m.__factoryClass) {
         m.__factoryClass.forEach(function (initF) {
           res = initF.apply(m, args);
         });
         if (typeof res == "function") {
-          if (res._classInfo.name != _v._classInfo.name) return new res(a, b, c, d, e, f, g, h);
+          if (res._classInfo.name != _e._classInfo.name) return new res(a, b, c, d, e, f, g, h);
         } else {
           if (res) return res;
         }
@@ -9296,23 +9296,23 @@
       } else {
         if (typeof m.init == "function") m.init.apply(m, args);
       }
-    } else return new _v(a, b, c, d, e, f, g, h);
+    } else return new _e(a, b, c, d, e, f, g, h);
   };
   // inheritance is here
 
-  _v._classInfo = {
-    name: "_v"
+  _e._classInfo = {
+    name: "_e"
   };
-  _v.prototype = new _v_prototype();
+  _e.prototype = new _e_prototype();
 
   (function () {
     if (typeof define !== "undefined" && define !== null && define.amd != null) {
-      __amdDefs__["_v"] = _v;
-      this._v = _v;
+      __amdDefs__["_e"] = _e;
+      this._e = _e;
     } else if (typeof module !== "undefined" && module !== null && module.exports != null) {
-      module.exports["_v"] = _v;
+      module.exports["_e"] = _e;
     } else {
-      this._v = _v;
+      this._e = _e;
     }
   }).call(new Function("return this")());
 
