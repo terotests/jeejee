@@ -8727,13 +8727,12 @@
               }
               if (_batchCmds) {
                 _batchCmds.forEach(function (cmd) {
+                  var e = cmd[1];
                   switch (cmd[0]) {
                     case 1:
+                      if (e._rDom) e._rDom = e._html;
                       break;
                   }
-                  //var e = cmd[0];
-                  //var fN = cmd[1];
-                  //e[fN](cmd[2],cmd[3],cmd[4],cmd[5],cmd[6]);
                 });
                 _batchCmds.length = 0;
               }
