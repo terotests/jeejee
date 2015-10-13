@@ -3306,6 +3306,9 @@
           return this;
         }
 
+        // Batch mode...
+        this._addBatchCmd([1, this]); // textContent set
+
         this._html = this._text = t;
         return this;
       };
@@ -8527,6 +8530,7 @@
       var _mountedNodes;
       var _batchDOM;
       var _batchMode;
+      var _batchCmds;
 
       // Initialize static variables here...
 
@@ -8546,6 +8550,15 @@
        */
       _myTrait_.__singleton = function (t) {
         return _eg;
+      };
+
+      /**
+       * @param float cmd
+       */
+      _myTrait_._addBatchCmd = function (cmd) {
+
+        if (!_batchCmds) _batchCmds = [];
+        _batchCmds.push(cmd);
       };
 
       /**
@@ -8711,6 +8724,18 @@
                   // parentNode.insertBefore(newNode, referenceNode);
                   p._rDom.insertBefore(newDOM, p._rDom.childNodes[index]);
                 }
+              }
+              if (_batchCmds) {
+                _batchCmds.forEach(function (cmd) {
+                  switch (cmd[0]) {
+                    case 1:
+                      break;
+                  }
+                  //var e = cmd[0];
+                  //var fN = cmd[1];
+                  //e[fN](cmd[2],cmd[3],cmd[4],cmd[5],cmd[6]);
+                });
+                _batchCmds.length = 0;
               }
               return;
             }
