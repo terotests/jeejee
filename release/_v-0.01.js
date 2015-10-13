@@ -8704,6 +8704,7 @@
       _myTrait_.globalState = function (t) {
 
         if (!_mountedNodes) {
+          _elemCache = {};
           _mountedNodes = {};
           this._vdomRenderer();
         }
