@@ -9170,6 +9170,8 @@
           this._svg = true;
         }
 
+        this._attributes = attributes || {};
+
         // jQuery "emulation" is oldie, should be removed...
         this.q = new _qc(this._dom, this);
 
@@ -9181,7 +9183,6 @@
         }
         this._children = [];
         // this._svgAttributes = {};
-        this._attributes = attributes || {};
 
         this._attributes["data-vid"] = this._lid;
         _elemCache[this._lid] = this;
