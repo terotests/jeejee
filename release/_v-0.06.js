@@ -8641,6 +8641,7 @@
         delete _batchDOM[this._lid];
         // the DOM element
         var dom = document.createElement(this._tag);
+        this._rDom = dom;
         if (this._html) {
           dom.textContent = String(this._html);
           for (var n in this._attributes) {
@@ -8688,7 +8689,6 @@
 
           later().every(10, function () {
             if (_batchMode) {
-              debugger;
               for (var n in _mountedNodes) {
                 var mount = _mountedNodes[n];
                 // building the tree of nodes...
@@ -8696,6 +8696,20 @@
                   delete _batchDOM[mount.vElem._lid];
                   var newDOM = mount.vElem._domRender();
                   mount.rootNode.appendChild(newDOM);
+                }
+              }
+              for (var bid in _batchDOM) {
+                var e = _batchDOM[mount.vElem._lid];
+                var p = e._parent;
+                while (p && _batchDOM[p._lid]) {
+                  e = e._parent;
+                  p = e._parent;
+                }
+                var newDOM = e._domRender();
+                if (p._rDom) {
+                  var index = e._index;
+                  // parentNode.insertBefore(newNode, referenceNode);
+                  p._rDom.insertBefore(newDOM, p._rDom.childNodes[index]);
                 }
               }
               return;
