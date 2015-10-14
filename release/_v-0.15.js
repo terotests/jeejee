@@ -8749,6 +8749,9 @@
         // the DOM element
         var dom = document.createElement(this._tag);
         this._rDom = dom;
+        if (this._value) {
+          dom.value = this._value;
+        }
         if (this._html) {
           dom.textContent = String(this._html);
           for (var n in this._attributes) {
