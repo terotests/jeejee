@@ -8930,7 +8930,7 @@
                       break;
                     case 5:
                       if (e._rDom) {
-                        e._rDom.value(e._value);
+                        e._rDom.value = e._value;
                       }
                       break;
                   }
