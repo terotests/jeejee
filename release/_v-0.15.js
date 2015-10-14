@@ -2413,6 +2413,7 @@
         // TODO: make this work with input & DOM elems
         this._html = this._value = v;
         this._setToBatch();
+        this._addBatchCmd([5, this]);
         return this;
       };
 
