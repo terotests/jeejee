@@ -7119,7 +7119,8 @@
           if (elem._value != this._value) {}
         } else {
           if (elem._children.length === 0) {
-            this._children.forEach(function (ch) {
+            var myList = this._children.slice(); // make copy of the array
+            myList.forEach(function (ch) {
               ch.remove();
             });
             if (elem._html != this._html) {
