@@ -7132,12 +7132,13 @@
               this._dom.textContent = elem._html;
             }
             var removeCnt = this._children.length - elem._children.length;
-            for (var j = 0; j < elem._children.length; j++) {
+            var theList = elem._children.slice(); // make copy of the array
+            for (var j = 0; j < theList.length; j++) {
               var myCh = this._children[j];
               if (myCh) {
-                myCh.patchWith(elem._children[j]);
+                myCh.patchWith(theList[j]);
               } else {
-                this.add(elem._children[j]);
+                this.add(theList[j]);
               }
             }
             while (removeCnt > 0) {
