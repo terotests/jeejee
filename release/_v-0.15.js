@@ -3308,6 +3308,7 @@
             // TODO: check if we are re-binding two streams on the same element, possible error
             t.onValue(function (t) {
               me._html = me._text = t;
+              me._addBatchCmd([1, me]);
             });
             return this;
           }
@@ -3328,18 +3329,18 @@
               if (bTSpan) v = v.trim();
               // soon.add(me.text, me, v);
               if (bTSpan && (!v || v.length == 0)) {
-                me._dom.textContent = " ";
+                me._html = " ";
+                me._addBatchCmd([1, me]);
+                // me._dom.textContent = '\u00A0';
               } else {
-                me._dom.textContent = v;
+                me._html = v;
+                me._addBatchCmd([1, me]);
               }
             }));
           } else {
             oo.me.on(oo.name, me.uniqueListener("text:value", function (o, v) {
-              var html = v;
-              var div = document.createElement("div");
-              div.innerHTML = html;
-              var newText = div.textContent || div.innerText || "";
-              me._dom.innerHTML = newText;
+              me._html = v;
+              me._addBatchCmd([1, me]);
             }));
           }
 
@@ -3352,12 +3353,8 @@
               this._dom.textContent = val;
             }
           } else {
-
-            var div = document.createElement("div");
-            div.innerHTML = val;
-            var newText = div.textContent || div.innerText || "";
-
-            this._dom.innerHTML = newText;
+            me._html = val;
+            me._addBatchCmd([1, me]);
           }
           return this;
         }
