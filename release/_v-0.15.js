@@ -213,6 +213,7 @@
           }
           this._parent.reIndex();
         }
+        newItem._addBatchCmd([6, newItem, newItem._index]);
         this._setToBatch();
       };
 
@@ -266,6 +267,7 @@
           this._parent.reIndex();
         }
         this._index = myIndex;
+        newItem._addBatchCmd([6, newItem, newItem._index]);
         this._setToBatch();
 
         return this;
