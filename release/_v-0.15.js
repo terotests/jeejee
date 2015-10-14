@@ -2608,6 +2608,7 @@
         // in VDOM implementation there are no values...
         if (typeof this._dom.value != "undefined" || this._type == "option") {} else {}
 
+        this._addBatchCmd([5, this]);
         this._setToBatch();
         this._value = v;
         this.trigger("value", v);
@@ -8918,6 +8919,11 @@
                     case 4:
                       if (e._rDom && e._rDom.parentNode) {
                         e._rDom.parentNode.removeChild(e.rDom);
+                      }
+                      break;
+                    case 5:
+                      if (e._rDom) {
+                        e._rDom.value(e._value);
                       }
                       break;
                   }
