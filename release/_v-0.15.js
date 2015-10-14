@@ -8625,8 +8625,9 @@
         if (_batchMode) {
           if (!_batchCmds) _batchCmds = [];
           _batchCmds.push(cmd);
+        } else {
+          this._setToBatch();
         }
-        this._setToBatch();
       };
 
       /**
