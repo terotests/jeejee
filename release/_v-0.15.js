@@ -8929,7 +8929,7 @@
                       break;
                     case 4:
                       if (e._rDom && e._rDom.parentNode) {
-                        e._rDom.parentNode.removeChild(e.rDom);
+                        e._rDom.parentNode.removeChild(e._rDom);
                       }
                       break;
                     case 5:
