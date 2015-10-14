@@ -8865,7 +8865,9 @@
        * @param float t
        */
       _myTrait_._setToBatch = function (t) {
-        _batchDOM[this._lid] = this;
+        if (!_batchMode) {
+          _batchDOM[this._lid] = this;
+        }
       };
 
       /**
