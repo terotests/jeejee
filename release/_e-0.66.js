@@ -7131,6 +7131,10 @@
                 this.add(elem._children[j]);
               }
             }
+            var removeCnt = this._children.length - elem._children.length;
+            while (removeCnt--) {
+              this._children[j++].remove();
+            }
           }
         }
       };
