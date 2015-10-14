@@ -8891,7 +8891,7 @@
                   p = e._parent;
                 }
                 var newDOM = e._domRender();
-                if (p._rDom) {
+                if (p && p._rDom) {
                   var index = e._index;
                   // parentNode.insertBefore(newNode, referenceNode);
                   p._rDom.insertBefore(newDOM, p._rDom.childNodes[index]);
