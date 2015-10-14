@@ -265,6 +265,7 @@
           }
           this._parent.reIndex();
         }
+        this._index = myIndex;
         this._setToBatch();
 
         return this;
@@ -292,6 +293,7 @@
             var chList = this._parent._children;
             chList.splice(myIndex + 1, 0, chList.splice(myIndex, 1)[0]);
             this._setToBatch();
+            this._addBatchCmd([6, this, this._index]);
           }
         }
       };
@@ -316,6 +318,7 @@
             var chList = this._parent._children;
             chList.splice(myIndex - 1, 0, chList.splice(myIndex, 1)[0]);
             this._setToBatch();
+            this._addBatchCmd([6, this, this._index]);
           }
         }
       };
@@ -8940,6 +8943,14 @@
                     case 5:
                       if (e._rDom) {
                         e._rDom.value = e._value;
+                      }
+                      break;
+                    case 6:
+                      var index = cmd[2];
+                      if (e._rDom && e._rDom.parentNode) {
+                        var pN = e._rDom.parentNode;
+                        pN.removeChild(e._rDom);
+                        pN.insertBefore(e._rDom, pN.childNodes[index]);
                       }
                       break;
                   }
