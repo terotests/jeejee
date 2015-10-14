@@ -2616,9 +2616,6 @@
           return this._value;
         }
 
-        // in VDOM implementation there are no values...
-        if (typeof this._dom.value != "undefined" || this._type == "option") {} else {}
-
         this._addBatchCmd([5, this]);
         this._setToBatch();
         this._value = v;
@@ -9686,10 +9683,6 @@
 // should we have named styles... perhaps... TODO
 
 // console.log("**** SHOULD NOT ITERATE CHILDREN *****");
-
-// this._dom.value = v;
-
-// this._dom.innerHTML = v;
 
 // console.error("controller for message "+url+" was not found");
 
