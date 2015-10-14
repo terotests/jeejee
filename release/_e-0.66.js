@@ -7123,6 +7123,7 @@
               this._dom.textContent = elem._html;
             }
           } else {
+            var removeCnt = this._children.length - elem._children.length;
             for (var j = 0; j < elem._children.length; j++) {
               var myCh = this._children[j];
               if (myCh) {
@@ -7131,7 +7132,6 @@
                 this.add(elem._children[j]);
               }
             }
-            var removeCnt = this._children.length - elem._children.length;
             while (removeCnt--) {
               this._children[j++].remove();
             }
