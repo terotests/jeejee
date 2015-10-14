@@ -2413,7 +2413,12 @@
         // TODO: make this work with input & DOM elems
         this._html = this._value = v;
         this._setToBatch();
-        this._addBatchCmd([5, this]);
+        if (this._tag == "input" || this._tag == "textarea") {
+          this._addBatchCmd([5, this]);
+        } else {
+          this._addBatchCmd([1, this]);
+        }
+
         return this;
       };
 
