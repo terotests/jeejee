@@ -8760,6 +8760,13 @@
           }
           return dom;
         } else {
+          for (var n in this._attributes) {
+            if (n == "className") {
+              dom.className = this._attributes[n];
+            } else {
+              dom.setAttribute(n, this._attributes[n]);
+            }
+          }
           for (var i = 0; i < this._children.length; i++) {
             dom.appendChild(this._children[i]._domRender());
           }
