@@ -7091,7 +7091,11 @@
 
         if (classStr != elemClassStr) {
           this._classes = elem._classes;
-          this._dom.className = elemClassStr;
+          if (elemClassStr) {
+            this._dom.className = elemClassStr;
+          } else {
+            this._dom.className = "";
+          }
         }
 
         for (var n in elem._attributes) {
@@ -7123,6 +7127,10 @@
               this._dom.textContent = elem._html;
             }
           } else {
+            if (elem._html != this._html) {
+              this._html = elem._html;
+              this._dom.textContent = elem._html;
+            }
             var removeCnt = this._children.length - elem._children.length;
             for (var j = 0; j < elem._children.length; j++) {
               var myCh = this._children[j];
