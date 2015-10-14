@@ -7132,8 +7132,9 @@
                 this.add(elem._children[j]);
               }
             }
-            while (removeCnt--) {
+            while (removeCnt > 0) {
               this._children[j++].remove();
+              removeCnt--;
             }
           }
         }
