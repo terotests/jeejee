@@ -7135,7 +7135,7 @@
             var theList = elem._children.slice(); // make copy of the array
             var myList = this._children.slice(); // make copy of the array
             for (var j = 0; j < theList.length; j++) {
-              var myCh = this._children[j];
+              var myCh = myList[j];
               if (myCh) {
                 myCh.patchWith(theList[j]);
               } else {
