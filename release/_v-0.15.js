@@ -8947,8 +8947,12 @@
                       break;
                     case 6:
                       var index = cmd[2];
+                      console.log("re-index cmd ", cmd);
                       if (e._rDom && e._rDom.parentNode) {
+
                         var pN = e._rDom.parentNode;
+                        console.log("can re-index ", e);
+                        console.log("can re-index, parent ", pN);
                         pN.removeChild(e._rDom);
                         pN.insertBefore(e._rDom, pN.childNodes[index]);
                       }
