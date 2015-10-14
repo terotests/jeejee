@@ -7126,12 +7126,12 @@
               ch.remove();
             });
             if (elem._html != this._html) {
-              this._html = elem._html;
+              this._html = elem._html || "";
               this._dom.textContent = elem._html;
             }
           } else {
             if (elem._html != this._html) {
-              this._html = elem._html;
+              this._html = elem._html || "";
               this._dom.textContent = elem._html;
             }
             var removeCnt = this._children.length - elem._children.length;
