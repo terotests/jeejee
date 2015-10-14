@@ -7098,6 +7098,8 @@
           }
         }
 
+        this._ev = elem._ev;
+
         for (var n in elem._attributes) {
           var v = elem._attributes[n];
           if (this._attributes[n] != v) {
