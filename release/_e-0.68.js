@@ -7133,6 +7133,7 @@
             }
             var removeCnt = this._children.length - elem._children.length;
             var theList = elem._children.slice(); // make copy of the array
+            var myList = this._children.slice(); // make copy of the array
             for (var j = 0; j < theList.length; j++) {
               var myCh = this._children[j];
               if (myCh) {
@@ -7142,7 +7143,7 @@
               }
             }
             while (removeCnt > 0) {
-              this._children[j++].remove();
+              if (myList[j]) myList[j++].remove();
               removeCnt--;
             }
           }
