@@ -705,7 +705,7 @@
             var pinch = {
               items: o._touchItems
             };
-            this.trigger("pinch", pinch);
+            o.trigger("pinch", pinch);
           }
 
           o.trigger("touchmove");
