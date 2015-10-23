@@ -665,77 +665,54 @@
         this._touchItems = [];
 
         var touchStart = function touchStart(e) {
-          // NOTE: Removed the windows lines below when looking for touch events
-          // if (window.navigator.msPointerEnabled && !e.isPrimary) return;
-          o._touchItems = [];
 
-          // NOTE: Removed the windows lines below when looking for touch events
-          /*
-                      if(window.navigator.msPointerEnabled && e.pageX) {
-                         var item = {};
-                        
-                        item.startX = e.pageX;
-                        item.startY = e.pageY;
-                        o.trigger("touchstart");
-                        o._touchItems.push(item);
-                        if(e.preventDefault) e.preventDefault();
-                        return;
-                    }*/
-          // o.debug("touchStart");
+          // o._touchItems = [];
           var allTouches = e.touches;
+
           if (e.targetTouches) allTouches = e.targetTouches;
+
           o._touchCount = allTouches.length;
+          o._touchItems.length = o._touchCount; // truncate array
+
           for (var i = 0; i < allTouches.length; i++) {
             var item = {};
-
             item.startX = allTouches[0].pageX;
             item.startY = allTouches[0].pageY;
+            item.startMs = new Date().getTime();
             o._touchItems[i] = item;
           }
-
           o.trigger("touchstart");
           if (e.preventDefault) e.preventDefault();
-
           if (e.stopPropagation) e.stopPropagation();
 
           e.returnValue = false;
         };
 
         var touchMove = function touchMove(e) {
-          // NOTE: Removed the windows lines below when looking at touch events
-          /*
-                    if (window.navigator.msPointerEnabled && !e.isPrimary) return;
-                    if(window.navigator.msPointerEnabled && e.pageX) {
-                        //if(!o._touchItems) o._touchItems = [];
-                        //if(!o._touchItems[0]) o._touchItems[0] = {};
-                        var item = o._touchItems[0];
-                        item.dx = e.pageX - item.startX;
-                        item.dy = e.pageY - item.startY;
-                        o.trigger("touchmove");
-                        if(e.preventDefault) e.preventDefault();
-                        return;
-                    }*/
-
-          // var off = o.q.offset();
           var allTouches = e.touches;
           if (e.targetTouches) allTouches = e.targetTouches; // [0].pageX;)
           o._touchCount = allTouches.length;
           for (var i = 0; i < allTouches.length; i++) {
             var item = o._touchItems[i];
-
+            if (!item) continue;
             item.dx = e.touches[i].pageX - item.startX;
             item.dy = e.touches[i].pageY - item.startY;
             //item.x = e.touches[i].pageX - off.left;
             //item.y = e.touches[i].pageY - off.top;
           }
 
-          o.trigger("touchmove");
+          if (o._touchCount > 1) {
+            var pinch = {
+              items: o._touchItems
+            };
+            this.trigger("pinch", pinch);
+          }
 
+          o.trigger("touchmove");
           if (e.preventDefault) e.preventDefault();
         };
 
         var touchEnd = function touchEnd(e) {
-          // o.q.css("transform", "rotate(20deg)");
           o.trigger("touchend");
           if (e.preventDefault) e.preventDefault();
           e.returnValue = false;
