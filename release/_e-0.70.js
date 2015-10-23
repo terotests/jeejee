@@ -6553,6 +6553,7 @@
         }
 
         var objProperties = baseData || attrObj || {};
+
         if (givenBaseData) {
           elem._compState = givenBaseData;
         } else {
@@ -6562,7 +6563,8 @@
           }
         }
 
-        var renderFn = customElem.init || customElem.render;
+        var renderFn = customElem.init,
+            reactiveRender = customElem.render;
 
         elem._initWithDef = customElem;
         elem._instanceVars = {};
@@ -6646,6 +6648,63 @@
             });
           }
         }
+      };
+
+      /**
+       * @param float t
+       */
+      _myTrait_.composite = function (t) {
+        var argList = Array.prototype.slice.call(arguments);
+
+        if (this._contentObj) {
+          return this._contentObj.composite.apply(this._contentObj, argList);
+        }
+        /*
+        res.elemName
+        res.classStr
+        res.data
+        res.stream
+        res.attrs
+        res.constr
+        */
+        var res = this._constrArgs(argList);
+
+        if (!this._isStdElem(res.elemName)) {
+
+          var customElem = this._findCustomElem(res.elemName);
+          if (customElem) {
+            // find the state...
+
+            var model = this.state(),
+                baseData;
+            if (model && model.hasOwn && !model.hasOwn(customElem.customTag)) {
+              if (res.data) {
+                // always make a copy if aguments given to avoid problems if the
+                // data has been network connected...
+                model.set(customElem.customTag, res.data.toPlainData());
+              } else {
+                if (customElem.getInitialState) {
+                  var stateData = customElem.getInitialState.apply(this, []);
+                  model.set(customElem.customTag, stateData);
+                } else {
+                  model.set(customElem.customTag, {});
+                }
+              }
+            }
+            if (model && model.hasOwn(customElem.customTag)) {
+              baseData = model[customElem.customTag];
+            }
+            if (customElem.init || customElem.render) {
+
+              // create the element HTML tag
+              var elem = _e(customElem.customTag, res.attrs, res.constr, baseData || res.data);
+              this.add(elem);
+              return elem;
+            }
+          }
+        }
+        var el = this.shortcutFor.apply(this, argList); // (elemName, className, attrs);
+        return el;
       };
 
       /**
