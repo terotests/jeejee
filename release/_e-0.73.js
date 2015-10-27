@@ -8097,7 +8097,11 @@
             var res = {};
             for (var n in obj) {
               if (obj.hasOwnProperty(n)) {
-                res["animation-" + n] = obj[n];
+                if (n == "duration" || n == "iteration-count") {
+                  res["animation-" + n] = obj[n];
+                } else {
+                  res[n] = obj[n];
+                }
               }
             }
             return res;
@@ -8398,6 +8402,12 @@
               return bexp(n, v);
             },
             "animation-iteration-count": function animationIterationCount(n, v) {
+              return bexp(n, v);
+            },
+            "animation-fill-mode": function animationFillMode(n, v) {
+              return bexp(n, v);
+            },
+            "transition-timing-function": function transitionTimingFunction(n, v) {
               return bexp(n, v);
             },
             "animation-name": function animationName(n, v) {
