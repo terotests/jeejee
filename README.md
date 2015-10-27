@@ -1176,6 +1176,7 @@ MIT. Currently use at own risk.
 - [createItemView](README.md#mvc_trait_createItemView)
 - [data](README.md#mvc_trait_data)
 - [findModelFactory](README.md#mvc_trait_findModelFactory)
+- [forwardData](README.md#mvc_trait_forwardData)
 - [fromStream](README.md#mvc_trait_fromStream)
 - [getViewFunction](README.md#mvc_trait_getViewFunction)
 - [model](README.md#mvc_trait_model)
@@ -1183,8 +1184,10 @@ MIT. Currently use at own risk.
 - [modelFactoryLoader](README.md#mvc_trait_modelFactoryLoader)
 - [mv](README.md#mvc_trait_mv)
 - [mvc](README.md#mvc_trait_mvc)
+- [onMsg](README.md#mvc_trait_onMsg)
 - [send](README.md#mvc_trait_send)
 - [sendHandler](README.md#mvc_trait_sendHandler)
+- [sendMsg](README.md#mvc_trait_sendMsg)
 - [tree](README.md#mvc_trait_tree)
 
 
@@ -1282,6 +1285,7 @@ MIT. Currently use at own risk.
 - [_findComp](README.md#__findComp)
 - [_findCustomElem](README.md#__findCustomElem)
 - [_initCustom](README.md#__initCustom)
+- [composite](README.md#_composite)
 - [createClass](README.md#_createClass)
 - [customElement](README.md#_customElement)
 - [getRegisteredClasses](README.md#_getRegisteredClasses)
@@ -1305,6 +1309,15 @@ MIT. Currently use at own risk.
 - [_createWorkerObj](README.md#__createWorkerObj)
 - [_serializeClass](README.md#__serializeClass)
 - [_workersAvailable](README.md#__workersAvailable)
+
+
+    
+    
+    
+##### trait diff_patch
+
+- [doReact](README.md#_doReact)
+- [patchWith](README.md#_patchWith)
 
 
     
@@ -1463,6 +1476,8 @@ MIT. Currently use at own risk.
 
 
 
+      
+    
       
     
       
@@ -1678,6 +1693,8 @@ if(this.isObject(elemName)) {
    }
 }
 
+this._attributes = {};
+
 var const_fn;
 if(this.isFunction(into)) const_fn = into;
 if(this.isFunction(childConstructor)) const_fn = childConstructor;
@@ -1780,6 +1797,7 @@ if(!this._dom) {
 // jQuery emulation might be removed...
 this.q = new _qc(this._dom, this);
 
+if(this._svg) this._svgAttributes = {};
 
 if(this._type=="checkbox") {
     this.q.attr("type","checkbox");
@@ -2549,83 +2567,57 @@ var o = this;
 this._touchItems = [];
 
 var touchStart= function(e) {
-                      // NOTE: Removed the windows lines below when looking for touch events
-                      // if (window.navigator.msPointerEnabled && !e.isPrimary) return;
-                      o._touchItems = [];
-                      
-                      // NOTE: Removed the windows lines below when looking for touch events
-                      /*
-                      if(window.navigator.msPointerEnabled && e.pageX) {
-                         var item = {};
-                        
-                        item.startX = e.pageX;
-                        item.startY = e.pageY;
-                        o.trigger("touchstart");
-                        o._touchItems.push(item);
-                        if(e.preventDefault) e.preventDefault();
-                        return;
-                    }*/
-                      // o.debug("touchStart");
-                      var allTouches = e.touches;
-                      if(e.targetTouches) allTouches = e.targetTouches;
-                      o._touchCount = allTouches.length;
-                      for(var i=0; i<allTouches.length; i++) {
-                        var item = {};
-                    
-                        item.startX = allTouches[0].pageX;
-                        item.startY = allTouches[0].pageY;
-                        o._touchItems[i]  = item;
-                      }
 
-                      o.trigger("touchstart");
-                      if(e.preventDefault) e.preventDefault();
-                      
-                      if(e.stopPropagation) e.stopPropagation();
-                      
-                      e.returnValue = false;
-                      
-                      
+                          // o._touchItems = [];
+                          var allTouches = e.touches;
+                          
+                          if(e.targetTouches) allTouches = e.targetTouches;
+                          
+                          o._touchCount = allTouches.length;
+                          o._touchItems.length = o._touchCount; // truncate array
+                          
+                          for(var i=0; i<allTouches.length; i++) {
+                            var item = {};
+                            item.startX = allTouches[0].pageX;
+                            item.startY = allTouches[0].pageY;
+                            item.startMs = ( new Date() ).getTime();
+                            o._touchItems[i]  = item;
+                          }
+                          o.trigger("touchstart");
+                          if(e.preventDefault) e.preventDefault();
+                          if(e.stopPropagation) e.stopPropagation();
+                    
+                          e.returnValue = false;
                       };
 
 var touchMove =  function(e) {
-                     // NOTE: Removed the windows lines below when looking at touch events
-                    /*
-                    if (window.navigator.msPointerEnabled && !e.isPrimary) return;
-                    if(window.navigator.msPointerEnabled && e.pageX) {
-                        //if(!o._touchItems) o._touchItems = [];
-                        //if(!o._touchItems[0]) o._touchItems[0] = {};
-                        var item = o._touchItems[0];
-                        item.dx = e.pageX - item.startX;
-                        item.dy = e.pageY - item.startY;
-                        o.trigger("touchmove");
-                        if(e.preventDefault) e.preventDefault();
-                        return;
-                    }*/
-                      
-                      // var off = o.q.offset();
-                      var allTouches = e.touches;
-                      if(e.targetTouches) allTouches = e.targetTouches; // [0].pageX;)
-                      o._touchCount = allTouches.length;
-                      for(var i=0; i<allTouches.length; i++) {
-                         var item = o._touchItems[i];
-                         
-                         item.dx = e.touches[i].pageX - item.startX;
-                         item.dy = e.touches[i].pageY - item.startY;
-                         //item.x = e.touches[i].pageX - off.left;
-                         //item.y = e.touches[i].pageY - off.top;
-                      }
-                      
-                      o.trigger("touchmove");
-                      
-                      
-                      if(e.preventDefault) e.preventDefault();
-                      };
+                          var allTouches = e.touches;
+                          if(e.targetTouches) allTouches = e.targetTouches; // [0].pageX;)
+                          o._touchCount = allTouches.length;
+                          for(var i=0; i<allTouches.length; i++) {
+                             var item = o._touchItems[i];
+                             if(!item) continue;
+                             item.dx = e.touches[i].pageX - item.startX;
+                             item.dy = e.touches[i].pageY - item.startY;
+                             //item.x = e.touches[i].pageX - off.left;
+                             //item.y = e.touches[i].pageY - off.top;
+                          }
+                          
+                          if(o._touchCount>1) {
+                              var pinch = {
+                                  items : o._touchItems
+                              }
+                              o.trigger("pinch", pinch);
+                          }
+                          
+                          o.trigger("touchmove");
+                          if(e.preventDefault) e.preventDefault();
+};
 
 var touchEnd = function(e) {
-    // o.q.css("transform", "rotate(20deg)");
-                      o.trigger("touchend");
-                      if(e.preventDefault) e.preventDefault();
-                      e.returnValue = false;
+                          o.trigger("touchend");
+                          if(e.preventDefault) e.preventDefault();
+                          e.returnValue = false;
                       };
 
 /*elem.addEventListener("touchcancel", function(e) {
@@ -6324,29 +6316,44 @@ Make the window scroll to this element
 ```javascript
 if(window) {
     var currLeft = xPosition || window.pageXOffset;
+    var currTop = window.pageYOffset;
+    var pageHeight = window.innerHeight;
     if(yPosition) {
-        window.scrollTo( currLeft, parseInt(yPosition));
+        var toY = yPosition;
+        var dy = parseInt(toY) - currTop;
+        if(Math.abs(dy) < 200) {
+            if( ( (currTop + pageHeight - 200) > toY) &&
+                ( toY > currTop ) 
+            ){
+                return;
+            }
+        }
+        later().ease("pow", 600, function(t) {
+            window.scrollTo(currLeft || 0, parseInt(currTop + dy*t));
+        });        
+        // window.scrollTo( currLeft, parseInt(yPosition));
         return this;
     }
     
     var box = this.offset();
 
-    this.addClass("lastScrollTarget");
-    var me = this;
-    setTimeout(function() {
-        me.removeClass("lastScrollTarget");
-    },1000);
+    var toY = box.top - (pageHeight * 0.3);
+    if(toY<0) toY = 0;
+
+    var dy = parseInt(toY) - currTop;
+
+    if(Math.abs(dy) < 200) {
+        if( ( (currTop + pageHeight - 200) > toY) &&
+            ( toY > currTop ) 
+        ){
+            return;
+        }
+    }    
     
-    var toY = box.top;
-    if(toY<window.innerHeight/2) {
-        return;
-    }
-    if(box.top<window.innerHeight) {
-        toY = toY / 2;
-    } else {
-        toY = toY - window.innerHeight*0.2
-    }
-    window.scrollTo(currLeft || 0, parseInt(toY));
+    later().ease("pow", 600, function(t) {
+        window.scrollTo(currLeft || 0, parseInt(currTop + dy*t));
+    });
+    
 }
 return this;
 ```
@@ -6563,6 +6570,45 @@ var p = this.parent();
 if(p) return p.findModelFactory(name);
 
 return null;
+```
+
+### <a name="mvc_trait_forwardData"></a>mvc_trait::forwardData(dataObj, variables, filterFn)
+
+for example   window.forwardData( winDefData, "x,y, w => width, h => height, title=>text");
+*The source code for the function*:
+```javascript
+var list = variables.split(",");
+var me = this;
+list.forEach( function(vName) {
+    vName = vName.trim();
+    var targetFn = vName;
+    var parts = vName.split("=>");
+    if(parts.length>1) {
+      vName = parts[0].trim();
+      targetFn = parts[1].trim();
+    }
+    dataObj.on(vName, function(o,v) {
+    
+    try {
+       if(filterFn) {
+         v = filterFn.apply( me, [ vName, v] );
+       }              
+       if(typeof(v) != "undefined") {
+         if(me[targetFn]) 
+             me[targetFn]( v );
+       }
+    } catch(e) {
+       console.error(e.message);
+    }
+    });
+    var value = dataObj.get(vName);
+    if(filterFn) {
+    value = filterFn.apply( me, [ vName, value] );
+    }           
+    if(typeof(value) != "undefined") {
+    if(me[targetFn]) me[targetFn]( value );
+    }
+})
 ```
 
 ### <a name="mvc_trait_fromStream"></a>mvc_trait::fromStream(stream, viewFn)
@@ -6837,6 +6883,24 @@ if(controller) {
 return this;
 ```
 
+### <a name="mvc_trait_onMsg"></a>mvc_trait::onMsg(url, handlerFunction, context)
+
+
+*The source code for the function*:
+```javascript
+if(!this._sendHook) {
+    this._sendHook = {};
+}
+
+if(!this._sendHook[url]) {
+    this._sendHook[url] = [];
+}
+
+if(context) handlerFunction._context = context;
+
+this._sendHook[url].unshift( handlerFunction );
+```
+
 ### <a name="mvc_trait_send"></a>mvc_trait::send(url, data, callBack, errorCallback)
 `url` URL or controller name to send the data to
  
@@ -6856,22 +6920,26 @@ To send into this url use
 *The source code for the function*:
 ```javascript
 
-var list = this._findSendHandler(url);
-if(list) {
-    for(var i=0; i<list.length; i++) {
-        var fn = list[i];
-        var res = fn.apply( fn._context || this, [data, callBack, errorCallback, url] );
-        if(res === true) {
-            return;
+var me = this;
+later().add(
+    function() {
+        var list = me._findSendHandler(url);
+        if(list) {
+            for(var i=0; i<list.length; i++) {
+                var fn = list[i];
+                var res = fn.apply( fn._context || me, [data, callBack, errorCallback, url] );
+                if(res === true) {
+                    return;
+                }
+            }
+        } else {
+            if(errorCallback) {
+                errorCallback("Controller or send handler for "+url+" was not found");
+            } else {
+                console.error("controller for message "+url+" was not found");
+            }
         }
-    }
-} else {
-    if(errorCallback) {
-        errorCallback("Controller or send handler for "+url+" was not found");
-    } else {
-        console.error("controller for message "+url+" was not found");
-    }
-}
+});
 
 ```
 
@@ -6882,17 +6950,15 @@ if(list) {
 
 *The source code for the function*:
 ```javascript
-if(!this._sendHook) {
-    this._sendHook = {};
-}
+return this.onMsg( url, handlerFunction, context );
+```
 
-if(!this._sendHook[url]) {
-    this._sendHook[url] = [];
-}
+### <a name="mvc_trait_sendMsg"></a>mvc_trait::sendMsg(url, data, callBack, errorCallback)
 
-if(context) handlerFunction._context = context;
 
-this._sendHook[url].unshift( handlerFunction );
+*The source code for the function*:
+```javascript
+return this.send( url, data, callBack, errorCallback);
 ```
 
 ### <a name="mvc_trait_tree"></a>mvc_trait::tree(treeData, itemFn, options)
@@ -7890,7 +7956,10 @@ iFrame._dom.addEventListener("load", function() {
             };
             options.progress( info );   
        }        
-       if(options.done) options.done(doc.body.innerHTML);
+       if(options.done) {
+           var ihtml = doc.body.innerHTML;
+           if(ihtml) options.done(ihtml);
+       }
     }
 })
 o.add( iFrame );
@@ -8311,7 +8380,7 @@ if(_ajaxHook && _ajaxHook[url]) {
             }
         }
     } catch(e) {
-        errCallback(e);
+        if(errCallback) errCallback(e);
     }
     return this;
 }
@@ -8350,9 +8419,9 @@ if(_ajaxHook && _ajaxHook[url]) {
 this._httpsend(url, function(result) {
     try {
         var data = JSON.parse(result);
-        callback(data);
+        if(callback) callback(data);
     } catch(e) {
-        errCallback(e);
+        if(errCallback) errCallback(e);
     }
 }, 'POST', JSON.stringify(data), errCallback);
 
@@ -8507,6 +8576,7 @@ if(customElem.webWorkers && !this._workersAvailable()) {
 
 
 var objProperties = baseData || attrObj || {};
+
 if(givenBaseData) {
     elem._compState = givenBaseData;
 } else {
@@ -8516,7 +8586,8 @@ if(givenBaseData) {
     }
 }
 
-var renderFn = customElem.init || customElem.render;
+var renderFn = customElem.init,
+    reactiveRender = customElem.render;
 
 elem._initWithDef = customElem;
 elem._instanceVars = {};
@@ -8604,6 +8675,64 @@ if( customElem.requires || customElem._waitClass) {
     }    
 }
 
+```
+
+### <a name="_composite"></a>::composite(t)
+
+
+*The source code for the function*:
+```javascript
+var argList = Array.prototype.slice.call(arguments);
+
+if(this._contentObj) {
+    return this._contentObj.composite.apply(this._contentObj, argList);
+}
+/*
+res.elemName
+res.classStr
+res.data
+res.stream
+res.attrs
+res.constr
+*/
+var res = this._constrArgs(argList);
+
+if(!this._isStdElem(res.elemName)) {
+
+    var customElem = this._findCustomElem(res.elemName);
+    if(customElem) {
+        // find the state...
+        
+        var model = this.state(),
+            baseData;
+        if(model && model.hasOwn && !model.hasOwn(customElem.customTag)) {
+            if(res.data) {
+                // always make a copy if aguments given to avoid problems if the
+                // data has been network connected...
+                model.set(customElem.customTag, res.data.toPlainData());
+            } else {
+                if(customElem.getInitialState) {
+                    var stateData = customElem.getInitialState.apply( this, [] );
+                    model.set(customElem.customTag, stateData);
+                } else {
+                    model.set(customElem.customTag, {});
+                }
+            }
+        }
+        if(model && model.hasOwn(customElem.customTag)) {
+            baseData = model[customElem.customTag];
+        }
+        if(customElem.init || customElem.render) {
+
+            // create the element HTML tag
+            var elem = _e(customElem.customTag, res.attrs, res.constr, baseData || res.data);
+            this.add( elem );
+            return elem;
+        }
+    }
+}
+var el = this.shortcutFor.apply( this, argList); // (elemName, className, attrs);
+return el;
 ```
 
 ### <a name="_createClass"></a>::createClass(elemName, options)
@@ -9089,6 +9218,126 @@ if(!_initDone) {
 
     
     
+    
+## trait diff_patch
+
+The class has following internal singleton variables:
+        
+        
+### <a name="_doReact"></a>::doReact(data, fn)
+`data` Some random data
+ 
+
+
+*The source code for the function*:
+```javascript
+
+if(typeof(fn) != "undefined") this._reactFn = fn;
+if(this._reactFn) {
+    this.patchWith( this._reactFn( data ) );
+}
+```
+
+### ::constructor( t )
+
+```javascript
+
+```
+        
+### <a name="_patchWith"></a>::patchWith(elem)
+
+
+*The source code for the function*:
+```javascript
+ 
+if(elem._tag != this._tag) {
+    // just redraw the item...
+    this.replaceWith( elem );
+    return this;
+}
+
+var classStr, elemClassStr;
+
+if( this._classes ) {
+    var classStr = this._classes.join(" ");
+} 
+if( elem._classes ) {
+    var elemClassStr = elem._classes.join(" ");
+} 
+
+if(classStr != elemClassStr) {
+    this._classes = elem._classes;
+    if(elemClassStr) {
+        this._dom.className = elemClassStr;
+    } else {
+        this._dom.className = "";
+    }
+    
+}
+
+this._ev = elem._ev;
+
+for(var n in elem._attributes) {
+    var v = elem._attributes[n];
+    if(this._attributes[n] != v) {
+        this._attributes[n] = v;
+        this._dom.setAttribute(n,v);
+    }
+}
+
+for(var n in this._attributes) {
+    if(typeof( elem._attributes[n]) == "undefined") {
+        delete this._attributes[n];
+        this._dom.removeAttribute(n,v);
+    }
+}
+
+// TODO: patch width, height, x, y etc.
+
+if(this._tag == "input" || this._tag == "textarea") {
+    if(elem._value != this._value) {
+        // do we patch inputs ?
+    }
+} else {
+    if(elem._children.length === 0) {
+        var myList = this._children.slice(); // make copy of the array
+        myList.forEach( function(ch) {
+            ch.remove();
+        });
+        if(elem._html != this._html) {
+            this._html = elem._html || "";
+            this._dom.textContent = elem._html;
+        }
+    } else {
+        if(elem._html != this._html) {
+            this._html = elem._html || "";
+            this._dom.textContent = elem._html;
+        }        
+        var removeCnt = this._children.length - elem._children.length;
+        var theList = elem._children.slice(); // make copy of the array
+        var myList = this._children.slice(); // make copy of the array
+        for(var j=0; j<theList.length;j++) {
+            var myCh = myList[j];
+            if(myCh) {
+                myCh.patchWith( theList[j] );
+            } else {
+                this.add( theList[j] );
+            }
+        }
+        while( removeCnt > 0) {
+            if(myList[j]) myList[j++].remove();
+            removeCnt--;
+        }
+    }
+}
+
+
+
+```
+
+
+    
+    
 
 
    
@@ -9124,7 +9373,7 @@ The class has following internal singleton variables:
 *The source code for the function*:
 ```javascript
 
-
+var host = this._host;
 if(!isNaN(n)) {
     if(typeof(console)!="undefined" && typeof(console.trace)!="undefined") {
         //console.log("Attr set to ", n);
@@ -9251,6 +9500,7 @@ if(this._host.isArray(v)) {
 
     list = host.uniqueListener("attr:"+n,function(o,newV) {
         if(typeof(newV)!="undefined" && ( newV !== null) ) {
+            host._attributes[n] = newV;
             domi.setAttribute(n, newV);
         }
     });            
@@ -9259,6 +9509,7 @@ if(this._host.isArray(v)) {
         if(n=="xlink:href") {
             this._dom.setAttributeNS('http://www.w3.org/1999/xlink', 'href', val);      
          } else {
+            host._attributes[n] = val;
             this._dom.setAttributeNS(null, n,val);
          }
     } 
@@ -9275,6 +9526,7 @@ if(this._host.isObject(v)) {
                 if(n=="xlink:href") {
                     me._dom.setAttributeNS('http://www.w3.org/1999/xlink', 'href', val);      
                  } else {
+                    host._attributes[n] = val;
                     me._dom.setAttributeNS(null, n,val);
                  }
             }
@@ -9293,16 +9545,22 @@ if( this._host.isFunction(v) ) {
         host = this._host;
         
     var list = host.uniqueListener("attr:"+n,function(o,newV) {
-        if(typeof(newV)!="undefined")
+        if(typeof(newV)!="undefined") {
+            host._attributes[n] = newV;
             domi.setAttribute(n,newV);
+        }
     });        
     oo.me.on(oo.name, list);
-    if(typeof(val)!="undefined" && isNaN(n))
+    if(typeof(val)!="undefined" && isNaN(n)) {
+        host._attributes[n] = val;
         this._dom.setAttribute(n,val);
+    }
     return this;
 }
-if(typeof(v)!="undefined" && isNaN(n) )
+if(typeof(v)!="undefined" && isNaN(n) ) {
+    host._attributes[n] = v;
     this._dom.setAttribute(n,v);
+}
 return this;
 ```
 
@@ -9651,10 +9909,19 @@ if(!_initDone) {
         });
    }
  
-    if (!frame)
-        frame= function(cb) {
-            return setTimeout(cb, 16);
-        };
+   var is_node_js = (new Function("try { return this == global; } catch(e) { return false; }"))();
+   
+   if(is_node_js) {
+       frame= function(cb) {
+            return setImmediate(cb);// (cb,1);
+       }; 
+   } else {
+        if (!frame) {
+            frame= function(cb) {
+                return setTimeout(cb, 16);
+            };       
+        }
+   }
  
     if (!cancelFrame)
         cancelFrame = function(id) {
@@ -9902,7 +10169,14 @@ var args = Array.prototype.slice.call(arguments),
     
 args.forEach( function(cssRuleObj) {
     if(me.isObject(cssRuleObj)) {
-        var pros = parseInt( t*100.00 );
+        var pros;
+        if(typeof(cssRuleObj.time) != "undefined") {
+            pros = parseInt( 100.00 * parseFloat( cssRuleObj.time) );
+        } else {
+            pros = parseInt( t*100.00 );
+        }
+        if(pros < 0) pros = 0;
+        if(pros > 100) pros = 100;        
         animStr += pros+"% "+me.ruleToCss(cssRuleObj) +" \n";
         t = 1;
     } else {
@@ -9937,7 +10211,11 @@ if(this.isObject(obj)) {
     var res = {};
     for(var n in obj) {
        if(obj.hasOwnProperty(n)) {
-           res["animation-"+n] = obj[n]; 
+           if(n=="duration" || n=="iteration-count") {
+               res["animation-"+n] = obj[n]; 
+           } else {
+               res[n] = obj[n]; 
+           }
        }
     }
     return res;
@@ -10259,6 +10537,12 @@ bexp2 = function(p, v) {
     "animation-iteration-count" : function(n,v) {
         return bexp(n,v);
     },
+    "animation-fill-mode" : function(n,v) {
+        return bexp(n,v);
+    },    
+    "transition-timing-function" : function(n,v) {
+        return bexp(n,v);
+    },    
     "animation-name" : function(n,v) {
         return bexp(n,v);
     },
@@ -10337,6 +10621,7 @@ return css( this._cssScope , mediaRule);
 ```javascript
 var str = "{";
 for(var n in cssRulesObj) {
+    if(n=="time") continue;
     str += this.convert(n, cssRulesObj[n]);
 }
 str += "}\n";
@@ -10595,6 +10880,8 @@ return this;
 
 
 
+      
+    
       
     
       
