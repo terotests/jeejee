@@ -526,8 +526,9 @@
 
       /**
        * @param float callBack
+       * @param float disableTransform
        */
-      _myTrait_.drag = function (callBack) {
+      _myTrait_.drag = function (callBack, disableTransform) {
         var me = this,
             state = {};
 
@@ -561,7 +562,7 @@
 
           // find the transformation matrix if any...
           var trans = me.findTransform();
-          if (trans.length > 0 && typeof Matrix3D != "undefined") {
+          if (!disableTransform && trans.length > 0 && typeof Matrix3D != "undefined") {
             rootTransform = Matrix3D();
             trans.forEach(function (m) {
               rootTransform.matMul(m);
@@ -587,7 +588,7 @@
           state.my = dv.my;
           state.x = state.sx + state.dx;
           state.y = state.sy + state.dy;
-          if (rootTransform) {
+          if (!disableTransform && rootTransform) {
             var point = rootTransform.dragTransformation(state, rootScreen);
             state.sx = point.sx;
             state.sy = point.sy;
@@ -603,7 +604,7 @@
           state.dy = dv.dy;
           state.mx = dv.mx;
           state.my = dv.my;
-          if (rootTransform) {
+          if (!disableTransform && rootTransform) {
             var point = rootTransform.dragTransformation(state, rootScreen);
             state.sx = point.sx;
             state.sy = point.sy;
