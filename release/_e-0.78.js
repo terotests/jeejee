@@ -567,7 +567,7 @@
               rootTransform.matMul(m);
             });
             rootScreen = me.findScreen();
-            var point = rootTransform.dragTransformation(dv, rootScreen);
+            var point = rootTransform.dragTransformation(state, rootScreen);
             state.sx = point.sx;
             state.sy = point.sy;
             state.x = point.x;
@@ -588,7 +588,7 @@
           state.x = state.sx + state.dx;
           state.y = state.sy + state.dy;
           if (rootTransform) {
-            var point = rootTransform.dragTransformation(dv, rootScreen);
+            var point = rootTransform.dragTransformation(state, rootScreen);
             state.sx = point.sx;
             state.sy = point.sy;
             state.x = point.x;
@@ -604,7 +604,7 @@
           state.mx = dv.mx;
           state.my = dv.my;
           if (rootTransform) {
-            var point = rootTransform.dragTransformation(dv, rootScreen);
+            var point = rootTransform.dragTransformation(state, rootScreen);
             state.sx = point.sx;
             state.sy = point.sy;
             state.x = point.x;
