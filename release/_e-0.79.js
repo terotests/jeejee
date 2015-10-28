@@ -2413,6 +2413,17 @@
        * @param float fn
        */
       _myTrait_.trigger = function (en, data, fn) {
+
+        //TODO vaihda kaikki Array.prototype.slice.call -> alla olevaan koodiin
+        /*
+        var len = arguments.length - 1
+        var args = new Array(len)
+        // V8 optimization
+        // https://github.com/petkaantonov/bluebird/wiki/Optimization-killers#3-managing-arguments
+        for (var i = 0; i < len; i++) {
+        args[i] = arguments[i + 1]
+        }
+        */
         if (this._contentObj) {
           return this._contentObj.trigger.apply(this._contentObj, Array.prototype.slice.call(arguments));
         }
