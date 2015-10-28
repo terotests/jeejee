@@ -544,6 +544,8 @@
           };
         }
 
+        var rootTransform, rootScreen;
+
         this.draggable(function (o, dv) {
           state.item = me;
           state.sx = dv.x;
@@ -556,6 +558,26 @@
           state.y = dv.y;
           state.start = true;
           state.end = false;
+
+          // find the transformation matrix if any...
+          var trans = me.findTransform();
+          if (trans.length > 0 && typeof Matrix3D != "undefined") {
+            rootTransform = Matrix3D();
+            trans.forEach(function (m) {
+              rootTransform.matMul(m);
+            });
+            rootScreen = me.findScreen();
+            var point = rootTransform.dragTransformation(dv, rootScreen);
+            state.sx = point.sx;
+            state.sy = point.sy;
+            state.x = point.x;
+            state.y = point.y;
+            state.dx = point.dx;
+            state.dy = point.dy;
+          } else {
+            rootTransform = null;
+          }
+
           callBack(state);
         }, function (o, dv) {
           state.start = false;
@@ -565,6 +587,15 @@
           state.my = dv.my;
           state.x = state.sx + state.dx;
           state.y = state.sy + state.dy;
+          if (rootTransform) {
+            var point = rootTransform.dragTransformation(dv, rootScreen);
+            state.sx = point.sx;
+            state.sy = point.sy;
+            state.x = point.x;
+            state.y = point.y;
+            state.dx = point.dx;
+            state.dy = point.dy;
+          }
           callBack(state);
         }, function (o, dv) {
           state.end = true;
@@ -572,6 +603,15 @@
           state.dy = dv.dy;
           state.mx = dv.mx;
           state.my = dv.my;
+          if (rootTransform) {
+            var point = rootTransform.dragTransformation(dv, rootScreen);
+            state.sx = point.sx;
+            state.sy = point.sy;
+            state.x = point.x;
+            state.y = point.y;
+            state.dx = point.dx;
+            state.dy = point.dy;
+          }
           callBack(state);
         });
         return this;
