@@ -1332,6 +1332,43 @@
       });
 
       /**
+       * Scales the element, the scaling origin is 0 0
+       * @param float scaleFactor  - Scale factor for element 0..1
+       */
+      _myTrait_.scale = function (scaleFactor) {
+
+        // force the transform origin to be 0,0 when scaling
+        this.setTransformOrigion(0, 0);
+      };
+
+      /**
+       * Set transform matrix this element is listening right now..
+       * @param Matrix m3d  - Matrix3D instance
+       * @param float use3D
+       */
+      _myTrait_.setTransformMatrix = function (m3d, use3D) {
+        if (this._transformMatrix) {
+          // setting second time is an error
+
+          this._transformMatrix.removeListener(this._matrixHandler);
+          m3d.onChange(this._matrixHandler);
+          this._transformMatrix = m3d;
+          return this;
+        }
+
+        this._transformMatrix = m3d;
+        this._use3D = use3D;
+
+        var me = this;
+        this._matrixHandler = function (m) {
+          me.updateTransFromMatrix(m);
+        };
+        m3d.onChange(this._matrixHandler);
+
+        return this;
+      };
+
+      /**
        * Shows the node in the DOM tree if not visible
        * @param float t
        */
@@ -1413,6 +1450,37 @@
       _myTrait_.transformString = function (t) {
         if (!this._transforms) return "";
         return this._transforms.join("");
+      };
+
+      /**
+       * @param float fromMatrix
+       */
+      _myTrait_.updateTransFromMatrix = function (fromMatrix) {
+        if (this._transformMatrix) {
+
+          // update from 2D matrix this time, no 3D support right now...
+
+          if (this._use3D) {
+            var styleStr = fromMatrix.getCSSMatrix3D();
+            this.attr("style", styleStr);
+            return this;
+          } else {
+            var tx = fromMatrix.get2DTransform();
+          }
+          var d = this._dom;
+          d.style["transform"] = tx;
+          d.style["-webkit-transform"] = tx;
+          d.style["-moz-transform"] = tx;
+          d.style["-ms-transform"] = tx;
+          tx = "0px 0px";;
+          d.style["transform-origin"] = tx;
+          d.style["-webkit-transform-origin"] = tx;
+          d.style["-moz-transform-origin"] = tx;
+          d.style["-ms-transform-origin"] = tx;
+
+          this.trigger("transform");
+        }
+        return this;
       };
     })(this);
 
