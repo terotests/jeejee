@@ -1443,7 +1443,7 @@
           results.unshift(this._transformMatrix);
         }
         var p = this._parent;
-        if (p) return p.findTransform(results);
+        if (p) p.findTransform(results);
 
         return results;
       };
