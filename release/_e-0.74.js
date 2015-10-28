@@ -9096,6 +9096,8 @@
               e.cancelBubble = true;
               e.returnValue = false;
 
+              _dragVector.mx = _mouse.x;
+              _dragVector.my = _mouse.y;
               _dragVector.dx = _mouse.x - _dragVector.sx;
               _dragVector.dy = _mouse.y - _dragVector.sy;
               if (_dragItem) _dragItem.trigger("drag", _dragVector);
@@ -9143,6 +9145,7 @@
               o.setDragged(e);
               _dragVector.sx = _mouse.x;
               _dragVector.sy = _mouse.y;
+
               _dragVector.dx = 0;
               _dragVector.dy = 0;
               _dragVector.x = off.left;
@@ -9247,7 +9250,8 @@
               _dragVector.sy = t.startY;
               _dragVector.dx = 0;
               _dragVector.dy = 0;
-
+              _dragVector.mx = _mouse.x;
+              _dragVector.my = _mouse.y;
               _dragVector.x = t.startX - off.left;
               _dragVector.y = t.startY - off.top;
               _dragging = true;
@@ -9259,6 +9263,8 @@
               //e.trigger("msg", "got touchmove 2");
               _dragVector.dx = t.dx;
               _dragVector.dy = t.dy;
+              _dragVector.mx = _mouse.x;
+              _dragVector.my = _mouse.y;
               _dragging = true;
               e.trigger("drag", _dragVector);
               //e.trigger("msg", "got touchmove 3");
@@ -9268,7 +9274,8 @@
               var t = e.touch(0);
               _dragVector.dx = t.dx;
               _dragVector.dy = t.dy;
-
+              _dragVector.mx = _mouse.x;
+              _dragVector.my = _mouse.y;
               e.trigger("enddrag", _dragVector);
               _dragging = false;
             });
