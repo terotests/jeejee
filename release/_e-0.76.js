@@ -9151,7 +9151,8 @@
               o.setDragged(e);
               _dragVector.sx = _mouse.x;
               _dragVector.sy = _mouse.y;
-
+              _dragVector.mx = _mouse.x;
+              _dragVector.my = _mouse.y;
               _dragVector.dx = 0;
               _dragVector.dy = 0;
               _dragVector.x = off.left;
