@@ -1142,6 +1142,41 @@
       // Initialize static variables here...
 
       /**
+       * @param Object options  - The screen options
+       * @param Boolean fromDOM  - Do we use DOM as source
+       */
+      _myTrait_._resetProjection = function (options, fromDOM) {
+
+        if (!options.has3D) return;
+
+        if (fromDOM) {
+          var box = this.offset();
+          if (!options.offset) options.offset = {};
+          options.offset.x = box.left;
+          options.offset.y = box.top;
+          options.screenWidth = box.width;
+          options.screenHeight = box.height;
+          options.width = box.width;
+          options.height = box.height;
+        }
+
+        if (options.lastWidth == options.width && options.lastHeight == options.height) return;
+
+        // perspectiveOrigin
+        var halfWidth = parseInt(options.width / 2),
+            halfHeight = parseInt(options.height / 2);
+
+        // the projection screen size
+        this._dom.style.perspectiveOrigin = halfWidth + "px " + halfHeight + "px ";
+        this._dom.style.transformStyle = "preserve-3d";
+
+        options.lastWidth = options.width;
+        options.lastHeight = options.height;
+
+        options.has3D = true;
+      };
+
+      /**
        * @param string tx
        */
       _myTrait_.applyTransforms = function (tx) {
@@ -1321,6 +1356,59 @@
       };
 
       /**
+       * @param float t
+       */
+      _myTrait_.findScreen = function (t) {
+        if (!this._screenDefinition) {
+          var p = this.parent();
+          if (p) return p.findScreen();
+
+          // if no screen found, return default screen
+          return {
+            screenWidth: 1000,
+            screenHeight: 1000,
+            perspective: 101133300,
+            offset: {
+              x: 0,
+              y: 0
+            }
+          };
+        } else {
+          var options = this._screenDefinition;
+          var box = this.offset();
+          if (!options.offset) options.offset = {};
+
+          options.offset.x = box.left;
+          options.offset.y = box.top;
+          options.screenWidth = box.width;
+          options.screenHeight = box.height;
+          options.width = box.width;
+          options.height = box.height;
+
+          this._resetProjection(options);
+
+          // TODO: should we calculate the screen size also here??
+
+          return options;
+        }
+      };
+
+      /**
+       * Collects all the transformations for a certain matrix.
+       * @param Array results  - Left empty upon first call
+       */
+      _myTrait_.findTransform = function (results) {
+
+        if (this._transformMatrix) {
+          results.unshift(this._transformMatrix);
+        }
+        var p = this._parent;
+        if (p) return p.findTransform(results);
+
+        return results;
+      };
+
+      /**
        * Hides the node from DOM tree
        * @param float t
        */
@@ -1345,6 +1433,40 @@
 
         // force the transform origin to be 0,0 when scaling
         this.setTransformOrigion(0, 0);
+      };
+
+      /**
+       * @param Object options  - The screen definition
+       */
+      _myTrait_.setProjectionScreen = function (options) {
+
+        options = options || {};
+
+        var hadPerspective = false;
+        if (!options.perspective) {
+          options.perspective = 101133300;
+        } else {
+          hadPerspective = true;
+          this._dom.style.perspective = options.perspective + "px";
+        }
+
+        if (options.has3D || hadPerspective) {
+
+          if (options.width && options.height) {
+            this._resetProjection(options);
+          }
+          options.has3D = true;
+        }
+
+        this._screenDefinition = options;
+        var me = this;
+
+        me.on("width", function () {
+          me._resetProjection(options, true);
+        });
+        me.on("height", function () {
+          me._resetProjection(options, true);
+        });
       };
 
       /**
@@ -9565,6 +9687,18 @@
     define(__amdDefs__);
   }
 }).call(new Function("return this")());
+/*
+testDiv3.drag( function(dv) {
+var box = body.offset();
+// the offset is required though...
+console.log(testDiv3.offset());
+var point = totalMatrix.dragTransformation( dv, { 
+    screenWidth : 4000, 
+    screenHeight: 3000, 
+    perspective:101133300, offset : {
+        x: box.left, y : box.top}
+    } );
+*/
 
 // should we have named styles... perhaps... TODO
 
