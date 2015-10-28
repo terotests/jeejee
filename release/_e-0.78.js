@@ -561,7 +561,7 @@
           state.end = false;
 
           // find the transformation matrix if any...
-          var trans = me.findTransform();
+          var trans = me.findTransform(null, true);
           if (!disableTransform && trans.length > 0 && typeof Matrix3D != "undefined") {
             rootTransform = Matrix3D();
             trans.forEach(function (m) {
@@ -1437,13 +1437,16 @@
       /**
        * Collects all the transformations for a certain matrix.
        * @param Array results  - Left empty upon first call
+       * @param float startFromParent
        */
-      _myTrait_.findTransform = function (results) {
+      _myTrait_.findTransform = function (results, startFromParent) {
 
         if (!results) results = [];
 
-        if (this._transformMatrix) {
-          results.unshift(this._transformMatrix);
+        if (!startFromParent) {
+          if (this._transformMatrix) {
+            results.unshift(this._transformMatrix);
+          }
         }
         var p = this._parent;
         if (p) p.findTransform(results);
