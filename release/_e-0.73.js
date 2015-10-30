@@ -642,6 +642,7 @@
         this.on("touchstart", function (o, dv) {
           o.trigger("click");
         });
+        return this;
       };
 
       /**
@@ -1342,30 +1343,11 @@
       };
 
       /**
-       * Set transform matrix this element is listening right now..
        * @param Matrix m3d  - Matrix3D instance
-       * @param float use3D
        */
-      _myTrait_.setTransformMatrix = function (m3d, use3D) {
-        if (this._transformMatrix) {
-          // setting second time is an error
-
-          this._transformMatrix.removeListener(this._matrixHandler);
-          m3d.onChange(this._matrixHandler);
-          this._transformMatrix = m3d;
-          return this;
-        }
+      _myTrait_.setTransformMatrix = function (m3d) {
 
         this._transformMatrix = m3d;
-        this._use3D = use3D;
-
-        var me = this;
-        this._matrixHandler = function (m) {
-          me.updateTransFromMatrix(m);
-        };
-        m3d.onChange(this._matrixHandler);
-
-        return this;
       };
 
       /**
@@ -1450,37 +1432,6 @@
       _myTrait_.transformString = function (t) {
         if (!this._transforms) return "";
         return this._transforms.join("");
-      };
-
-      /**
-       * @param float fromMatrix
-       */
-      _myTrait_.updateTransFromMatrix = function (fromMatrix) {
-        if (this._transformMatrix) {
-
-          // update from 2D matrix this time, no 3D support right now...
-
-          if (this._use3D) {
-            var styleStr = fromMatrix.getCSSMatrix3D();
-            this.attr("style", styleStr);
-            return this;
-          } else {
-            var tx = fromMatrix.get2DTransform();
-          }
-          var d = this._dom;
-          d.style["transform"] = tx;
-          d.style["-webkit-transform"] = tx;
-          d.style["-moz-transform"] = tx;
-          d.style["-ms-transform"] = tx;
-          tx = "0px 0px";;
-          d.style["transform-origin"] = tx;
-          d.style["-webkit-transform-origin"] = tx;
-          d.style["-moz-transform-origin"] = tx;
-          d.style["-ms-transform-origin"] = tx;
-
-          this.trigger("transform");
-        }
-        return this;
       };
     })(this);
 
@@ -7659,17 +7610,6 @@
          */
         _myTrait_._easeFns = function (t) {
           _easings = {
-            bounceOut: function bounceOut(t) {
-              if (t < 1 / 2.75) {
-                return 7.5625 * t * t;
-              } else if (t < 2 / 2.75) {
-                return 7.5625 * (t -= 1.5 / 2.75) * t + 0.75;
-              } else if (t < 2.5 / 2.75) {
-                return 7.5625 * (t -= 2.25 / 2.75) * t + 0.9375;
-              } else {
-                return 7.5625 * (t -= 2.625 / 2.75) * t + 0.984375;
-              }
-            },
             easeIn: function easeIn(t) {
               return t * t;
             },
@@ -7679,9 +7619,6 @@
             easeInOut: function easeInOut(t) {
               if (t < 0.5) return t * t;
               return -1 * t * (t - 2);
-            },
-            easeInCirc: function easeInCirc(t) {
-              return -1 * (Math.sqrt(1 - t * t) - 1);
             },
             easeInCubic: function easeInCubic(t) {
               return t * t * t;
@@ -7734,7 +7671,7 @@
         _myTrait_.after = function (seconds, fn, name) {
 
           if (!name) {
-            name = "aft7491_" + _localCnt++;
+            name = "aft_" + _localCnt++;
           }
 
           _everies[name] = {
@@ -7795,7 +7732,6 @@
           if (!_initDone) {
             this._easeFns();
             _localCnt = 1;
-            this.polyfill();
 
             var frame, cancelFrame;
             if (typeof window != "undefined") {
@@ -7932,11 +7868,6 @@
 
           _framers.push(fn);
         };
-
-        /**
-         * @param float t
-         */
-        _myTrait_.polyfill = function (t) {};
 
         /**
          * @param float fn
@@ -9576,5 +9507,3 @@ success( result );
 
 //console.log("Attr set to ", n);
 //console.trace();
-
-// --- let's not ---

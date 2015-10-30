@@ -992,26 +992,19 @@ MIT. Currently use at own risk.
     
 ##### trait CSSTransform
 
-- [_resetProjection](README.md#__resetProjection)
 - [applyTransforms](README.md#_applyTransforms)
 - [compStyle](README.md#_compStyle)
 - [createEffect](README.md#_createEffect)
 - [css](README.md#_css)
 - [effectIn](README.md#_effectIn)
 - [effectOut](README.md#_effectOut)
-- [findScreen](README.md#_findScreen)
-- [findTransform](README.md#_findTransform)
 - [hide](README.md#_hide)
-- [scale](README.md#_scale)
-- [setProjectionScreen](README.md#_setProjectionScreen)
-- [setTransformMatrix](README.md#_setTransformMatrix)
 - [show](README.md#_show)
 - [style](README.md#_style)
 - [styleString](README.md#_styleString)
 - [transform](README.md#_transform)
 - [transformOrigin](README.md#_transformOrigin)
 - [transformString](README.md#_transformString)
-- [updateTransFromMatrix](README.md#_updateTransFromMatrix)
 
 
     
@@ -2429,7 +2422,7 @@ return Bacon.fromBinder( function(sink) {
 }); 
 ```
 
-### <a name="_drag"></a>::drag(callBack, disableTransform)
+### <a name="_drag"></a>::drag(callBack)
 
 
 *The source code for the function*:
@@ -2450,75 +2443,28 @@ if(this.isObject(callBack) && !this.isFunction(callBack)) {
     }
 }
     
-var rootTransform,
-    rootScreen;
-    
 this.draggable( function(o,dv) {
     state.item = me;
     state.sx = dv.x;
     state.sy = dv.y;
-    state.mx = dv.mx;
-    state.my = dv.my;    
     state.dx = 0;
     state.dy = 0;            
     state.x = dv.x;
     state.y = dv.y;
     state.start = true;
     state.end = false;
-    
-    // find the transformation matrix if any...
-    var trans = me.findTransform(null, true);
-    if(!disableTransform && trans.length > 0 && (typeof(Matrix3D) != "undefined")) {
-        rootTransform = Matrix3D();
-        trans.forEach( function(m) {
-            rootTransform.matMul(m);
-        })
-        rootScreen = me.findScreen();
-        var point = rootTransform.dragTransformation( state, rootScreen );
-        state.sx = point.sx;
-        state.sy = point.sy;
-        state.x  = point.x;
-        state.y  = point.y;
-        state.dx = point.dx;
-        state.dy = point.dy;
-    } else {
-        rootTransform = null;
-    }
-    
     callBack(state);
 }, function(o,dv) {
     state.start = false;
     state.dx = dv.dx;
     state.dy = dv.dy;
-    state.mx = dv.mx;
-    state.my = dv.my;       
     state.x = state.sx +state.dx;
-    state.y = state.sy +state.dy;             
-    if(!disableTransform && rootTransform) {
-        var point = rootTransform.dragTransformation( state, rootScreen );
-        state.sx = point.sx;
-        state.sy = point.sy;
-        state.x  = point.x;
-        state.y  = point.y;
-        state.dx = point.dx;
-        state.dy = point.dy;        
-    }
+    state.y = state.sy +state.dy;                      
     callBack(state);
 }, function(o,dv) {
     state.end = true;
     state.dx = dv.dx;
-    state.dy = dv.dy;        
-    state.mx = dv.mx;
-    state.my = dv.my;      
-    if(!disableTransform && rootTransform) {
-        var point = rootTransform.dragTransformation( state, rootScreen );
-        state.sx = point.sx;
-        state.sy = point.sy;
-        state.x  = point.x;
-        state.y  = point.y;
-        state.dx = point.dx;
-        state.dy = point.dy;        
-    }    
+    state.dy = dv.dy;            
     callBack(state);
 });
 return this;
@@ -2642,7 +2588,6 @@ var touchStart= function(e) {
                           if(e.stopPropagation) e.stopPropagation();
                     
                           e.returnValue = false;
-                          return false;
                       };
 
 var touchMove =  function(e) {
@@ -2667,16 +2612,12 @@ var touchMove =  function(e) {
                           
                           o.trigger("touchmove");
                           if(e.preventDefault) e.preventDefault();
-                          if(e.stopPropagation) e.stopPropagation();
-                          return false;
 };
 
 var touchEnd = function(e) {
                           o.trigger("touchend");
                           if(e.preventDefault) e.preventDefault();
-                          if(e.stopPropagation) e.stopPropagation();
                           e.returnValue = false;
-                          return false;
                       };
 
 /*elem.addEventListener("touchcancel", function(e) {
@@ -3120,46 +3061,6 @@ The class has following internal singleton variables:
 * _nsIndex
         
         
-### <a name="__resetProjection"></a>::_resetProjection(options, fromDOM)
-`options` The screen options
- 
-`fromDOM` Do we use DOM as source
- 
-
-
-*The source code for the function*:
-```javascript
-
-if(!options.has3D) return;
-
-if(fromDOM) {
-    var box = this.offset();
-    if(!options.offset) options.offset = {};
-    options.offset.x = box.left;
-    options.offset.y = box.top;
-    options.screenWidth = box.width;
-    options.screenHeight = box.height;
-    options.width = box.width;
-    options.height = box.height;    
-}
-
-if(options.lastWidth == options.width &&
-   options.lastHeight== options.height) return;
-   
-// perspectiveOrigin
-var halfWidth  = parseInt( options.width / 2),
-    halfHeight = parseInt( options.height / 2 );
-
-// the projection screen size
-this._dom.style.perspectiveOrigin = halfWidth+"px "+halfHeight+"px ";
-this._dom.style.transformStyle="preserve-3d"
-
-options.lastWidth = options.width;
-options.lastHeight = options.height;
-
-options.has3D = true;
-```
-
 ### <a name="_applyTransforms"></a>::applyTransforms(tx)
 
 
@@ -3348,67 +3249,6 @@ later().after(options.duration, function() {
 }); 
 ```
 
-### <a name="_findScreen"></a>::findScreen(t)
-
-
-*The source code for the function*:
-```javascript
-if(!this._screenDefinition) {
-    var p = this.parent();
-    if(p) return p.findScreen();
-   
-    // if no screen found, return default screen
-    return {
-        screenWidth : 1000,
-        screenHeight : 1000,
-        perspective : 101133300,
-        offset : {
-            x : 0,
-            y : 0
-        }
-    };
-    
-} else {
-    var options = this._screenDefinition;
-    var box = this.offset();
-    if(!options.offset) options.offset = {};
-    
-    options.offset.x = box.left;
-    options.offset.y = box.top;
-    options.screenWidth = box.width;
-    options.screenHeight = box.height;
-    options.width = box.width;
-    options.height = box.height;
-    
-    this._resetProjection( options );
-    
-    // TODO: should we calculate the screen size also here??
-    
-    return options;  
-}
-```
-
-### <a name="_findTransform"></a>::findTransform(results, startFromParent)
-`results` Left empty upon first call
- 
-
-Collects all the transformations for a certain matrix.
-*The source code for the function*:
-```javascript
-
-if(!results) results = [];
-
-if(!startFromParent) {
-    if(this._transformMatrix) {
-        results.unshift(this._transformMatrix);
-    } 
-}
-var p = this._parent;
-if(p) p.findTransform(results);
-
-return results;
-```
-
 ### <a name="_hide"></a>::hide(t)
 
 Hides the node from DOM tree
@@ -3428,98 +3268,6 @@ if(!_effects) {
 }
 ```
         
-### <a name="_scale"></a>::scale(scaleFactor)
-`scaleFactor` Scale factor for element 0..1
- 
-
-Scales the element, the scaling origin is 0 0
-*The source code for the function*:
-```javascript
-
-// force the transform origin to be 0,0 when scaling
-this.setTransformOrigion( 0, 0 );
-
-
-```
-
-### <a name="_setProjectionScreen"></a>::setProjectionScreen(options)
-`options` The screen definition
- 
-
-
-*The source code for the function*:
-```javascript
-
-options = options || {};
-
-var hadPerspective = false;
-if(!options.perspective ) {
-    options.perspective = 101133300;
-} else {
-    hadPerspective = true;
-    this._dom.style.perspective = options.perspective+"px";
-    this._dom.style.webkitPerspective = options.perspective+"px";
-}
-
-if(options.has3D || hadPerspective) {
-
-    if(options.width && options.height) {
-        this._resetProjection( options );
-    }
-    options.has3D = true;
-}
-
-this._screenDefinition = options;
-var me = this;
-
-me.on("width", function() {
-    me._resetProjection( options, true );
-});
-me.on("height", function() {
-    me._resetProjection( options, true );
-})
-/*
-testDiv3.drag( function(dv) {
-  var box = body.offset();
-  // the offset is required though...
-  console.log(testDiv3.offset());
-  var point = totalMatrix.dragTransformation( dv, { 
-            screenWidth : 4000, 
-            screenHeight: 3000, 
-            perspective:101133300, offset : {
-                x: box.left, y : box.top}
-            } );
-*/
-```
-
-### <a name="_setTransformMatrix"></a>::setTransformMatrix(m3d, use3D)
-`m3d` Matrix3D instance
- 
-
-Set transform matrix this element is listening right now..
-*The source code for the function*:
-```javascript
-if(this._transformMatrix) {
-    // setting second time is an error
-    
-    this._transformMatrix.removeListener( this._matrixHandler );
-    m3d.onChange(this._matrixHandler);
-    this._transformMatrix = m3d;
-    return this;
-}
-
-this._transformMatrix = m3d;
-this._use3D = use3D;
-
-var me = this;
-this._matrixHandler = function(m) {
-    me.updateTransFromMatrix(m);
-}
-m3d.onChange(this._matrixHandler);
-
-return this;
-```
-
 ### <a name="_show"></a>::show(t)
 
 Shows the node in the DOM tree if not visible
@@ -3608,39 +3356,6 @@ return this;
 ```javascript
 if(!this._transforms) return "";
 return this._transforms.join("");
-```
-
-### <a name="_updateTransFromMatrix"></a>::updateTransFromMatrix(fromMatrix)
-
-
-*The source code for the function*:
-```javascript
-if( this._transformMatrix) {
-    
-    // update from 2D matrix this time, no 3D support right now...
-    
-    if(this._use3D) {
-        var styleStr = fromMatrix.getCSSMatrix3D();
-        this.attr("style", styleStr);
-        return this;
-    } else {
-        var tx = fromMatrix.get2DTransform();
-    }
-    var d = this._dom;
-    d.style["transform"] = tx;
-    d.style["-webkit-transform"] = tx; 
-    d.style["-moz-transform"] = tx; 
-    d.style["-ms-transform"] = tx; 
-    tx = "0px 0px";;
-    d.style["transform-origin"] = tx;
-    d.style["-webkit-transform-origin"] = tx; 
-    d.style["-moz-transform-origin"] = tx; 
-    d.style["-ms-transform-origin"] = tx; 
-    
-    this.trigger("transform");    
-}
-return this;
-
 ```
 
 
@@ -4425,20 +4140,6 @@ _routes[routeId] = obj;
 triggers event with data and optional function
 *The source code for the function*:
 ```javascript
-
-//TODO vaihda kaikki Array.prototype.slice.call -> alla olevaan koodiin
-/*
-  var len = arguments.length - 1
-  var args = new Array(len)
-
-  // V8 optimization
-  // https://github.com/petkaantonov/bluebird/wiki/Optimization-killers#3-managing-arguments
-
-  for (var i = 0; i < len; i++) {
-    args[i] = arguments[i + 1]
-  }
-
-*/
 if(this._contentObj) {
     return this._contentObj.trigger.apply(this._contentObj, Array.prototype.slice.call(arguments));
 }
